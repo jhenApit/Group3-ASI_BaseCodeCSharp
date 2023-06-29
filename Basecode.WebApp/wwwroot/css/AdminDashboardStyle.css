@@ -1,0 +1,41 @@
+﻿body,
+html {
+    height: 100%;
+    background: linear-gradient(rgba(17, 17, 17, 0.3), rgba(17, 17, 17, 1)), url(../images/landing-page.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+}
+
+.content {
+    height: 100%;
+}
+
+.logo-icon {
+    display: none;
+    width: 45px;
+}
+
+.nav .active {
+    background-color: rgba(255, 255, 255, 0.4) !important;
+    border-right: 8px solid #EC2224 !important;
+    position: relative;
+    
+}
+
+.nav-pills li a:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    width: 100%;
+    border-right: 8px solid #EC2224;
+}
+
+.col .content {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 50vh; /* Adjust the height as needed */
+}
+
+.text-center {
+    text-align: right;
+}

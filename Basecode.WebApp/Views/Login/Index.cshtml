@@ -1,0 +1,46 @@
+﻿@page "/Login"
+@{
+    Layout = null; // Set the layout to null or specify a different layout path
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+}
+
+@*@{
+    ViewData["Title"] = "Login";
+}*@
+<body >
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col bg-dark" style="background-image: url('../images/building.png');
+               background-repeat: no-repeat; background-position: center; background-size: cover;">
+            </div>
+            <div class="col bg-dark vh-100 d-flex justify-content-center align-items-center">
+                <form method="POST" action="/user_login" class="needs-validation">
+                    <div class="container text-black">
+                        <div class="top text-white text-center">
+                            <h2>Welcome</h2>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input name="email" type="email" class="form-control" id="floatingInput"
+                                   placeholder="name@example.com">
+                            <label for="floatingInput" class="form-label">Email Address</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input name="password" type="password" class="form-control" id="floatingInput"
+                                   placeholder="password">
+                            <label for="floatingInput" class="form-label">Password</label>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" name="submit" class="btn btn-danger">Sign In</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+   
+

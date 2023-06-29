@@ -1,0 +1,54 @@
+﻿.edit-hr-header-text {
+    color: black;
+    text-align: left;
+    font-family: "Montserrat", sans-serif;
+}
+
+.edit-hr-header-image {
+    background-image: url("/images/header-bg.png");
+    background-size: cover;
+    background-position: center top 20%;
+    filter: brightness(40%);
+    height: 270px;
+    width: 85vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+
+.form-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px auto;
+}
+
+    .form-group label {
+        margin-left: 15px;
+        flex-basis: 10%; 
+    }
+
+    .form-control {
+        flex-basis:90%; /* Adjust the percentage as needed */
+        margin-right: 0;
+    }
+
+.save-changes-button {
+    background-color: #EC2224;
+    border: 1px solid white;
+    color: white;
+    padding: 10px 10px;
+    margin: 20px auto;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .save-changes-button:hover {
+        background-color: #55729B;
+        border: 1px solid white;
+        color: white;
+    }

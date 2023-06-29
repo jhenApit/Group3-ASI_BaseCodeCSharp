@@ -1,8 +1,7 @@
-﻿.header-bg {
+﻿.hr-list-header-bg {
     background-image: url("/images/header-bg.png");
     height: 270px;
     color: white;
-    padding: 20px;
     background-size: cover;
     background-position: center top 20%;
     display: flex;
@@ -10,11 +9,9 @@
     align-items: center;
     text-align: center;
     position: relative;
-    color: white;
     font-size: 100px;
-    filter: drop-shadow(50%);
+    filter: brightness(50%);
 }
-
 
 .create-account-button {
     background-color: #EC2224;
@@ -23,6 +20,7 @@
     padding: 5px 10px;
     float: right;
     margin-bottom: 20px;
+    padding: 10px;
 }
 
     .create-account-button:hover {
@@ -31,7 +29,7 @@
         color: white;
     }
 
-.table-header {
+.hr-table-header {
     margin-top: 40px;
     margin-bottom: 40px;
     border-top: 3px solid #000000;
@@ -45,7 +43,12 @@
     border-bottom: 2px solid #333333;
 }
 
-.action-icon {
+.table td,
+.table th {
+    font-family: "Montserrat", sans-serif;
+}
+
+.hr-list-action-icon {
     width: 20px;
     height: 20px;
     margin-right: 10px;

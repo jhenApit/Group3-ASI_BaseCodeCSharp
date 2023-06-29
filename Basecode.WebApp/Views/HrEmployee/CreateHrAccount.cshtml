@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["CreateHrAccount"] = "CREATE HR ACCOUNT";
+    Layout = null;
+    <link rel="stylesheet" href="~/css/create-hr-account.css" />
+}   
+
+<div class="page">
+    <div class="menu">
+        <ul>
+            <li class="logo"/>
+            <li><a href="#dashboard">Dashboard</a></li>
+            <li><a href="#hrlist" class="active">HR List</a></li>
+        </ul>
+    </div>
+    <div class="create-account">
+        <div class="heading">
+            <p>CREATE HR ACCOUNT</p>
+        </div>
+        <div class="bg">
+            <h1 class="header">CREATE ACCOUNT</h1>
+        </div>
+        <div class="desc">
+            <p>As an admin, you can create an account for the HRs in your company. Please fill out the form below to complete the process.</p>
+        </div>
+        <div class="create-account-form">
+            <form method="post">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input id="name" class="form-control" />
+                    <span class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input id="email" class="form-control" />
+                    <span class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input id="password" class="form-control" />
+                    <span class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary save-changes-button">Create Account</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+﻿.action-icon {
+    width: 20px;
+    height: 20px; 
+}
+
+.create-account-button {
+    background-color: #EC2224;
+    border: 1px solid white;
+}
+
+    .create-account-button:hover {
+        background-color: lightcoral;
+        border: 1px solid #EC2224;
+        color: white;
+    }

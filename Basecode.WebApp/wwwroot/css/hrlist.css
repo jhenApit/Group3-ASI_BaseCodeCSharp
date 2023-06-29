@@ -1,15 +1,56 @@
-﻿.action-icon {
-    width: 20px;
-    height: 20px; 
+﻿.header-bg {
+    background-image: url("/images/header-bg.png");
+    height: 270px;
+    color: white;
+    padding: 20px;
+    background-size: cover;
+    background-position: center top 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    color: white;
+    font-size: 100px;
+    filter: drop-shadow(50%);
 }
+
 
 .create-account-button {
     background-color: #EC2224;
     border: 1px solid white;
+    color: white;
+    padding: 5px 10px;
+    float: right;
+    margin-bottom: 20px;
 }
 
     .create-account-button:hover {
-        background-color: lightcoral;
+        background-color: darkred;
         border: 1px solid #EC2224;
         color: white;
     }
+
+.table-header {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    border-top: 3px solid #000000;
+    border-bottom: 3px solid #333333;
+}
+
+.table th {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 2px solid #000000;
+    border-bottom: 2px solid #333333;
+}
+
+.action-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+a {
+    text-decoration: none;
+}

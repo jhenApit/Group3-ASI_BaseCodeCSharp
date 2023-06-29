@@ -1,17 +1,27 @@
 ﻿.hr-list-header-bg {
-    background-image: url("/images/header-bg.png");
     height: 270px;
     color: white;
-    background-size: cover;
-    background-position: center top 20%;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     position: relative;
     font-size: 100px;
-    filter: brightness(50%);
 }
+
+    .hr-list-header-bg::before {
+        background-image: url("/images/header-bg.png");
+        background-size: cover;
+        background-position: center top 20%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        content: "";
+        filter: brightness(40%);
+        z-index: -1;
+    }
 
 .create-account-button {
     background-color: #EC2224;

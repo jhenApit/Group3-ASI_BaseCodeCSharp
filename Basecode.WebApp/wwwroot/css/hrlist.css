@@ -34,8 +34,8 @@
 }
 
     .create-account-button:hover {
-        background-color: darkred;
-        border: 1px solid #EC2224;
+        background-color: #55729B;
+        border: 1px solid white;
         color: white;
     }
 

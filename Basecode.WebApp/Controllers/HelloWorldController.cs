@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Text.Encodings.Web;
 
-namespace Basecode.Main.Controllers
+namespace Basecode.WebApp.Controllers
 {
     public class HelloWorldController : Controller
     {

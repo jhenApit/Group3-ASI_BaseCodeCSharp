@@ -1,0 +1,9 @@
+﻿body {
+    background-image: url("/wwwroot/images/contactUsBackground.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+h4 {
+    text-align: center;
+}

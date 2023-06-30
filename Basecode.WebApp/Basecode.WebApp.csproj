@@ -22,4 +22,8 @@
     <ProjectReference Include="..\Basecode.Services\Basecode.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\images\building.png" />
+  </ItemGroup>
+
 </Project>

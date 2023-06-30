@@ -8,5 +8,10 @@ namespace Basecode.WebApp.Controllers
         {
             return View();
         }
+
+        public IActionResult ContactUs()
+        {
+            return View();
+        }
     }
 }

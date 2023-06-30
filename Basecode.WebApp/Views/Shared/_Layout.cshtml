@@ -10,7 +10,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-black border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-black border-bottom box-shadow mb-3 py-0">
             <div class="container-fluid">
                 <a class="navbar-brand text-white me-3" asp-area="" asp-controller="Home" asp-action="Index"><img class="p-1" src="../images/asi-logo.svg"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -18,14 +18,14 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-evenly">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
+                    <ul class="navbar-nav flex-grow-1 align-items-center">
+                        <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("ExploreJobs") ? "nav-selected" : "")">
                             <a class="nav-link text-white fs-5 fw-semibold mx-3" asp-area="" asp-controller="Applicant" asp-action="ExploreJobs">EXPLORE JOBS</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("TrackApplication") ? "nav-selected" : "")">
                             <a class="nav-link text-white fs-5 fw-semibold mx-3" asp-area="" asp-controller="Applicant" asp-action="TrackApplication">TRACK APPLICATION</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("ContactUs") ? "nav-selected" : "")">
                             <a class="nav-link text-white fs-5 fw-semibold mx-3" asp-area="" asp-controller="Applicant" asp-action="ContactUs">CONTACT US</a>
                         </li>
                     </ul>

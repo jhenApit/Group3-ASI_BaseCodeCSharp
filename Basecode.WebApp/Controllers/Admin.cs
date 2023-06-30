@@ -2,8 +2,12 @@
 
 namespace Basecode.WebApp.Controllers
 {
-    public class HrEmployee : Controller
+    public class Admin : Controller
     {
+        public IActionResult AdminDashboard()
+        {
+            return View();
+        }
         public IActionResult CreateHrAccount()
         {
             return View();

@@ -47,8 +47,15 @@ button.accept-policy {
   line-height: 60px;
 }
 
-body {
-    background-image: url("~/images/contactUsBackground.jpg");
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+.nav-selected {
+    background: linear-gradient(rgba(50, 50, 50, 0), rgba(50, 50, 50, 1));
+    border-bottom: 5px solid red !important;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.nav-item {
+    border-bottom: 5px solid black;
+    padding-top: 1em;
+    padding-bottom: 1em;
 }

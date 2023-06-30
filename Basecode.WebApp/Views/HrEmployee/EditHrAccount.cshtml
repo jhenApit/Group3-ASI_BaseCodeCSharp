@@ -1,11 +1,7 @@
-﻿@page "/editHrAccount"
-@model Basecode.WebApp.Views.HrEmployee.EditHrAccountModel
-@{
-    ViewData["EditHrAccount"] = "EDIT HR ACCOUNT DETAILS";
-    Layout = null;
+﻿@{
+    <title>EDIT HR EMPLOYEE ACCOUNT DETAILS</title>
     <link rel="stylesheet" href="~/css/create-hr-account.css" />
 }
-
 
 <div class="page">
     <div class="menu">
@@ -29,7 +25,7 @@
             </li>
         </ul>
     </div>
-    <div class="create-account">
+    <div class="edit-account">
         <div class="heading">
             <p>
                 <a href="#hrlist" class="back">
@@ -37,14 +33,13 @@
                         <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
                     </svg>
                 </a>
-                EDIT HR EMPLOYEE ACCOUNT DETAILS
+                Edit HR Employee Account Information
             </p>
         </div>
         <div class="bg">
-            <h1 class="header">CREATE ACCOUNT</h1>
         </div>
         <div class="desc">
-            <p>As an admin, you can create an account for the HRs in your company. Please fill out the form below to complete the process.</p>
+            <p>As an admin, you can edit an account for the HRs in your company. Please modify the form below to complete the process.</p>
         </div>
         <div class="create-account-form">
             <form method="post">

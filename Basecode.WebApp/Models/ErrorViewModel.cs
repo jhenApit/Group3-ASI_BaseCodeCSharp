@@ -1,4 +1,4 @@
-namespace Basecode.Main.Models
+namespace Basecode.WebApp.Models
 {
     public class ErrorViewModel
     {

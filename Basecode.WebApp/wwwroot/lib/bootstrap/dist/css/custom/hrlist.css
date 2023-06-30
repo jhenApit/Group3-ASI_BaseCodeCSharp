@@ -1,0 +1,78 @@
+﻿body {
+    background: white !important;
+}
+
+.hr-list-container {
+    background: white !important;
+    height: 80vh;
+    width: 80vw;
+}
+
+.hr-list-header-bg {
+    height: 270px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    font-size: 100px;
+}
+
+    .hr-list-header-bg::before {
+        background-image: url("/images/header-bg.png");
+        background-size: cover;
+        background-position: center top 20%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        filter: brightness(40%);
+        z-index: -1;
+    }
+
+.create-account-button {
+    background-color: #EC2224;
+    border: 1px solid white;
+    color: white;
+    padding: 5px 10px;
+    float: right;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+    .create-account-button:hover {
+        background-color: #55729B;
+        border: 1px solid white;
+        color: white;
+    }
+
+.hr-table-header {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    border-top: 3px solid #000000;
+    border-bottom: 3px solid #333333;
+}
+
+.table th {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 2px solid #000000;
+    border-bottom: 2px solid #333333;
+}
+
+.table td,
+.table th {
+    font-family: "Montserrat", sans-serif;
+}
+
+.hr-list-action-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+a {
+    text-decoration: none;
+}

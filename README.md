@@ -1,29 +1,25 @@
-# C# BaseCode
-## _ASI Bridge Program BaseCode_
+# HR Automation System
 
-This is the base code that will be used during the bridge program.
-```
-```
-## Installation
-1.  Open the `.sln` file.
-    _※Use Visual Studio 2022_
-2.  Change connection strings on the `appsettings.json` base on your server
-3.  Set `Basecode.WebApp` as the Startup project.
-4.  Clean and ReBuild the solution.
+Group 3 Summer Bridge Project
 
-## Code Structure
+## Overview
+The HR Automation System is an all-inclusive software program created to simplify and automate several HR procedures within the organization. It focuses on job posting, application and screening, interviews, background checks, job offers, and user management with the specific goal of improving the efficiency and effectiveness of HR operations. The system has an intuitive user interface and includes automated capabilities to streamline and speed up HR procedures.
 
-- `Basecode.Data`
-    - This project contains the repositories and other logics that involves with database.
-    - Make sure that the repository is for db processing only.
-    - If it involves additional logic, move the logic into the service file.
-- `Basecode.Services`
-    - This project contains the services and other processing logics before connecting to the repository.
-    - This can also contains classes that can be use by the WebApp project with/without db processing.
-- `Basecode.WebApp`
-    - This project contains the main codes especially the `Controllers` and `Views`.
-    - This is where you put the connection logic to the APIs.
-    - Make sure that the controllers are clean and no other logic should involve.
-    - If it involves additional logic, move the logic into the service file.
-```
-```
+## Technologies Used
+
+- Backend: C# Dotnet Framework
+
+- Frontend: Razor Pages MVC
+
+
+## Contributors
+
+We would like to express our gratitude to the following individuals:
+
+- Apit - Home Landing Page
+- Arar - Contact Us Page
+- Palen - Create HR Account Page
+- Pepito - HR List Page
+- Procorato - Track Application Page
+- Senening - Admin Dashboard Page
+- Sumodobila - Login Page

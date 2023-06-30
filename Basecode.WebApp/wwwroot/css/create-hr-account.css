@@ -70,6 +70,7 @@ li a:hover:not(.active) {
     font-family: "Montserrat", sans-serif;
     font-size: 35px;
     font-weight: bold;
+    padding-left: 30px;
 }
 
 .bg {
@@ -112,10 +113,13 @@ li a:hover:not(.active) {
     flex-basis: 20%;
 }
 
-.form-group input{
+.form-group input {
     height: 38px;
     border-radius: 8px;
     border: 1px solid black;
+    font-family: "Montserrat", sans-serif;
+    font-size: 20px;
+    padding: 0 10px;
 }
 
 .form-control {

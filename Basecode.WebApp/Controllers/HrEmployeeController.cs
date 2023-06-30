@@ -2,7 +2,7 @@
 
 namespace Basecode.WebApp.Controllers
 {
-    public class HrEmployee : Controller
+    public class HrEmployeeController : Controller
     {
         public IActionResult HrList()
         {

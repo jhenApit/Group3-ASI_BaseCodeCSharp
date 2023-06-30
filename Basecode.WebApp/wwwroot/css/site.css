@@ -18,7 +18,10 @@ html {
 }
 
 body {
-    margin-bottom: 60px;
+    background: linear-gradient(rgba(17, 17, 17, 0.3), rgba(17, 17, 17, 1)), url(../images/landing-page.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
 }
 
 .contactUs_body {

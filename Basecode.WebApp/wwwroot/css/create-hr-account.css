@@ -75,6 +75,12 @@ li a:hover:not(.active) {
     font-size: 35px;
     font-weight: bold;
     padding-left: 30px;
+    color: black;
+}
+
+.back{
+    text-decoration: none;
+    color: black;
 }
 
 .bg {

@@ -46,3 +46,16 @@ button.accept-policy {
   white-space: nowrap;
   line-height: 60px;
 }
+
+.nav-selected {
+    background: linear-gradient(rgba(50, 50, 50, 0), rgba(50, 50, 50, 1));
+    border-bottom: 5px solid red !important;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.nav-item {
+    border-bottom: 5px solid black;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}

@@ -1,8 +1,8 @@
-﻿using Basecode.Main.Models;
+﻿using Basecode.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace Basecode.Main.Controllers
+namespace Basecode.WebApp.Controllers
 {
     public class HomeController : Controller
     {

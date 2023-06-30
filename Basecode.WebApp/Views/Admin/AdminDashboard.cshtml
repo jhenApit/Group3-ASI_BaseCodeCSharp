@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = null;
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/AdminDashboardStyle.css" />
+    <script src="https://kit.fontawesome.com/b68ff1da95.js" crossorigin="anonymous"></script>
+}
+
+<body>
+    <div class="container-fluid h-100">
+        <div class="row flex-nowrap">
+            <div class="row h-100">
+                <div class="col-auto bg-black col-md-4 col-lg-2 min-vh-100 d-flex flex-column">
+                    <div class="bg-black p-4">
+                        <a class="navbar-brand ms-2" href="#">
+                            <img src="~/images/asi-logo.svg" alt="ASI Logo" class="logo-img">
+                        </a>
+                        <div class="container mt-5 p-0">
+                            <ul class="nav nav-pills flex-column mt-2">
+                                <li class="nav-item py-2 py-sm-0">
+                                    <a class="nav-link active bg-gray text-white" aria-current="page" href="#">
+                                        <i class="fs-5 fa-brands fa-windows"></i> 
+                                        <span class="fs-4 ms-3 d-none d-sm-inline">Dashboard</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item py-2 py-sm-0">
+                                    <a class="nav-link text-white" href="#">
+                                        <i class="fs-5 fa-solid fa-list"></i> 
+                                        <span class="fs-4 ms-3 d-none d-sm-inline">HR List</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col content text-center mt-5 align-content-center">
+                    <p class="display-1 text-white fw-bold">WE LOVE WHAT WE DO</p>
+                    <span class="fs-1 text-danger fw-bold">Alliance Software</span><span class="fs-2 text-white"> is expanding.</span>
+                    <p class="fs-3 text-white">We are creating career opportunities for people with great passion in Information Technology.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

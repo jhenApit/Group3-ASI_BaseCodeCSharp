@@ -1,4 +1,14 @@
-﻿.hr-list-header-bg {
+﻿body {
+    background: white !important;
+}
+
+.hr-list-container {
+    background: white !important;
+    height: 80vh;
+    width: 80vw;
+}
+
+.hr-list-header-bg {
     height: 270px;
     color: white;
     display: flex;
@@ -18,7 +28,6 @@
         left: 0;
         right: 0;
         bottom: 0;
-        content: "";
         filter: brightness(40%);
         z-index: -1;
     }

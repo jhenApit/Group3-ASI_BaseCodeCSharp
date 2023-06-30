@@ -1,17 +1,23 @@
-﻿.edit-hr-header-text {
+﻿body {
+    background: white !important;
+    background-image: none !important;
+}
+
+.edit-hr-account {
+    background-color: white !important;
+    height: 80vh;
+    width: 80vw;
+}
+
+.edit-hr-header-text {
     color: black;
     text-align: left;
     font-family: "Montserrat", sans-serif;
 }
 
 .edit-hr-header-image {
-    background-image: url("/images/header-bg.png");
-    background-size: cover;
-    background-position: center top 20%;
-    filter: brightness(40%);
     height: 270px;
-    width: 85vw;
-    display: flex;
+    width: 80vw;
     justify-content: center;
     align-items: center;
     position: relative;
@@ -27,13 +33,13 @@
 
     .form-group label {
         margin-left: 15px;
-        flex-basis: 10%; 
+        flex-basis: 10%;
     }
 
-    .form-control {
-        flex-basis:90%; /* Adjust the percentage as needed */
-        margin-right: 0;
-    }
+.form-control {
+    flex-basis: 90%;
+    margin-right: 0;
+}
 
 .save-changes-button {
     background-color: #EC2224;

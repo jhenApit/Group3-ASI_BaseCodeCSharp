@@ -4,43 +4,46 @@
 
 }
 
-<h1 class="mb-3 hr-list-header-bg">LIST OF HRs</h1>
-
 <!DOCTYPE html>
 <html>
 <head>
-	<title>LIST OF HRs</title>
-	<link rel="stylesheet" href="~/css/hrlist.css" />
+    <title>LIST OF HRs</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/custom/hrlist.css" />
 </head>
-
-<p>
-	<a class="btn btn-primary create-account-button">Create Account</a>
-</p>
-
-<table class="table">
-	<thead>
-		<tr class="hr-table-header">
-			<th>ID</th>
-			<th>Name</th>
-			<th>Email Address</th>
-			<th>Actions</th>
-		</tr>
-	</thead>
-	@for (int i = 1; i <= 10; i++)
-	{
-		<tr>
-			<td>@i</td>
-			<td>Lastname, Firstname M.I.</td>
-			<td>Email</td>
-			<td>
-				<a asp-route-id="ID">
-					<img src="~/images/icons/edit.png" alt="Edit" class="hr-list-action-icon" />
-				</a>
-				<a asp-route-id="ID">
-					<img src="~/images/icons/delete.png" alt="Delete" class="hr-list-action-icon" />
-				</a>
-			</td>
-		</tr>
-	}
-</table>
-<html>
+<body>
+    <div class="hr-list-container">
+        <h1 class="mb-3 hr-list-header-bg">LIST OF HRs</h1>
+        <div>
+            <p>
+                <a class="btn btn-primary create-account-button">Create Account</a>
+            </p>
+            <table class="table">
+                <thead>
+                    <tr class="hr-table-header">
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email Address</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                @for (int i = 1; i <= 10; i++)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>Lastname, Firstname M.I.</td>
+                        <td>Email</td>
+                        <td>
+                            <a asp-route-id="ID">
+                                <img src="~/images/icons/edit.png" alt="Edit" class="hr-list-action-icon" />
+                            </a>
+                            <a asp-route-id="ID">
+                                <img src="~/images/icons/delete.png" alt="Delete" class="hr-list-action-icon" />
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</body>
+</html>

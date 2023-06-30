@@ -1,9 +1,27 @@
 ﻿body {
-    background-image: url("/wwwroot/images/contactUsBackground.jpg");
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+
+}
+
+.vertical-center {
+    min-height: 100%; /* Fallback for browsers do NOT support vh unit */
+    min-height: 100vh; /* These two lines are counted as one :-)       */
+
+    display: flex;
+    align-items: center;
 }
 
 h4 {
     text-align: center;
+}
+
+.rounded {
+    border-radius: 2rem !important;
+}
+
+.text-bold {
+    font-weight: bold !important;
+}
+
+.text-italic {
+    font-style: italic !important;
 }

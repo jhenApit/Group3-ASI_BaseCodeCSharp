@@ -18,5 +18,11 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+}
+
+.contactUs_body {
+    background: linear-gradient(rgba(64, 64, 64, 0.48), rgba(64, 64, 64, 0.48)), url(../images/contactUsBackground.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
 }

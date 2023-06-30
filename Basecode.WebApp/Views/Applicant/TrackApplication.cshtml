@@ -1,14 +1,20 @@
 ﻿@{
+    // Set the value of "Title" property in ViewData dictionary to "Application Status Tracker"
     ViewData["Title"] = "Application Status Tracker";
 }
 
+<!-- Add reference to an external CSS file named "TrackApplication.css" -->
 <link rel="stylesheet" href="~/css/TrackApplication.css" />
 
+<!-- Container div for positioning and centering content -->
 <div class="position-absolute top-50 start-50 translate-middle text-center">
+    <!-- Heading to display the main message -->
     <h1>Track your <span style="color: #FF0000">application status</span> here!</h1>
-
+    <!-- Container div for the search form -->
     <div class="search-container">
+        <!-- Input field for entering the application ID -->
         <input type="text" id="trackingNumber" name="trackingNumber" placeholder="&#128269; Enter your application ID here" />
+        <!-- Button to submit the form -->
         <button type="submit">Track</button>
     </div>
 </div>

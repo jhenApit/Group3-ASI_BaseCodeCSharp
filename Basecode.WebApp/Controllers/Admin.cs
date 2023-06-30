@@ -8,5 +8,9 @@ namespace Basecode.WebApp.Controllers
         {
             return View();
         }
+        public IActionResult CreateHrAccount()
+        {
+            return View();
+        }
     }
 }

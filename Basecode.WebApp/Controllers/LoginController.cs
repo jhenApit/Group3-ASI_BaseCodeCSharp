@@ -13,7 +13,7 @@ namespace Basecode.WebApp.Controllers
 
         public async Task<IActionResult> Login([Bind("Email, Password")] LoginModel loginModel)
         {
-            return RedirectToAction("Index", "Home", loginModel);
+            return RedirectToAction("AdminDashboard", "Admin", loginModel);
         }
     }
 }

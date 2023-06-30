@@ -5,18 +5,27 @@
     ViewData["Title"] = "Login";
     Layout = null;
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 }
+<script>
+    function cancelForm() {
+        window.location.href = "/";
+    }
+</script>
 <body >
     <div class="container-fluid">
         <div class="row">
-            <div class="col-3 bg-dark" 
-            style=  "background-image: url('../images/building.png');
-                    background-repeat: no-repeat; background-position: center; 
-                    background-size: cover;">
+            <div class="col-8 bg-dark" id="login_body">
             </div>
-            <div class="col-9 bg-dark vh-100 pt-5">
+            <div class="col-4 bg-dark vh-100 pt-5">
+                
                 <form asp-action="Login" class="needs-validation">
-                    <div class="container-fluid text-black w-50 mt-5 pt-5">
+                    <div class="d-md-flex justify-content-sm-end">
+                        <button type="button" class="close bg-dark text-white" aria-label="Close" onclick="cancelForm()">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="container-fluid text-black w-75 mt-5 pt-5">
                         <div class="top text-white text-center">
                             <h2>Welcome!</h2>
                         </div>
@@ -31,7 +40,7 @@
                             <label asp-for="Password" for="floatingInput" class="form-label">Password</label>
                         </div>
                         <div class="d-grid gap-2">
-                            <button type="submit" name="submit" class="btn btn-danger">Sign In</button>
+                            <button type="submit" value="Login" class="btn btn-danger">Sign In</button>
                         </div>
                     </div>
                 </form>

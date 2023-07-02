@@ -140,7 +140,7 @@ li a:hover:not(.active) {
 .create-account-button {
     background-color: #EC2224;
     color: white;
-    margin: 20px auto;
+    margin: 20px 50px 20px auto;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -151,39 +151,54 @@ li a:hover:not(.active) {
     border: 0;
     font-family: "Montserrat", sans-serif;
     font-size: 16px;
-    border: 1px solid white;
     padding: 1px 5px;
     float: right;
     margin-left: 50px;
-    margin: 20px 50px 20px auto;
+    text-decoration: none; 
 }
 
-.create-account-button:hover {
-    background-color: #55729B;
-    border: 1px solid white;
-    color: white;
-    cursor: pointer;
-}
+    .create-account-button:hover {
+        background-color: #55729B;
+        border: 1px solid white;
+        color: white;
+        cursor: pointer;
+    }
 
 .table {
     width: 90%;
+    border-collapse: collapse;
     margin-left: auto;
     margin-right: auto;
+    background-color: white;
 }
 
-.table th {
-    font-family: "Montserrat", sans-serif;
-    padding: 20px;
-    border-top: 3px solid #000000;
-    border-bottom: 3px solid #000000;
-    font-size: 20px;
-}
+    .table th,
+    .table td {
+        padding: 12px;
+        text-align: center;
+        font-family: "Montserrat", sans-serif;
+    }
 
-.table td {
-    font-family: "Montserrat", sans-serif;
-    text-align: center;
-    border-bottom: 1px solid #000000;
-}
+    .table th {
+        background-color: #f2f2f2;
+        color: #333333;
+        font-weight: bold;
+        border-bottom: 2px solid #e6e6e6;
+    }
+
+    .table td {
+        background-color: #ffffff;
+        color: #555555;
+        border-bottom: 1px solid #e6e6e6;
+    }
+
+    .table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .table tr:hover td {
+        background-color: #f9f9f9;
+    }
 
 .hr-list-action-icon {
     width: 20px;

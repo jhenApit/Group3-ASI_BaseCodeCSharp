@@ -1,14 +1,15 @@
 ﻿@{
-    <title>EDIT HR EMPLOYEE ACCOUNT DETAILS</title>
-    <link rel="stylesheet" href="~/css/create-hr-account.css" />
-}
+    ViewData["EditHrAccount"] = "EDIT HR EMPLOYEE ACCOUNT INFORMATION";
+    Layout = null;
+    <link rel="stylesheet" href="~/css/edit-hr-account.css" />
+}   
 
 <div class="page">
     <div class="menu">
         <ul>
-            <li class="logo" />
+            <li class="logo"/>
             <li>
-                <a href="#dashboard">
+                <a asp-action="AdminDashboard">
                     <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-windows" viewBox="0 0 16 16">
                         <path d="M6.555 1.375 0 2.237v5.45h6.555V1.375zM0 13.795l6.555.933V8.313H0v5.482zm7.278-5.4.026 6.378L16 16V8.395H7.278zM16 0 7.33 1.244v6.414H16V0z" />
                     </svg>
@@ -16,7 +17,7 @@
                 </a>
             </li>
             <li>
-                <a href="#hrlist" class="active">
+                <a class="active">
                     <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
                         <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
                     </svg>
@@ -25,21 +26,26 @@
             </li>
         </ul>
     </div>
-    <div class="edit-account">
+    <div class="create-account">
         <div class="heading">
             <p>
-                <a href="#hrlist" class="back">
+                <a asp-action="HrList" class="back">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
                     </svg>
                 </a>
-                Edit HR Employee Account Information
+                EDIT HR EMPLOYEE ACCOUNT INFORMATION
             </p>
         </div>
         <div class="bg">
+            <h1 class="header">
+            </h1>
         </div>
         <div class="desc">
-            <p>As an admin, you can edit an account for the HRs in your company. Please modify the form below to complete the process.</p>
+            <p>
+                As an admin, you can edit the account information of the HR employee in your company. 
+                Please modify the form below to complete the process.
+            </p>
         </div>
         <div class="create-account-form">
             <form method="post">
@@ -50,18 +56,24 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Email Address</label>
+                    <label for="email">
+                        Email Address
+                    </label>
                     <input id="email" class="form-control" />
                     <span class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="password">
+                        Password
+                    </label>
                     <input id="password" class="form-control" />
                     <span class="text-danger"></span>
                 </div>
 
-                <button type="submit" class="btn btn-primary save-changes-button">Create Account</button>
+                <button type="submit" class="btn btn-primary save-changes-button">
+                    Save Changes
+                </button>
             </form>
         </div>
     </div>

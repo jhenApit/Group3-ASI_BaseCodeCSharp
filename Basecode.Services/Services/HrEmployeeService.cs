@@ -17,7 +17,6 @@ namespace Basecode.Services.Services
         {
             _repository = repository;
         }
-
         public List<HrEmployee> RetrieveAll()
         {
             return _repository.RetrieveAll().ToList();
@@ -44,8 +43,8 @@ namespace Basecode.Services.Services
             hrEmployee.Name = hrEmployee.Name;
             hrEmployee.Email = hrEmployee.Email;
             hrEmployee.Password = hrEmployee.Password;
-            //hrEmployee.ModifiedBy = System.Environment.UserName;
-            //hrEmployee.ModifiedDate = DateTime.Now;
+            hrEmployee.ModifiedBy = System.Environment.UserName;
+            hrEmployee.ModifiedDate = DateTime.Now;
             _repository.Update(hrEmployee);
         }
     }

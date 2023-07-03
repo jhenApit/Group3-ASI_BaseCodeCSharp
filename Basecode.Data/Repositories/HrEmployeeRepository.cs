@@ -27,5 +27,16 @@ namespace Basecode.Data.Repositories
             _context.HrEmployees.Add(hrEmployee);
             _context.SaveChanges();
         }
+
+        public HrEmployee GetById(int id)
+        {
+            return _context.HrEmployees.Find(id);
+        }
+
+        public void Update(HrEmployee hrEmployee)
+        {
+            _context.HrEmployees.Update(hrEmployee);
+            _context.SaveChanges();
+        }
     }
 }

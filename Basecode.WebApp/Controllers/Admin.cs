@@ -17,20 +17,27 @@ namespace Basecode.WebApp.Controllers
         {
             return View();
         }
-        public IActionResult CreateHrAccount()
-        {
-            return View();
-        }
-
-        public IActionResult EditHrAccount()
-        {
-            return View();
-        }
 
         public IActionResult HrList()
         {
             var data = _service.RetrieveAll();
             return View(data);
+        }
+        public IActionResult CreateHrAccount()
+        {
+            return View();
+        }
+
+        public IActionResult EditHrAccount(int id)
+        {
+            var data = _service.GetById(id);
+            return View(data);
+        }
+
+        public IActionResult Update(HrEmployee hrEmployee)
+        {
+            _service.Update(hrEmployee);
+            return RedirectToAction("HrList");
         }
 
         [HttpPost]
@@ -39,5 +46,6 @@ namespace Basecode.WebApp.Controllers
             _service.Add(hrEmployee);
             return RedirectToAction("HrList");
         }
+
     }
 }

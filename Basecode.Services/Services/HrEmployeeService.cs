@@ -22,5 +22,20 @@ namespace Basecode.Services.Services
         {
             return _repository.RetrieveAll().ToList();
         }
+
+        public HrEmployee GetById(int id)
+        {
+            return _repository.GetById(id);
+        }
+
+        public void Update(HrEmployee hrEmployee)
+        {
+            hrEmployee.Name = hrEmployee.Name;
+            hrEmployee.Email = hrEmployee.Email;
+            hrEmployee.Password = hrEmployee.Password;
+            //hrEmployee.ModifiedBy = System.Environment.UserName;
+            //hrEmployee.ModifiedDate = DateTime.Now;
+            _repository.Update(hrEmployee);
+        }
     }
 }

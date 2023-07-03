@@ -20,5 +20,16 @@ namespace Basecode.Data.Repositories
         { 
             return this.GetDbSet<HrEmployee>();
         }
+
+        public HrEmployee GetById(int id)
+        {
+            return _context.HrEmployees.Find(id);
+        }
+
+        public void Update(HrEmployee hrEmployee)
+        {
+            _context.HrEmployees.Update(hrEmployee);
+            _context.SaveChanges();
+        }
     }
 }

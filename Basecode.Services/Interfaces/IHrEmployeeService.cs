@@ -10,5 +10,7 @@ namespace Basecode.Services.Interfaces
     public interface IHrEmployeeService
     {
         List<HrEmployee> RetrieveAll();
+        HrEmployee GetById(int id);
+        void Update(HrEmployee hrEmployee);
     }
 }

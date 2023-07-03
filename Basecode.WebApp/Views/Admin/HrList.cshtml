@@ -57,10 +57,10 @@
                                 <td>@hrEmployee.Name</td>
                                 <td>@hrEmployee.Email</td>
                                 <td>
-                                    <a asp-route-id="ID">
+                                    <a asp-route-id="@hrEmployee.Id" asp-action="EditHrAccount">
                                         <img src="~/images/icons/edit.png" alt="Edit" class="hr-list-action-icon" />
                                     </a>
-                                    <a asp-route-id="ID">
+                                    <a asp-route-id="@hrEmployee.Id">
                                         <img src="~/images/icons/delete.png" alt="Delete" class="hr-list-action-icon" />
                                     </a>
                                 </td>

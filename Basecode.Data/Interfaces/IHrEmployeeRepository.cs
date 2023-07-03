@@ -10,5 +10,7 @@ namespace Basecode.Data.Interfaces
     public interface IHrEmployeeRepository
     {
         IQueryable<HrEmployee> RetrieveAll();
+        HrEmployee GetById(int id);
+        void Update(HrEmployee hrEmployee);
     }
 }

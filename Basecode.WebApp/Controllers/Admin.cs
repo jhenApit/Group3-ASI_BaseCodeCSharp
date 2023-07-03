@@ -1,4 +1,5 @@
-﻿using Basecode.Data.Models;
+﻿using Basecode.Data.Dtos;
+using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,7 +41,7 @@ namespace Basecode.WebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(HrEmployee hrEmployee)
+        public IActionResult Add(HREmployeeCreationDto hrEmployee)
         {
             _service.Add(hrEmployee);
             return RedirectToAction("HrList");

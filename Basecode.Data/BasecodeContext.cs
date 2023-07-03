@@ -23,6 +23,8 @@ namespace Basecode.Data
             SaveChanges();
         }
 
+        public virtual DbSet<HrEmployee> HrEmployees { get; set; }
+
         public virtual DbSet<User> User { get; set; }
 
         public virtual DbSet<RefreshToken> RefreshToken { get; set; }

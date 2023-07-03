@@ -1,9 +1,9 @@
-﻿@page "/hrList"
-@model Basecode.WebApp.Views.HrEmployee.HrListModel
+﻿@using Basecode.Data.Models
+@model List<HrEmployee>
 @{
     <title>LIST OF HRs</title>
     Layout = null;
-    <link rel="stylesheet" href="~/css/edit-hr-account.css" />
+    <link rel="stylesheet" href="~/css/hr-list.css" />
 }
 
 <div class="page">
@@ -28,12 +28,7 @@
             </li>
         </ul>
     </div>
-    <div class="edit-account">
-        <div class="heading">
-            <p>
-                HR LIST
-            </p>
-        </div>
+    <div class="hr-list">
         <div class="bg">
             <h1 class="header">
                 LIST OF HRs
@@ -47,29 +42,31 @@
                 
                 <table class="table">
                     <thead>
-                        <tr class="hr-table-header">
+                        <tr>
                             <th>ID</th>
                             <th>Name</th>
                             <th>Email Address</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    @for (int i = 1; i <= 5; i++)
-                    {
-                        <tr>
-                            <td>@i</td>
-                            <td>Lastname, Firstname M.I.</td>
-                            <td>Email</td>
-                            <td>
-                                <a asp-route-id="ID">
-                                    <img src="~/images/icons/edit.png" alt="Edit" class="hr-list-action-icon" width="16" height="16" />
-                                </a>
-                                <a asp-route-id="ID">
-                                    <img src="~/images/icons/delete.png" alt="Delete" class="hr-list-action-icon" width="16" height="16" />
-                                </a>
-                            </td>
-                        </tr>
-                    }
+                    <tbody>
+                        @foreach(var hrEmployee in Model)
+                        {
+                            <tr>
+                                <td>@hrEmployee.Id</td>
+                                <td>@hrEmployee.Name</td>
+                                <td>@hrEmployee.Email</td>
+                                <td>
+                                    <a asp-route-id="ID">
+                                        <img src="~/images/icons/edit.png" alt="Edit" class="hr-list-action-icon" />
+                                    </a>
+                                    <a asp-route-id="ID">
+                                        <img src="~/images/icons/delete.png" alt="Delete" class="hr-list-action-icon" />
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
                 </table>
             </div>
         </div>

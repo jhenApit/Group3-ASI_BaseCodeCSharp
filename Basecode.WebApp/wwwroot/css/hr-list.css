@@ -1,8 +1,8 @@
-﻿body{
+﻿body {
     margin: 0;
 }
 
-.page{
+.page {
     overflow: hidden;
     width: 100%;
     height: 100%;
@@ -18,7 +18,7 @@
     width: 325px;
 }
 
-.edit-account {
+.hr-list {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -52,7 +52,7 @@ li a {
     font-size: 20px;
 }
 
-.menu-icon{
+.menu-icon {
     padding-right: 10px;
 }
 
@@ -63,8 +63,8 @@ li a.active {
 }
 
 li a:hover:not(.active) {
-  background-color: #555;
-  color: white;
+    background-color: #555;
+    color: white;
 }
 
 .heading {
@@ -78,7 +78,7 @@ li a:hover:not(.active) {
     color: black;
 }
 
-.back{
+.back {
     text-decoration: none;
     color: black;
 }
@@ -137,11 +137,10 @@ li a:hover:not(.active) {
     margin-right: 0;
 }
 
-.save-changes-button {
+.create-account-button {
     background-color: #EC2224;
     color: white;
-    padding: 10px 10px;
-    margin: 20px auto;
+    margin: 20px 50px 20px auto;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -152,11 +151,61 @@ li a:hover:not(.active) {
     border: 0;
     font-family: "Montserrat", sans-serif;
     font-size: 16px;
+    padding: 1px 5px;
+    float: right;
+    margin-left: 50px;
+    text-decoration: none; 
 }
 
-.save-changes-button:hover {
-    background-color: #55729B;
-    border: 1px solid white;
-    color: white;
-    cursor: pointer;
+    .create-account-button:hover {
+        background-color: #55729B;
+        border: 1px solid white;
+        color: white;
+        cursor: pointer;
+    }
+
+.table {
+    width: 90%;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+}
+
+    .table th,
+    .table td {
+        padding: 12px;
+        text-align: center;
+        font-family: "Montserrat", sans-serif;
+    }
+
+    .table th {
+        background-color: #f2f2f2;
+        color: #333333;
+        font-weight: bold;
+        border-bottom: 2px solid #e6e6e6;
+    }
+
+    .table td {
+        background-color: #ffffff;
+        color: #555555;
+        border-bottom: 1px solid #e6e6e6;
+    }
+
+    .table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .table tr:hover td {
+        background-color: #f9f9f9;
+    }
+
+.hr-list-action-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+a {
+    text-decoration: none;
 }

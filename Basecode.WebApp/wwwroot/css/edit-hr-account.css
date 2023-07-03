@@ -18,7 +18,7 @@
     width: 325px;
 }
 
-.edit-account {
+.create-account {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -137,10 +137,10 @@ li a:hover:not(.active) {
     margin-right: 0;
 }
 
-.create-account-button {
+.save-changes-button {
     background-color: #EC2224;
     color: white;
-    padding: 0 10px;
+    padding: 10px 10px;
     margin: 20px auto;
     text-align: center;
     display: flex;
@@ -154,33 +154,9 @@ li a:hover:not(.active) {
     font-size: 16px;
 }
 
-a {
-    text-decoration: none;
-}
-
-.create-account-button:hover {
-    background-color: #55729B;
-    border: 1px solid white;
-    color: white;
-    cursor: pointer;
-}
-
-.table{
-    width: 90%;
-}
-
-.hr-list-data {
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-th, tr, td {
-    text-align: center;
-    font-family: "Montserrat", sans-serif;
-    font-size: 16px;
-    padding: 10px 0;
-    border: 1px solid black;
-}
+    .save-changes-button:hover {
+        background-color: #55729B;
+        border: 1px solid white;
+        color: white;
+        cursor: pointer;
+    }

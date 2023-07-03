@@ -17,10 +17,35 @@ namespace Basecode.Services.Services
         {
             _repository = repository;
         }
-
         public List<HrEmployee> RetrieveAll()
         {
             return _repository.RetrieveAll().ToList();
+        }
+
+        public void Add(HrEmployee hrEmployee)
+        {
+            hrEmployee.CreatedBy = System.Environment.UserName;
+            hrEmployee.CreatedDate = DateTime.Now;
+            hrEmployee.ModifiedBy = System.Environment.UserName;
+            hrEmployee.ModifiedDate = DateTime.Now;
+            hrEmployee.IsDeleted = false;
+
+            _repository.Add(hrEmployee);
+        }
+
+        public HrEmployee GetById(int id)
+        {
+            return _repository.GetById(id);
+        }
+
+        public void Update(HrEmployee hrEmployee)
+        {
+            hrEmployee.Name = hrEmployee.Name;
+            hrEmployee.Email = hrEmployee.Email;
+            hrEmployee.Password = hrEmployee.Password;
+            hrEmployee.ModifiedBy = System.Environment.UserName;
+            hrEmployee.ModifiedDate = DateTime.Now;
+            _repository.Update(hrEmployee);
         }
     }
 }

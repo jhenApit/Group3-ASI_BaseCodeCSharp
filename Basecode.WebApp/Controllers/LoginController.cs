@@ -15,5 +15,10 @@ namespace Basecode.WebApp.Controllers
         {
             return RedirectToAction("AdminDashboard", "Admin", loginModel);
         }
+
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
     }
 }

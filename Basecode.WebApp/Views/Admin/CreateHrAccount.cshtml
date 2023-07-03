@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Basecode.Data.Dtos
+@model HREmployeeCreationDto
+@{
     ViewData["CreateHrAccount"] = "CREATE HR ACCOUNT";
     Layout = null;
     <link rel="stylesheet" href="~/css/create-hr-account.css" />
@@ -49,10 +51,10 @@
             </p>
         </div>
         <div class="create-account-form">
-            <form method="post">
+            <form asp-action="Add">
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input id="name" class="form-control" />
+                    <input asp-for="Name" id="name" class="form-control" />
                     <span class="text-danger"></span>
                 </div>
 
@@ -60,7 +62,7 @@
                     <label for="email">
                         Email Address
                     </label>
-                    <input id="email" class="form-control" />
+                    <input asp-for="Email" id="email" class="form-control" />
                     <span class="text-danger"></span>
                 </div>
 
@@ -68,7 +70,7 @@
                     <label for="password">
                         Password
                     </label>
-                    <input id="password" class="form-control" />
+                    <input asp-for="Password" id="password" class="form-control" />
                     <span class="text-danger"></span>
                 </div>
 
@@ -79,3 +81,5 @@
         </div>
     </div>
 </div>
+
+             

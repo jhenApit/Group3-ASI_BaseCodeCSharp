@@ -12,7 +12,6 @@ namespace Basecode.Services.Interfaces
     {
         List<HrEmployee> RetrieveAll();
         void Add(HREmployeeCreationDto hrEmployee);
-        void Add(HrEmployee hrEmployee);
         HrEmployee GetById(int id);
         void Update(HrEmployee hrEmployee);
     }

@@ -39,5 +39,12 @@ namespace Basecode.WebApp.Controllers
             return RedirectToAction("HrList");
         }
 
+        [HttpPost]
+        public IActionResult Add(HrEmployee hrEmployee)
+        {
+            _service.Add(hrEmployee);
+            return RedirectToAction("HrList");
+        }
+
     }
 }

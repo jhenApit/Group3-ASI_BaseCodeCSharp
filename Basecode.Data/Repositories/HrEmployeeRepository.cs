@@ -21,6 +21,12 @@ namespace Basecode.Data.Repositories
             return this.GetDbSet<HrEmployee>().Where(e => !e.IsDeleted);
         }
 
+        public void Add(HrEmployee hrEmployee)
+        {
+            _context.HrEmployees.Add(hrEmployee);
+            _context.SaveChanges();
+        }
+
         public HrEmployee GetById(int id)
         {
             return _context.HrEmployees.Find(id);

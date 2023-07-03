@@ -1,4 +1,6 @@
-﻿namespace Basecode.WebApp
+﻿using AutoMapper;
+
+namespace Basecode.WebApp
 {
     public partial class Startup
     {
@@ -20,7 +22,10 @@
             this.ConfigureMVC(services);                // Configuration for MVC                  
 
             // Add services to the container.
-            services.AddControllersWithViews();            
+            services.AddControllersWithViews();
+
+            // Add AutoMapper and register mapping profiles
+            services.Add(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,5 +52,7 @@
             app.UseAuthorization();
             this.ConfigureAuth(app);        // Configuration for Token Authentication
         }
+
+
     }
 }

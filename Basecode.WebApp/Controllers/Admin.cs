@@ -1,4 +1,5 @@
-﻿using Basecode.Services.Interfaces;
+﻿using Basecode.Data.Models;
+using Basecode.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Basecode.WebApp.Controllers
@@ -29,6 +30,13 @@ namespace Basecode.WebApp.Controllers
         {
             var data = _service.RetrieveAll();
             return View(data);
+        }
+
+        [HttpPost]
+        public IActionResult Add(HrEmployee hrEmployee)
+        {
+            _service.Add(hrEmployee);
+            return RedirectToAction("HrList");
         }
     }
 }

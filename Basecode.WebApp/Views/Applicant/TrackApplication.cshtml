@@ -1,21 +1,15 @@
-﻿@{
-    // Set the value of "Title" property in ViewData dictionary to "Application Status Tracker"
-    ViewData["Title"] = "Application Status Tracker";
-}
+﻿<!-- Add reference to Bootstrap CSS file -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 
-<!-- Add reference to an external CSS file named "TrackApplication.css" -->
-<link rel="stylesheet" href="~/css/TrackApplication.css" />
+<!-- Add reference to custom CSS file -->
+<link rel="stylesheet" href="~/css/TrackApplication.css">
 
-<!-- Container div for positioning and centering content -->
 <div class="position-absolute top-50 start-50 translate-middle text-center">
-    <!-- Heading to display the main message -->
-    <h1>Track your <span style="color: #FF0000">application status</span> here!</h1>
-    <!-- Container div for the search form -->
-    <div class="search-container">
-        <!-- Input field for entering the application ID -->
-        <input type="text" id="trackingNumber" name="trackingNumber" placeholder="&#128269; Enter your application ID here" />
-        <!-- Button to submit the form -->
-        <button type="submit">Track</button>
+    <h1 class="text-center display-3 mt-5 font-weight-bold font-italic text-white">Track your <span style="color: #FF0000">application status</span> here!</h1>
+    <div class="container">
+        <div class="search-container">
+            <input type="text" class="form-control" id="trackingNumber" name="trackingNumber" placeholder="&#128269; Enter your application ID here">
+            <button class="btn" type="submit">Track</button>
+        </div>
     </div>
 </div>
-

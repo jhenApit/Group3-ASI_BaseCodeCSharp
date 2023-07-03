@@ -53,5 +53,19 @@ namespace Basecode.Services.Services
             hrEmployee.ModifiedDate = DateTime.Now;
             _repository.Update(hrEmployee);
         }
+
+        public void SemiDelete(HrEmployee hrEmployee)
+        {
+            var hr = _repository.GetById(hrEmployee.Id);
+            hr.IsDeleted = true;
+            hr.ModifiedBy = System.Environment.UserName;
+            hr.ModifiedDate = DateTime.Now;
+
+        }
+
+        public void PermaDelete(int id)
+        {
+            _repository.PermaDelete(id);
+        }
     }
 }

@@ -38,5 +38,21 @@ namespace Basecode.Data.Repositories
             _context.HrEmployees.Update(hrEmployee);
             _context.SaveChanges();
         }
+
+        public void SemiDelete(HrEmployee hrEmployee)
+        {
+            _context.HrEmployees.Update(hrEmployee);
+            _context.SaveChanges();
+        }
+
+        public void PermaDelete(int id)
+        {
+            var data = _context.HrEmployees.Find(id);
+            if (data != null)
+            {
+                _context.HrEmployees.Remove(data);
+                _context.SaveChanges();
+            }
+        }
     }
 }

@@ -17,13 +17,12 @@ namespace Basecode.WebApp.Controllers
         {
             return View();
         }
-
-        //public async Task<IActionResult> Login([Bind("Email, Password")] LoginModel loginModel)
-        //{
-        //    return RedirectToAction("AdminDashboard", "Admin", loginModel);
-        //}
-
-
+        //for authorizing login with password
+        public async Task<IActionResult> LoginAuth([Bind("Email, Password")] LoginModel loginModel)
+        {
+            return RedirectToAction("AdminDashboard", "Admin", loginModel);
+        }
+        //temporary login using email
         [HttpPost]
         public IActionResult Login(string Email)
         {
@@ -34,7 +33,6 @@ namespace Basecode.WebApp.Controllers
         {
             return View();
         }
-
         public IActionResult ResetPassword()
         {
             return View();

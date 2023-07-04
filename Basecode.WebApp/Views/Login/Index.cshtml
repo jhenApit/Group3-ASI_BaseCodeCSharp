@@ -1,8 +1,5 @@
 @using Basecode.Data.Dtos
 @model HREmployeeUpdationDto
-
-
-
 @{
     ViewData["Title"] = "Login";
     Layout = null;
@@ -20,7 +17,6 @@
             <div class="col-8 bg-dark" id="login_body">
             </div>
             <div class="col-4 bg-black vh-100 pt-5">
-
                 <form asp-action="Login" class="needs-validation">
                     <div class="d-md-flex justify-content-sm-end">
                         <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="cancelForm()"></button>
@@ -46,7 +42,6 @@
                         <div class="d-grid gap-2 mt-3">
                             <a asp-controller="Login" asp-action="ForgotPassword" class="text-white text-center">Forgot your password?</a>
                         </div>
-                        
                     </div>
                 </form>
             </div>

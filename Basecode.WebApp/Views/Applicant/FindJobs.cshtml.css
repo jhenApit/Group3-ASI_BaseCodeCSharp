@@ -1,5 +1,4 @@
-﻿body {
-}
+﻿
 
 .vertical-center {
     display: flex;
@@ -27,6 +26,7 @@ h2 {
 
 .border-rounded {
     border-radius: 1rem !important;
+    border: 1px solid black;
 }
 
 .text-bold {

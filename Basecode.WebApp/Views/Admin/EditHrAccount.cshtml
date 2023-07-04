@@ -1,5 +1,5 @@
-﻿@using Basecode.Data.Models
-@model HrEmployee
+﻿@using Basecode.Data.Dtos
+@model HREmployeeUpdationDto
 @{
     ViewData["EditHrAccount"] = "EDIT HR EMPLOYEE ACCOUNT INFORMATION";
     Layout = null;
@@ -40,7 +40,7 @@
                 <br />Please update the form below to complete the process.
             </p>
         </div>
-        <div class="create-account-form">
+        <div class="edit-account-form">
             <form asp-action="Update" method="post">
                 <input type="hidden" asp-for="Id"/>
                 <div class="form-group">

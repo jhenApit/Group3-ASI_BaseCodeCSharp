@@ -12,8 +12,8 @@
 
 <body>
     <div class="container-fluid h-100">
-        <div class="row flex-nowrap">
-            <div class="row h-100">
+        <div class="flex-nowrap">
+            <div class="row h-100 overflow-hidden">
                 <div class="col-auto bg-black col-md-4 col-lg-2 min-vh-100 d-flex flex-column p-0">
                     <a asp-action="AdminDashboard" class="navbar-brand px-3 py-4 m-0 d-flex justify-content-center align-items-center">
                         <img src="~/images/asi-logo.svg" alt="ASI Logo" class="logo-img w-100">
@@ -48,7 +48,7 @@
                     </div>
                 </div>
 
-                <div class="col content m-5 text-center d-flex flex-column justify-content-center align-self-center">
+                <div class="col content text-center d-flex flex-column justify-content-center align-self-center">
                     <p class="display-1 text-white fw-bold">
                         WELCOME @Model.Name
                     </p>

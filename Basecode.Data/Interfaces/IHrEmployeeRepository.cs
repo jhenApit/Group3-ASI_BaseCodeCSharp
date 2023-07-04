@@ -11,6 +11,7 @@ namespace Basecode.Data.Interfaces
     public interface IHrEmployeeRepository
     {
         IQueryable<HrEmployee> RetrieveAll();
+        HrEmployee GetByEmail(string email);
         void Add(HrEmployee hrEmployee);
         HrEmployee GetById(int id);
         void Update(HrEmployee hrEmployee);

@@ -64,5 +64,14 @@ namespace Basecode.Services.Services
         {
             _repository.PermaDelete(id);
         }
+
+
+
+        public HrEmployee GetByEmail(string email)
+        {
+            return _repository.GetByEmail(email);
+        }
+
+        
     }
 }

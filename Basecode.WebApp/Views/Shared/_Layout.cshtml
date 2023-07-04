@@ -19,8 +19,11 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-evenly">
                     <ul class="navbar-nav flex-grow-1 align-items-center">
-                        <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("ExploreJobs") ? "nav-selected" : "")">
-                            <a class="nav-link text-white fs-5 fw-semibold mx-3" asp-area="" asp-controller="Applicant" asp-action="ExploreJobs">EXPLORE JOBS</a>
+                        <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("Index") ? "nav-selected" : "")">
+                            <a class="nav-link text-white fs-5 fw-semibold mx-3" asp-area="" asp-controller="Home" asp-action="Index">HOME</a>
+                        </li>
+                        <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("FindJobs") ? "nav-selected" : "")">
+                            <a class="nav-link text-white fs-5 fw-semibold mx-3" asp-area="" asp-controller="Applicant" asp-action="FindJobs">FIND JOBS</a>
                         </li>
                         <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("TrackApplication") ? "nav-selected" : "")">
                             <a class="nav-link text-white fs-5 fw-semibold mx-3" asp-area="" asp-controller="Applicant" asp-action="TrackApplication">TRACK APPLICATION</a>

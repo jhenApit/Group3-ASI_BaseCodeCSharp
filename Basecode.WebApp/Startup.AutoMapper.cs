@@ -13,6 +13,7 @@ namespace Basecode.WebApp
             var Config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<HREmployeeCreationDto, HrEmployee>();
+                cfg.CreateMap<HREmployeeUpdationDto, HrEmployee>();
             });
 
             services.AddSingleton(Config.CreateMapper());

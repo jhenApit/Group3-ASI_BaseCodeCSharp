@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Basecode.Data.Dtos;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
-using Basecode.Data.Repositories;
 using Basecode.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace Basecode.Services.Services
 {
@@ -44,14 +37,18 @@ namespace Basecode.Services.Services
             return _repository.GetById(id);
         }
 
-        public void Update(HrEmployee hrEmployee)
+        public void Update(HREmployeeUpdationDto hrEmployee)
         {
-            hrEmployee.Name = hrEmployee.Name;
-            hrEmployee.Email = hrEmployee.Email;
-            hrEmployee.Password = hrEmployee.Password;
-            hrEmployee.ModifiedBy = System.Environment.UserName;
-            hrEmployee.ModifiedDate = DateTime.Now;
-            _repository.Update(hrEmployee);
+            var hrEmployeeModel = _mapper.Map<HrEmployee>(hrEmployee);
+
+            // Update only the properties that should be modified
+            hrEmployeeModel.Name = hrEmployee.Name;
+            hrEmployeeModel.Email = hrEmployee.Email;
+            hrEmployeeModel.Password = hrEmployee.Password;
+            hrEmployeeModel.ModifiedBy = System.Environment.UserName;
+            hrEmployeeModel.ModifiedDate = DateTime.Now;
+
+            _repository.Update(hrEmployeeModel);
         }
     }
 }

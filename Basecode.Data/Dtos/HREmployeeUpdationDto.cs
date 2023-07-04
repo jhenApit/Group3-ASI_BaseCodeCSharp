@@ -1,10 +1,6 @@
-﻿using Basecode.WebApp.Models;
-using Humanizer;
-using System.Collections.Specialized;
-
-namespace Basecode.WebApp.Dtos
+﻿namespace Basecode.Data.Dtos
 {
-    public class HREmployeeDto
+    public class HREmployeeUpdationDto
     {
         public int Id { get; set; }
         public string? Name { get; set; }

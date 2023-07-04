@@ -51,13 +51,13 @@ namespace Basecode.Services.Services
             _repository.Update(hrEmployeeModel);
         }
 
-        public void SemiDelete(HrEmployee hrEmployee)
+        public void SemiDelete(int id)
         {
-            var hr = _repository.GetById(hrEmployee.Id);
+            var hr = _repository.GetById(id);
             hr.IsDeleted = true;
             hr.ModifiedBy = System.Environment.UserName;
             hr.ModifiedDate = DateTime.Now;
-
+            _repository.SemiDelete(hr);
         }
 
         public void PermaDelete(int id)

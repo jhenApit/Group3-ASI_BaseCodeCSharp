@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/HrList.css" />
     <script src="https://kit.fontawesome.com/b68ff1da95.js" crossorigin="anonymous"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 }
 
 <body>
@@ -81,7 +81,8 @@
                                                     <a asp-route-id="@hrEmployee.Id" asp-action="EditHrAccount">
                                                         <img src="~/images/icons/edit.png" alt="Edit" class="hr-list-action-icon" />
                                                     </a>
-                                                    <a asp-route-id="@hrEmployee.Id">
+                                                    <!-- Button trigger modal -->
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#@("modal-" + hrEmployee.Id)">
                                                         <img src="~/images/icons/delete.png" alt="Delete" class="hr-list-action-icon" />
                                                     </a>
                                                 </td>
@@ -89,6 +90,7 @@
                                         }
                                     </tbody>
                                 </table>
+
                             </div>
                         </div>
                     </div>
@@ -97,3 +99,51 @@
         </div>
     </div>
 </body>
+
+@foreach (var hrEmployee in Model)
+{
+    <!-- Modal -->
+    <div class="modal fade" id="@("modal-" + hrEmployee.Id)" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h5 class="modal-title" id="exampleModalLabel">Warning!</h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>
+                        @(hrEmployee.Name + "'s") account will be <strong>deleted</strong>
+                    </p>
+                    <p>
+                        <strong>This cannot be undone</strong>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">CANCEL</button>
+                    <button type="button" class="btn btn-danger" data-bs-target="#@("modal2-" + hrEmployee.Id)" data-bs-toggle="modal" data-bs-dismiss="modal">
+                        DELETE
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="@("modal2-" + hrEmployee.Id)" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalToggleLabel2">Success</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        @(hrEmployee.Name + "'s") account deleted successfully
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-outline-secondary" asp-action="DeleteHrAccount" asp-route-id="@hrEmployee.Id">OK</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

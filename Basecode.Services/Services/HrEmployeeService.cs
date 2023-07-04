@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using Basecode.Data.Dtos;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
-using Basecode.Data.Repositories;
 using Basecode.Services.Interfaces;
 
 namespace Basecode.Services.Services
@@ -13,11 +9,12 @@ namespace Basecode.Services.Services
     public class HrEmployeeService : IHrEmployeeService
     {
         private readonly IHrEmployeeRepository _repository;
-        public HrEmployeeService(IHrEmployeeRepository repository) 
+        private readonly IMapper _mapper;
+        public HrEmployeeService(IHrEmployeeRepository repository, IMapper mapper) 
         {
             _repository = repository;
+            _mapper = mapper;
         }
-
         public List<HrEmployee> RetrieveAll()
         {
             return _repository.RetrieveAll().ToList();
@@ -40,19 +37,27 @@ namespace Basecode.Services.Services
             return _repository.GetById(id);
         }
 
+        public void Update(HREmployeeUpdationDto hrEmployee)
+        {
+            var hrEmployeeModel = _mapper.Map<HrEmployee>(hrEmployee);
+
+            // Update only the properties that should be modified
+            hrEmployeeModel.Name = hrEmployee.Name;
+            hrEmployeeModel.Email = hrEmployee.Email;
+            hrEmployeeModel.Password = hrEmployee.Password;
+            hrEmployeeModel.ModifiedBy = System.Environment.UserName;
+            hrEmployeeModel.ModifiedDate = DateTime.Now;
+
+            _repository.Update(hrEmployeeModel);
+        }
+
+
+
         public HrEmployee GetByEmail(string email)
         {
             return _repository.GetByEmail(email);
         }
 
-        public void Update(HrEmployee hrEmployee)
-        {
-            hrEmployee.Name = hrEmployee.Name;
-            hrEmployee.Email = hrEmployee.Email;
-            hrEmployee.Password = hrEmployee.Password;
-            hrEmployee.ModifiedBy = System.Environment.UserName;
-            hrEmployee.ModifiedDate = DateTime.Now;
-            _repository.Update(hrEmployee);
-        }
+        
     }
 }

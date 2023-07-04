@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-
-namespace Basecode.WebApp
+﻿namespace Basecode.WebApp
 {
     public partial class Startup
     {
@@ -23,9 +21,6 @@ namespace Basecode.WebApp
 
             // Add services to the container.
             services.AddControllersWithViews();
-
-            // Add AutoMapper and register mapping profiles
-            services.Add(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

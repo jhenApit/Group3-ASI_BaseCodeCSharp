@@ -1,0 +1,121 @@
+﻿.content {
+    height: 100%;
+    background-color: #F0F6F7;
+}
+
+.logo-icon {
+    display: none;
+    width: 45px;
+}
+
+.nav .active {
+    background-color: rgba(255, 255, 255, 0.4) !important;
+    border-right: 8px solid #EC2224 !important;
+    position: relative;
+    border-radius: 0;
+}
+
+.nav-pills {
+    width: 100%;
+}
+
+    .nav-pills li a:hover {
+        background-color: rgba(255, 255, 255, 0.4);
+        border-right: 8px solid #EC2224;
+        border-radius: 0;
+    }
+
+.col .content {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 50vh; 
+}
+
+.text-center {
+    text-align: right;
+}
+
+.back {
+    text-decoration: none;
+    color: white;
+    margin-right: 75px;
+}
+
+.bg {
+    height: 344px;
+    background-image: url(../images/people-bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.header-text {
+    font-family: "Montserrat", sans-serif;
+    font-size: 64px;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+}
+
+.desc {
+    padding: 0;
+    font-family: "Montserrat", sans-serif;
+    font-size: 20px;
+    text-align: center;
+    padding-top: 20px;
+}
+
+.form-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 30px;
+}
+
+    .form-group label {
+        font-family: "Montserrat", sans-serif;
+        font-size: 20px;
+        margin-left: 15px;
+        flex-basis: 20%;
+    }
+
+    .form-group input {
+        height: 38px;
+        border-radius: 8px;
+        border: 1px solid black;
+        font-family: "Montserrat", sans-serif;
+        font-size: 20px;
+        padding: 0 10px;
+    }
+
+.form-control {
+    flex-basis: 90%;
+    margin-right: 0;
+}
+
+.save-changes-button {
+    background-color: #EC2224;
+    color: white;
+    padding: 10px 10px;
+    margin: 20px auto;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 176px;
+    border-radius: 10px;
+    border: 0;
+    font-family: "Montserrat", sans-serif;
+    font-size: 16px;
+}
+
+    .save-changes-button:hover {
+        background-color: #55729B;
+        border: 1px solid white;
+        color: white;
+        cursor: pointer;
+    }

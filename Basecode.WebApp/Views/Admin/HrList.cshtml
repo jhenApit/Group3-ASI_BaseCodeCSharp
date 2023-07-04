@@ -100,9 +100,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">CANCEL</button>
-                    <a type="button" class="btn btn-danger" asp-action="DeleteHrAccount"  asp-route-id="@hrEmployee.Id">
+                    <button type="button" class="btn btn-danger" data-bs-target="#@("modal2-" + hrEmployee.Id)" data-bs-toggle="modal" data-bs-dismiss="modal">
                         DELETE
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
@@ -120,7 +120,7 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">CANCEL</button>
+                    <a type="button" class="btn btn-outline-secondary" asp-action="DeleteHrAccount" asp-route-id="@hrEmployee.Id">OK</a>
                 </div>
             </div>
         </div>

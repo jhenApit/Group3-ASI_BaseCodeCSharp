@@ -104,7 +104,7 @@
 {
     <!-- Modal -->
     <div class="modal fade" id="@("modal-" + hrEmployee.Id)" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header text-center">
                     <h5 class="modal-title" id="exampleModalLabel">Warning!</h5>
@@ -113,10 +113,10 @@
                 </div>
                 <div class="modal-body text-center">
                     <p>
-                        @(hrEmployee.Name + "'s") account will be <strong>deleted</strong>
+                        <strong>@(hrEmployee.Name + "'s")</strong> account will be <strong>deleted</strong>
                     </p>
                     <p>
-                        <strong>This cannot be undone</strong>
+                        <strong><span class="text-danger">WARNING!</span> This cannot be undone</strong>
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -135,13 +135,13 @@
                     <h5 class="modal-title" id="exampleModalToggleLabel2">Success</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body text-center">
                     <p>
-                        @(hrEmployee.Name + "'s") account deleted successfully
+                        <strong>@(hrEmployee.Name + "'s")</strong> account deleted successfully
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <a type="button" class="btn btn-outline-secondary" asp-action="DeleteHrAccount" asp-route-id="@hrEmployee.Id">OK</a>
+                    <a type="button" class="btn btn-danger" asp-action="DeleteHrAccount" asp-route-id="@hrEmployee.Id">OK</a>
                 </div>
             </div>
         </div>

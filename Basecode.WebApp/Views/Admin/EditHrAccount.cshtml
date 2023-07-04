@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Basecode.Data.Dtos
+@model HREmployeeUpdationDto
+@{
     ViewData["EditHrAccount"] = "EDIT HR EMPLOYEE ACCOUNT INFORMATION";
     Layout = null;
     <link rel="stylesheet" href="~/css/edit-hr-account.css" />
@@ -27,31 +29,23 @@
         </ul>
     </div>
     <div class="create-account">
-        <div class="heading">
-            <p>
-                <a asp-action="HrList" class="back">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
-                    </svg>
-                </a>
-                EDIT HR EMPLOYEE ACCOUNT INFORMATION
-            </p>
-        </div>
         <div class="bg">
             <h1 class="header">
+                EDIT DETAILS
             </h1>
         </div>
         <div class="desc">
             <p>
-                As an admin, you can edit the account information of the HR employee in your company. 
-                Please modify the form below to complete the process.
+                As an admin, you are able to edit the account information of the HR employee in your company.
+                <br />Please update the form below to complete the process.
             </p>
         </div>
-        <div class="create-account-form">
-            <form method="post">
+        <div class="edit-account-form">
+            <form asp-action="Update" method="post">
+                <input type="hidden" asp-for="Id"/>
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input id="name" class="form-control" />
+                    <input id="name" class="form-control" asp-for="Name"/>
                     <span class="text-danger"></span>
                 </div>
 
@@ -59,7 +53,7 @@
                     <label for="email">
                         Email Address
                     </label>
-                    <input id="email" class="form-control" />
+                    <input id="email" class="form-control" asp-for="Email" />
                     <span class="text-danger"></span>
                 </div>
 
@@ -67,7 +61,7 @@
                     <label for="password">
                         Password
                     </label>
-                    <input id="password" class="form-control" />
+                    <input id="password" class="form-control" asp-for="Password" />
                     <span class="text-danger"></span>
                 </div>
 

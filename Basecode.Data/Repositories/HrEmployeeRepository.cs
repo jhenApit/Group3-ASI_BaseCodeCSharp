@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Basecode.Data.Dtos;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Basecode.Data.Repositories
 {
@@ -19,6 +21,25 @@ namespace Basecode.Data.Repositories
         public IQueryable<HrEmployee> RetrieveAll() 
         { 
             return this.GetDbSet<HrEmployee>().Where(e => !e.IsDeleted);
+        }
+
+        public void Add(HrEmployee hrEmployee)
+        {
+            _context.HrEmployees.Add(hrEmployee);
+            _context.SaveChanges();
+        }
+
+        public HrEmployee GetById(int id)
+        {
+            return _context.HrEmployees.Find(id);
+        }
+
+        public void Update(HrEmployee hrEmployee)
+        {
+            _context.Entry(hrEmployee).State = EntityState.Modified;
+            _context.Entry(hrEmployee).Property(x => x.CreatedBy).IsModified = false;
+            _context.Entry(hrEmployee).Property(x => x.CreatedDate).IsModified = false;
+            _context.SaveChanges();
         }
     }
 }

@@ -1,0 +1,41 @@
+﻿body {
+}
+
+.vertical-center {
+    display: flex;
+    align-items: center;
+}
+
+a {
+    color: #0077cc;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #FC1F22;
+    border-color: #AC1818;
+}
+
+.tags {
+    background-color: #D0D0D0;
+}
+
+h2 {
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.border-rounded {
+    border-radius: 1rem !important;
+}
+
+.text-bold {
+    font-weight: bold !important;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.text-italic {
+    font-style: italic !important;
+    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 0 !important;
+}

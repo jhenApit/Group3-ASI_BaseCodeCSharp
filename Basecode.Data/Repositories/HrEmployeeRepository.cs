@@ -57,5 +57,11 @@ namespace Basecode.Data.Repositories
                 _context.SaveChanges();
             }
         }
+
+        public HrEmployee GetByEmail(string email)
+        {
+            return _context.HrEmployees.FirstOrDefault(e => e.Email == email);
+        }
+
     }
 }

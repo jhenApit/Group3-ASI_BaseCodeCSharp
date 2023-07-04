@@ -46,6 +46,12 @@ namespace Basecode.WebApp.Controllers
             return View(hrEmployeeDto);
         }
 
+        public IActionResult DeleteHrAccount(int id)
+        {
+            _service.SemiDelete(id);
+            return RedirectToAction("HrList");
+        }
+
         public IActionResult Update(HREmployeeUpdationDto hrEmployee)
         {
             _service.Update(hrEmployee);

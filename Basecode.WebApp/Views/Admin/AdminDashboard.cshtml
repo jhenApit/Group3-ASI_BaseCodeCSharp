@@ -1,5 +1,5 @@
-﻿@using Basecode.Data.Dtos
-@model HREmployeeUpdationDto
+﻿@using Basecode.Data.Models
+@model HrEmployee
 
 @{
     ViewData["Title"] = "Admin Dashboard";
@@ -50,7 +50,7 @@
 
                 <div class="col content m-5 text-center d-flex flex-column justify-content-center align-self-center">
                     <p class="display-1 text-white fw-bold">
-                        WELCOME USER
+                        WELCOME @Model.Name
                     </p>
                     <p>
                         <span class="fs-1 text-danger fw-bold">

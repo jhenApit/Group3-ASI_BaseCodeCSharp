@@ -18,16 +18,17 @@ namespace Basecode.WebApp.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Login([Bind("Email, Password")] LoginModel loginModel)
-        {
-            return RedirectToAction("AdminDashboard", "Admin", loginModel);
-        }
+        //public async Task<IActionResult> Login([Bind("Email, Password")] LoginModel loginModel)
+        //{
+        //    return RedirectToAction("AdminDashboard", "Admin", loginModel);
+        //}
+
 
         [HttpPost]
-        public IActionResult AdminDashboard(string Email)
+        public IActionResult Login(string Email)
         {
             var data = _service.GetByEmail(Email);
-            return View(data);
+            return RedirectToAction("AdminDashboard", "Admin", data);
         }
             public IActionResult ForgotPassword()
         {

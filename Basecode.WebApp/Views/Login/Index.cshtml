@@ -1,12 +1,6 @@
-<<<<<<< Updated upstream
-﻿@using Basecode.Data.Models
-@model HrEmployee
+@using Basecode.Data.Dtos
+@model HREmployeeUpdationDto
 
-@*
-@model Basecode.WebApp.Models.LoginModel*@
-=======
-﻿﻿@model Basecode.WebApp.Models.LoginModel
->>>>>>> Stashed changes
 
 
 @{
@@ -26,18 +20,10 @@
             <div class="col-8 bg-dark" id="login_body">
             </div>
             <div class="col-4 bg-black vh-100 pt-5">
-<<<<<<< Updated upstream
 
-                <form asp-controller="Admin" asp-action="AdminDashboard" class="needs-validation">
-                    <div class="d-md-flex justify-content-sm-end">
-                        <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="cancelForm()"></button>
-                        
-=======
-                
                 <form asp-action="Login" class="needs-validation">
                     <div class="d-md-flex justify-content-sm-end">
-                        <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="cancelForm()"></button>                      
->>>>>>> Stashed changes
+                        <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="cancelForm()"></button>
                     </div>
                     <div class="container-fluid text-black w-75 mt-5 pt-5">
                         <div class="top text-white text-center">
@@ -56,28 +42,15 @@
                         <div class="d-grid gap-2">
                             <button type="submit" value="Login" class="btn btn-danger">Sign In</button>
                         </div>
-<<<<<<< Updated upstream
 
-                        <div class="d-grid gap-2">
-                            <a class="text-center text-white mt-3" asp-controller="Login" asp-action="ForgotPassword">Forgot your password?</a>
-                        </div>
-=======
-                        
                         <div class="d-grid gap-2 mt-3">
                             <a asp-controller="Login" asp-action="ForgotPassword" class="text-white text-center">Forgot your password?</a>
                         </div>
                         
->>>>>>> Stashed changes
                     </div>
                 </form>
             </div>
         </div>
     </div>
+    </div>
 </body>
-
-<<<<<<< Updated upstream
-
-
-=======
-   
->>>>>>> Stashed changes

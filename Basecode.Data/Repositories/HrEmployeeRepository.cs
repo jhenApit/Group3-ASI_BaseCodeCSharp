@@ -20,5 +20,11 @@ namespace Basecode.Data.Repositories
         { 
             return this.GetDbSet<HrEmployee>();
         }
+
+        public HrEmployee GetByEmail(string Email)
+        {
+            return _context.HrEmployees.Find(Email);
+        }
+
     }
 }

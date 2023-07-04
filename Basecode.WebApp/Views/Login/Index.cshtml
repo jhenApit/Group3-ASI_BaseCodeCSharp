@@ -1,8 +1,8 @@
-﻿@*@using Basecode.Data.Models
-@model HrEmployee*@
+﻿@using Basecode.Data.Models
+@model HrEmployee
 
-
-@model Basecode.WebApp.Models.LoginModel
+@*
+@model Basecode.WebApp.Models.LoginModel*@
 
 
 @{
@@ -23,7 +23,7 @@
             </div>
             <div class="col-4 bg-black vh-100 pt-5">
 
-                <form asp-action="Login" class="needs-validation">
+                <form asp-controller="Admin" asp-action="AdminDashboard" class="needs-validation">
                     <div class="d-md-flex justify-content-sm-end">
                         <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="cancelForm()"></button>
                         

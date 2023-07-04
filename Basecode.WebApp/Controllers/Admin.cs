@@ -11,9 +11,10 @@ namespace Basecode.WebApp.Controllers
         {
             _service = service;
         }
-        public IActionResult AdminDashboard()
+        public IActionResult AdminDashboard(string Email)
         {
-            return View();
+            var data = _service.GetByEmail(Email);
+            return View(data);
         }
         public IActionResult CreateHrAccount()
         {

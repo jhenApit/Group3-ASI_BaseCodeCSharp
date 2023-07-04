@@ -1,12 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Basecode.Data.Models;
+using Basecode.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Basecode.WebApp.Controllers
 {
     public class ApplicantController : Controller
     {
-        public IActionResult TrackApplication()
+        private readonly IApplicantService _service;
+
+        public ApplicantController(IApplicantService service)
         {
-            return View();
+            _service = service;
+        }
+        public IActionResult TrackStatus(int id)
+        {
+            Applicant data = _service.GetById(id);
+            return View(data);
         }
 
         public IActionResult ContactUs()
@@ -14,7 +23,7 @@ namespace Basecode.WebApp.Controllers
             return View();
         }
 
-        public IActionResult TrackStatus()
+        public IActionResult TrackApplication()
         {
             return View();
         }

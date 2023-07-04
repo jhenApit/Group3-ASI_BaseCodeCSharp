@@ -18,7 +18,7 @@ namespace Basecode.Data.Repositories
 
         public Applicant GetById(int id)
         {
-            throw new NotImplementedException();
+            return _context.Applicant.Find(id);
         }
     }
 }

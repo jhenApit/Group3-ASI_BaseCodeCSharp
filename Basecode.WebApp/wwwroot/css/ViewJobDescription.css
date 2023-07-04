@@ -1,5 +1,30 @@
-﻿.job-tag {
+﻿@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+body {
     font-family: "Montserrat", sans-serif;
+}
+
+.job-title{
+    font-weight: bolder;
+    color: white;
+    padding: 30px 0;
+    font-size: 40px;
+}
+
+.job-tag {
     font-size: 20px;
     font-weight: bold;
+}
+
+.job-header {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.job-header-sub {
+    font-size: 25px;
+}
+
+.job-desc-sub{
+    padding-left: 20px;
 }

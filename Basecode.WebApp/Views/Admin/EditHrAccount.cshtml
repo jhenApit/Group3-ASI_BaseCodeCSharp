@@ -3,72 +3,97 @@
 @{
     ViewData["EditHrAccount"] = "EDIT HR EMPLOYEE ACCOUNT INFORMATION";
     Layout = null;
-    <link rel="stylesheet" href="~/css/edit-hr-account.css" />
-}   
 
-<div class="page">
-    <div class="menu">
-        <ul>
-            <li class="logo"/>
-            <li>
-                <a asp-action="AdminDashboard">
-                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-windows" viewBox="0 0 16 16">
-                        <path d="M6.555 1.375 0 2.237v5.45h6.555V1.375zM0 13.795l6.555.933V8.313H0v5.482zm7.278-5.4.026 6.378L16 16V8.395H7.278zM16 0 7.33 1.244v6.414H16V0z" />
-                    </svg>
-                    Dashboard
-                </a>
-            </li>
-            <li>
-                <a class="active">
-                    <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                    </svg>
-                    HR List
-                </a>
-            </li>
-        </ul>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/EditAccount.css" />
+    <script src="https://kit.fontawesome.com/b68ff1da95.js" crossorigin="anonymous"></script>
+}
+
+<body>
+    <div class="container-fluid h-100">
+        <div class="flex-nowrap">
+            <div class="row h-100">
+                <div class="col-auto bg-black col-md-4 col-lg-2 min-vh-100 d-flex flex-column p-0">
+                    <a asp-action="AdminDashboard" class="navbar-brand px-3 py-4 m-0 d-flex justify-content-center align-items-center">
+                        <img src="~/images/asi-logo.svg" alt="ASI Logo" class="logo-img w-100">
+                    </a>
+                    <div class="container p-0">
+                        <ul class="nav nav-pills flex-column mt-2">
+                            <li class="nav-item py-2 py-sm-0">
+                                <a asp-action="AdminDashboard" class="py-4 rounded-0 nav-link bg-gray text-white" aria-current="page">
+                                    <i class="fs-5 fa-brands fa-windows"></i>
+                                    <span class="fs-4 ms-3 d-none d-sm-inline">
+                                        Dashboard
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-item py-2 py-sm-0">
+                                <a class="py-4 rounded-0 nav-link active text-white">
+                                    <i class="fs-5 fa-solid fa-list"></i>
+                                    <span class="fs-4 ms-3 d-none d-sm-inline">
+                                        HR List
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="position-absolute bottom-0">
+                        <a asp-action="HrList" class="py-4 rounded-0 nav-link text-white">
+                            <i class="fa-sharp fa-solid fa-right-from-bracket"></i>
+                            <span class="fs-4 ms-3 d-none d-sm-inline">
+                                Logout
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col content d-flex flex-column p-0">
+                    <div class="bg">
+                        <a asp-action="HrList" class="text-decoration-none">
+                            <i class="fa-solid fa-less-than back"></i>
+                        </a>
+                        <h1 class="header-text">
+                            EDIT DETAILS
+                        </h1>
+                    </div>
+                    <div class="desc">
+                        <p class="p-0">
+                            As an admin, you are able to edit an account for the HRs
+                            in your company.
+                        </p>
+                    </div>
+                    <div>
+                        <form asp-action="Update" method="post">
+                            <input type="hidden" asp-for="Id" />
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" id="name" class="form-control" asp-for="Name" />
+                                <span class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">
+                                    Email Address
+                                </label>
+                                <input type="email" id="email" class="form-control" asp-for="Email" />
+                                <span class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">
+                                    Password
+                                </label>
+                                <input type="password" id="password" class="form-control" asp-for="Password" />
+                                <span class="text-danger"></span>
+                            </div>
+
+                            <button type="submit" class="save-changes-button">
+                                Save Changes
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="create-account">
-        <div class="bg">
-            <h1 class="header">
-                EDIT DETAILS
-            </h1>
-        </div>
-        <div class="desc">
-            <p>
-                As an admin, you are able to edit the account information of the HR employee in your company.
-                <br />Please update the form below to complete the process.
-            </p>
-        </div>
-        <div class="edit-account-form">
-            <form asp-action="Update" method="post">
-                <input type="hidden" asp-for="Id"/>
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input id="name" class="form-control" asp-for="Name"/>
-                    <span class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label for="email">
-                        Email Address
-                    </label>
-                    <input id="email" class="form-control" asp-for="Email" />
-                    <span class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label for="password">
-                        Password
-                    </label>
-                    <input id="password" class="form-control" asp-for="Password" />
-                    <span class="text-danger"></span>
-                </div>
-
-                <button type="submit" class="btn btn-primary save-changes-button">
-                    Save Changes
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
+</body>

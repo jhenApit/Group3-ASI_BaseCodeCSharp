@@ -15,8 +15,8 @@ namespace Basecode.WebApp.Controllers
         }
         public IActionResult AdminDashboard(string Email)
         {
-            var data = _service.GetByEmail(Email);
-            return View(data);
+            var hrEmployee = _service.GetByEmail(Email);
+            return View(hrEmployee);
         }
 
         public IActionResult HrList()

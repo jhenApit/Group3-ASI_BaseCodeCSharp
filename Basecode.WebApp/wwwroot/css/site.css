@@ -25,13 +25,83 @@ body {
 }
 
 .contactUs_body {
-  background: linear-gradient(rgba(64, 64, 64, 0.48), rgba(64, 64, 64, 0.48)), url(../images/contactUsBackground.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
+    background: linear-gradient(rgba(64, 64, 64, 0.48), rgba(64, 64, 64, 0.48)), url(../images/contactUsBackground.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.findJobs_body {
+    background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.48)), url(../images/landing-page.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 #login_body {
   background-image: url('../images/building.png'); background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+}
+
+
+.nav-selected {
+    background: linear-gradient(rgba(50, 50, 50, 0), rgba(50, 50, 50, 1));
+    border-bottom: 5px solid red !important;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.nav-item {
+    border-bottom: 5px solid rgba(255,255,255,0.01);
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.nav-link {
+    color: white !important;
+}
+
+.navbar {
+    -webkit-transition: all .4s cubic-bezier(.39,.575,.565,1);
+    transition: all .4s cubic-bezier(.39,.575,.565,1)
+}
+
+.custom-navbar {
+    background: #fff !important;
+    -webkit-transition: all .4s cubic-bezier(.39,.575,.565,1);
+    transition: all .4s cubic-bezier(.39,.575,.565,1)
+}
+
+    .custom-navbar .nav-selected {
+        background: linear-gradient(rgba(255, 255, 255, 0), rgba(224, 224, 224, 1));
+        border-bottom: 5px solid red;
+        padding-top: 1em;
+        padding-bottom: 1em;
+    }
+
+.navbar-brand {
+    background: url(../images/asi-logo.svg) no-repeat;
+    background-size: contain;
+    height: 55px;
+    width: 187px;
+    text-indent: -99999px;
+}
+
+.navbar.custom-navbar .navbar-brand {
+    background: url(../images/asi-logo-invert.svg) no-repeat;
+    background-size: contain;
+    height: 55px;
+    width: 187px
+}
+
+.nav-link {
+    color: white !important;
+}
+
+.custom-navbar .nav-link {
+    color: black !important;
+}
+
+.custom-navbar .login-btn {
+    color: white !important;
 }

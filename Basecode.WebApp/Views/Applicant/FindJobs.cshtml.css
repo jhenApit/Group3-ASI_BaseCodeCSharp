@@ -39,3 +39,8 @@ h2 {
     font-family: 'Montserrat', sans-serif;
     margin-bottom: 0 !important;
 }
+
+.my-5 {
+    margin-top: 15vh !important;
+    margin-bottom: 8vh !important;
+}

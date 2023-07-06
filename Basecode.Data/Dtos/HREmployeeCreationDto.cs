@@ -16,11 +16,12 @@ namespace Basecode.Data.Dtos
 
         [Required(ErrorMessage = "The 'Email' field is required")]
         [MaxLength(50, ErrorMessage = "Email cannot be longer than 50 characters")]
-        [RegularExpression(@"^[a-zA-Z0-9_.+-]+@asi-dev2\.com$", ErrorMessage = "Email must be a valid Gmail address")]
+        [RegularExpression(@"^[a-zA-Z0-9_.+-]+@asi-dev2\.com$", ErrorMessage = "Invalid email address")]
         public string Email { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "The 'Password' field is required")]
-        [MaxLength(50, ErrorMessage = "Password cannot be longer than 50 characters")]
+        [MinLength(6, ErrorMessage = "Password must be at least 6 characters long")]
+        [MaxLength(30, ErrorMessage = "Password cannot be longer than 30 characters")]
         public string Password { get; set; } = string.Empty;
         public string? CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }

@@ -13,9 +13,10 @@ namespace Basecode.WebApp.Controllers
         {
             _service = service;
         }
-        public IActionResult AdminDashboard()
+        public IActionResult AdminDashboard(string Email)
         {
-            return View();
+            var hrEmployee = _service.GetByEmail(Email);
+            return View(hrEmployee);
         }
 
         public IActionResult HrList()
@@ -44,6 +45,12 @@ namespace Basecode.WebApp.Controllers
 
             // Pass the HREmployeeUpdationDto as the model to the view
             return View(hrEmployeeDto);
+        }
+
+        public IActionResult DeleteHrAccount(int id)
+        {
+            _service.SemiDelete(id);
+            return RedirectToAction("HrList");
         }
 
         public IActionResult Update(HREmployeeUpdationDto hrEmployee)

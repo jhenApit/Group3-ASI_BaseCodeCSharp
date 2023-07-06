@@ -11,8 +11,11 @@ namespace Basecode.Services.Interfaces
     public interface IHrEmployeeService
     {
         List<HrEmployee> RetrieveAll();
+        HrEmployee GetByEmail(string email);
         void Add(HREmployeeCreationDto hrEmployee);
         HrEmployee GetById(int id);
         void Update(HREmployeeUpdationDto hrEmployee);
+        void SemiDelete(int id);
+        void PermaDelete(int id);
     }
 }

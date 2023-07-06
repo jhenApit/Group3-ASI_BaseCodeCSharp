@@ -1,13 +1,19 @@
+<<<<<<< HEAD
 ﻿@using Basecode.Data.Models
 @model Applicant
 <!-- Add reference to Bootstrap CSS file -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+=======
+﻿@{
+    ViewData["Title"] = "Track Application";
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/TrackApplication.css">
+}
+>>>>>>> f368e8609fd5014bf86c98f17ade21658a497b2f
 
-<!-- Add reference to custom CSS file -->
-<link rel="stylesheet" href="~/css/TrackApplication.css">
 
 <div class="position-absolute top-50 start-50 translate-middle text-center">
-    <h1 class="text-center display-3 mt-5 font-weight-bold font-italic text-white">Track your <span style="color: #FF0000">application status</span> here!</h1>
+    <p class="text-center display-4 mt-5 font-weight-bold font-italic text-white">Track your <span class="text-danger">application status</span> here!</p>
     <div class="container">
         <form method="get" action="@Url.Action("TrackStatus", "Applicant")">
             <div class="search-container">

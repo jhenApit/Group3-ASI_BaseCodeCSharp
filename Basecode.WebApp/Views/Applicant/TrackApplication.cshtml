@@ -1,15 +1,16 @@
 ﻿@{
-    ViewData["Title"] = "Application Status Tracker";
+    ViewData["Title"] = "Track Application";
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/TrackApplication.css">
 }
 
-<link rel="stylesheet" href="~/css/TrackApplication.css" />
 
 <div class="position-absolute top-50 start-50 translate-middle text-center">
-    <h1>Track your <span style="color: #FF0000">application status</span> here!</h1>
-
-    <div class="search-container">
-        <input type="text" id="trackingNumber" name="trackingNumber" placeholder="&#128269; Enter your application ID here" />
-        <button type="submit">Track</button>
+    <p class="text-center display-4 mt-5 font-weight-bold font-italic text-white">Track your <span class="text-danger">application status</span> here!</p>
+    <div class="container">
+        <div class="search-container">
+            <input type="text" class="form-control" id="trackingNumber" name="trackingNumber" placeholder="&#128269; Enter your application ID here">
+            <button class="btn" type="submit">Track</button>
+        </div>
     </div>
 </div>
-

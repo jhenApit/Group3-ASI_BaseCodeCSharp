@@ -13,9 +13,10 @@ namespace Basecode.WebApp.Controllers
         {
             _service = service;
         }
-        public IActionResult AdminDashboard()
+        public IActionResult AdminDashboard(string Email)
         {
-            return View();
+            var hrEmployee = _service.GetByEmail(Email);
+            return View(hrEmployee);
         }
 
         public IActionResult HrList()
@@ -30,11 +31,29 @@ namespace Basecode.WebApp.Controllers
 
         public IActionResult EditHrAccount(int id)
         {
-            var data = _service.GetById(id);
-            return View(data);
+            // Retrieve the HR employee from the database using the ID
+            var hrEmployee = _service.GetById(id);
+
+            // Create an instance of HREmployeeUpdationDto and populate it with data
+            var hrEmployeeDto = new HREmployeeUpdationDto
+            {
+                Id = id,
+                Name = hrEmployee.Name,
+                Email = hrEmployee.Email,
+                Password = hrEmployee.Password
+            };
+
+            // Pass the HREmployeeUpdationDto as the model to the view
+            return View(hrEmployeeDto);
         }
 
-        public IActionResult Update(HrEmployee hrEmployee)
+        public IActionResult DeleteHrAccount(int id)
+        {
+            _service.SemiDelete(id);
+            return RedirectToAction("HrList");
+        }
+
+        public IActionResult Update(HREmployeeUpdationDto hrEmployee)
         {
             _service.Update(hrEmployee);
             return RedirectToAction("HrList");

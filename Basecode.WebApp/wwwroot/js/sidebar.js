@@ -1,26 +1,29 @@
-﻿// remove the 'clicked' class to the clicked element
-let navItems = document.querySelectorAll(".nav-item");
-for (let i = 0; i < navItems.length; i++) {
-    navItems[i].addEventListener("click", (e) => {
-        let clickedElement = e.currentTarget;
+﻿const navItems = document.querySelectorAll(".nav-item");
 
-        // remove 'clicked' class from all nav-items except the clicked one
-        for (let j = 0; j < navItems.length; j++) {
-            if (navItems[j] !== clickedElement) {
-                navItems[j].classList.remove("clicked");
-            }
+function toggleSubMenu(e) {
+    const clickedElement = e.currentTarget;
+    const subMenu = clickedElement.querySelector(".sub-menu");
+    const arrowIcon = clickedElement.querySelector(".arrow");
+
+    if (subMenu) {
+        subMenu.classList.toggle("active");
+    }
+
+    for (const item of navItems) {
+        if (item !== clickedElement) {
+            item.classList.remove("clicked");
         }
-        clickedElement.classList.toggle("clicked");
-    });
+    }
+
+    clickedElement.classList.toggle("clicked");
+
+    if (arrowIcon) {
+        arrowIcon.classList.toggle("rotate");
+    }
 }
 
-// show the content of the markdown upon clicking na arrow icon
-let arrow = document.querySelectorAll(".arrow");
-for (var i = 0; i < arrow.length; i++) {
-    arrow[i].addEventListener("click", (e) => {
-        let arrowParent = e.target.parentElement.parentElement;
-        arrowParent.classList.toggle("showMenu");
-    });
+for (const item of navItems) {
+    item.addEventListener("click", toggleSubMenu);
 }
 
 // close and open the side bar

@@ -113,10 +113,13 @@
     transition: all 0.3s ease;
 }
 
-.sidebar .nav-links li.showMenu i.arrow {
-    transform: rotate(-180deg);
+.arrow {
+    transition: transform 0.3s ease-in-out;
 }
 
+.rotate {
+    transform: rotate(180deg);
+}
 .sidebar.close .nav-links i.arrow {
     display: none;
 }
@@ -154,7 +157,11 @@
     display: none;
 }
 
-.sidebar .nav-links li.showMenu .sub-menu {
+.sidebar .nav-links li .sub-menu {
+    display: none;
+}
+
+.sidebar .nav-links li .sub-menu.active{
     display: block;
 }
 

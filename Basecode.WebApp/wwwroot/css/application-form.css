@@ -3,93 +3,16 @@
     font-family: "Montserrat", sans-serif;
 }
 
-#navbar {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+.application-form {
+    padding-top: 50px;
     background-color: white;
-    box-shadow:  2px 2px 4px rgba(0, 0, 0, 0.3);
+    width: 100%;
 }
-
-.logo {
-    justify-content: flex-start;
-    display: block;
-    margin-left: 20px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    margin-right: 5rem;
-}
-
-.horizontal-container ul {
-    margin-left: 20px;
-    list-style-type: none;
-    display: flex;
-    justify-content: flex-start;
-    margin: 0;
-    padding: 0;
-}
-
-
-    .horizontal-container ul li {
-        margin: auto;
-    }
-
-    .horizontal-container ul li a {
-        display: block;
-        color: black;
-        padding: 30px 20px;
-        text-decoration: none;
-        font-size: 20px;
-        text-decoration: none;
-    }
-
-        .horizontal-container ul li a.active {
-            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 45%,rgba(250, 0, 0, 0.2) 100%);
-            border-bottom: 7px solid #FF0000;
-            color: black;
-        }
-
-        .horizontal-container ul li a:hover:not(.active) {
-            border-bottom: none;
-            color: #FF0000;
-        }
-
-.login-button {
-    background-color: #EC2224;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-    width: 176px;
-    border-radius: 10px;
-    font-size: 16px;
-    padding: 1px 5px;
-    border: none;
-    text-decoration: none;
-    position: absolute;
-    right: 1rem;
-    margin: auto;
-}
-
-
-    .login-button:hover {
-        background-color: #55729B;
-        font-weight: bolder;
-        color: white;
-        cursor: pointer;
-    }
-
-    a {
-        text-decoration: none;
-        color: white;
-    }
-
 
 .job-title {
     text-align: center;
     align-content: center;
-    margin-top: 50px;
+    margin-top: 0;
     font-size: xx-large;
     font-weight: bold;
 }
@@ -179,12 +102,12 @@ label {
         margin-right: 10px;
         display: flex;
         align-items: center;
-        width: 7.5rem;
+        width: 8rem;
     }
 
 .input {
     margin-top: auto;
-    padding: 10px;
+    padding: 5px;
     border: 1px solid #ccc;
     border-radius: 2px;
     margin-right: 20px;

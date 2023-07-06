@@ -1,40 +1,12 @@
 ﻿@{
-    <title>Application Form</title>
-    Layout = null;
+    ViewData["ApplicationForm"] = "Application Form";
     <link rel="stylesheet" href="~/css/application-form.css" />
 }
 
-<div>
-    <nav>
-        <div id="navbar">
-            <a class="logo" asp-controller="Home" asp-action="Index">
-                <img id="logo-image" src="~/images/asi-logo-invert.png">
-            </a>
-            <div class="horizontal-container">
-                <ul>
-                    <li>
-                        <a asp-controller="Applicant" asp-action="TrackApplication">HOME</a>
-                    </li>
-                    <li>
-                        <a class="active" asp-controller="Applicant" asp-action="FindJobs">FIND JOBS</a>
-                    </li>
-                    <li>
-                        <a asp-controller="Applicant" asp-action="TrackApplication">TRACK APPLICATION</a>
-                    </li>
-                    <li>
-                        <a asp-controller="Applicant" asp-action="ContactUs">CONTACT US</a>
-                    </li>
-                </ul>
-            </div>
-
-            <button class="login-button" type="button">
-                <a asp-controller="Login" asp-action="Index">LOGIN</a>
-            </button>
-
-        </div>
-    </nav>
-
-    <div class="job-title">Software Engineer</div>
+<div style="background-color: white; margin-top: 0; padding-top: 50px;">
+    <div class="job-title">
+        <p>Software Engineer</p>
+    </div>
     <nav>
         <div class="application-nav">
             <ul>

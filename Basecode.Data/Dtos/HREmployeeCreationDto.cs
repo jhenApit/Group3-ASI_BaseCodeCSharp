@@ -10,8 +10,8 @@ namespace Basecode.Data.Dtos
     public class HREmployeeCreationDto
     {
         [Required(ErrorMessage = "The 'Name' field is required")]
-        [DataType(DataType.Text)]
-        [StringLength(150, ErrorMessage = "Name length can't be more than 150 characters.")]
+        [StringLength(150, MinimumLength = 2, ErrorMessage = "Name must be at least 2 characters.")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Name must contain only letters")]
         public string Name { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "The 'Email' field is required")]

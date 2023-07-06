@@ -1,16 +1,25 @@
+<<<<<<< HEAD
+﻿@using Basecode.Data.Models
+@model Applicant
+<!-- Add reference to Bootstrap CSS file -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+=======
 ﻿@{
     ViewData["Title"] = "Track Application";
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/css/TrackApplication.css">
 }
+>>>>>>> f368e8609fd5014bf86c98f17ade21658a497b2f
 
 
 <div class="position-absolute top-50 start-50 translate-middle text-center">
     <p class="text-center display-4 mt-5 font-weight-bold font-italic text-white">Track your <span class="text-danger">application status</span> here!</p>
     <div class="container">
-        <div class="search-container">
-            <input type="text" class="form-control" id="trackingNumber" name="trackingNumber" placeholder="&#128269; Enter your application ID here">
-            <button class="btn" type="submit">Track</button>
-        </div>
+        <form method="get" action="@Url.Action("TrackStatus", "Applicant")">
+            <div class="search-container">
+                <input type="text" class="form-control" id="trackingNumber" name="id" placeholder="&#128269; Enter your application ID here">
+                <button type="submit" class="btn track-status-button">Track</button>
+            </div>
+        </form>
     </div>
 </div>

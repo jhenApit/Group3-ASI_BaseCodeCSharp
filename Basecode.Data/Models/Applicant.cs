@@ -13,7 +13,11 @@ namespace Basecode.Data.Models
 
         //public string TrackerId { get; set; }
         //public byte ResumeCV { get; set; }
+<<<<<<< HEAD
         public string? Name { get; set; } 
+=======
+        public string? Name { get; set; }
+>>>>>>> track-restore
         public DateTime BirthDate { get; set; }
         public string? Nationality { get; set; }
         public string? MobileNo { get; set; }

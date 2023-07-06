@@ -1,4 +1,9 @@
-﻿namespace Basecode.WebApp
+﻿using Basecode.Data.Interfaces;
+using Basecode.Data.Repositories;
+using Basecode.Services.Interfaces;
+using Basecode.Services.Services;
+
+namespace Basecode.WebApp
 {
     public partial class Startup
     {
@@ -21,6 +26,8 @@
 
             // Add services to the container.
             services.AddControllersWithViews();
+            services.AddScoped<IApplicantService, ApplicantService>();
+            services.AddScoped<IApplicantRepository, ApplicantRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

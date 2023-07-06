@@ -65,5 +65,10 @@ namespace Basecode.WebApp.Controllers
             return RedirectToAction("HrList");
         }
 
+
+        public IActionResult SamplePage()
+        {
+            return View();
+        }
     }
 }

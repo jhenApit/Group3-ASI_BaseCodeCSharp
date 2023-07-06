@@ -9,12 +9,19 @@ namespace Basecode.Data.Dtos
 {
     public class HREmployeeCreationDto
     {
-        [Required]
+        [Required(ErrorMessage = "The 'Name' field is required")]
         [DataType(DataType.Text)]
-        [StringLength(150, ErrorMessage = "Name length can't be more than 150.")]
+        [StringLength(150, ErrorMessage = "Name length can't be more than 150 characters.")]
         public string Name { get; set; } = string.Empty;
-        public string? Email { get; set; }
-        public string? Password { get; set; }
+
+        [Required(ErrorMessage = "The 'Email' field is required")]
+        [MaxLength(50, ErrorMessage = "Email cannot be longer than 50 characters")]
+        [RegularExpression(@"^[a-zA-Z0-9_.+-]+@asi-dev2\.com$", ErrorMessage = "Email must be a valid Gmail address")]
+        public string Email { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "The 'Password' field is required")]
+        [MaxLength(50, ErrorMessage = "Password cannot be longer than 50 characters")]
+        public string Password { get; set; } = string.Empty;
         public string? CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public string? ModifiedBy { get; set; }

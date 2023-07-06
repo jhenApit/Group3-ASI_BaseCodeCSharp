@@ -29,6 +29,11 @@ namespace Basecode.WebApp.Controllers
             return View();
         }
 
+        public IActionResult CreateHrAccount2()
+        {
+            return View();
+        }
+
         public IActionResult EditHrAccount(int id)
         {
             // Retrieve the HR employee from the database using the ID

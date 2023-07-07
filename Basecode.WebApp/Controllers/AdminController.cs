@@ -1,21 +1,19 @@
 ﻿using Basecode.Data.Dtos;
-using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Services;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 
+
 namespace Basecode.WebApp.Controllers
 {
-    public class Admin : Controller
+    public class AdminController : Controller
     {
         private readonly IHrEmployeeService _service;
-        private readonly ICreateHrAccountService _createHrAccountService;
-        private static Logger _logger = LogManager.GetCurrentClassLogger();
-        public Admin(IHrEmployeeService service, ICreateHrAccountService createHrAccountService)
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        public AdminController(IHrEmployeeService service)
         {
             _service = service;
-            _createHrAccountService = createHrAccountService;
         }
         public IActionResult AdminDashboard(string Email)
         {
@@ -36,7 +34,7 @@ namespace Basecode.WebApp.Controllers
         /// <returns>Newly created HR account</returns>
         public IActionResult CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
-            var data = _createHrAccountService.CreateHrAccount(hrEmployee);
+            var data = _service.CreateHrAccount(hrEmployee);
             if(!data.Result) 
             {
                 _logger.Error(ErrorHandling.SetLog(data));
@@ -56,11 +54,26 @@ namespace Basecode.WebApp.Controllers
             {
                 Name = hrEmployee.Name,
                 Email = hrEmployee.Email,
-                Password = hrEmployee.Password
+                Password = hrEmployee.Password,
+                Id = hrEmployee.Id
             };
 
             // Pass the HREmployeeUpdationDto as the model to the view
             return View(hrEmployeeDto);
+        }
+
+        [HttpPost]
+        public IActionResult EditHrAccount(HREmployeeUpdationDto hrEmployee)
+        {
+            if (ModelState.IsValid)
+            {
+                // Perform account update logic
+                _service.Update(hrEmployee);
+
+                return RedirectToAction("HrList");
+            }
+
+            return View(hrEmployee);
         }
 
         public IActionResult DeleteHrAccount(int id)

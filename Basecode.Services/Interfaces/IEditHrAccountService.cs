@@ -8,8 +8,8 @@ using static Basecode.Services.Services.ErrorHandling;
 
 namespace Basecode.Services.Interfaces
 {
-    public interface ICreateHrAccountService
+    public interface IEditHrAccountService
     {
-        public LogContent CreateHrAccount(HREmployeeCreationDto hrEmployee);
+        public LogContent EditHrAccount(HREmployeeUpdationDto hrEmployee);
     }
 }

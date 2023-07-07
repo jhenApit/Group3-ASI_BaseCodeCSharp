@@ -5,19 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Basecode.Services.Services.ErrorHandling;
 
 namespace Basecode.Services.Services
 {
-    public class CreateHrAccountService: ErrorHandling, ICreateHrAccountService
+    public class EditHrAccountService : ErrorHandling, IEditHrAccountService
     {
-        /// <summary>
-        /// Logs errors for CreateHrAccount
-        /// </summary>
-        /// <param name="hrEmployee">Details of the HR employee.</param>
-        /// <returns>logContent</returns>
-        public LogContent CreateHrAccount(HREmployeeCreationDto hrEmployee)
-        {
+        public LogContent EditHrAccount(HREmployeeUpdationDto hrEmployee) 
+        { 
             LogContent logContent = new LogContent();
 
             if (hrEmployee.Name.Length < 2)
@@ -38,12 +32,13 @@ namespace Basecode.Services.Services
                 logContent.ErrorCode = "ERR! Invalid Email";
                 logContent.Message = "Email is not Alliance Email";
             }
-            else if (hrEmployee.Email.Length > 50){
+            else if (hrEmployee.Email.Length > 50)
+            {
                 logContent.Result = false;
                 logContent.ErrorCode = "ERR! Length Validation ";
                 logContent.Message = "Email cannot be longer than 50 characters long";
             }
-            else if(hrEmployee.Password!.Length < 6)
+            else if (hrEmployee.Password!.Length < 6)
             {
                 logContent.Result = false;
                 logContent.ErrorCode = "ERR! Length Validation";

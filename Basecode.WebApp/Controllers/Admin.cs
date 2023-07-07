@@ -34,8 +34,10 @@ namespace Basecode.WebApp.Controllers
             if(!data.Result) 
             {
                 _logger.Error(ErrorHandling.SetLog(data));
+                return View();
             }
-            return View();
+            _service.Add(hrEmployee);
+            return RedirectToAction("HrList");
         }
 
         public IActionResult EditHrAccount(int id)

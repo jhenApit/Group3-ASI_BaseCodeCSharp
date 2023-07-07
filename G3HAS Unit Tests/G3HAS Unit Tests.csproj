@@ -24,4 +24,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Basecode.Services\Basecode.Services.csproj" />
+    <ProjectReference Include="..\Basecode.WebApp\Basecode.WebApp.csproj" />
+  </ItemGroup>
+
 </Project>

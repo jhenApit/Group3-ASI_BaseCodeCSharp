@@ -28,6 +28,12 @@ namespace Basecode.WebApp.Controllers
             var data = _service.RetrieveAll();
             return View(data);
         }
+
+        /// <summary>
+        /// Creates account for the HR.
+        /// </summary>
+        /// <param name="hrEmployee">Details of the HR employee</param>
+        /// <returns>Newly created HR account</returns>
         public IActionResult CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
             var data = _createHrAccountService.CreateHrAccount(hrEmployee);

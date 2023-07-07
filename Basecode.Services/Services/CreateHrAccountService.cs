@@ -11,6 +11,11 @@ namespace Basecode.Services.Services
 {
     public class CreateHrAccountService: ErrorHandling, ICreateHrAccountService
     {
+        /// <summary>
+        /// Logs errors for CreateHrAccount
+        /// </summary>
+        /// <param name="hrEmployee">Details of the HR employee.</param>
+        /// <returns>logContent</returns>
         public LogContent CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
             LogContent logContent = new LogContent();
@@ -53,8 +58,6 @@ namespace Basecode.Services.Services
             else
             {
                 logContent.Result = true;
-                logContent.ErrorCode = "";
-                logContent.Message = "Followed the validations of the input fields.";
             }
 
             return logContent;

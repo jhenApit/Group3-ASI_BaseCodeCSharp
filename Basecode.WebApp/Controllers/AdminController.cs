@@ -63,21 +63,17 @@ namespace Basecode.WebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditHrAccount(HREmployeeUpdationDto hrEmployeeDto)
+        public IActionResult EditHrAccount(HREmployeeUpdationDto hrEmployee)
         {
             if (ModelState.IsValid)
             {
                 // Perform account update logic
-                var hrEmployee = _service.GetById(hrEmployeeDto.Id);
-                hrEmployee.Name = hrEmployeeDto.Name;
-                hrEmployee.Email = hrEmployeeDto.Email;
-                hrEmployee.Password = hrEmployeeDto.Password;
                 _service.Update(hrEmployee);
 
                 return RedirectToAction("HrList");
             }
 
-            return View(hrEmployeeDto);
+            return View(hrEmployee);
         }
 
         public IActionResult DeleteHrAccount(int id)

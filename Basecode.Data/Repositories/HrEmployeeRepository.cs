@@ -40,6 +40,7 @@ namespace Basecode.Data.Repositories
             _context.Entry(hrEmployee).Property(x => x.CreatedBy).IsModified = false;
             _context.Entry(hrEmployee).Property(x => x.CreatedDate).IsModified = false;
             _context.SaveChanges();
+
         }
 
         public void SemiDelete(HrEmployee hrEmployee)

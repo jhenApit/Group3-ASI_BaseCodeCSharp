@@ -54,13 +54,30 @@ namespace Basecode.WebApp.Controllers
             // Create an instance of HREmployeeUpdationDto and populate it with data
             var hrEmployeeDto = new HREmployeeUpdationDto
             {
-                Id = id,
                 Name = hrEmployee.Name,
                 Email = hrEmployee.Email,
                 Password = hrEmployee.Password
             };
 
             // Pass the HREmployeeUpdationDto as the model to the view
+            return View(hrEmployeeDto);
+        }
+
+        [HttpPost]
+        public IActionResult EditHrAccount(HREmployeeUpdationDto hrEmployeeDto)
+        {
+            if (ModelState.IsValid)
+            {
+                // Perform account update logic
+                var hrEmployee = _service.GetById(hrEmployeeDto.Id);
+                hrEmployee.Name = hrEmployeeDto.Name;
+                hrEmployee.Email = hrEmployeeDto.Email;
+                hrEmployee.Password = hrEmployeeDto.Password;
+                _service.Update(hrEmployee);
+
+                return RedirectToAction("HrList");
+            }
+
             return View(hrEmployeeDto);
         }
 

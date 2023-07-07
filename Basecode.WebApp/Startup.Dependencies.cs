@@ -18,6 +18,7 @@ namespace Basecode.WebApp
             // Services 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IHrEmployeeService, HrEmployeeService>();
+            services.AddScoped<IEditHrAccountService, EditHrAccountService>();
 
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();

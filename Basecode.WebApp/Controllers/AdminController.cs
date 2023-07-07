@@ -4,17 +4,16 @@ using Basecode.Services.Services;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 
+
 namespace Basecode.WebApp.Controllers
 {
-    public class Admin : Controller
+    public class AdminController : Controller
     {
         private readonly IHrEmployeeService _service;
-        private readonly ICreateHrAccountService _createHrAccountService;
-        private static Logger _logger = LogManager.GetCurrentClassLogger();
-        public Admin(IHrEmployeeService service, ICreateHrAccountService createHrAccountService)
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        public AdminController(IHrEmployeeService service)
         {
             _service = service;
-            _createHrAccountService = createHrAccountService;
         }
         public IActionResult AdminDashboard(string Email)
         {
@@ -35,7 +34,7 @@ namespace Basecode.WebApp.Controllers
         /// <returns>Newly created HR account</returns>
         public IActionResult CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
-            var data = _createHrAccountService.CreateHrAccount(hrEmployee);
+            var data = _service.CreateHrAccount(hrEmployee);
             if(!data.Result) 
             {
                 _logger.Error(ErrorHandling.SetLog(data));

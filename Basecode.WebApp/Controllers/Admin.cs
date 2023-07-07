@@ -1,17 +1,21 @@
 ﻿using Basecode.Data.Dtos;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
+using Basecode.Services.Services;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 
 namespace Basecode.WebApp.Controllers
 {
     public class Admin : Controller
     {
         private readonly IHrEmployeeService _service;
-
-        public Admin(IHrEmployeeService service)
+        private readonly ICreateHrAccountService _createHrAccountService;
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
+        public Admin(IHrEmployeeService service, ICreateHrAccountService createHrAccountService)
         {
             _service = service;
+            _createHrAccountService = createHrAccountService;
         }
         public IActionResult AdminDashboard(string Email)
         {
@@ -24,8 +28,13 @@ namespace Basecode.WebApp.Controllers
             var data = _service.RetrieveAll();
             return View(data);
         }
-        public IActionResult CreateHrAccount()
+        public IActionResult CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
+            var data = _createHrAccountService.CreateHrAccount(hrEmployee);
+            if(!data.Result) 
+            {
+                _logger.Error(ErrorHandling.SetLog(data));
+            }
             return View();
         }
 

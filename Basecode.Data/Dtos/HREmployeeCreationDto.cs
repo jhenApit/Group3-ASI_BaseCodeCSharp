@@ -16,7 +16,7 @@ namespace Basecode.Data.Dtos
 
         [Required(ErrorMessage = "The 'Email' field is required")]
         [MaxLength(50, ErrorMessage = "Email cannot be longer than 50 characters")]
-        [RegularExpression(@"^[a-zA-Z0-9_.+-]+@asi-dev2\.com$", ErrorMessage = "Invalid email address")]
+        [RegularExpression(@"^[a-zA-Z0-9_.+-]+@asi-dev2\.com$", ErrorMessage = "Email is not Alliance Email")]
         public string Email { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "The 'Password' field is required")]

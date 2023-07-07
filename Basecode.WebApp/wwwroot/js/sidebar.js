@@ -1,5 +1,6 @@
 ﻿const navItems = document.querySelectorAll(".nav-item");
 let openedSubMenu = null;
+let openedArrowIcon = null;
 
 function toggleSubMenu(e) {
     const clickedElement = e.currentTarget;
@@ -8,14 +9,26 @@ function toggleSubMenu(e) {
 
     if (openedSubMenu && openedSubMenu !== subMenu) {
         openedSubMenu.classList.remove("active");
-        if (arrowIcon) {
-            arrowIcon.classList.remove("rotate");
+        if (openedArrowIcon) {
+            openedArrowIcon.classList.remove("rotate");
         }
     }
 
     if (subMenu && !clickedElement.querySelector(".sub-menu").contains(e.target)) {
-        subMenu.classList.toggle("active");
-        openedSubMenu = subMenu.classList.contains("active") ? subMenu : null;
+        const isSubMenuOpen = subMenu.classList.contains("active");
+        closeAllSubMenus();
+
+        if (!isSubMenuOpen) {
+            subMenu.classList.add("active");
+            openedSubMenu = subMenu;
+            if (arrowIcon) {
+                arrowIcon.classList.add("rotate");
+                openedArrowIcon = arrowIcon;
+            }
+        } else {
+            openedSubMenu = null;
+            openedArrowIcon = null;
+        }
     }
 
     for (const item of navItems) {
@@ -25,14 +38,35 @@ function toggleSubMenu(e) {
     }
 
     clickedElement.classList.toggle("clicked");
+}
 
-    if (arrowIcon) {
-        arrowIcon.classList.toggle("rotate");
+function closeAllSubMenus() {
+    for (const item of navItems) {
+        const subMenu = item.querySelector(".sub-menu");
+        const arrowIcon = item.querySelector(".arrow");
+        if (subMenu) {
+            subMenu.classList.remove("active");
+        }
+        if (arrowIcon) {
+            arrowIcon.classList.remove("rotate");
+        }
     }
+    openedSubMenu = null;
+    openedArrowIcon = null;
+}
+
+function changeColorOnHover() {
+    this.classList.add("hovered");
+}
+
+function revertColorOnHover() {
+    this.classList.remove("hovered");
 }
 
 for (const item of navItems) {
     item.addEventListener("click", toggleSubMenu);
+    item.addEventListener("mouseenter", changeColorOnHover);
+    item.addEventListener("mouseleave", revertColorOnHover);
     const subMenuItems = item.querySelectorAll(".sub-menu-item");
     for (const subMenuItem of subMenuItems) {
         subMenuItem.addEventListener("click", (e) => {

@@ -2,7 +2,7 @@
     ViewData["Title"] = "Explore Jobs";
 }
 <body class="findJobs_body">
-    <div class="container">
+    <div class="container top-0">
         <h2 class="my-5 text-black text-bold">Open positions</h2>
 
         <!---->
@@ -33,7 +33,9 @@
                 </div>
                 <div class="col-auto">
                     <button class="btn btn-primary px-5">
-                        <h5 class="m-0 p-0">View Jobs</h5>
+                        <h5 class="m-0 p-0">
+                            <a class="nav-link" asp-area="" asp-controller="Applicant" asp-action="JobDescription">View Job</a>
+                        </h5>
                     </button>
                 </div>
             </div>
@@ -67,7 +69,9 @@
                 </div>
                 <div class="col-auto">
                     <button class="btn btn-primary px-5">
-                        <h5 class="m-0 p-0">View Jobs</h5>
+                        <h5 class="m-0 p-0">
+                            <a class="nav-link" asp-area="" asp-controller="Applicant" asp-action="JobDescription">View Job</a>
+                        </h5>
                     </button>
                 </div>
             </div>

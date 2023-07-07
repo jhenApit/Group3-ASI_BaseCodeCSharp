@@ -1,5 +1,4 @@
 ﻿using Basecode.Data.Dtos;
-using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -56,7 +55,8 @@ namespace Basecode.WebApp.Controllers
             {
                 Name = hrEmployee.Name,
                 Email = hrEmployee.Email,
-                Password = hrEmployee.Password
+                Password = hrEmployee.Password,
+                Id = hrEmployee.Id
             };
 
             // Pass the HREmployeeUpdationDto as the model to the view

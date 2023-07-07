@@ -30,7 +30,7 @@ namespace Basecode.Services.Services
             else if (!hrEmployee.Email.Contains("@asi-dev2.com"))
             {
                 logContent.Result = false;
-                logContent.ErrorCode = "INVALID";
+                logContent.ErrorCode = "ERR! Invalid Email";
                 logContent.Message = "Email is not Alliance Email";
             }
             else if (hrEmployee.Email.Length > 50){

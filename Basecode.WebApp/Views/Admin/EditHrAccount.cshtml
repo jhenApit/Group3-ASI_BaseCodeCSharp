@@ -2,10 +2,9 @@
 @model HREmployeeUpdationDto
 @{
     ViewData["EditHrAccount"] = "EDIT HR EMPLOYEE ACCOUNT INFORMATION";
-    Layout = null;
-
+    Layout = "_Validation";
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/EditAccount.css" />
+    <link rel="stylesheet" href="~/css/CreateAccount.css" />
     <script src="https://kit.fontawesome.com/b68ff1da95.js" crossorigin="anonymous"></script>
 }
 
@@ -67,24 +66,33 @@
                             <input type="hidden" asp-for="Id" />
                             <div class="form-group">
                                 <label for="name">Name</label>
-                                <input type="text" id="name" class="form-control" asp-for="Name" />
-                                <span class="text-danger"></span>
+                                <div style="width:90%">
+                                    <input type="text" id="name" class="form-control" asp-for="Name" />
+                                    <span asp-validation-for="Name" class="text-danger w-100"></span>
+                                </div>
+                                
                             </div>
 
                             <div class="form-group">
                                 <label for="email">
                                     Email Address
                                 </label>
-                                <input type="email" id="email" class="form-control" asp-for="Email" />
-                                <span class="text-danger"></span>
+                                <div style="width:90%">
+                                    <input type="email" id="email" class="form-control" asp-for="Email" />
+                                    <span asp-validation-for="Email" class="text-danger w-100"></span>
+                                </div>
+                                
                             </div>
 
                             <div class="form-group">
                                 <label for="password">
                                     Password
                                 </label>
-                                <input type="password" id="password" class="form-control" asp-for="Password" />
-                                <span class="text-danger"></span>
+                                <div style="width:90%">
+                                    <input type="password" id="password" class="form-control" asp-for="Password" />
+                                    <span asp-validation-for="Password" class="text-danger w-100"></span>
+                                </div>
+                                
                             </div>
 
                             <button type="submit" class="save-changes-button">
@@ -97,3 +105,10 @@
         </div>
     </div>
 </body>
+
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

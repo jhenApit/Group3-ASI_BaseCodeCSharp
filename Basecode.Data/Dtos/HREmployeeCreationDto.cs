@@ -11,7 +11,7 @@ namespace Basecode.Data.Dtos
     {
         [Required(ErrorMessage = "The 'Name' field is required")]
         [StringLength(150, MinimumLength = 2, ErrorMessage = "Name must be at least 2 characters.")]
-        [RegularExpression(@"^(?![\s.]+$)[a-zA-Z\s.]*$", ErrorMessage = "Name must contain only letters")]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Name must contain only letters")]
         public string Name { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "The 'Email' field is required")]

@@ -1,9 +1,10 @@
 ﻿@{
-    ViewData["ApplicationForm"] = "Application Form";
+    ViewData["Title"] = "Application Form";
+    Layout = null;
     <link rel="stylesheet" href="~/css/application-form.css" />
 }
 
-<div style="background-color: white; margin-top: 0; padding-top: 50px;">
+<div class="application-form" style="background-color: white; padding-top: 50px; width: 100%">
     <div class="job-title">
         <p>Software Engineer</p>
     </div>
@@ -11,7 +12,7 @@
         <div class="application-nav">
             <ul>
                 <li>
-                    <a asp-controller="Applicant" asp-action="TrackApplication">Job Details</a>
+                    <a asp-controller="Applicant" asp-action="ApplicationForm">Job Details</a>
                 </li>
                 <li>
                     <a class="active">Application</a>
@@ -21,28 +22,60 @@
     </nav>
     <div class="form-container">
         <form method="post" enctype="multipart/form-data">
+            
             <div class="text-header">Resume</div>
-            <div class="form-content">
-                <label for="resume">Upload a file:</label>
-                <input class="resume-input" id="resume" type="file" name="resume" />
+            <div class="file-drop">
+                <div>
+                    <img src="/images/icons/resume-upload.png" />
+                </div>
+                <input type="file" id="resumeFile" name="resumeFile" class="file-input" onchange="displayFileName()" />
+                <label for="resumeFile" class="file-label">
+                    <span id="fileText" class="file-text">Choose a file or Drag it here</span>
+                </label>
+
+                <script>
+                    function displayFileName() {
+                        var fileInput = document.getElementById("resumeFile");
+                        var fileName = fileInput.files[0].name;
+                        var fileText = document.querySelector(".file-label .file-text");
+                        fileText.textContent = fileName;
+                    }
+                </script>
             </div>
 
             <div class="text-header">Personal Information</div>
             <div class="form-content">
                 <div class="input-container">
                     <label>Name:</label>
-                    <input class="input" id="firstname" type="text" name="firstname" placeholder="First Name" />
-                    <input class="input" id="middlename" type="text" name="middlename" placeholder="Middle Name" />
-                    <input class="input" id="lastname" type="text" name="lastname" placeholder="Last Name" />
+                    <input class="multiple-input" id="firstname" type="text" name="firstname" placeholder="First Name" />
+                    <input class="multiple-input" id="middlename" type="text" name="middlename" placeholder="Middle Name" />
+                    <input class="multiple-input" id="lastname" type="text" name="lastname" placeholder="Last Name" />
                 </div>
                 <div class="input-container">
                     <label for="birthday">Birthday:</label>
                     <input class="input" id="birthday" type="date" name="birthday" />
                 </div>
                 <div class="input-container">
-                    <label for="resume">Photo:</label>
-                    <input class="resume-input" id="resume" type="file" name="resume" />
+                    <label for="photo">Photo (optional):</label>
                 </div>
+                <div class="image-file-drop">
+                    <div>
+                        <img src="/images/icons/upload-image.png" />
+                    </div>
+                    <input type="file" id="photo" name="photo" class="image-file-input" onchange="displayImageName('photo', 'photoText')" />
+                    <label for="photo" class="image-file-label">
+                        <span id="photoText" class="image-file-text">Choose a file <br /> or <br /> Drag it here</span>
+                    </label>
+                </div>
+
+                <script>
+                    function displayImageName(photoInputId, photoTextId) {
+                        var photoInput = document.getElementById(photoInputId);
+                        var photoFileName = photoInput.files[0].name;
+                        var photoText = document.getElementById(photoTextId);
+                        photoText.textContent = photoFileName;
+                    }
+                </script>
             </div>
 
             <div class="text-header">Contact Information</div>
@@ -52,10 +85,10 @@
                     <input class="input" id="street" type="text" name="street" placeholder="Street" />
                 </div>
                 <div class="input-container">
-                    <label></label>
-                    <input class="input" id="city" type="text" name="city" placeholder="City" />
-                    <input class="input" id="province" type="text" name="province" placeholder="Province / State" />
-                    <input class="input" id="zipcode" type="text" name="zipcode" placeholder="Postal / Zipcode" />
+                    <label class="label-space"></label>
+                    <input class="multiple-input" id="city" type="text" name="city" placeholder="City" />
+                    <input class="multiple-input" id="province" type="text" name="province" placeholder="Province / State" />
+                    <input class="multiple-input" id="zipcode" type="text" name="zipcode" placeholder="Postal / Zipcode" />
                 </div>
                 <div class="input-container">
                     <label>Phone number:</label>
@@ -127,21 +160,17 @@
                         <option value="Others">Others</option>
                     </select>
                 </div>
-                <div class="input-container" id="other-input" style="display: none;">
-                    <input class="input" type="text" name="other-option" placeholder="Please specify" />
+                <div class="input-container-others" id="other-input" style="display: none;">
+                    <input type="text" name="other-option" placeholder="Please specify" />
                 </div>
             </div>
 
             <script>
-                var selectElement = document.getElementById("additional");
-                var otherInputDiv = document.getElementById("other-input");
+                var checkbox = document.getElementById("additional");
+                var inputContainer = document.getElementById("other-input");
 
-                selectElement.addEventListener("change", function () {
-                    if (selectElement.value === "Others") {
-                        otherInputDiv.style.display = "block";
-                    } else {
-                        otherInputDiv.style.display = "none";
-                    }
+                checkbox.addEventListener("change", function () {
+                    inputContainer.style.display = checkbox.value === "Others" ? "block" : "none";
                 });
             </script>
 
@@ -152,7 +181,7 @@
             </div>
 
             <button class="submit-button" type="button">
-                <a asp-controller="Login" asp-action="Index">Submit</a>
+                <a asp-controller="Applicant" asp-action="ApplicationForm">Submit</a>
             </button>
         </form>
     </div>

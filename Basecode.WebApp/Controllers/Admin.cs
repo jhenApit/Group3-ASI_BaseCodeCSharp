@@ -42,7 +42,6 @@ namespace Basecode.WebApp.Controllers
             // Create an instance of HREmployeeUpdationDto and populate it with data
             var hrEmployeeDto = new HREmployeeUpdationDto
             {
-                Id = id,
                 Name = hrEmployee.Name,
                 Email = hrEmployee.Email,
                 Password = hrEmployee.Password

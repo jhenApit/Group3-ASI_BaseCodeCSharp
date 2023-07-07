@@ -72,15 +72,14 @@ namespace Basecode.Services.Services
             return _repository.GetByEmail(email);
         }
 
+        /// <summary>
+        /// Log the error content upon creating the HR account
+        /// </summary>
+        /// <param name="hrEmployee">HREmployeeCreationDto</param>
+        /// <returns>LogContent upon creating a HR Account</returns>
         public LogContent CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
-            if (hrEmployee.Name.Length < 2)
-            {
-                _logContent.Result = false;
-                _logContent.ErrorCode = "ERR! Length Validation";
-                _logContent.Message = "Name must be at least 2 characters long";
-            }
-            else if (hrEmployee.Name.Length < 2)
+            if (hrEmployee.Name.Length > 150)
             {
                 _logContent.Result = false;
                 _logContent.ErrorCode = "ERR! Length Validation";
@@ -97,12 +96,6 @@ namespace Basecode.Services.Services
                 _logContent.Result = false;
                 _logContent.ErrorCode = "ERR! Length Validation ";
                 _logContent.Message = "Email cannot be longer than 50 characters long";
-            }
-            else if (hrEmployee.Password!.Length < 6)
-            {
-                _logContent.Result = false;
-                _logContent.ErrorCode = "ERR! Length Validation";
-                _logContent.Message = "Password must be at least 6 characters long";
             }
             else if (hrEmployee.Password!.Length > 30)
             {

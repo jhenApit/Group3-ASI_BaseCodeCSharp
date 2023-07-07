@@ -26,12 +26,17 @@ namespace Basecode.WebApp.Controllers
             var data = _service.RetrieveAll();
             return View(data);
         }
+        public IActionResult CreateHrAccount()
+        {
+            return View();
+        }
 
         /// <summary>
         /// Creates account for the HR.
         /// </summary>
         /// <param name="hrEmployee">Details of the HR employee</param>
         /// <returns>Newly created HR account</returns>
+        [HttpPost]
         public IActionResult CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
             var data = _service.CreateHrAccount(hrEmployee);
@@ -44,6 +49,11 @@ namespace Basecode.WebApp.Controllers
             return RedirectToAction("HrList");
         }
 
+        /// <summary>
+        /// Edit Hr Account view
+        /// </summary>
+        /// <param name="id">id of the selected account</param>
+        /// <returns>edithraccount view</returns>
         public IActionResult EditHrAccount(int id)
         {
             // Retrieve the HR employee from the database using the ID
@@ -62,6 +72,11 @@ namespace Basecode.WebApp.Controllers
             return View(hrEmployeeDto);
         }
 
+        /// <summary>
+        /// Updates account in the DB
+        /// </summary>
+        /// <param name="hrEmployee">Details of the HR employee account</param>
+        /// <returns>redirects to hrlist if successful/returns validations for errors</returns>
         [HttpPost]
         public IActionResult EditHrAccount(HREmployeeUpdationDto hrEmployee)
         {
@@ -69,7 +84,6 @@ namespace Basecode.WebApp.Controllers
             {
                 // Perform account update logic
                 _service.Update(hrEmployee);
-
                 return RedirectToAction("HrList");
             }
 
@@ -81,19 +95,5 @@ namespace Basecode.WebApp.Controllers
             _service.SemiDelete(id);
             return RedirectToAction("HrList");
         }
-
-        public IActionResult Update(HREmployeeUpdationDto hrEmployee)
-        {
-            _service.Update(hrEmployee);
-            return RedirectToAction("HrList");
-        }
-
-        [HttpPost]
-        public IActionResult Add(HREmployeeCreationDto hrEmployee)
-        {
-            _service.Add(hrEmployee);
-            return RedirectToAction("HrList");
-        }
-
     }
 }

@@ -12,8 +12,8 @@ namespace Basecode.Data.Models
         public int ApplicantId { get; set; }
         public string? Street { get; set; }
         public string? City { get; set;}
-        public Type? Province { get; set; }
-        public Type? ZipCode { get; set; }
+        public string? Province { get; set; }
+        public string? ZipCode { get; set; }
 
     }
 }

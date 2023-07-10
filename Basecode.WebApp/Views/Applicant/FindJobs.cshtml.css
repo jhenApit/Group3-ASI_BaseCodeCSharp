@@ -1,0 +1,47 @@
+﻿
+
+.vertical-center {
+    display: flex;
+    align-items: center;
+}
+
+a {
+    color: white;
+    text-decoration: none !important;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #FC1F22;
+    border-color: #AC1818;
+}
+
+.tags {
+    background-color: #D0D0D0;
+}
+
+h2 {
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.border-rounded {
+    border-radius: 1rem !important;
+    border: 1px solid black;
+}
+
+.text-bold {
+    font-weight: bold !important;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.text-italic {
+    font-style: italic !important;
+    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 0 !important;
+}
+
+.my-5 {
+    margin-top: 15vh !important;
+    margin-bottom: 8vh !important;
+}

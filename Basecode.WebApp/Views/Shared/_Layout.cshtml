@@ -10,13 +10,13 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-black border-bottom box-shadow mb-3 p-0 fixed-top">
+        <nav class="navbar navbar-expand-md navbar-toggleable-md navbar-light bg-black border-bottom box-shadow mb-3 p-0 fixed-top">
             <div class="container-fluid">
                 <a class="navbar-brand text-white me-3" asp-area="" asp-controller="Home" asp-action="Index"></a>
-                <div class="d-block d-sm-none col text-end">
+                <div class="d-block d-md-none col text-end">
                     <button type="button" class="btn btn-primary me-2"><a class="nav-link login-btn fw-bolder p-2 w-100" asp-area="" asp-controller="Login" asp-action="Index">LOGIN</a></button>
                 </div>
-                <div class="navbar-collapse d-sm-inline-flex justify-content-evenly">
+                <div class="navbar-collapse d-md-inline-flex justify-content-evenly">
                     <ul class="navbar-nav flex-grow-1 align-items-center">
                         <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("Index") ? "nav-selected" : "")">
                             <a class="nav-link fw-semibold mx-3" asp-area="" asp-controller="Home" asp-action="Index">HOME</a>
@@ -31,7 +31,7 @@
                             <a class="nav-link fw-semibold mx-3" asp-area="" asp-controller="Applicant" asp-action="ContactUs">CONTACT US</a>
                         </li>
                     </ul>
-                    <div class="d-none d-sm-block ms-auto text-end">
+                    <div class="d-none d-md-block ms-auto text-end">
                         <button type="button" class="btn btn-primary me-2"><a class="nav-link login-btn fw-bolder p-2 w-100" asp-area="" asp-controller="Login" asp-action="Index">LOGIN</a></button>
                     </div>
                 </div>

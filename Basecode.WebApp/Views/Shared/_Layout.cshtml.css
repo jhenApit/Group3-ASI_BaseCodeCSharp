@@ -35,10 +35,3 @@ button.accept-policy {
   white-space: nowrap;
   line-height: 60px;
 }
-
-.nav-item {
-    height: 5rem;
-    align-items: center;
-    display: flex;
-    text-align: center;
-}

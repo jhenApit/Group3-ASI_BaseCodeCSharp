@@ -10,8 +10,5 @@ namespace Basecode.Data.Interfaces
     public interface IApplicantRepository
     {
         Applicant GetById(int id);
-        IQueryable<Applicant> RetrieveAll();
-        Applicant GetByName(string name);
-        void Add(Applicant applicant);
     }
 }

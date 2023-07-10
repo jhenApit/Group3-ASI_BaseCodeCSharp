@@ -8,17 +8,16 @@ using Basecode.Data.Models;
 
 namespace Basecode.Data.Repositories
 {
-    public class ApplicantRepository : BaseRepository, IApplicantRepository
+    public class StatusRepository : BaseRepository,IStatusRepository
     {
         private readonly BasecodeContext _context;
-        public ApplicantRepository(IUnitOfWork unitOfWork, BasecodeContext context) : base(unitOfWork)
+        public StatusRepository(IUnitOfWork unitOfWork, BasecodeContext context) : base(unitOfWork)
         {
             _context = context;
         }
-
-        public Applicant GetById(int id)
+        public Status GetById(int id)
         {
-            return _context.Applicant.Find(id);
+            throw new NotImplementedException();
         }
     }
 }

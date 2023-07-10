@@ -113,32 +113,20 @@ namespace Basecode.Services.Services
 
         public LogContent EditHrAccount(HREmployeeUpdationDto hrEmployee)
         {
-            LogContent logContent = new LogContent();
+            var data = this.RetrieveAll();
 
-            if (hrEmployee.Name.Length > 150)
+            if (data.Any(e => e.Email == hrEmployee.Email))
             {
                 _logContent.Result = false;
-                _logContent.ErrorCode = "ERR! Length Validation";
-                _logContent.Message = "Name cannot be longer than 150 characters";
-            }
-            else if (!hrEmployee.Email.Contains("@asi-dev2.com"))
-            {
-                _logContent.Result = false;
-                _logContent.ErrorCode = "ERR! Invalid Email";
-                _logContent.Message = "Email is not Alliance Email";
-            }
-            else if (hrEmployee.Email.Length > 50)
-            {
-                _logContent.Result = false;
-                _logContent.ErrorCode = "ERR! Length Validation ";
-                _logContent.Message = "Email cannot be longer than 50 characters long";
+                _logContent.ErrorCode = "ERR! Email already exists";
+                _logContent.Message = "Edit Failed";
             }
             else
             {
-                logContent.Result = true;
+                _logContent.Result = true;
             }
 
-            return logContent;
+            return _logContent;
         }
     }
 }

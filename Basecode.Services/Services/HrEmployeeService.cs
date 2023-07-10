@@ -80,29 +80,21 @@ namespace Basecode.Services.Services
         /// <returns>LogContent upon creating a HR Account</returns>
         public LogContent CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
-            if (hrEmployee.Name.Length > 150)
+            if (IsNameValid(hrEmployee.Name) == false)
             {
                 _logContent.Result = false;
-                _logContent.ErrorCode = "ERR! Length Validation";
-                _logContent.Message = "Name cannot be longer than 150 characters";
-            }
-            else if (hrEmployee.Email.Length > 50)
-            {
-                _logContent.Result = false;
-                _logContent.ErrorCode = "ERR! Length Validation ";
-                _logContent.Message = "Email cannot be longer than 50 characters long";
-            }
-            else if (hrEmployee.Password!.Length > 30)
-            {
-                _logContent.Result = false;
-                _logContent.ErrorCode = "ERR! Length Validation";
-                _logContent.Message = "Password cannot be longer than 30 characters";
+                _logContent.ErrorCode = "ERR! Name Validation";
+                _logContent.Message = "Name is invalid";
             }
             else if (IsEmailValid(hrEmployee.Email) == false)
             {
                 _logContent.Result = false;
                 _logContent.ErrorCode = "ERR! Invalid Email";
                 _logContent.Message = "Email is not Alliance Email";
+            }
+            else
+            {
+                _logContent.Result = true;
             }
 
 

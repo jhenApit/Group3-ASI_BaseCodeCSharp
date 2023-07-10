@@ -1,4 +1,5 @@
 ﻿using Basecode.Data.Dtos;
+using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -34,14 +35,19 @@ namespace Basecode.WebApp.Controllers
         /// <returns>Newly created HR account</returns>
         public IActionResult CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
-            var data = _service.CreateHrAccount(hrEmployee);
-            if(!data.Result) 
+            if (ModelState.IsValid)
             {
-                _logger.Error(ErrorHandling.SetLog(data));
-                return View();
+                var data = _service.CreateHrAccount(hrEmployee);
+                if (!data.Result)
+                {
+                    _logger.Error(ErrorHandling.SetLog(data));
+                    return View(hrEmployee);
+                }
+                _service.Add(hrEmployee);
+                return RedirectToAction("HrList");
             }
-            _service.Add(hrEmployee);
-            return RedirectToAction("HrList");
+
+            return View(hrEmployee);
         }
 
         public IActionResult EditHrAccount(int id)

@@ -11,12 +11,10 @@ namespace Basecode.Data.Dtos
     {
         [Required(ErrorMessage = "The 'Name' field is required")]
         [StringLength(150, MinimumLength = 2, ErrorMessage = "Name must be at least 2 characters.")]
-        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Name must contain only letters")]
         public string Name { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "The 'Email' field is required")]
         [MaxLength(50, ErrorMessage = "Email cannot be longer than 50 characters")]
-        [RegularExpression(@"^[a-zA-Z0-9_.+-]+@asi-dev2\.com$", ErrorMessage = "Email is not Alliance Email")]
         public string Email { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "The 'Password' field is required")]

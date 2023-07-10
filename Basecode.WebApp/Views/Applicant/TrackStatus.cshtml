@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="~/css/TrackApplication.css">
 
 <div class="position-absolute top-50 start-50 translate-middle text-center">
-    <h1 class="text-center display-3 mt-5 font-weight-bold font-italic text-white">Track your <span style="color: #FF0000">application status</span> here!</h1>
     <div class="container">
         <form method="get" action="@Url.Action("TrackStatus", "Applicant")">
             <div class="search-container">
@@ -18,27 +17,27 @@
         </form>
     </div>
     <div class="container" style="background-color: #fff; border: 1px solid #ccc; padding: 20px; border-radius: 5px;">
-        <div class="row">
-            <div class="col">
+        <div class="col">
+            <div class="row">
                 <strong>ID:</strong>
             </div>
-            <div class="col">
+            <div class="row">
                 <strong>Status:</strong>
             </div>
-            <div class="col">
+            <div class="row">
                 <strong>Date:</strong>
             </div>
         </div>
         @if (Model != null)
         {
-            <div class="row">
-                <div class="col">
+            <div class="col">
+                <div class="row">
                     @Model.Id
                 </div>
-                <div class="col">
-                    @Model.StatusId
+                <div class="row">
+                    @Model.JobId
                 </div>
-                <div class="col">
+                <div class="row">
                     @Model.ApplicationDate
                 </div>
             </div>

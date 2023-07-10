@@ -1,0 +1,98 @@
+﻿* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Montserrat", sans-serif;
+    background-color: #F0F6F7;
+}
+
+.job-post-container {
+    background-color: white;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 20px 5px 20px;
+    overflow-x: hidden;
+}
+
+.job-post-header {
+    font-size: medium;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+}
+
+    .search-bar input {
+        margin-right: 15px;
+        padding: 10px;
+        width: calc(100vw - 60vw);
+        border-radius: 5px;
+    }
+
+    .search-bar button {
+        padding: 15px;
+        color: white;
+        background-color: red;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+    }
+
+        .search-bar button:hover {
+            background-color: #55729B;
+        }
+
+.table-container {
+    padding: 50px;
+}
+
+.table {
+    width: 90%;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    padding: 20px;
+}
+
+    .table th {
+        padding: 8px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+        background-color: #55729B;
+        color: white;
+        padding: 20px;
+        font-weight: bold;
+    }
+
+    .table td {
+        border-bottom: 1px solid #ddd;
+        padding: 5px;
+        text-align: center;
+        background-color: white;
+        color: black;
+        padding: 20px;
+        font-weight: normal;
+        align-items: center;
+    }
+
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.job-post-action-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+}

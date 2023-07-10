@@ -8,6 +8,7 @@
     <script src="https://kit.fontawesome.com/b68ff1da95.js" crossorigin="anonymous"></script>
 }
 
+
 <body>
     <div class="container-fluid h-100">
         <div class="flex-nowrap">
@@ -61,10 +62,15 @@
                             in your company.
                         </p>
                     </div>
-                    <div>
                         <form asp-action="EditHrAccount" method="POST">
                             <input type="hidden" asp-for="Id" />
                             <div class="container-fluid text-black w-50">
+                                @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                                {
+                                    <div class="alert alert-danger" role="alert">
+                                        @Html.Raw(ViewBag.ErrorMessage)
+                                    </div>
+                                }
                                 <div class="form-floating mb-3">
                                     <input asp-for="Name" type="text" class="form-control" id="floatingInput"
                                            placeholder="name">
@@ -92,7 +98,6 @@
                                 </div>
                             </div>
                         </form>
-                    </div>
                 </div>
             </div>
         </div>

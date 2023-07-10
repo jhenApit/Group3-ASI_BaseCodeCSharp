@@ -36,12 +36,19 @@ h1 {
     cursor: pointer;
 }
 
-.container-box {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 20px;
-    border-radius: 5px;
+.text-white {
+    color: #fff !important;
 }
 
+.font-italic {
+    font-style: italic !important;
+}
 
+.font-weight-bold {
+    font-weight: 700 !important;
+}
+
+.text-center {
+    text-align: center !important;
+}
 

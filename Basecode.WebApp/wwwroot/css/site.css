@@ -1,6 +1,77 @@
 html {
-  font-size: .75rem;
+    font-size: .75rem;
+    position: relative;
+    min-height: 100%;
 }
+
+body {
+    background: linear-gradient(rgba(17, 17, 17, 0.3), rgba(17, 17, 17, 1)), url(../images/landing-page.jpg) no-repeat center/cover;
+}
+
+.contactUs_body {
+    background: linear-gradient(rgba(64, 64, 64, 0.48), rgba(64, 64, 64, 0.48)), url(../images/contactUsBackground.jpg) no-repeat center/cover fixed;
+}
+
+.findJobs_body {
+    background: linear-gradient(rgba(255, 255, 255, 1), rgba(255, 255, 255, 1)) no-repeat center/cover;
+}
+
+#login_body {
+    background: url('../images/building.png') no-repeat center/cover fixed;
+}
+
+main {
+    padding-top: 9.375rem;
+}
+
+.nav-item {
+    border-bottom: 5px solid rgba(255, 255, 255, 0.01);
+    height: 5rem;
+    align-items: center;
+    display: flex;
+    text-align: center;
+}
+
+.nav-link {
+    color: white !important;
+}
+
+.nav-selected {
+    background: linear-gradient(rgba(50, 50, 50, 0), rgba(50, 50, 50, 1));
+    border-bottom: 5px solid red !important;
+}
+
+.navbar {
+    -webkit-transition: all .4s cubic-bezier(.39, .575, .565, 1);
+    transition: all .4s cubic-bezier(.39, .575, .565, 1);
+}
+
+.navbar-brand {
+    background: url(../images/asi-logo.svg) no-repeat;
+    margin: .5rem;
+    background-size: contain;
+    height: 3.5rem;
+    width: 15rem;
+}
+
+.custom-navbar {
+    background: #fff !important;
+    -webkit-transition: all .4s cubic-bezier(.39, .575, .565, 1);
+    transition: all .4s cubic-bezier(.39, .575, .565, 1);
+}
+
+    .custom-navbar .nav-selected {
+        background: linear-gradient(rgba(255, 255, 255, 0), rgba(224, 224, 224, 1));
+    }
+
+    .custom-navbar .navbar-brand {
+        background: url(../images/asi-logo-invert.svg) no-repeat;
+    }
+
+    .custom-navbar .nav-link,
+    .custom-navbar .login-btn {
+        color: black !important;
+    }
 
 @media (min-width: 960px) {
     html {
@@ -32,120 +103,3 @@ html {
         padding-top: 12rem !important;
     }
 }
-
-main {
-    padding-top: 9.375rem;
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb !important;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-    background: linear-gradient(rgba(17, 17, 17, 0.3), rgba(17, 17, 17, 1)), url(../images/landing-page.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-}
-
-.contactUs_body {
-    background: linear-gradient(rgba(64, 64, 64, 0.48), rgba(64, 64, 64, 0.48)), url(../images/contactUsBackground.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
-}
-
-.findJobs_body {
-    background: linear-gradient(rgba(255, 255, 255, 1), rgba(255, 255, 255, 1));
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-#login_body {
-  background-image: url('../images/building.png'); background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-}
-
-.nav-link {
-    color: white !important;
-}
-
-.custom-navbar .nav-link {
-    color: black !important;
-}
-
-.custom-navbar .login-btn {
-    color: white !important;
-}
-
-.nav-selected {
-    background: linear-gradient(rgba(50, 50, 50, 0), rgba(50, 50, 50, 1));
-    border-bottom: 5px solid red !important;
-}
-
-.nav-item {
-    border-bottom: 5px solid rgba(255,255,255,0.01);
-    height: 5rem;
-    align-items: center;
-    display: flex;
-    text-align: center;
-}
-
-.nav-link {
-    color: white !important;
-}
-
-.navbar {
-    -webkit-transition: all .4s cubic-bezier(.39,.575,.565,1);
-    transition: all .4s cubic-bezier(.39,.575,.565,1);
-}
-
-.navbar-brand {
-    margin: .5rem;
-    background: url(../images/asi-logo.svg) no-repeat;
-    background-size: contain;
-    height: 3.5rem;
-    width: 15rem;
-}
-
-.navbar-light .navbar-toggler  {
-    border-color: rgba(192, 192, 192, 0.55);
-}
-
-.navbar-light .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28192, 192, 192, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e")
-}
-
-.custom-navbar {
-    background: #fff !important;
-    -webkit-transition: all .4s cubic-bezier(.39,.575,.565,1);
-    transition: all .4s cubic-bezier(.39,.575,.565,1)
-}
-
-    .custom-navbar .nav-selected {
-        background: linear-gradient(rgba(255, 255, 255, 0), rgba(224, 224, 224, 1));
-        border-bottom: 5px solid red;
-    }
-
-    .custom-navbar .navbar-brand {
-        margin: .5rem;
-        background: url(../images/asi-logo-invert.svg) no-repeat;
-        background-size: contain;
-        height: 3.5rem;
-        width: 15rem;
-    }
-
-    .custom-navbar.navbar-light .navbar-toggler {
-        border-color: rgba(0, 0, 0, 0.55);
-    }
-
-    .custom-navbar.navbar-light .navbar-toggler-icon {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e")
-    }

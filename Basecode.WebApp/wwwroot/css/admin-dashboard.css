@@ -1,0 +1,15 @@
+﻿.main-content{
+    background: linear-gradient(rgba(17, 17, 17, 0.3), rgba(17, 17, 17, 1)), url(../images/landing-page.jpg);
+    height: 100vh;
+}
+
+.content {
+    height: 100%;
+}
+.text-center {
+    text-align: right;
+}
+
+a{
+    text-decoration: none;
+}

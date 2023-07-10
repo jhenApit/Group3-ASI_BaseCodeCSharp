@@ -26,6 +26,10 @@
     padding: 10px 14px;
 }
 
+.sidebar .header-container a {
+    text-decoration: none !important;
+}
+
 .sidebar .logo-details img {
     width: 50px;
     border-radius: 5px;
@@ -39,6 +43,7 @@
     padding-left: 8px;  
     flex-direction: column;
     margin-top: -5px;
+
 }
 
 .sidebar .logo-name .company-name {
@@ -178,6 +183,10 @@
 .sidebar .nav-links li .sub-menu a:hover {
     opacity: 1;
     color: #EC2224;
+}
+
+.clicked-sub-menu-item {
+    color: white;
 }
 
 .sidebar .nav-links li .sub-menu .link_name {

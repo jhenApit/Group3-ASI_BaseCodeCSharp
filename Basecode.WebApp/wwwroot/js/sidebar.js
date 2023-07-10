@@ -37,6 +37,11 @@ function toggleSubMenu(e) {
         }
     }
 
+    // If the clickedElement is already in a clicked state, return without toggling
+    if (clickedElement.classList.contains("clicked")) {
+        return;
+    }
+
     clickedElement.classList.toggle("clicked");
 }
 
@@ -55,26 +60,31 @@ function closeAllSubMenus() {
     openedArrowIcon = null;
 }
 
-function changeColorOnHover() {
-    this.classList.add("hovered");
-}
+function handleSubMenuItemClick(e) {
+    e.stopPropagation();
+    const subMenuItem = e.currentTarget;
+    const parentNavItem = subMenuItem.closest(".nav-item");
 
-function revertColorOnHover() {
-    this.classList.remove("hovered");
+    // Check if the parent nav item has a sub-menu
+    if (parentNavItem) {
+        const subMenu = parentNavItem.querySelector(".sub-menu");
+        if (subMenu) {
+            toggleSubMenu({ currentTarget: parentNavItem });
+        }
+    }
+
+    // Add the "clicked" class to the parent nav-item
+    parentNavItem.classList.add("clicked");
 }
 
 for (const item of navItems) {
     item.addEventListener("click", toggleSubMenu);
-    item.addEventListener("mouseenter", changeColorOnHover);
-    item.addEventListener("mouseleave", revertColorOnHover);
+
     const subMenuItems = item.querySelectorAll(".sub-menu-item");
     for (const subMenuItem of subMenuItems) {
-        subMenuItem.addEventListener("click", (e) => {
-            e.stopPropagation();
-        });
+        subMenuItem.addEventListener("click", handleSubMenuItemClick);
     }
 }
-
 // close and open the side bar
 let sidebar = document.querySelector(".sidebar");
 let sidebarBtn = document.querySelector(".bx-menu");

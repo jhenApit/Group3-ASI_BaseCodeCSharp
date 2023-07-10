@@ -1,11 +1,15 @@
 html {
-  font-size: 14px;
+  font-size: .75rem;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+@media (min-width: 960px) {
+    html {
+        font-size: 1rem;
+    }
+
+    .nav-link {
+        font-size: 1.25rem;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -21,7 +25,6 @@ body {
   background: linear-gradient(rgba(17, 17, 17, 0.3), rgba(17, 17, 17, 1)), url(../images/landing-page.jpg);
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100vh;
 }
 
 .contactUs_body {
@@ -43,57 +46,6 @@ body {
   background-size: cover;
 }
 
-
-.nav-selected {
-    background: linear-gradient(rgba(50, 50, 50, 0), rgba(50, 50, 50, 1));
-    border-bottom: 5px solid red !important;
-    padding-top: 1em;
-    padding-bottom: 1em;
-}
-
-.nav-item {
-    border-bottom: 5px solid rgba(255,255,255,0.01);
-    padding-top: 1em;
-    padding-bottom: 1em;
-}
-
-.nav-link {
-    color: white !important;
-}
-
-.navbar {
-    -webkit-transition: all .4s cubic-bezier(.39,.575,.565,1);
-    transition: all .4s cubic-bezier(.39,.575,.565,1)
-}
-
-.custom-navbar {
-    background: #fff !important;
-    -webkit-transition: all .4s cubic-bezier(.39,.575,.565,1);
-    transition: all .4s cubic-bezier(.39,.575,.565,1)
-}
-
-    .custom-navbar .nav-selected {
-        background: linear-gradient(rgba(255, 255, 255, 0), rgba(224, 224, 224, 1));
-        border-bottom: 5px solid red;
-        padding-top: 1em;
-        padding-bottom: 1em;
-    }
-
-.navbar-brand {
-    background: url(../images/asi-logo.svg) no-repeat;
-    background-size: contain;
-    height: 55px;
-    width: 187px;
-    text-indent: -99999px;
-}
-
-.navbar.custom-navbar .navbar-brand {
-    background: url(../images/asi-logo-invert.svg) no-repeat;
-    background-size: contain;
-    height: 55px;
-    width: 187px
-}
-
 .nav-link {
     color: white !important;
 }
@@ -105,3 +57,65 @@ body {
 .custom-navbar .login-btn {
     color: white !important;
 }
+
+.nav-selected {
+    background: linear-gradient(rgba(50, 50, 50, 0), rgba(50, 50, 50, 1));
+    border-bottom: 5px solid red !important;
+}
+
+.nav-item {
+    border-bottom: 5px solid rgba(255,255,255,0.01);
+}
+
+.nav-link {
+    color: white !important;
+}
+
+.navbar {
+    -webkit-transition: all .4s cubic-bezier(.39,.575,.565,1);
+    transition: all .4s cubic-bezier(.39,.575,.565,1)
+}
+
+.navbar-brand {
+    margin: .5rem;
+    background: url(../images/asi-logo.svg) no-repeat;
+    background-size: contain;
+    height: 3.5rem;
+    width: 15rem;
+}
+
+.navbar-light .navbar-toggler  {
+    border-color: rgba(192, 192, 192, 0.55);
+}
+
+.navbar-light .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28192, 192, 192, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e")
+}
+
+.custom-navbar {
+    background: #fff !important;
+    -webkit-transition: all .4s cubic-bezier(.39,.575,.565,1);
+    transition: all .4s cubic-bezier(.39,.575,.565,1)
+}
+
+    .custom-navbar .nav-selected {
+        background: linear-gradient(rgba(255, 255, 255, 0), rgba(224, 224, 224, 1));
+        border-bottom: 5px solid red;
+    }
+
+    .custom-navbar .navbar-brand {
+        margin: .5rem;
+        background: url(../images/asi-logo-invert.svg) no-repeat;
+        background-size: contain;
+        height: 3.5rem;
+        width: 15rem;
+    }
+
+    .custom-navbar.navbar-light .navbar-toggler {
+        border-color: rgba(0, 0, 0, 0.55);
+    }
+
+    .custom-navbar.navbar-light .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e")
+    }
+

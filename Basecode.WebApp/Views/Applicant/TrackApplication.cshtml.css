@@ -1,4 +1,4 @@
-h1 {
+﻿h1 {
     text-align: center;
     font-size: 40px;
     margin-top: 20px;
@@ -18,23 +18,23 @@ h1 {
     font-family: 'Montserrat', sans-serif;
 }
 
-.search-container input[type="text"] {
-    padding: 8px;
-    border: none;
-    border-radius: 20px 0 0 20px;
-    outline: none;
-    flex: 1;
-    font-style: italic;
-}
+    .search-container input[type="text"] {
+        padding: 8px;
+        border: none;
+        border-radius: 20px 0 0 20px;
+        outline: none;
+        flex: 1;
+        font-style: italic;
+    }
 
-.search-container button[type="submit"] {
-    padding: 8px 16px;
-    background-color: #FF0000;
-    color: #fff;
-    border: none;
-    border-radius: 0 20px 20px 0;
-    cursor: pointer;
-}
+    .search-container button[type="submit"] {
+        padding: 8px 16px;
+        background-color: #FF0000;
+        color: #fff;
+        border: none;
+        border-radius: 0 20px 20px 0;
+        cursor: pointer;
+    }
 
 .text-white {
     color: #fff !important;
@@ -51,4 +51,3 @@ h1 {
 .text-center {
     text-align: center !important;
 }
-

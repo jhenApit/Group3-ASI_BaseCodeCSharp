@@ -8,12 +8,32 @@ html {
     }
 
     .nav-link {
-        font-size: 1.25rem;
+        font-size: 1.2rem;
     }
 }
 
+@media (max-width: 576px) {
+    .navbar-nav {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .nav-item {
+        width: 100%;
+        justify-content: center;
+    }
+
+    main {
+        padding-top: 12rem !important;
+    }
+}
+
+main {
+    padding-top: 9.375rem;
+}
+
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb !important;
 }
 
 html {
@@ -22,9 +42,10 @@ html {
 }
 
 body {
-  background: linear-gradient(rgba(17, 17, 17, 0.3), rgba(17, 17, 17, 1)), url(../images/landing-page.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
+    background: linear-gradient(rgba(17, 17, 17, 0.3), rgba(17, 17, 17, 1)), url(../images/landing-page.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 .contactUs_body {
@@ -32,6 +53,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
+    background-position: center;
 }
 
 .findJobs_body {
@@ -73,7 +95,7 @@ body {
 
 .navbar {
     -webkit-transition: all .4s cubic-bezier(.39,.575,.565,1);
-    transition: all .4s cubic-bezier(.39,.575,.565,1)
+    transition: all .4s cubic-bezier(.39,.575,.565,1);
 }
 
 .navbar-brand {

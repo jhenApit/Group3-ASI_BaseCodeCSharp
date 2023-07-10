@@ -36,29 +36,9 @@ button.accept-policy {
   line-height: 60px;
 }
 
-main {
-    padding-top: 9.375rem;
-}
-
 .nav-item {
     height: 5rem;
     align-items: center;
     display: flex;
     text-align: center;
-}
-
-.navbar-collapse {
-    height: 100%;
-}
-
-.nav-link {
-    color: white !important;
-}
-
-.custom-navbar .nav-link {
-    color: black !important;
-}
-
-.custom-navbar .login-btn {
-    color: white !important;
 }

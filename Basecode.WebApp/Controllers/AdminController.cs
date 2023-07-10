@@ -57,12 +57,7 @@ namespace Basecode.WebApp.Controllers
                 Password = hrEmployee.Password,
                 Id = hrEmployee.Id
             };
-            var data = _service.EditHrAccount(hrEmployeeDto);
-            if (data.Result)
-            {
-                _logger.Error(ErrorHandling.SetLog(data));
-                return View(hrEmployeeDto);
-            }
+
             // Pass the HREmployeeUpdationDto as the model to the view
             return View(hrEmployeeDto);
         }
@@ -70,21 +65,28 @@ namespace Basecode.WebApp.Controllers
         [HttpPost]
         public IActionResult EditHrAccount(HREmployeeUpdationDto hrEmployee)
         {
-            var data = _service.EditHrAccount(hrEmployee);
-            if(!data.Result)
-            {
-                _logger.Error(ErrorHandling.SetLog(data));
-                return View(hrEmployee);
-            }
-            else if (ModelState.IsValid)
-            {
-                // Perform account update logic
-                _service.Update(hrEmployee);
+            var origHrEmployee = _service.GetById(hrEmployee.Id);
 
-                return RedirectToAction("HrList");
+            if (hrEmployee.Email != origHrEmployee.Email) 
+            { 
+                var data = _service.EditHrAccount(hrEmployee);
+                if(!data.Result)
+                {
+                    _logger.Error(ErrorHandling.SetLog(data));
+
+                    ViewBag.ErrorMessage = data.Message;
+
+                    return View("EditHrAccountView", hrEmployee);
+                }
+                else if (ModelState.IsValid)
+                {
+                    // Perform account update logic
+                    _service.Update(hrEmployee);
+                    return RedirectToAction("HrList");
+                }
             }
 
-            return View(hrEmployee);
+            return RedirectToAction("HrList");
         }
 
         public IActionResult DeleteHrAccount(int id)

@@ -23,16 +23,6 @@ namespace Basecode.Data.Repositories
             _context.SaveChanges();
         }
 
-        public void Delete(int id)
-        {
-            var data = _context.CharacterReferences.Find(id);
-            if (data != null)
-            {
-                _context.CharacterReferences.Remove(data);
-                _context.SaveChanges();
-            }
-        }
-
         public CharacterReferences GetByName(string name)
         {
             return _context.CharacterReferences.FirstOrDefault(e => e.Name == name);
@@ -46,12 +36,6 @@ namespace Basecode.Data.Repositories
         public IQueryable<CharacterReferences> RetrieveAll()
         {
             return this.GetDbSet<CharacterReferences>();
-        }
-
-        public void Update(CharacterReferences characterReferences)
-        {
-            _context.Entry(characterReferences).State = EntityState.Modified;
-            _context.SaveChanges();
         }
     }
 }

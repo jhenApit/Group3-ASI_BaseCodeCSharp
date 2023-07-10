@@ -22,16 +22,6 @@ namespace Basecode.Data.Repositories
             _context.SaveChanges();
         }
 
-        public void Delete(int id)
-        {
-            var data = _context.Addresses.Find(id);
-            if (data != null)
-            {
-                _context.Addresses.Remove(data);
-                _context.SaveChanges();
-            }
-        }
-
         public Address GetByCity(string city)
         {
             return _context.Addresses.FirstOrDefault(e => e.City == city);
@@ -45,12 +35,6 @@ namespace Basecode.Data.Repositories
         public IQueryable<Address> RetrieveAll()
         {
             return this.GetDbSet<Address>();
-        }
-
-        public void Update(Address address)
-        {
-            _context.Entry(address).State = EntityState.Modified;
-            _context.SaveChanges();
         }
     }
 }

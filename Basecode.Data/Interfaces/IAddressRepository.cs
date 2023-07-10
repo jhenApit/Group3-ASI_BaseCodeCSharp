@@ -13,7 +13,5 @@ namespace Basecode.Data.Interfaces
         Address GetByCity(string city);
         void Add(Address address);
         Address GetById(int id);
-        void Update(Address address);
-        void Delete(int id);
     }
 }

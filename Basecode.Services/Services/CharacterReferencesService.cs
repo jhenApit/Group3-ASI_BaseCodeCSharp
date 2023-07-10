@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using Basecode.Data.Dtos.CharacterReferences;
+using Basecode.Data.Dtos;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
@@ -37,24 +37,6 @@ namespace Basecode.Services.Services
         public CharacterReferences GetById(int id)
         {
             return _repository.GetById(id);
-        }
-
-        public void Update(CharacterReferencesUpdationDto characterReferences)
-        {
-            var CharacterReferencesModel = _mapper.Map<CharacterReferences>(characterReferences);
-
-            // Update only the properties that should be modified
-            CharacterReferencesModel.Name = characterReferences.Name;
-            CharacterReferencesModel.Relationship = characterReferences.Relationship;
-            CharacterReferencesModel.Email = characterReferences.Email;
-            CharacterReferencesModel.MobileNumber = characterReferences.MobileNumber;
-
-            _repository.Update(CharacterReferencesModel);
-        }
-
-        public void Delete(int id)
-        {
-            _repository.Delete(id);
         }
 
         public CharacterReferences GetByName(string name)

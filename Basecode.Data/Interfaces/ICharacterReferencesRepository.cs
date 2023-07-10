@@ -13,7 +13,5 @@ namespace Basecode.Data.Interfaces
         CharacterReferences GetByName(string name);
         void Add(CharacterReferences characterReferences);
         CharacterReferences GetById(int id);
-        void Update(CharacterReferences characterReferences);
-        void Delete(int id);
     }
 }

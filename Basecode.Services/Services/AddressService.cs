@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Basecode.Data.Dtos;
-using Basecode.Data.Dtos.Address;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
+using Basecode.Services.Interfaces;
 using static Basecode.Services.Services.ErrorHandling;
 
 namespace Basecode.Services.Services
@@ -38,24 +38,6 @@ namespace Basecode.Services.Services
         public Address GetById(int id)
         {
             return _repository.GetById(id);
-        }
-
-        public void Update(AddressUpdationDto Address)
-        {
-            var AddressModel = _mapper.Map<Address>(Address);
-
-            // Update only the properties that should be modified
-            AddressModel.ZipCode = Address.ZipCode;
-            AddressModel.City = Address.City;
-            AddressModel.Province = Address.Province;
-            AddressModel.Street = Address.Street;
-
-            _repository.Update(AddressModel);
-        }
-
-        public void Delete(int id)
-        {
-            _repository.Delete(id);
         }
 
         public Address GetByCity(string city)

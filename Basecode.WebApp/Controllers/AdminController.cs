@@ -44,7 +44,7 @@ namespace Basecode.WebApp.Controllers
             return RedirectToAction("HrList");
         }
 
-        public IActionResult EditHrAccount(int id)
+        public IActionResult EditHrAccountView(int id)
         {
             // Retrieve the HR employee from the database using the ID
             var hrEmployee = _service.GetById(id);
@@ -57,7 +57,12 @@ namespace Basecode.WebApp.Controllers
                 Password = hrEmployee.Password,
                 Id = hrEmployee.Id
             };
-
+            var data = _service.EditHrAccount(hrEmployeeDto);
+            if (data.Result)
+            {
+                _logger.Error(ErrorHandling.SetLog(data));
+                return View(hrEmployeeDto);
+            }
             // Pass the HREmployeeUpdationDto as the model to the view
             return View(hrEmployeeDto);
         }
@@ -65,7 +70,13 @@ namespace Basecode.WebApp.Controllers
         [HttpPost]
         public IActionResult EditHrAccount(HREmployeeUpdationDto hrEmployee)
         {
-            if (ModelState.IsValid)
+            var data = _service.EditHrAccount(hrEmployee);
+            if(!data.Result)
+            {
+                _logger.Error(ErrorHandling.SetLog(data));
+                return View(hrEmployee);
+            }
+            else if (ModelState.IsValid)
             {
                 // Perform account update logic
                 _service.Update(hrEmployee);

@@ -80,13 +80,7 @@ namespace Basecode.Services.Services
         /// <returns>LogContent upon creating a HR Account</returns>
         public LogContent CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
-            if (IsNameValid(hrEmployee.Name) == false)
-            {
-                _logContent.Result = false;
-                _logContent.ErrorCode = "ERR! ";
-                _logContent.Message = "Invalid Name";
-            }
-            else if (hrEmployee.Name.Length > 150)
+            if (hrEmployee.Name.Length > 150)
             {
                 _logContent.Result = false;
                 _logContent.ErrorCode = "ERR! Length Validation";
@@ -118,13 +112,13 @@ namespace Basecode.Services.Services
         public bool IsNameValid(string name)
         {
             string pattern = @"^[a-zA-Z\s]+$";
-            return Regex.IsMatch(pattern, name);
+            return Regex.IsMatch(name, pattern);
         }
 
         public bool IsEmailValid(string email)
         {
             string pattern = @"^[a-zA-Z0-9_.+-]+@asi-dev2\.com$";
-            return Regex.IsMatch(pattern, email);
+            return Regex.IsMatch(email, pattern);
         }
     }
 }

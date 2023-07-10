@@ -12,7 +12,7 @@ namespace Basecode.Services.Interfaces
     public interface IAddressService
     {
         List<Address> RetrieveAll();
-        Address GetByEmail(string email);
+        Address GetByCity(string city);
         void Add(AddressCreationDto address);
         Address GetById(int id);
         void Update(AddressUpdationDto address);

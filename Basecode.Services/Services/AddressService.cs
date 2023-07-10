@@ -32,12 +32,6 @@ namespace Basecode.Services.Services
         public void Add(AddressCreationDto AddressDto)
         {
             var AddressModel = _mapper.Map<Address>(AddressDto);
-            AddressModel.CreatedBy = System.Environment.UserName;
-            AddressModel.CreatedDate = DateTime.Now;
-            AddressModel.ModifiedBy = System.Environment.UserName;
-            AddressModel.ModifiedDate = DateTime.Now;
-            AddressModel.IsDeleted = false;
-
             _repository.Add(AddressModel);
         }
 
@@ -51,11 +45,10 @@ namespace Basecode.Services.Services
             var AddressModel = _mapper.Map<Address>(Address);
 
             // Update only the properties that should be modified
-            AddressModel.Name = Address.Name;
-            AddressModel.Email = Address.Email;
-            AddressModel.Password = Address.Password;
-            AddressModel.ModifiedBy = System.Environment.UserName;
-            AddressModel.ModifiedDate = DateTime.Now;
+            AddressModel.ZipCode = Address.ZipCode;
+            AddressModel.City = Address.City;
+            AddressModel.Province = Address.Province;
+            AddressModel.Street = Address.Street;
 
             _repository.Update(AddressModel);
         }

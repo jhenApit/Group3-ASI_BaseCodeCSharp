@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Basecode.Data.Repositories
 {
@@ -18,33 +19,39 @@ namespace Basecode.Data.Repositories
         }
         public void Add(CharacterReferences characterReferences)
         {
-            _context.Addresses.Add(address);
+            _context.CharacterReferences.Add(characterReferences);
             _context.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public CharacterReferences GetById(int id)
-        {
-            throw new NotImplementedException();
+            var data = _context.CharacterReferences.Find(id);
+            if (data != null)
+            {
+                _context.CharacterReferences.Remove(data);
+                _context.SaveChanges();
+            }
         }
 
         public CharacterReferences GetByName(string name)
         {
-            throw new NotImplementedException();
+            return _context.CharacterReferences.FirstOrDefault(e => e.Name == name);
+        }
+
+        public CharacterReferences GetById(int id)
+        {
+            return _context.CharacterReferences.FirstOrDefault(e => e.Id == id);
         }
 
         public IQueryable<CharacterReferences> RetrieveAll()
         {
-            throw new NotImplementedException();
+            return this.GetDbSet<CharacterReferences>();
         }
 
         public void Update(CharacterReferences characterReferences)
         {
-            throw new NotImplementedException();
+            _context.Entry(characterReferences).State = EntityState.Modified;
+            _context.SaveChanges();
         }
     }
 }

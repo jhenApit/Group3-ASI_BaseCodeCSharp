@@ -3,6 +3,7 @@ using Basecode.Data.Dtos;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
+using System.Text.RegularExpressions;
 
 namespace Basecode.Services.Services
 {
@@ -79,17 +80,17 @@ namespace Basecode.Services.Services
         /// <returns>LogContent upon creating a HR Account</returns>
         public LogContent CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
-            if (hrEmployee.Name.Length > 150)
+            if (IsNameValid(hrEmployee.Name) == false)
+            {
+                _logContent.Result = false;
+                _logContent.ErrorCode = "ERR! ";
+                _logContent.Message = "Invalid Name";
+            }
+            else if (hrEmployee.Name.Length > 150)
             {
                 _logContent.Result = false;
                 _logContent.ErrorCode = "ERR! Length Validation";
                 _logContent.Message = "Name cannot be longer than 150 characters";
-            }
-            else if (!hrEmployee.Email.Contains("@asi-dev2.com"))
-            {
-                _logContent.Result = false;
-                _logContent.ErrorCode = "ERR! Invalid Email";
-                _logContent.Message = "Email is not Alliance Email";
             }
             else if (hrEmployee.Email.Length > 50)
             {
@@ -103,12 +104,27 @@ namespace Basecode.Services.Services
                 _logContent.ErrorCode = "ERR! Length Validation";
                 _logContent.Message = "Password cannot be longer than 30 characters";
             }
-            else
+            else if (IsEmailValid(hrEmployee.Email) == false)
             {
-                _logContent.Result = true;
+                _logContent.Result = false;
+                _logContent.ErrorCode = "ERR! Invalid Email";
+                _logContent.Message = "Email is not Alliance Email";
             }
 
+
             return _logContent;
+        }
+
+        public bool IsNameValid(string name)
+        {
+            string pattern = @"^[a-zA-Z\s]+$";
+            return Regex.IsMatch(pattern, name);
+        }
+
+        public bool IsEmailValid(string email)
+        {
+            string pattern = @"^[a-zA-Z0-9_.+-]+@asi-dev2\.com$";
+            return Regex.IsMatch(pattern, email);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Basecode.Data.Dtos
         public int ApplicantId { get; set; }
         public string Street { get; set; } = string.Empty;
         public string City { get; set; } = string.Empty;
-        public Type? Province { get; set; } 
-        public Type? ZipCode { get; set; } 
+        public string? Province { get; set; } 
+        public string? ZipCode { get; set; } 
     }
 }

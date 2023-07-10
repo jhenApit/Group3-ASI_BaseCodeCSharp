@@ -25,15 +25,46 @@
     align-items: center;
     padding: 10px 14px;
 }
+.sidebar .header-container{
+    display: flex;
+    flex-direction: row;
+}
 
 .sidebar .header-container a {
     text-decoration: none !important;
 }
 
-.sidebar .logo-details img {
-    width: 50px;
-    border-radius: 5px;
+.sidebar .header-container .menu-icon {
+    left: 20px;
+    height: 77px;
+    display: flex;
+    align-items: center;
+    padding: 20px 5px;
+    width: max-content;
+    position: relative;
 }
+
+.sidebar.close .header-container .menu-icon {
+    left: 0px;
+    height: 77px;
+    display: flex;
+    align-items: center;
+    padding: 20px 5px;
+    width: max-content;
+    position: relative;
+}
+
+.sidebar .header-container .menu-icon .bx-menu {
+    color: #11101d;
+    font-size: 35px;
+    cursor: pointer;
+    font-weight: 300;
+}
+
+    .sidebar .logo-details img {
+        width: 50px;
+        border-radius: 5px;
+    }
 
 
 .sidebar .logo-details .logo-name{
@@ -42,8 +73,7 @@
     color: #fff;
     padding-left: 8px;  
     flex-direction: column;
-    margin-top: -5px;
-
+    margin-top: -10px;
 }
 
 .sidebar .logo-name .company-name {
@@ -53,7 +83,8 @@
 .sidebar .logo-name .company-type {
     font-size: 10px;
     font-weight: 400;
-    margin-top: -8px;
+    margin-top: -18px;
+    padding-left: 3px;
 }
 
 .sidebar .logo-details .logo_name {
@@ -264,21 +295,6 @@
 .sidebar.close ~ .main-content {
     left: 78px;
     width: calc(100% - 78px);
-}
-
-.main-content .menu-icon {
-    height: 70px;
-    display: flex;
-    align-items: center;
-    padding: 20px 5px;
-    width:max-content;
-}
-
-.main-content .menu-icon .bx-menu {
-    color: #11101d;
-    font-size: 35px;
-    cursor: pointer;
-    font-weight: 300;
 }
 
 @media only screen and (max-width: 400px) {

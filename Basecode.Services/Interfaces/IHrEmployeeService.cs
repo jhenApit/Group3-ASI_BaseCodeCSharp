@@ -23,5 +23,6 @@ namespace Basecode.Services.Interfaces
         public bool IsEmailValid(string email);
         public bool IsEmailValid(string email);
         public bool IsEmailValid(string email);
+        public LogContent EditHrAccount(HREmployeeUpdationDto hrEmployee);
     }
 }

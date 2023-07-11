@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Basecode.Data;
 using Basecode.Data.Dtos;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Basecode.Services.Services
 {
@@ -10,6 +12,7 @@ namespace Basecode.Services.Services
     {
         private readonly IHrEmployeeRepository _repository;
         private readonly IMapper _mapper;
+        private readonly BasecodeContext _context;
         private readonly LogContent _logContent = new();
     
         public HrEmployeeService(IHrEmployeeRepository repository, IMapper mapper) 
@@ -113,13 +116,13 @@ namespace Basecode.Services.Services
 
         public LogContent EditHrAccount(HREmployeeUpdationDto hrEmployee)
         {
-            var data = this.RetrieveAll();
-
-            if (data.Any(e => e.Email == hrEmployee.Email))
+            var hr = GetByEmail(hrEmployee.Email);
+            
+            if (hr.Id != hrEmployee.Id)
             {
                 _logContent.Result = false;
-                _logContent.ErrorCode = "ERR! Email already exists";
-                _logContent.Message = "Edit Failed";
+                _logContent.ErrorCode = "400. Edit Failed!";
+                _logContent.Message = "Email already exists";
             }
             else
             {

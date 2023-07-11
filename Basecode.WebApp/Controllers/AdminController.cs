@@ -35,7 +35,7 @@ namespace Basecode.WebApp.Controllers
         public IActionResult CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
             var data = _service.CreateHrAccount(hrEmployee);
-            if(!data.Result) 
+            if (!data.Result)
             {
                 _logger.Error(ErrorHandling.SetLog(data));
                 return View();
@@ -65,28 +65,21 @@ namespace Basecode.WebApp.Controllers
         [HttpPost]
         public IActionResult EditHrAccount(HREmployeeUpdationDto hrEmployee)
         {
-            var origHrEmployee = _service.GetById(hrEmployee.Id);
-
-            if (hrEmployee.Email != origHrEmployee.Email) 
-            { 
-                var data = _service.EditHrAccount(hrEmployee);
-                if(!data.Result)
-                {
-                    _logger.Error(ErrorHandling.SetLog(data));
-
-                    ViewBag.ErrorMessage = data.Message;
-
-                    return View("EditHrAccountView", hrEmployee);
-                }
-                else if (ModelState.IsValid)
-                {
-                    // Perform account update logic
-                    _service.Update(hrEmployee);
-                    return RedirectToAction("HrList");
-                }
+            var data = _service.EditHrAccount(hrEmployee);
+            if (!data.Result)
+            {
+                _logger.Error(ErrorHandling.SetLog(data));
+                ViewBag.ErrorMessage = data.Message;
+                return View("EditHrAccountView", hrEmployee);
             }
-
+            else if (ModelState.IsValid)
+            {
+                // Perform account update logic
+                _service.Update(hrEmployee);
+                return RedirectToAction("HrList");
+            }
             return RedirectToAction("HrList");
+
         }
 
         public IActionResult DeleteHrAccount(int id)

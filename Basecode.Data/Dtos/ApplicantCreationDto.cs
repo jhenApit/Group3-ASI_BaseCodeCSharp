@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Basecode.Data.Models;
 
-namespace Basecode.Data.Interfaces
+namespace Basecode.Data.Dtos
 {
-    public interface IStatusRepository
+    public class ApplicantCreationDto
     {
-        Status GetById(int id);
 
     }
 }

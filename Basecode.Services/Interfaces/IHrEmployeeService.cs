@@ -19,5 +19,6 @@ namespace Basecode.Services.Interfaces
         void SemiDelete(int id);
         void PermaDelete(int id);
         public LogContent CreateHrAccount(HREmployeeCreationDto hrEmployee);
+        public LogContent EditHrAccount(HREmployeeUpdationDto hrEmployee);
     }
 }

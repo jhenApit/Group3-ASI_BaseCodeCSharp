@@ -80,11 +80,27 @@ namespace Basecode.Services.Services
         /// <returns>LogContent upon creating a HR Account</returns>
         public LogContent CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
+            HrEmployee hr = GetByEmail(hrEmployee.Email);
+
+            if(hr != null)
+            {
+                _logContent.Result = false;
+                _logContent.ErrorCode = "400";
+                _logContent.Message = "Email already registered.";
+            }
+            else
+            {
+                _logContent.Result = true;
+            }
+
+            return _logContent;
+
+            /*string? email = GetByEmail(hrEmployee.Email).Email;
             if (IsNameValid(hrEmployee.Name) == false)
             {
                 _logContent.Result = false;
                 _logContent.ErrorCode = "ERR! Name Validation";
-                _logContent.Message = "Name is invalid";
+                _logContent.Message = email;
             }
             else if (IsEmailValid(hrEmployee.Email) == false)
             {
@@ -98,7 +114,7 @@ namespace Basecode.Services.Services
             }
 
 
-            return _logContent;
+            return _logContent; */
         }
 
         public bool IsNameValid(string name)

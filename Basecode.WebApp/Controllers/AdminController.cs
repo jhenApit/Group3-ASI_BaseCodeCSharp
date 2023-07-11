@@ -47,7 +47,7 @@ namespace Basecode.WebApp.Controllers
                 return RedirectToAction("HrList");
             }
 
-            return View(hrEmployee);
+            return View();
         }
 
         public IActionResult EditHrAccount(int id)

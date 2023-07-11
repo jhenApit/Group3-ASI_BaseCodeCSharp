@@ -68,9 +68,12 @@ main {
         background: url(../images/asi-logo-invert.svg) no-repeat;
     }
 
-    .custom-navbar .nav-link,
-    .custom-navbar .login-btn {
+    .custom-navbar .nav-link {
         color: black !important;
+    }
+
+    .custom-navbar .login-btn {
+        color: white !important;
     }
 
 @media (min-width: 960px) {

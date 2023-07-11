@@ -1,4 +1,13 @@
-﻿h1 {
+﻿.make-center {
+    display: flex;
+    max-width: 960px;
+    align-items: center;
+    justify-content: center;
+    margin: 25vh auto 0px auto;
+    text-align: center;
+}
+
+h1 {
     text-align: center;
     font-size: 40px;
     margin-top: 20px;

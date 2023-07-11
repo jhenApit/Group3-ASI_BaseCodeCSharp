@@ -47,6 +47,8 @@ namespace Basecode.WebApp.Controllers
                 _service.Add(hrEmployee);
                 return RedirectToAction("HrList");
             }
+            return View(hrEmployee);
+        }
 
         /// <summary>
         /// Shows the account selected for editing

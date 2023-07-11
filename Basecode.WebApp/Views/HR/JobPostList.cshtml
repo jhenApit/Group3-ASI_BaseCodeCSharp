@@ -1,6 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Job Posting";
-    Layout = null;
+    Layout = "_SideBarAdmin";
     <link rel="stylesheet" href="~/css/JobPostList.css" />
 }
 
@@ -10,9 +10,9 @@
     </div>
     <div class="search-bar">
         <input type="text" id="searchInput" placeholder="Search..." />
-        <a asp-action="CreateJobPost" class="add-btn">
-            <button type="button">Add Job Posting</button>
-        </a>
+        <button type="button">
+            <a asp-controller="HR" asp-action="CreateJobPost">Add Job Posting</a>
+        </button>
     </div>
 </div>
 <div class="table-container">
@@ -27,17 +27,17 @@
                 </tr>
             </thead>
             <tbody>
-                @for (var i = 1; i <= 5; i++)
+                @for (var i = 1; i <= 20; i++)
                 {
                     <tr>
                         <td>@i</td>
                         <td>Position @i</td>
                         <td>Status @i</td>
                         <td>
-                            <a asp-route-id="@i" title="View">
+                            <a asp-route-id="@i" title="View Full Details">
                                 <img src="~/images/icons/file-icon.png" alt="View" class="job-post-action-icon" />
                             </a>
-                            <a asp-route-id="@i" title="Edit">
+                            <a asp-route-id="@i" title="Edit" asp-controller="HR" asp-action="EditJobPost">
                                 <img src="~/images/icons/edit.png" alt="Edit" class="job-post-action-icon" />
                             </a>
                             <!-- Button trigger modal -->

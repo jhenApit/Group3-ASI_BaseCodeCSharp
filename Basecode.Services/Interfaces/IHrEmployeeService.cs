@@ -21,5 +21,6 @@ namespace Basecode.Services.Interfaces
         public LogContent CreateHrAccount(HREmployeeCreationDto hrEmployee);
         public bool IsNameValid(string name);
         public bool IsEmailValid(string email);
+        public LogContent EditHrAccount(HREmployeeUpdationDto hrEmployee);
     }
 }

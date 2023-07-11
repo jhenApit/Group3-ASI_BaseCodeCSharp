@@ -95,17 +95,5 @@ namespace Basecode.Services.Services
 
             return _logContent;
         }
-
-        public bool IsNameValid(string name)
-        {
-            string pattern = @"^[a-zA-Z\s]+$";
-            return Regex.IsMatch(name, pattern);
-        }
-
-        public bool IsEmailValid(string email)
-        {
-            string pattern = @"^[a-zA-Z0-9_.+-]+@asi-dev2\.com$";
-            return Regex.IsMatch(email, pattern);
-        }
     }
 }

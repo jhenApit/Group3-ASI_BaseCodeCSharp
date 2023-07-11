@@ -11,8 +11,8 @@ namespace Basecode.Services.Interfaces
     public interface IReferenceFormsService
     {
         List<ReferenceForms> RetrieveAll();
-        ReferenceForms GetByCity(string city);
+        ReferenceForms? GetByCharacterReferenceId(int characterReferenceId);
         void Add(ReferenceFormsCreationDto ReferenceForms);
-        ReferenceForms GetById(int id);
+        ReferenceForms? GetById(int id);
     }
 }

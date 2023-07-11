@@ -29,6 +29,7 @@ namespace Basecode.Data
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<CharacterReferences> CharacterReferences { get; set; }
         public virtual DbSet<ApplicationTracker> ApplicationTrackers { get; set; }
+        public virtual DbSet<ReferenceForms> ReferenceForms { get; set; }
         public virtual DbSet<User> User { get; set; }
 
         public virtual DbSet<RefreshToken> RefreshToken { get; set; }

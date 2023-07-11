@@ -35,7 +35,7 @@ namespace Basecode.Services.Services
             _repository.Add(applicationTrackerModel);
         }
 
-        private string? GenerateRandomTrackerId()
+        private static string? GenerateRandomTrackerId()
         {
             const string allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             var random = new Random();

@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Basecode.Data.Models
+namespace Basecode.Data.Dtos
 {
-    public class JobPostings
+    public class JobPostingsCreationDto
     {
-        public int Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
         public string? Responsibilities { get; set; }
@@ -19,8 +18,5 @@ namespace Basecode.Data.Models
         public string? Type { get; set; }
         public DateTime CreatedTime { get; set; }
         public int CreatedById { get; set; }
-        public DateTime UpdatedTime { get; set; }
-        public int UpdatedById { get; set; }
-        public bool IsDeleted { get; set; }
     }
 }

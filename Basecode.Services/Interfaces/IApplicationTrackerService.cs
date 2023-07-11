@@ -12,6 +12,7 @@ namespace Basecode.Services.Interfaces
     {
         List<ApplicationTracker> RetrieveAll();
         void Add(ApplicationTrackerCreationDto ApplicationTracker);
-        ApplicationTracker GetByTrackerId(int id);
+        ApplicationTracker? GetByTrackerId(string id);
+        ApplicationTracker? GetByStatus(string status);
     }
 }

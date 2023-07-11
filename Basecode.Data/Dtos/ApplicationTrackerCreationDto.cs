@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Basecode.Data.Models.ApplicationTracker;
 
-namespace Basecode.Data.Models
+namespace Basecode.Data.Dtos
 {
-    public class ApplicationTracker
+    public class ApplicationTrackerCreationDto
     {
         public int Id { get; set; }
         public int ApplicantId { get; set; }
-        public string? TrackerId { get; set; }
-        public enum ApplicationStatus
-        {
-            //values
-        }
         public ApplicationStatus Status { get; set; }
     }
 }

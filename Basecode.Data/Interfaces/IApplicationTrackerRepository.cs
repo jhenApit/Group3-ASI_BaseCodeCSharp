@@ -11,7 +11,7 @@ namespace Basecode.Data.Interfaces
     {
         IQueryable<ApplicationTracker> RetrieveAll();
         void Add(ApplicationTracker applicationTracker);
-        ApplicationTracker GetByTrackerId(string trackerId);
-        ApplicationTracker GetByStatus(string status);
+        ApplicationTracker? GetByTrackerId(string trackerId);
+        ApplicationTracker? GetByStatus(string status);
     }
 }

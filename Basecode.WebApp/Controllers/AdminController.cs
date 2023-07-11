@@ -41,6 +41,7 @@ namespace Basecode.WebApp.Controllers
                 if (!data.Result)
                 {
                     _logger.Error(ErrorHandling.SetLog(data));
+                    ViewBag.ErrorMessage = data.Message;
                     return View(hrEmployee);
                 }
                 _service.Add(hrEmployee);

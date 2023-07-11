@@ -32,7 +32,7 @@ namespace Basecode.WebApp.Controllers
         /// Creates account for the HR.
         /// </summary>
         /// <param name="hrEmployee">Details of the HR employee</param>
-        /// <returns>Newly created HR account</returns>
+        /// <returns>Redirect to the HrList page, displaying the updated list of accounts, including the newly created account.</returns>
         public IActionResult CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
             if (ModelState.IsValid)

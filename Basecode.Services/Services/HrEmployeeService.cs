@@ -94,27 +94,6 @@ namespace Basecode.Services.Services
             }
 
             return _logContent;
-
-            /*string? email = GetByEmail(hrEmployee.Email).Email;
-            if (IsNameValid(hrEmployee.Name) == false)
-            {
-                _logContent.Result = false;
-                _logContent.ErrorCode = "ERR! Name Validation";
-                _logContent.Message = email;
-            }
-            else if (IsEmailValid(hrEmployee.Email) == false)
-            {
-                _logContent.Result = false;
-                _logContent.ErrorCode = "ERR! Invalid Email";
-                _logContent.Message = "Email is not Alliance Email";
-            }
-            else
-            {
-                _logContent.Result = true;
-            }
-
-
-            return _logContent; */
         }
 
         public bool IsNameValid(string name)

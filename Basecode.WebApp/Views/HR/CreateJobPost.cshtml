@@ -1,13 +1,68 @@
 ﻿@{
-    ViewData["Title"] = "Create New Job Post";
-    Layout = null;
+    ViewData["Title"] = "Create New Job Posting";
+    Layout = "_SideBarAdmin";
     <link rel="stylesheet" href="~/css/CreateJobPost.css" />
 }   
 
-<div class="header-container">
-    <img src="~/images/icons/back-icon.png" alt="Back to previous page" class="return-icon" />
-    <h1 class="create-header">@ViewData["Title"]</h1>
+<div class="create-container">
+    <div class="create-title">
+        <h1>@ViewData["Title"]</h1>
+    </div>
 </div>
 <div class="content">
-
+    <p>Input all the required details to add a new job post.</p>
+    <div class="input-container">
+        <label for="position">Position:</label>
+        <input class="input" id="position" type="text" name="position" />
+    </div>
+    <div class="input-container">
+        <label for="description">Description:</label>
+        <textarea id="description" rows="5"></textarea>
+    </div>
+    <div class="input-container">
+        <label for="qualification">Qualification:</label>
+        <textarea id="qualification" rows="5"></textarea>
+    </div>
+    <div class="input-container">
+        <label for="responsibility">Responsibility:</label>
+        <textarea id="responsibility" rows="5"></textarea>
+    </div>
+    <div class="input-container">
+        <label for="worksetup">Work Setup:</label>
+        <select id="worksetup" name="worksetup" >
+            <option value="N/A"></option>
+            <option value="Online">Online</option>
+            <option value="Onsite">Onsite</option>
+            <option value="Hybrid (Onsite/Online)">Hybrid (Onsite/Online)</option>
+        </select>
+        <label for="workinghours" style="margin-left: 20px;">Working Hours:</label>
+        <select id="workinghours" name="workinghours">
+            <option value="N/A"></option>
+            <option value="8-Hour Shift">8-Hour Shift</option>
+            <option value="4-Hour Shift">4-Hour Shift</option>
+        </select>
+    </div>
+    <div class="input-container">
+        <label for="status">Status:</label>
+        <select id="status" name="status">
+            <option value="N/A"></option>
+            <option value="Open">Open</option>
+            <option value="Urgent">Urgent</option>
+            <option value="Closed">Closed</option>
+            <option value="On Hold">On Hold</option>
+        </select>
+        <label for="employmenttype" style="margin-left: 20px;">Employment Type:</label>
+        <select id="employmenttype" name="employmenttype">
+            <option value="N/A"></option>
+            <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
+            <option value="Temporary">Temporary</option>
+            <option value="Contract">Contract</option>
+            <option value="Freelance">Freelance</option>
+            <option value="Internship">Internship</option>
+        </select>
+    </div>
+    <button class="save-button" type="button">
+        <a asp-controller="HR" asp-action="JobPostList">SAVE</a>
+    </button>
 </div>

@@ -1,4 +1,5 @@
 ﻿using Basecode.Data.Dtos;
+using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -31,17 +32,22 @@ namespace Basecode.WebApp.Controllers
         /// Creates account for the HR.
         /// </summary>
         /// <param name="hrEmployee">Details of the HR employee</param>
-        /// <returns>Newly created HR account</returns>
+        /// <returns>Redirect to the HrList page, displaying the updated list of accounts, including the newly created account.</returns>
         public IActionResult CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
-            var data = _service.CreateHrAccount(hrEmployee);
-            if (!data.Result)
+            if (ModelState.IsValid)
             {
-                _logger.Error(ErrorHandling.SetLog(data));
-                return View();
+                var data = _service.CreateHrAccount(hrEmployee);
+                if (!data.Result)
+                {
+                    _logger.Error(ErrorHandling.SetLog(data));
+                    ViewBag.ErrorMessage = data.Message;
+                    return View(hrEmployee);
+                }
+                _service.Add(hrEmployee);
+                return RedirectToAction("HrList");
             }
-            _service.Add(hrEmployee);
-            return RedirectToAction("HrList");
+            return View(hrEmployee);
         }
 
         /// <summary>

@@ -62,7 +62,13 @@
                         </p>
                     </div>
                     <div>
-                        <form asp-action="CreateHrAccount">
+                        <form method="post" asp-action="CreateHrAccount">
+                            @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                            {
+                                <div class="alert alert-danger" role="alert">
+                                    @Html.Raw(ViewBag.ErrorMessage)
+                                </div>
+                            }
                             <div class="form-group">
                                 <label for="name">Name</label>
                                 <div style="width:90%">

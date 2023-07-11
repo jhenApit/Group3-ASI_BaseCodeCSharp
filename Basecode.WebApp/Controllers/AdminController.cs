@@ -35,7 +35,7 @@ namespace Basecode.WebApp.Controllers
         public IActionResult CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
             var data = _service.CreateHrAccount(hrEmployee);
-            if(!data.Result) 
+            if (!data.Result)
             {
                 _logger.Error(ErrorHandling.SetLog(data));
                 return View();
@@ -44,7 +44,12 @@ namespace Basecode.WebApp.Controllers
             return RedirectToAction("HrList");
         }
 
-        public IActionResult EditHrAccount(int id)
+        /// <summary>
+        /// Shows the account selected for editing
+        /// </summary>
+        /// <param name="id">the id of the account selected</param>
+        /// <returns>view of the page with the details of the account</returns>
+        public IActionResult EditHrAccountView(int id)
         {
             // Retrieve the HR employee from the database using the ID
             var hrEmployee = _service.GetById(id);
@@ -62,18 +67,33 @@ namespace Basecode.WebApp.Controllers
             return View(hrEmployeeDto);
         }
 
+        /// <summary>
+        /// checks for server side error
+        /// updates account
+        /// </summary>
+        /// <param name="hrEmployee">the object passed to be updated</param>
+        /// <returns>
+        /// if there are errors page will return to edithraccountview
+        /// if no errors page will redirect to hrlist
+        /// </returns>
         [HttpPost]
         public IActionResult EditHrAccount(HREmployeeUpdationDto hrEmployee)
         {
-            if (ModelState.IsValid)
+            var data = _service.EditHrAccount(hrEmployee);
+            if (!data.Result)
+            {
+                _logger.Error(ErrorHandling.SetLog(data));
+                ViewBag.ErrorMessage = data.Message;
+                return View("EditHrAccountView", hrEmployee);
+            }
+            else if (ModelState.IsValid)
             {
                 // Perform account update logic
                 _service.Update(hrEmployee);
-
                 return RedirectToAction("HrList");
             }
+            return RedirectToAction("HrList");
 
-            return View(hrEmployee);
         }
 
         public IActionResult DeleteHrAccount(int id)

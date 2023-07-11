@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Basecode.Data;
 using Basecode.Data.Dtos;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Basecode.Services.Services
 {
@@ -10,6 +12,7 @@ namespace Basecode.Services.Services
     {
         private readonly IHrEmployeeRepository _repository;
         private readonly IMapper _mapper;
+        private readonly BasecodeContext _context;
         private readonly LogContent _logContent = new();
     
         public HrEmployeeService(IHrEmployeeRepository repository, IMapper mapper) 
@@ -79,29 +82,31 @@ namespace Basecode.Services.Services
         /// <returns>LogContent upon creating a HR Account</returns>
         public LogContent CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
-            if (hrEmployee.Name.Length > 150)
+            HrEmployee hr = GetByEmail(hrEmployee.Email);
+
+            if(hr != null)
             {
                 _logContent.Result = false;
-                _logContent.ErrorCode = "ERR! Length Validation";
-                _logContent.Message = "Name cannot be longer than 150 characters";
+                _logContent.ErrorCode = "400";
+                _logContent.Message = "Email already registered.";
             }
-            else if (!hrEmployee.Email.Contains("@asi-dev2.com"))
+            else
             {
-                _logContent.Result = false;
-                _logContent.ErrorCode = "ERR! Invalid Email";
-                _logContent.Message = "Email is not Alliance Email";
+                _logContent.Result = true;
             }
-            else if (hrEmployee.Email.Length > 50)
+
+            return _logContent;
+        }
+
+        public LogContent EditHrAccount(HREmployeeUpdationDto hrEmployee)
+        {
+            var hr = GetByEmail(hrEmployee.Email);
+            
+            if (hr.Id != hrEmployee.Id)
             {
                 _logContent.Result = false;
-                _logContent.ErrorCode = "ERR! Length Validation ";
-                _logContent.Message = "Email cannot be longer than 50 characters long";
-            }
-            else if (hrEmployee.Password!.Length > 30)
-            {
-                _logContent.Result = false;
-                _logContent.ErrorCode = "ERR! Length Validation";
-                _logContent.Message = "Password cannot be longer than 30 characters";
+                _logContent.ErrorCode = "400. Edit Failed!";
+                _logContent.Message = "Email already exists";
             }
             else
             {

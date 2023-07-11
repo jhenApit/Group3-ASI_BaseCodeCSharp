@@ -36,10 +36,21 @@ namespace Basecode.Data.Repositories
 
         public void Update(HrEmployee hrEmployee)
         {
-            _context.Entry(hrEmployee).State = EntityState.Modified;
-            _context.Entry(hrEmployee).Property(x => x.CreatedBy).IsModified = false;
-            _context.Entry(hrEmployee).Property(x => x.CreatedDate).IsModified = false;
-            _context.SaveChanges();
+            var existingHrEmployee = _context.HrEmployees.Find(hrEmployee.Id);
+            if (existingHrEmployee != null)
+            {
+                // Update the properties of the existing entity
+                existingHrEmployee.Name = hrEmployee.Name;
+                existingHrEmployee.Email = hrEmployee.Email;
+                existingHrEmployee.Password = hrEmployee.Password;
+
+                // Exclude certain properties from being modified
+                _context.Entry(existingHrEmployee).Property(x => x.CreatedBy).IsModified = false;
+                _context.Entry(existingHrEmployee).Property(x => x.CreatedDate).IsModified = false;
+
+                // Save the changes
+                _context.SaveChanges();
+            }
 
         }
 

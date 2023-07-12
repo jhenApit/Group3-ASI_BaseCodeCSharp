@@ -26,8 +26,6 @@ namespace Basecode.WebApp
 
             // Add services to the container.
             services.AddControllersWithViews();
-            services.AddScoped<IApplicantService, ApplicantService>();
-            services.AddScoped<IApplicantRepository, ApplicantRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

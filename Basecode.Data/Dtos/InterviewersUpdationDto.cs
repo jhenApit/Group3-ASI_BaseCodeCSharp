@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Basecode.Data.Dtos
 {
-    internal class InterviewersUpdationDto
+    public class InterviewersUpdationDto
     {
+        public string? Name { get; set; }
     }
 }

@@ -47,6 +47,7 @@ namespace Basecode.WebApp.Controllers
                 _service.Add(hrEmployee);
                 return RedirectToAction("HrList");
             }
+            ModelState.Clear();
             return View(hrEmployee);
         }
 

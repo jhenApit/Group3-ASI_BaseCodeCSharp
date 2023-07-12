@@ -7,6 +7,7 @@ using Basecode.Services.Interfaces;
 using Basecode.Data.Dtos.JobPostings;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using Basecode.Services.Utils;
 
 namespace Basecode.Services.Services
 {
@@ -53,6 +54,7 @@ namespace Basecode.Services.Services
             _repository.Update(JobPostingsModel);
         }
         /// <summary>
+        /// This is suppose to get the id of the current logged in.
         /// This is a sample method and is not tested yet
         /// </summary>
         /// <returns></returns>

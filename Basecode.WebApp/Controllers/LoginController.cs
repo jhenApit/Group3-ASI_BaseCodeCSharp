@@ -29,7 +29,7 @@ namespace Basecode.WebApp.Controllers
             var data = _service.GetByEmail(Email);
             return RedirectToAction("AdminDashboard", "Admin", data);
         }
-            public IActionResult ForgotPassword()
+        public IActionResult ForgotPassword()
         {
             return View();
         }

@@ -12,6 +12,7 @@
     align-items: center;
     padding: 15px;
     overflow-x: hidden;
+    margin: 0;
 }
 
 .job-post-header {

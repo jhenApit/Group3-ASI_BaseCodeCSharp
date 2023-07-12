@@ -4,6 +4,7 @@ using Basecode.Data.Dtos;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
+using Basecode.Services.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Basecode.Services.Services
@@ -12,7 +13,6 @@ namespace Basecode.Services.Services
     {
         private readonly IHrEmployeeRepository _repository;
         private readonly IMapper _mapper;
-        private readonly BasecodeContext _context;
         private readonly LogContent _logContent = new();
     
         public HrEmployeeService(IHrEmployeeRepository repository, IMapper mapper) 

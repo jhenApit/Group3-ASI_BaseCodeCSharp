@@ -19,30 +19,39 @@ h1 {
 
 .search-container {
     display: flex;
+    height: 4rem;
     justify-content: center;
     align-items: center;
     margin-top: 30px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
+    border: none;
+    border-radius: 5rem;
     font-family: 'Montserrat', sans-serif;
 }
 
     .search-container input[type="text"] {
+        height: 4rem;
         padding: 8px;
-        border: none;
-        border-radius: 20px 0 0 20px;
-        outline: none;
+        border-radius: 5rem 0 0 5rem;
         flex: 1;
         font-style: italic;
+        font-size: 1.3rem;
+    }
+
+    .search-container ::placeholder,
+    .search-container :-ms-input-placeholder {
+        color: gray;
+        opacity: 0.7;
     }
 
     .search-container button[type="submit"] {
-        padding: 8px 16px;
-        background-color: #FF0000;
+        height: 4rem;
+        padding: 0px 2.5rem;
+        background-color: #FC1F22;
         color: #fff;
-        border: none;
-        border-radius: 0 20px 20px 0;
+        border-radius: 0 5rem 5rem 0;
         cursor: pointer;
+        font-weight: bold;
+        font-size: 1.25rem;
     }
 
 .text-white {

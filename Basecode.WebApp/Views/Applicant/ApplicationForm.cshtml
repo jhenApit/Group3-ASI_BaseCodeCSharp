@@ -1,34 +1,29 @@
 ﻿@{
     ViewData["Title"] = "Application Form";
 }
-
-<div class="application-form" style="background-color: white; padding-top: 50px; width: 100%">
-    <div class="job-title">
-        <p>Software Engineer</p>
+<div class="application-form-container">
+    <div class="row">
+        <h1 class="text-center">Software Engineer</h1>
     </div>
-    <nav>
-        <div class="application-nav">
-            <ul>
-                <li>
-                    <a asp-controller="Applicant" asp-action="JobDescription">Job Details</a>
-                </li>
-                <li>
-                    <a class="active">Application</a>
-                </li>
-            </ul>
+    <div class="row mt-5 px-5">
+        <div class="col d-flex form-header">
+            <a asp-controller="Applicant" asp-action="JobDescription">
+                <p class="text-bold text-black mb-1 align-self-center me-3">Job Details</p>
+            </a>
+            <p class="text-bold mb-1 align-self-center text-red">Application</p>
         </div>
-    </nav>
-    <div class="form-container">
+    </div>
+    <div class="form">
         <form method="post" enctype="multipart/form-data">
-            
-            <div class="text-header">Resume</div>
-            <div class="file-drop">
+            <!--Resume-->
+            <div class="row text-header text-bold ps-2">Resume</div>
+            <div class="row form-row form-group file-drop my-3 mx-1 py-4">
                 <div>
                     <img src="/images/icons/resume-upload.png" />
                 </div>
                 <input type="file" id="resumeFile" name="resumeFile" class="file-input" onchange="displayFileName()" />
                 <label for="resumeFile" class="file-label">
-                    <span id="fileText" class="file-text">Choose a file or Drag it here</span>
+                    <span id="fileText" class="file-text text-bold">Choose a file or Drag it here</span>
                 </label>
 
                 <script>
@@ -40,31 +35,37 @@
                     }
                 </script>
             </div>
-
-            <div class="text-header">Personal Information</div>
-            <div class="form-content">
-                <div class="input-container">
-                    <label>Name:</label>
-                    <input class="multiple-input" id="firstname" type="text" name="firstname" placeholder="First Name" />
-                    <input class="multiple-input" id="middlename" type="text" name="middlename" placeholder="Middle Name" />
-                    <input class="multiple-input" id="lastname" type="text" name="lastname" placeholder="Last Name" />
+            <!--Personal Information-->
+            <div class="row text-header text-bold ps-2 mt-4">Personal Information</div>
+            <div class="row form-row mt-3">
+                <label>Name: </label>
+                <div class="col-sm-6 col-md-4 form-group mt-2">
+                    <input class="form-control" id="firstname" type="text" name="firstname" placeholder="First Name" />
+                </div> 
+                <div class="col-sm-6 col-md-4 form-group mt-2">
+                    <input class="form-control" id="middlename" type="text" name="middlename" placeholder="Middle Name" />
                 </div>
-                <div class="input-container">
+                <div class="col-sm-6 col-md-4 form-group mt-2">
+                    <input class="form-control" id="lastname" type="text" name="lastname" placeholder="Last Name" />
+                </div>
+            </div>
+            <div class="row form-row mt-3">
+                <div class="col-12 form-group mt-1">
                     <label for="birthday">Birthday:</label>
-                    <input class="input" id="birthday" type="date" name="birthday" />
+                    <input class="form-control" id="birthday" type="date" name="birthday" />
                 </div>
-                <div class="input-container">
-                    <label for="photo">Photo (optional):</label>
+            </div>
+            <div class="row form-row mt-3">
+                <label>Photo (Optional):</label>
+            </div>
+            <div class="col-sm-6 col-md-3 form-group file-drop mt-1 mx-1 py-4">
+                <div>
+                    <img src="/images/icons/upload-image.png" />
                 </div>
-                <div class="image-file-drop">
-                    <div>
-                        <img src="/images/icons/upload-image.png" />
-                    </div>
-                    <input type="file" id="photo" name="photo" class="image-file-input" onchange="displayImageName('photo', 'photoText')" />
-                    <label for="photo" class="image-file-label">
-                        <span id="photoText" class="image-file-text">Choose a file <br /> or <br /> Drag it here</span>
-                    </label>
-                </div>
+                <input type="file" id="photo" name="photo" class="file-input" onchange="displayImageName('photo', 'photoText')" />
+                <label for="photo" class="file-label">
+                    <span id="photoText" class="file-text">Choose a file<br />or<br />Drag it here</span>
+                </label>
 
                 <script>
                     function displayImageName(photoInputId, photoTextId) {
@@ -75,80 +76,86 @@
                     }
                 </script>
             </div>
-
-            <div class="text-header">Contact Information</div>
-            <div class="form-content">
-                <div class="input-container">
-                    <label>Address:</label>
-                    <input class="input" id="street" type="text" name="street" placeholder="Street" />
+            <!--Contact Information-->
+            <div class="row text-header text-bold ps-2 mt-4">Contact Information</div>
+            <div class="row form-row mt-3">
+                <label>Address: </label>
+                <div class="col-12 form-group mt-2">
+                    <input class="form-control" id="street" type="text" name="street" placeholder="Street" />
                 </div>
-                <div class="input-container">
-                    <label class="label-space"></label>
-                    <input class="multiple-input" id="city" type="text" name="city" placeholder="City" />
-                    <input class="multiple-input" id="province" type="text" name="province" placeholder="Province / State" />
-                    <input class="multiple-input" id="zipcode" type="text" name="zipcode" placeholder="Postal / Zipcode" />
+                <div class="col-sm-6 col-md-4 form-group mt-2">
+                    <input class="form-control" id="city" type="text" name="city" placeholder="City" />
                 </div>
-                <div class="input-container">
-                    <label>Phone number:</label>
-                    <input class="input" id="number" type="text" name="number"/>
+                <div class="col-sm-6 col-md-4 form-group mt-2">
+                    <input class="form-control" id="province" type="text" name="province" placeholder="Province / State" />
                 </div>
-                <div class="input-container">
-                    <label>Email Address:</label>
-                    <input class="input" id="email" type="text" name="email" />
+                <div class="col-sm-6 col-md-4 form-group mt-2">
+                    <input class="form-control" id="zipcode" type="number" name="zipcode" placeholder="Postal / Zipcode" />
                 </div>
             </div>
-
-            <div class="text-header">References</div>
-            <div class="form-content">
-                <label>Please list two (2) references (who are not family or relatives) that are familiar with your work life.</label>
-                <div class="input-container">
-                    <label style="font-weight: bold; font-size: 15px; margin-top: 15px;">Reference 1</label>
+            <div class="row form-row mt-3">
+                <div class="col-sm-6 form-group mt-1">
+                    <label for="number">Phone Number:</label>
+                    <input class="form-control" id="number" type="number" name="number" />
                 </div>
-                <div class="input-container">    
-                    <label>Name:</label>
-                    <input class="input" id="name" type="text" name="name" />
-                </div>
-                <div class="input-container">
-                    <label>Relationship:</label>
-                    <input class="input" id="relationship" type="text" name="relationship" />
-                </div>
-                <div class="input-container">
-                    <label>Email Address:</label>
-                    <input class="input" id="email" type="text" name="email" />
-                </div>
-                <div class="input-container">
-                    <label>Phone number:</label>
-                    <input class="input" id="number" type="text" name="number" />
-                </div>
-
-                <div class="input-container">
-                    <label style="font-weight: bold; font-size: 15px; margin-top: 15px;">Reference 2</label>
-                </div>
-                <div class="input-container">
-                    <label>Name:</label>
-                    <input class="input" id="name" type="text" name="name" />
-                </div>
-                <div class="input-container">
-                    <label>Relationship:</label>
-                    <input class="input" id="relationship" type="text" name="relationship" />
-                </div>
-                <div class="input-container">
-                    <label>Email Address:</label>
-                    <input class="input" id="email" type="text" name="email" />
-                </div>
-                <div class="input-container">
-                    <label>Phone number:</label>
-                    <input class="input" id="number" type="text" name="number" />
+                <div class="col-sm-6 form-group mt-1">
+                    <label for="email">Email Address:</label>
+                    <input class="form-control" id="email" type="text" name="email" />
                 </div>
             </div>
-
-            <div class="text-header">Additional Information</div>
-            <div class="form-content">
-                <div class="input-container">
-                    <label style="width: 500px;">How did you hear about us?</label>
+            <!--References-->
+            <div class="row text-header text-bold ps-2 mt-4">References</div>
+            <div class="row form-row mt-3">
+                <label class="text-bold text-center">Please list two (2) references (who are not family or relatives) that are familiar with your work life.</label>
+            </div>
+            <div class="row form-row mt-3">
+                <label class="text-bold">Reference 1</label>
+                <div class="row form-row ms-3">
+                    <div class="col-sm-6 col-md-4 form-group mt-2">
+                        <label for="ref1FullName">Full Name: </label>
+                        <input class="form-control" id="ref1FullName" type="text" name="ref1FullName" />
+                    </div>
+                    <div class="col-sm-6 col-md-4 form-group mt-2">
+                        <label for="ref1Relationship">Relationship:</label>
+                        <input class="form-control" id="ref1Relationship" type="text" name="ref1Relationship" />
+                    </div>
+                    <div class="col-sm-6 col-md-4 form-group mt-2">
+                        <label for="ref1email">Email Adress:</label>
+                        <input class="form-control" id="ref1email" type="text" name="ref1email" />
+                    </div>
+                    <div class="col-sm-6 col-md-4 form-group mt-2">
+                        <label for="ref1Number">Phone Number:</label>
+                        <input class="form-control" id="ref1Number" type="number" name="ref1Number" />
+                    </div>
                 </div>
-                <div class="input-container">
-                    <select class="input" id="additional" name="additional">
+            </div>
+            <div class="row form-row mt-3">
+                <label class="text-bold">Reference 2</label>
+                <div class="row form-row ms-3">
+                    <div class="col-sm-6 col-md-4 form-group mt-2">
+                        <label for="ref2FullName">Full Name: </label>
+                        <input class="form-control" id="ref2FullName" type="text" name="ref2FullName" />
+                    </div>
+                    <div class="col-sm-6 col-md-4 form-group mt-2">
+                        <label for="ref2Relationship">Relationship:</label>
+                        <input class="form-control" id="ref2Relationship" type="text" name="ref2Relationship" />
+                    </div>
+                    <div class="col-sm-6 col-md-4 form-group mt-2">
+                        <label for="ref2Email">Email Adress:</label>
+                        <input class="form-control" id="ref2Email" type="text" name="ref2Email" />
+                    </div>
+                    <div class="col-sm-6 col-md-4 form-group mt-2">
+                        <label for="ref2Number">Phone Number:</label>
+                        <input class="form-control" id="ref2Number" type="number" name="ref2Number" />
+                    </div>
+                </div>
+            </div>
+            <!--Additional Information-->
+            <div class="row text-header text-bold ps-2 mt-4">Additional Information</div>
+            <div class="row form-row mt-3">
+                <div class="col-12 form-group mt-1">
+                    <label for="additional">How did you hear about us?</label>
+                    <select class="form-select mt-3" id="additional" name="additional">
                         <option value="N/A"></option>
                         <option value="LinkedIn Job Post">LinkedIn Job Post</option>
                         <option value="Recruitment Team">Recruitment Team</option>
@@ -158,34 +165,27 @@
                         <option value="Others">Others</option>
                     </select>
                 </div>
-                <div class="input-container-others" id="other-input" style="display: none;">
-                    <input type="text" name="other-option" placeholder="Please specify" />
+            </div>
+            <div class="row form-row mt-3">
+                <div class="text-center mt-3">
+                    <input type="checkbox" id="agreeCheckbox" name="agreeCheckbox" />
+                    <label for="agreeCheckbox" class="checkmark"></label>
+                    <span class="terms-link">I agree to the <a asp-controller="Applicant" asp-action="TermsAndConditions"><span class="text-red">terms and conditions</span></a></span>
+                </div>
+                <div class="col d-flex justify-content-center">
+                    <button class="btn btn-primary mt-2 py-2 px-5" type="button">
+                        <a asp-controller="Applicant" asp-action="ApplicationForm">
+                            <h5 class="submit-btn m-0">Submit</h5>
+                        </a>
+                    </button> 
                 </div>
             </div>
-
-            <script>
-                var checkbox = document.getElementById("additional");
-                var inputContainer = document.getElementById("other-input");
-
-                checkbox.addEventListener("change", function () {
-                    inputContainer.style.display = checkbox.value === "Others" ? "block" : "none";
-                });
-            </script>
-
-            <div class="terms-container">
-                <input type="checkbox" id="agreeCheckbox" name="agreeCheckbox" />
-                <label for="agreeCheckbox" class="checkmark"></label>
-                <span class="terms-link">I agree to the <a href="/Applicant/TermsAndConditions">terms and conditions</a></span>
-            </div>
-
-            <button class="submit-button" type="button">
-                <a asp-controller="Applicant" asp-action="ApplicationForm">Submit</a>
-            </button>
         </form>
     </div>
-
-    <div class="text-footer">© 2019 Alliance Software Incorporated. All Rights Reserved</div>
-    <div class="footer-img">
-        <img src="~/images/asi-logo-invert.png" alt="Footer Image">
+    <div class="text-center mt-5">
+        <div class="text-footer">© 2019 Alliance Software Incorporated. All Rights Reserved</div>
+        <div class="mt-2">
+            <img src="~/images/asi-logo-invert.png" alt="Footer Image">
+        </div>
     </div>
 </div>

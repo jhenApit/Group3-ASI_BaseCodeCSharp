@@ -31,6 +31,7 @@ namespace Basecode.Data
         public virtual DbSet<ReferenceForms> ReferenceForms { get; set; }
         public virtual DbSet<JobPostings> JobPostings { get; set; }
         public virtual DbSet<Interviewers> Interviewers { get; set; }
+        public virtual DbSet<Interviews> Interviews { get; set; }
         public virtual DbSet<User> User { get; set; }
 
         public virtual DbSet<RefreshToken> RefreshToken { get; set; }

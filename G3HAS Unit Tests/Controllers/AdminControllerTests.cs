@@ -4,7 +4,7 @@ using Basecode.Services.Interfaces;
 using Basecode.WebApp.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using static Basecode.Services.Services.ErrorHandling;
+using static Basecode.Services.Utils.ErrorHandling;
 
 namespace G3HAS_Unit_Tests.Controllers
 {
@@ -20,144 +20,162 @@ namespace G3HAS_Unit_Tests.Controllers
         }
 
         [Fact]
-        public void AdminDashboard_ValidEmail_ReturnsViewWithHrEmployee()
+        public void AdminDashboard_ReturnsViewWithHrEmployee()
         {
             // Arrange
-            var email = "test@example.com";
-            var expectedHrEmployee = new HrEmployee();
-
-            _serviceMock.Setup(s => s.GetByEmail(email)).Returns(expectedHrEmployee);
+            string email = "test@example.com";
+            var hrEmployee = new HrEmployee(); // Create a sample HrEmployee object
+            _serviceMock.Setup(s => s.GetByEmail(email)).Returns(hrEmployee);
 
             // Act
-            var result = _controller.AdminDashboard(email) as ViewResult;
+            var result = _controller.AdminDashboard(email);
 
             // Assert
-            Assert.NotNull(result);
-            Assert.Equal(expectedHrEmployee, result.Model);
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<HrEmployee>(viewResult.Model);
+            Assert.Equal(hrEmployee, model);
         }
 
         [Fact]
         public void HrList_ReturnsViewWithData()
         {
             // Arrange
-            var expectedData = new List<HrEmployee>();
-
-            _serviceMock.Setup(s => s.RetrieveAll()).Returns(expectedData);
+            var hrEmployees = new List<HrEmployee>(); // Create a list of HrEmployee objects
+            _serviceMock.Setup(s => s.RetrieveAll()).Returns(hrEmployees);
 
             // Act
-            var result = _controller.HrList() as ViewResult;
+            var result = _controller.HrList();
 
             // Assert
-            Assert.NotNull(result);
-            Assert.Equal(expectedData, result.Model);
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<List<HrEmployee>>(viewResult.Model);
+            Assert.Equal(hrEmployees, model);
         }
 
         [Fact]
-        public void CreateHrAccount_ValidHrEmployee_ReturnsRedirectToAction()
+        public void CreateHrAccount_WithValidModel_ReturnsRedirectToHrList()
         {
             // Arrange
-            var hrEmployee = new HREmployeeCreationDto();
-
-            var logContent = new LogContent
-            {
-                Result = true
-            };
-
-            _serviceMock.Setup(s => s.CreateHrAccount(hrEmployee)).Returns(logContent);
+            var hrEmployee = new HREmployeeCreationDto(); // Create a sample HREmployeeCreationDto object
+            _serviceMock.Setup(s => s.CreateHrAccount(hrEmployee)).Returns(new LogContent { Result = true });
 
             // Act
-            var result = _controller.CreateHrAccount(hrEmployee) as RedirectToActionResult;
+            var result = _controller.CreateHrAccount(hrEmployee);
 
             // Assert
-            Assert.NotNull(result);
-            Assert.Equal("HrList", result.ActionName);
+            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("HrList", redirectToActionResult.ActionName);
         }
 
         [Fact]
-        public void EditHrAccount_ValidId_ReturnsViewWithHrEmployeeDto()
+        public void CreateHrAccount_WithInvalidModel_ReturnsViewWithModel()
         {
             // Arrange
-            int id = 1;
-            var expectedHrEmployee = new HrEmployee
-            {
-                Id = id,
-                Name = "John Doe",
-                Email = "johndoe@example.com",
-                Password = "password"
-            }; // Replace with the appropriate HREmployee instance
-
-            _serviceMock.Setup(s => s.GetById(id)).Returns(expectedHrEmployee);
+            var hrEmployee = new HREmployeeCreationDto(); // Create a sample HREmployeeCreationDto object
+            _controller.ModelState.AddModelError("Email", "Email is required");
 
             // Act
-            var result = _controller.EditHrAccount(id) as ViewResult;
-            var model = result.Model as HREmployeeUpdationDto;
+            var result = _controller.CreateHrAccount(hrEmployee);
 
             // Assert
-            Assert.NotNull(result);
-            Assert.NotNull(model);
-            Assert.Equal(expectedHrEmployee.Name, model.Name);
-            Assert.Equal(expectedHrEmployee.Email, model.Email);
-            Assert.Equal(expectedHrEmployee.Password, model.Password);
-            Assert.Equal(expectedHrEmployee.Id, model.Id);
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<HREmployeeCreationDto>(viewResult.Model);
+            Assert.Equal(hrEmployee, model);
         }
 
         [Fact]
-        public void EditHrAccount_ValidHrEmployeeDto_ReturnsRedirectToAction()
-        {
-            // Arrange
-            var hrEmployee = new HREmployeeUpdationDto(); // Replace with the appropriate HREmployeeUpdationDto instance
-
-            // Act
-            var result = _controller.EditHrAccount(hrEmployee) as RedirectToActionResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal("HrList", result.ActionName);
-        }
-
-        [Fact]
-        public void DeleteHrAccount_ValidId_ReturnsRedirectToAction()
+        public void EditHrAccountView_ReturnsViewWithHREmployeeUpdationDto()
         {
             // Arrange
             int id = 1;
+            var hrEmployee = new HrEmployee(); // Create a sample HREmployee object
+            _serviceMock.Setup(s => s.GetById(id)).Returns(hrEmployee);
 
             // Act
-            var result = _controller.DeleteHrAccount(id) as RedirectToActionResult;
+            var result = _controller.EditHrAccountView(id);
 
             // Assert
-            Assert.NotNull(result);
-            Assert.Equal("HrList", result.ActionName);
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<HREmployeeUpdationDto>(viewResult.Model);
+            Assert.Equal(hrEmployee.Name, model.Name);
+            Assert.Equal(hrEmployee.Email, model.Email);
+            Assert.Equal(hrEmployee.Password, model.Password);
+            Assert.Equal(hrEmployee.Id, model.Id);
         }
 
         [Fact]
-        public void Update_ValidHrEmployeeDto_ReturnsRedirectToAction()
+        public void EditHrAccount_WithValidModel_ReturnsRedirectToHrList()
         {
             // Arrange
-            var hrEmployee = new HREmployeeUpdationDto(); // Replace with the appropriate HREmployeeUpdationDto instance
+            var hrEmployee = new HREmployeeUpdationDto(); // Create a sample HREmployeeUpdationDto object
+            _serviceMock.Setup(s => s.EditHrAccount(hrEmployee)).Returns(new LogContent { Result = true });
 
             // Act
-            var result = _controller.Update(hrEmployee) as RedirectToActionResult;
+            var result = _controller.EditHrAccount(hrEmployee);
 
             // Assert
-            Assert.NotNull(result);
-            Assert.Equal("HrList", result.ActionName);
+            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("HrList", redirectToActionResult.ActionName);
         }
 
         [Fact]
-        public void Add_ValidHrEmployeeDto_ReturnsRedirectToAction()
+        public void EditHrAccount_WithInvalidModel_ReturnsViewWithModel()
         {
             // Arrange
-            var hrEmployee = new HREmployeeCreationDto(); // Replace with the appropriate HREmployeeCreationDto instance
+            var hrEmployee = new HREmployeeUpdationDto(); // Create a sample HREmployeeUpdationDto object
+            _controller.ModelState.AddModelError("Email", "Email is required");
+            _serviceMock.Setup(s => s.EditHrAccount(hrEmployee)).Returns(new LogContent { Result = false });
 
             // Act
-            var result = _controller.Add(hrEmployee) as RedirectToActionResult;
+            var result = _controller.EditHrAccount(hrEmployee);
 
             // Assert
-            Assert.NotNull(result);
-            Assert.Equal("HrList", result.ActionName);
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<HREmployeeUpdationDto>(viewResult.Model);
+            Assert.Equal(hrEmployee, model);
         }
 
+        [Fact]
+        public void DeleteHrAccount_ReturnsRedirectToHrList()
+        {
+            // Arrange
+            int id = 1;
 
+            // Act
+            var result = _controller.DeleteHrAccount(id);
+
+            // Assert
+            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("HrList", redirectToActionResult.ActionName);
+        }
+
+        [Fact]
+        public void Update_ReturnsRedirectToHrList()
+        {
+            // Arrange
+            var hrEmployee = new HREmployeeUpdationDto(); // Create a sample HREmployeeUpdationDto object
+
+            // Act
+            var result = _controller.Update(hrEmployee);
+
+            // Assert
+            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("HrList", redirectToActionResult.ActionName);
+        }
+
+        [Fact]
+        public void Add_ReturnsRedirectToHrList()
+        {
+            // Arrange
+            var hrEmployee = new HREmployeeCreationDto(); // Create a sample HREmployeeCreationDto object
+
+            // Act
+            var result = _controller.Add(hrEmployee);
+
+            // Assert
+            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("HrList", redirectToActionResult.ActionName);
+        }
     }
 
 }

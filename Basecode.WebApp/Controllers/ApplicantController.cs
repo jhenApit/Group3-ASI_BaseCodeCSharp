@@ -17,9 +17,9 @@ namespace Basecode.WebApp.Controllers
             Applicant data = _service.GetById(id);
             return View(data);
         }
-        public IActionResult FindJobs()
+        public IActionResult FindJobs(JobPosting data)
         {
-            return View();
+            return View(data);
         }
 
         public IActionResult ContactUs()

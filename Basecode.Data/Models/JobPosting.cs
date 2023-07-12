@@ -17,11 +17,11 @@ namespace Basecode.Data.Models
         public string? Qualifications { get; set; }
         public string? WorkSetup { get; set; }
         public int? Hours { get; set; }
-        public int? isActive { get; set; }
-        public int Type { get; set; }
-        public DateTime? CreatedTime { get; set; }
+        public bool isActive { get; set; }
+        public string Type { get; set; }
+        public DateTime CreatedTime { get; set; }
         public int CreatedById { get; set; }
-        public DateTime? UpdatedTime { get; set; }
+        public DateTime UpdatedTime { get; set; }
         public int UpdatedById { get; set; }
         public bool IsDeleted { get; set; }
     }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Basecode.Data.Repositories
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Basecode.Data.Dtos
+namespace Basecode.Data.Dtos.JobPostings
 {
     public class JobPostingsCreationDto
     {
@@ -16,7 +16,6 @@ namespace Basecode.Data.Dtos
         public int Hours { get; set; }
         public bool IsActive { get; set; }
         public string? Type { get; set; }
-        public DateTime CreatedTime { get; set; }
         public int CreatedById { get; set; }
     }
 }

@@ -1,0 +1,15 @@
+﻿.main-content {
+    height: 100vh;
+}
+
+.top-header {
+    height: 78px;
+    background: #ffffff;
+}
+
+.top-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}

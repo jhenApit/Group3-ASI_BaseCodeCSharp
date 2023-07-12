@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Basecode.Services.Services
+namespace Basecode.Services.Utils
 {
     public class ErrorHandling
     {

@@ -24,7 +24,7 @@ namespace Basecode.Data
         }
 
         public virtual DbSet<HrEmployee> HrEmployees { get; set; }
-
+        public virtual DbSet<JobPosting> JobPostings { get; set; }
         public virtual DbSet<Applicant> Applicants { get; set; }
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<CharacterReferences> CharacterReferences { get; set; }

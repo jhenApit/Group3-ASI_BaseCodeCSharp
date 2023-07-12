@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿//using Microsoft.AspNetCore.Identity;
 using AutoMapper;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
-using Basecode.Data;
 using Basecode.Services.Interfaces;
 using Basecode.Data.Dtos.JobPostings;
 using Microsoft.AspNetCore.Http;
@@ -15,15 +14,15 @@ namespace Basecode.Services.Services
     {
         private readonly IJobPostingsRepository _repository;
         private readonly IMapper _mapper;
-        private readonly UserManager<User> _userManager;
+        //private readonly UserManager<HrEmployee> _userManager
         private readonly LogContent _logContent = new();
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public JobPostingsService(IJobPostingsRepository repository, UserManager<User> userManager, IHttpContextAccessor httpContextAccessor, IMapper mapper)
+        public JobPostingsService(IJobPostingsRepository repository, /*UserManager<HrEmployee> userManager,*/ IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
-            _userManager = userManager;
+            //_userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
         }
         public List<JobPostings> RetrieveAll()
@@ -61,8 +60,9 @@ namespace Basecode.Services.Services
         public async Task<int> GetLoggedInUserId()
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = await _userManager.FindByIdAsync(userId);
-            return user != null ? int.Parse(userId) : 0;
+            //var user = await _userManager.FindByIdAsync(userId);
+            //return user != null ? int.Parse(userId) : 0;
+            return int.Parse(userId);
         }
 
         public void SemiDelete(int id)

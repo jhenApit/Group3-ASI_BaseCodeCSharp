@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Basecode.Data.Models;
 using Basecode.Data.Dtos;
-using static Basecode.Services.Services.ErrorHandling;
+using static Basecode.Services.Utils.ErrorHandling;
 
 namespace Basecode.Services.Interfaces
 {
@@ -19,5 +19,6 @@ namespace Basecode.Services.Interfaces
         void SemiDelete(int id);
         void PermaDelete(int id);
         public LogContent CreateHrAccount(HREmployeeCreationDto hrEmployee);
+        public LogContent EditHrAccount(HREmployeeUpdationDto hrEmployee);
     }
 }

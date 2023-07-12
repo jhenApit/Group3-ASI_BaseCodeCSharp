@@ -199,3 +199,5 @@ node_modules
 */src/*/Scripts/**/*.js.map
 Basecode.WebApp/appsettings.json
 Basecode.WebApp/appsettings.json
+Basecode.WebApp/appsettings.json
+Basecode.WebApp/appsettings.Development.json

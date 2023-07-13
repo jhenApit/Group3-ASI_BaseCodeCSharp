@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Basecode.Data;
-using Basecode.Data.Dtos;
+using Basecode.Data.Dtos.HrEmployee;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;

@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Basecode.Data.Models;
-using Basecode.Data.Dtos;
 using static Basecode.Services.Utils.ErrorHandling;
+using Basecode.Data.Dtos.HrEmployee;
 
 namespace Basecode.Services.Interfaces
 {

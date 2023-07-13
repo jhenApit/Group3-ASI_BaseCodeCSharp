@@ -8,7 +8,8 @@ using Basecode.Data.Dtos;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
-using static Basecode.Services.Services.ErrorHandling;
+using Basecode.Services.Utils;
+using static Basecode.Services.Utils.ErrorHandling;
 
 namespace Basecode.Services.Services
 {

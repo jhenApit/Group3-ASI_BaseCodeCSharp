@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Basecode.Data.Models;
 using Basecode.Data.Dtos;
-using static Basecode.Services.Services.ErrorHandling;
+using static Basecode.Services.Utils.ErrorHandling;
 
 namespace Basecode.Services.Interfaces
 {

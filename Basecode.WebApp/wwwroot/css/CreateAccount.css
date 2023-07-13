@@ -1,6 +1,9 @@
-﻿.content {
+﻿body {
+    background: #E4E9F7;
+}
+
+.content {
     height: 100%;
-    background-color: #F0F6F7;
 }
 
 .logo-icon {
@@ -43,7 +46,7 @@
 }
 
 .bg {
-    height: 344px;
+    height: 290px;
     background-image: url(../images/people-bg.png);
     background-repeat: no-repeat;
     background-size: cover;
@@ -94,6 +97,11 @@
 .form-control {
     flex-basis: 90%;
     margin-right: 0;
+}
+
+.form-switch .form-check-input {
+    width: 4em;
+    margin-left: -2.0em;
 }
 
 .save-changes-button {

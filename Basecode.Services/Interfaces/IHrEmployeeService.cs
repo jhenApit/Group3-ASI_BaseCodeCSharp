@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Basecode.Data.Models;
 using static Basecode.Services.Utils.ErrorHandling;
 using Basecode.Data.Dtos.HrEmployee;
+using Basecode.Services.Utils;
+
 
 namespace Basecode.Services.Interfaces
 {

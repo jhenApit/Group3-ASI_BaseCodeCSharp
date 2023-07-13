@@ -102,11 +102,14 @@ namespace Basecode.Services.Services
         {
             var hr = GetByEmail(hrEmployee.Email);
             
-            if (hr.Id != hrEmployee.Id)
+            if(hr!=null)
             {
-                _logContent.Result = false;
-                _logContent.ErrorCode = "400. Edit Failed!";
-                _logContent.Message = "Email already exists";
+                if (hr.Id != hrEmployee.Id)
+                {
+                    _logContent.Result = false;
+                    _logContent.ErrorCode = "400. Edit Failed!";
+                    _logContent.Message = "Email already exists";
+                }
             }
             else
             {

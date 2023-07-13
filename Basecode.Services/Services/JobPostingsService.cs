@@ -15,16 +15,12 @@ namespace Basecode.Services.Services
     {
         private readonly IJobPostingsRepository _repository;
         private readonly IMapper _mapper;
-        private readonly UserManager<User> _userManager;
         private readonly LogContent _logContent = new();
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public JobPostingsService(IJobPostingsRepository repository, UserManager<User> userManager, IHttpContextAccessor httpContextAccessor, IMapper mapper)
+        public JobPostingsService(IJobPostingsRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
-            _userManager = userManager;
-            _httpContextAccessor = httpContextAccessor;
         }
         public List<JobPostings> RetrieveAll()
         {
@@ -48,28 +44,17 @@ namespace Basecode.Services.Services
         public void Update(JobPostingsUpdationDto JobPostings)
         {
             var JobPostingsModel = _mapper.Map<JobPostings>(JobPostings);
-            JobPostingsModel.UpdatedById = GetLoggedInUserId().Result;
+            JobPostingsModel.UpdatedById = 1; // i"ll change this later when the log in part is implemented already
             JobPostingsModel.UpdatedTime = DateTime.Now;
 
             _repository.Update(JobPostingsModel);
-        }
-        /// <summary>
-        /// This is suppose to get the id of the current logged in.
-        /// This is a sample method and is not tested yet
-        /// </summary>
-        /// <returns></returns>
-        public async Task<int> GetLoggedInUserId()
-        {
-            var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = await _userManager.FindByIdAsync(userId);
-            return user != null ? int.Parse(userId) : 0;
         }
 
         public void SemiDelete(int id)
         {
             var job = _repository.GetById(id);
             job.IsDeleted = true;
-            job.UpdatedById = GetLoggedInUserId().Result;
+            job.UpdatedById = 1; // i"ll change this later when the log in part is implemented already
             job.UpdatedTime = DateTime.Now;
             _repository.SemiDelete(job);
         }

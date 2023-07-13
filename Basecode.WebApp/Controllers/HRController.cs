@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Basecode.Data.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Basecode.Data.Dtos.JobPostings;
+using Basecode.Services.Interfaces;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -8,6 +12,14 @@ namespace Basecode.WebApp.Controllers
         /// Displays the list of job posts.
         /// </summary>
         /// <returns>The view containing the job post list.</returns>
+        private readonly UserManager<HrEmployee> _userManager;
+        private readonly IJobPostingsService _jobpostingService;
+
+        public HRController(UserManager<HrEmployee> userManager, IJobPostingsService jobposting)
+        {
+            _userManager = userManager;
+            _jobpostingService = jobposting;
+        }
         public IActionResult JobPostList()
         {
             return View();
@@ -40,5 +52,24 @@ namespace Basecode.WebApp.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UpdateJobPosting(JobPostingsUpdationDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Retrieve the currently logged-in user
+                var loggedInUser = await _userManager.GetUserAsync(User);
+
+                if (loggedInUser != null)
+                {
+                    model.UpdatedById = loggedInUser.Id;
+                    _jobpostingService.Update(model);
+                    return RedirectToAction("JobPostList");
+                }
+            }
+
+            // If the model is not valid or the user is not logged in, return the EditJobPosting view with the appropriate error
+            return View("EditJobPosting", model);
+        }
     }
 }

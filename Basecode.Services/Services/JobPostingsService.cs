@@ -59,7 +59,6 @@ namespace Basecode.Services.Services
         public void Update(JobPostingsUpdationDto JobPostings)
         {
             var JobPostingsModel = _mapper.Map<JobPostings>(JobPostings);
-            JobPostingsModel.UpdatedById = 1; // i"ll change this later when the log in part is implemented already
             JobPostingsModel.UpdatedTime = DateTime.Now;
 
             _repository.Update(JobPostingsModel);
@@ -73,7 +72,6 @@ namespace Basecode.Services.Services
         {
             var job = _repository.GetById(id);
             job.IsDeleted = true;
-            job.UpdatedById = 1; // i"ll change this later when the log in part is implemented already
             job.UpdatedTime = DateTime.Now;
             _repository.SemiDelete(job);
         }

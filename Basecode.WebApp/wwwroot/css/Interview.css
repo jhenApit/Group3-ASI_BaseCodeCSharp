@@ -83,7 +83,7 @@
     font-size: 20px;
     color: #55729B;
     margin: auto;
-    font-weight: 500;
+    font-weight: 700;
     width: 100%;
 }
 
@@ -103,18 +103,35 @@
     padding: 0 2em;
 }
 
-thead {
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .table thead th,
+    .table tbody td {
+        padding: 2em 1em;
+        text-align: center;
+        width: 25%;
+    }
+
+    .table thead th {
+        background: #55729B;
+        color: white;
+    }
+
+    .table tbody td {
+        background: white;
+    }
+
+.b-blue {
     background: #55729B;
-    color: white;
+    padding: 0 1.5em;
+    border-radius: 0.5em;
 }
 
-th, td{
-    text-align: center;
-    width: 25%;
-    border: none;
-}
-
-.table-entry {
-    background: white;
-    margin-bottom: 1em;
+.b-red {
+    background: #FF0000;
+    padding: 0 1.5em;
+    border-radius: 0.5em;
 }

@@ -146,5 +146,10 @@ namespace Basecode.WebApp.Controllers
             _service.Add(hrEmployee);
             return RedirectToAction("HrList");
         }
+
+        public IActionResult Interview()
+        {
+            return View();
+        }
     }
 }

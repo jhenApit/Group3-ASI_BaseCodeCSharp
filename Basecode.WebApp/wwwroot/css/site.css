@@ -5,7 +5,7 @@ html {
 }
 
 body {
-    background: linear-gradient(rgba(17, 17, 17, 0.3), rgba(17, 17, 17, 1)), url(../images/landing-page.jpg) no-repeat center/cover;
+    background: linear-gradient(rgba(17, 17, 17, 0.3), rgba(17, 17, 17, 1)), url(../images/landing-page.jpg) no-repeat center/cover fixed;
 }
 
 .contactUs_body {

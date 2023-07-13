@@ -105,8 +105,16 @@
 
 thead {
     background: #55729B;
+    color: white;
 }
 
 th, td{
     text-align: center;
+    width: 25%;
+    border: none;
+}
+
+.table-entry {
+    background: white;
+    margin-bottom: 1em;
 }

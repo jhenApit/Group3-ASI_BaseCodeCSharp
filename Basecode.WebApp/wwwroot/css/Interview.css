@@ -74,3 +74,39 @@
     background: #FF0000;
     border: none;
 }
+
+.upcoming-interview {
+    padding: 1.5em 2em;
+}
+
+.upcoming-text {
+    font-size: 20px;
+    color: #55729B;
+    margin: auto;
+    font-weight: 500;
+    width: 100%;
+}
+
+.new-interview {
+    background: #55729B;
+    border: none;
+    border-radius: 0.5em;
+    padding: 0.5em 1em;
+}
+
+.line {
+    border-bottom: 1px solid #55729B;
+    margin-top: 0.5em;
+}
+
+.table-style {
+    padding: 0 2em;
+}
+
+thead {
+    background: #55729B;
+}
+
+th, td{
+    text-align: center;
+}

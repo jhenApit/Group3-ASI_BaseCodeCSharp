@@ -16,6 +16,6 @@ namespace Basecode.Data.Models
             //values
         }
         public HStatus HireStatus { get; set; }
-        public DateTime HireDate { get; set; }
+        public DateTime HireDate { get; set; } 
     }
 }

@@ -1,0 +1,27 @@
+﻿body, .main-content {
+    background: #F0F6F7;
+}
+
+.heading {
+    background: white;
+    height: 5em;
+    padding-left: 2em;
+    align-items: center;
+    justify-content: left;
+    display: flex;
+}
+
+.heading-text{
+    font-size: 30px;
+    display: flex;
+    flex-direction: row;
+}
+
+.back-button{
+    margin-right: 0.5em;
+    text-decoration: none;
+}
+
+.back-button:hover{
+    cursor: pointer;
+}

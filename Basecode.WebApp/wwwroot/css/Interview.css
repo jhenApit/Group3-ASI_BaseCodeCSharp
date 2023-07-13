@@ -83,7 +83,7 @@
     font-size: 20px;
     color: #55729B;
     margin: auto;
-    font-weight: 500;
+    font-weight: 700;
     width: 100%;
 }
 
@@ -103,97 +103,6 @@
     padding: 0 2em;
 }
 
-thead {
-    background: #55729B;
-    color: white;
-}
-
-th, td{
-    text-align: center;
-    width: 25%;
-    border: none;
-}
-
-.table-entry {
-    background: white;
-    margin-bottom: 1em;
-}.interviewer {
-    padding: 1.5em 2em;
-    gap: 1em;
-}
-
-.select-interviewer {
-    background: #55729B;
-    padding: 1em;
-    border-radius: 0.7em;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-    gap: 1em;
-}
-
-.select-text{
-    margin: 0;
-    font-size: 16px;
-    color: white;
-    font-weight: 500;
-}
-
-.dropdown-button {
-    background: white;
-    border-radius: 0.5em;
-    border: none;
-    padding: 0.5em;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-}
-
-.dropdown-text {
-    font-style: italic;
-    color: #55729B;
-    margin: 0;
-    width: 100%;
-    text-align: left;
-}
-
-.add-interviewer {
-    padding: 1em 3em;
-    border-radius: 0.7em;
-    background: #FF0000;
-    border: none;
-}
-
-.upcoming-interview {
-    padding: 1.5em 2em;
-}
-
-.upcoming-text {
-    font-size: 20px;
-    color: #55729B;
-    margin: auto;
-    font-weight: 700;
-    width: 100%;
-}
-
-.new-interview {
-    background: #55729B;
-    border: none;
-    border-radius: 0.5em;
-    padding: 0.5em 1em;
-}
-
-.line {
-    border-bottom: 1px solid #55729B;
-    margin-top: 0.3em;
-}
-
-.table-style {
-    padding: 0 2em;
-}
-
 .table {
     width: 100%;
     border-collapse: collapse;
@@ -204,7 +113,6 @@ th, td{
         padding: 2em 1em;
         text-align: center;
         width: 25%;
-        vertical-align: middle;
     }
 
     .table thead th {

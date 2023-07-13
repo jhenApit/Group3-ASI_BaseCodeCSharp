@@ -29,4 +29,8 @@
     <ProjectReference Include="..\Basecode.WebApp\Basecode.WebApp.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

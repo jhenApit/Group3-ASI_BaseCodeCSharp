@@ -124,5 +124,9 @@ namespace Basecode.WebApp.Controllers
             return RedirectToAction("HrList");
         }
 
+        public IActionResult Interview()
+        {
+            return View();
+        }
     }
 }

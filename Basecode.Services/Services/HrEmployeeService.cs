@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Basecode.Services.Services
 {
-    public class HrEmployeeService : ErrorHandling, IHrEmployeeService
+    public class HrEmployeeService : IHrEmployeeService
     {
         private readonly IHrEmployeeRepository _repository;
         private readonly IMapper _mapper;

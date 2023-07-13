@@ -13,15 +13,12 @@
     <div class="sidebar open">
         <div class="header-container">
             <a class="logo-details">
-                <img src="~/images/asi-a-logo.jpg" alt="Alliance Icon">
+                <img src="~/images/asi-a-logo.jpg" alt="Alliance Logo" class="alliance-logo">
                 <div class="logo-name">
                     <span class="company-name">lliance</span>
                     <span class="company-type">Alliance Software Incorporated</span>
                 </div>
             </a>
-            <div class="menu-icon">
-                <i class='bx bx-menu'></i>
-            </div>
         </div>
 
         <ul class="nav-links">
@@ -84,11 +81,9 @@
         </ul>
     </div>
 
-    <div class="main-content">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <main class="main-content pb-3" role="main">
+        @RenderBody()
+    </main>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/sidebar.js" asp-append-version="true"></script>

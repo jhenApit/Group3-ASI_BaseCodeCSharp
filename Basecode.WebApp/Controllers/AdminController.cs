@@ -1,7 +1,7 @@
 ﻿using Basecode.Data.Dtos;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
-using Basecode.Services.Services;
+using Basecode.Services.Utils;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 
@@ -47,6 +47,7 @@ namespace Basecode.WebApp.Controllers
                 _service.Add(hrEmployee);
                 return RedirectToAction("HrList");
             }
+            ModelState.Clear();
             return View(hrEmployee);
         }
 

@@ -1,4 +1,4 @@
-﻿/* Google Fonts Import Link */
+/* Google Fonts Import Link */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap');
 
 *{
@@ -35,38 +35,10 @@
     text-decoration: none !important;
 }
 
-.sidebar .header-container .menu-icon {
-    left: 20px;
-    height: 77px;
-    display: flex;
-    align-items: center;
-    padding: 20px 5px;
-    width: max-content;
-    position: relative;
-}
-
-.sidebar.close .header-container .menu-icon {
-    left: 0px;
-    height: 77px;
-    display: flex;
-    align-items: center;
-    padding: 20px 5px;
-    width: max-content;
-    position: relative;
-}
-
-.sidebar .header-container .menu-icon .bx-menu {
-    color: #11101d;
-    font-size: 35px;
-    cursor: pointer;
-    font-weight: 300;
-}
-
 .sidebar .logo-details img {
     width: 50px;
     border-radius: 5px;
 }
-
 
 .sidebar .logo-details .logo-name {
     display: flex;
@@ -74,7 +46,7 @@
     color: #fff;
     padding-left: 8px;
     flex-direction: column;
-    margin-top: -8px;
+    margin-top: -12px;
 }
 
 .sidebar .logo-name .company-name {
@@ -85,7 +57,7 @@
 .sidebar .logo-name .company-type {
     font-size: 10px;
     font-weight: 400;
-    margin-top: -10px;
+    margin-top: -16px;
     padding-left: 3px;
 }
 
@@ -289,7 +261,7 @@
 .main-content {
     position: relative;
     background: #E4E9F7;
-    height: 100vh;
+    height: 100%;
     left: 260px;
     width: calc(100% - 260px);
     transition: all 0.5s ease;

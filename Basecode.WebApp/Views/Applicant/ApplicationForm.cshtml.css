@@ -69,6 +69,20 @@ input[type=checkbox] {
     accent-color: red;
 }
 
+.input-group .form-control:disabled, .form-control[readonly] {
+    background-color: #91B3D3;
+    color: white;
+    font-weight: bold;
+    opacity: 1;
+}
+
+.input-group-text {
+    background-color: #91B3D3;
+    color: white;
+    font-weight: bold;
+    opacity: 1;
+}
+
 .btn-primary {
     color: #fff;
     background-color: #FC1F22;
@@ -81,4 +95,9 @@ input[type=checkbox] {
 
 .text-footer {
     border-bottom: 1px solid black;
+}
+
+.copied {
+    display: none;
+    color: #198754;
 }

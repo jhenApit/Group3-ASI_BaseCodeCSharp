@@ -39,6 +39,7 @@
     flex-direction: row;
     align-items: center;
     width: 100%;
+    gap: 1em;
 }
 
 .select-text{
@@ -46,10 +47,6 @@
     font-size: 16px;
     color: white;
     font-weight: 500;
-}
-
-.dropdown{
-    margin-left: 1em;
 }
 
 .dropdown-button {
@@ -60,12 +57,15 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: 100%;
 }
 
 .dropdown-text {
     font-style: italic;
     color: #55729B;
     margin: 0;
+    width: 100%;
+    text-align: left;
 }
 
 .add-interviewer {

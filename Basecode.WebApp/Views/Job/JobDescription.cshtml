@@ -1,0 +1,68 @@
+﻿@using Basecode.Data.Models
+@model JobPostings
+@{
+    ViewData["Title"] = "Job Description";
+}
+<body class="findJobs_body">
+    <div class="container top-0">
+        <h2 class="my-5 text-black text-bold">@Model.Name</h2>
+
+        <!---->
+        <div class="row mx-3 mb-2">
+            <div class="col d-flex">
+                <p class="text-bold mb-1 align-self-center me-2">Job Details</p>
+                <button class="btn btn-primary ms-4 py-0">
+                    <a class="nav-link p-0 mx-4 text-bold" asp-area="" asp-controller="Applicant" asp-action="JobDescription">APPLY</a>
+                </button>
+            </div>
+        </div>
+        <div class="border-rounded bg-white px-3 pt-3 pb-2 mb-4">
+            <div class="row m-1">
+                <div class="col">
+                    <div class="mb-4">
+                        <h4 class="text-bold">Job Description</h4>
+                        <ul>
+                            <li>
+                                @Model.Description
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="ms-3 mb-4">
+                        <h5 class="">Job Qualifications</h5>
+                        <ul>
+                            <li>
+                                @Model.Qualifications
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="ms-3 mb-4">
+                        <h5 class="">Job Responsibilities</h5>
+                        <ul>
+                            <li>
+                                @Model.Responsibilities
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-3 text-bold">
+                    <div class="border-top pt-2 mt-2"></div>
+                    <ul>
+                        <li>
+                            @Model.Hours Hours per week
+                        </li>
+                        <li>
+                            @Model.Type
+                        </li>
+                        <li>
+                            @Model.WorkSetup
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!---->
+    </div>
+
+</body>
+
+

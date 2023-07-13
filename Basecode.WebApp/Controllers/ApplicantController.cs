@@ -17,10 +17,6 @@ namespace Basecode.WebApp.Controllers
             Applicant data = _service.GetById(id);
             return View(data);
         }
-        public IActionResult FindJobs(JobPostings data)
-        {
-            return View(data);
-        }
 
         public IActionResult ContactUs()
         {
@@ -37,10 +33,6 @@ namespace Basecode.WebApp.Controllers
 			return View();
 		}
         public IActionResult TermsAndConditions()
-        {
-            return View();
-        }
-        public IActionResult JobDescription()
         {
             return View();
         }

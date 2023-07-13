@@ -18,5 +18,11 @@ namespace Basecode.WebApp.Controllers
             var data = _service.RetrieveAll();
             return View(data);
         }
+
+        public IActionResult JobDescription(int id) 
+        {
+            var data = _service.GetById(id);
+            return View(data);
+        }
     }
 }

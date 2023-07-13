@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿//using Microsoft.AspNetCore.Identity;
 using AutoMapper;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
-using Basecode.Data;
 using Basecode.Services.Interfaces;
 using Basecode.Data.Dtos.JobPostings;
 using Microsoft.AspNetCore.Http;
@@ -15,12 +14,15 @@ namespace Basecode.Services.Services
     {
         private readonly IJobPostingsRepository _repository;
         private readonly IMapper _mapper;
+        //private readonly UserManager<HrEmployee> _userManager
+        private readonly IHttpContextAccessor _contextAccessor;
         private readonly LogContent _logContent = new();
-
-        public JobPostingsService(IJobPostingsRepository repository, IMapper mapper)
+        public JobPostingsService(IJobPostingsRepository repository, /*UserManager<HrEmployee> userManager,*/ IHttpContextAccessor httpContextAccessor, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
+            //_userManager = userManager;
+            _contextAccessor = httpContextAccessor;
         }
         public List<JobPostings> RetrieveAll()
         {
@@ -48,6 +50,18 @@ namespace Basecode.Services.Services
             JobPostingsModel.UpdatedTime = DateTime.Now;
 
             _repository.Update(JobPostingsModel);
+        }
+        /// <summary>
+        /// This is suppose to get the id of the current logged in.
+        /// This is a sample method and is not tested yet
+        /// </summary>
+        /// <returns></returns>
+        public async Task<int> GetLoggedInUserId()
+        {
+            var userId = _contextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var user = await _userManager.FindByIdAsync(userId);
+            //return user != null ? int.Parse(userId) : 0;
+            return int.Parse(userId);
         }
 
         public void SemiDelete(int id)

@@ -6,8 +6,7 @@
 }
 
 a {
-    color: white;
-    text-decoration: none !important;
+    color: #0077cc;
 }
 
 .btn-primary {
@@ -44,4 +43,8 @@ h2 {
 .my-5 {
     margin-top: 15vh !important;
     margin-bottom: 8vh !important;
+}
+
+.border-top {
+    border-top: 2px solid black !important;
 }

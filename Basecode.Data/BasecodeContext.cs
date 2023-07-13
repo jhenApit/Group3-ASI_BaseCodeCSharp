@@ -33,6 +33,7 @@ namespace Basecode.Data
         public virtual DbSet<Interviewers> Interviewers { get; set; }
         public virtual DbSet<Interviews> Interviews { get; set; }
         public virtual DbSet<Exams> Exams { get; set; }
+        public virtual DbSet<CurrentHires> CurrentHires { get; set; }
         public virtual DbSet<User> User { get; set; }
 
         public virtual DbSet<RefreshToken> RefreshToken { get; set; }

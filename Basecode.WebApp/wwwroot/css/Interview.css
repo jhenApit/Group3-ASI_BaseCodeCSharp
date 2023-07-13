@@ -25,3 +25,52 @@
 .back-button:hover{
     cursor: pointer;
 }
+
+.interviewer {
+    padding: 1.5em 2em;
+    gap: 1em;
+}
+
+.select-interviewer {
+    background: #55729B;
+    padding: 1em;
+    border-radius: 0.7em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+.select-text{
+    margin: 0;
+    font-size: 16px;
+    color: white;
+    font-weight: 500;
+}
+
+.dropdown{
+    margin-left: 1em;
+}
+
+.dropdown-button {
+    background: white;
+    border-radius: 0.5em;
+    border: none;
+    padding: 0.5em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.dropdown-text {
+    font-style: italic;
+    color: #55729B;
+    margin: 0;
+}
+
+.add-interviewer {
+    padding: 1em 3em;
+    border-radius: 0.7em;
+    background: #FF0000;
+    border: none;
+}

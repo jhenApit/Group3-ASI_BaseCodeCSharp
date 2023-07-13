@@ -3,19 +3,27 @@
     max-width: 960px;
     align-items: center;
     justify-content: center;
-    margin: 25vh auto 0px auto;
-    text-align: center;
+    margin: 15vh auto 0px auto;
 }
 
-h1 {
-    text-align: center;
-    font-size: 40px;
-    margin-top: 20px;
+.application-status-container {
     font-family: 'Montserrat', sans-serif;
-    font-weight: bold;
-    font-style: italic;
-    color: white;
+    max-width: 720px;
+    border-radius: 1.5rem;
+    background-color: white;
 }
+
+    .application-status-container .header {
+        border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+    }
+
+        .application-status-container .header .title {
+            font-weight: 700;
+        }
+
+    .application-status-container .body {
+        margin: 5rem 0px 5rem 0px;
+    }
 
 .search-container {
     display: flex;
@@ -68,4 +76,12 @@ h1 {
 
 .text-center {
     text-align: center !important;
+}
+
+.text-red {
+    color: red !important;
+}
+
+.text-skyblue {
+    color: skyblue;
 }

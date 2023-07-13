@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Basecode.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,19 +7,11 @@ using System.Threading.Tasks;
 
 namespace Basecode.Services.Utils
 {
-    public class ErrorHandling
+    public class ErrorHandling : IErrorHandling
     {
-        public class LogContent
+        public string SetLog(LogContent logContent)
         {
-            public string ErrorCode { get; set; } = string.Empty;
-            public DateTime Time { get; set; }
-            public string Message { get; set; } = string.Empty;
-            public bool Result { get; set; } = false;
-        }
-
-        public static string SetLog(LogContent logContent)
-        {
-            return "ErrorCode: " + logContent.ErrorCode + ". Message: " + "\"" + logContent.Message + "\"";
+            return $"ErrorCode: {logContent.ErrorCode}. Message: \"{logContent.Message}\"";
         }
     }
 }

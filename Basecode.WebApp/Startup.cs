@@ -2,6 +2,7 @@
 using Basecode.Data.Repositories;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Services;
+using Basecode.Services.Utils;
 
 namespace Basecode.WebApp
 {
@@ -27,6 +28,7 @@ namespace Basecode.WebApp
             // Add services to the container.
             services.AddControllersWithViews();
             services.AddScoped<IApplicantService, ApplicantService>();
+            services.AddScoped<IErrorHandling, ErrorHandling>();
             services.AddScoped<IApplicantRepository, ApplicantRepository>();
         }
 

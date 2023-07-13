@@ -41,13 +41,5 @@ namespace Basecode.WebApp.Controllers
         {
             return View();
         }
-        public IActionResult FindJobs()
-        {
-            return View();
-        }
-        public IActionResult JobDescription()
-        {
-            return View();
-        }
     }
 }

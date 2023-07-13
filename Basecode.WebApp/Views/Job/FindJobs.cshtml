@@ -5,7 +5,7 @@
 }
 <body class="findJobs_body">
     <div class="container top-0">
-        <h2 class="mb-5 text-black text-bold">Open positions</h2>
+        <h2 class="my-5 text-black text-bold">Open positions</h2>
 
         @foreach (var jobPosting in Model)
         {
@@ -37,7 +37,7 @@
                     <div class="col-auto">
                         <button class="btn btn-primary px-5">
                             <h5 class="m-0 p-0">
-                                <a class="nav-link" asp-area="" asp-controller="Applicant" asp-action="JobDescription">View Job</a>
+                                <a class="nav-link" asp-route-id="@jobPosting.Id" asp-controller="Job" asp-action="JobDescription">View Job</a>
                             </h5>
                         </button>
                     </div>

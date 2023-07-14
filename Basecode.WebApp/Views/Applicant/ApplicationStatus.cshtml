@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Track Application";
+}
+
+
+<div class="make-center">
+    <div class="col">
+        <div class="container">
+            <form method="get" action="@Url.Action("TrackStatus", "Applicant")">
+                <div class="search-container">
+                    <input type="text" class="form-control text-center search-bar" id="trackingNumber" name="id" placeholder="Enter your application ID here...">
+                    <button type="submit" class="btn track-status-button">Track</button>
+                </div>
+            </form>
+
+            <div class="application-status-container px-5 py-3 mt-5 mx-auto">
+                <div class="header">
+                    <h4 class="text-center title">Application Status</h4>
+                </div>
+                <div class="body">
+                    <div class="row mt-3 mt-sm-0">
+                        <div class="col-sm-6 d-inline-flex justify-content-center justify-content-sm-end">
+                            <h4 class="">Application ID:</h4>
+                        </div>
+                        <div class="col-sm-6 d-inline-flex justify-content-center justify-content-sm-start">
+                            <h4 class="text-red font-italic">123456789FASDAF</h4>
+                        </div>
+                    </div>
+                    <div class="row mt-3 mt-sm-0 ">
+                        <div class="col-sm-6 d-inline-flex justify-content-center justify-content-sm-end">
+                            <h4 class="">Date Applied:</h4>
+                        </div>
+                        <div class="col-sm-6 d-inline-flex justify-content-center justify-content-sm-start">
+                            <h4 class="font-italic">July 1, 2023</h4>
+                        </div>
+                    </div>
+                    <div class="row mt-3 mt-sm-0">
+                        <div class="col-sm-6 d-inline-flex justify-content-center justify-content-sm-end">
+                            <h4 class="">Current Status:</h4>
+                        </div>
+                        <div class="col-sm-6 d-inline-flex justify-content-center justify-content-sm-start">
+                            <h4 class="text-skyblue font-italic">In Review</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

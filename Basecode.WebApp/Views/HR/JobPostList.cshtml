@@ -34,7 +34,7 @@
                         <td>Position @i</td>
                         <td>Status @i</td>
                         <td>
-                            <a asp-route-id="@i" title="View Full Details">
+                            <a asp-route-id="@i" title="View Full Details" asp-controller="HR" asp-action="ViewJobPost">
                                 <img src="~/images/icons/file-icon.png" alt="View" class="job-post-action-icon" />
                             </a>
                             <a asp-route-id="@i" title="Edit" asp-controller="HR" asp-action="EditJobPost">

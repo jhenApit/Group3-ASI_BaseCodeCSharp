@@ -37,8 +37,4 @@
     <None Include="wwwroot\images\building.png" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\images\icons\" />
-  </ItemGroup>
-
 </Project>

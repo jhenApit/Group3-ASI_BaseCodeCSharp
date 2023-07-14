@@ -28,6 +28,11 @@ namespace Basecode.WebApp.Controllers
             return View();
         }
 
+        public IActionResult ApplicationStatus() 
+        {
+            return View();
+        }
+
 		public IActionResult ApplicationForm()
 		{
 			return View();

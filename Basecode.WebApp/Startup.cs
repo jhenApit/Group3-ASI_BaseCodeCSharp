@@ -2,6 +2,7 @@
 using Basecode.Data.Repositories;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Services;
+using Basecode.Services.Utils;
 
 namespace Basecode.WebApp
 {
@@ -26,6 +27,9 @@ namespace Basecode.WebApp
 
             // Add services to the container.
             services.AddControllersWithViews();
+            services.AddScoped<IApplicantService, ApplicantService>();
+            services.AddScoped<IErrorHandling, ErrorHandling>();
+            services.AddScoped<IApplicantRepository, ApplicantRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

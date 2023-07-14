@@ -96,7 +96,7 @@
 
 .line {
     border-bottom: 1px solid #55729B;
-    margin-top: 0.5em;
+    margin-top: 0.3em;
 }
 
 .table-style {
@@ -113,6 +113,7 @@
         padding: 2em 1em;
         text-align: center;
         width: 25%;
+        vertical-align: middle;
     }
 
     .table thead th {

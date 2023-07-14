@@ -15,9 +15,9 @@ namespace Basecode.WebApp.Controllers
         private readonly UserManager<HrEmployee> _userManager;
         private readonly IJobPostingsService _jobpostingService;
 
-        public HRController(UserManager<HrEmployee> userManager, IJobPostingsService jobposting)
+        public HRController(/*UserManager<HrEmployee> userManager,*/ IJobPostingsService jobposting)
         {
-            _userManager = userManager;
+            //_userManager = userManager;
             _jobpostingService = jobposting;
         }
         public IActionResult JobPostList()
@@ -58,11 +58,11 @@ namespace Basecode.WebApp.Controllers
             if (ModelState.IsValid)
             {
                 // Retrieve the currently logged-in user
-                var loggedInUser = await _userManager.GetUserAsync(User);
+                var loggedInUser = 1;//await _userManager.GetUserAsync(User);
 
                 if (loggedInUser != null)
                 {
-                    model.UpdatedById = loggedInUser.Id;
+                    model.UpdatedById = 1;
                     _jobpostingService.Update(model);
                     return RedirectToAction("JobPostList");
                 }

@@ -27,11 +27,19 @@ namespace Basecode.Data.Repositories
             _context.SaveChanges();
         }
 
+<<<<<<< HEAD
         /// <summary>
         /// Retrieves an applicant from the database by their ID.
         /// </summary>
         /// <param name="id">The ID of the applicant to retrieve.</param>
         /// <returns>The applicant with the specified ID, or null if not found.</returns>
+=======
+        public Applicant GetByApplicantId(string applicantId)
+        {
+            return _context.Applicants.FirstOrDefault(e => e.ApplicantId == applicantId);
+        }
+
+>>>>>>> 8878fdf (Add class for enumerated values)
         public Applicant GetById(int id)
         {
             return _context.Applicants.Find(id)!;

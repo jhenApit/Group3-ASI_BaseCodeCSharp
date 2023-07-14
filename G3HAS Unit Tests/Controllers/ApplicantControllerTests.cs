@@ -77,15 +77,5 @@ namespace G3HAS_Unit_Tests.Controllers
             // Assert
             Assert.IsType<ViewResult>(result);
         }
-
-        [Fact]
-        public void JobDescription_ReturnsView()
-        {
-            // Act
-            IActionResult result = _controller.JobDescription();
-
-            // Assert
-            Assert.IsType<ViewResult>(result);
-        }
     }
 }

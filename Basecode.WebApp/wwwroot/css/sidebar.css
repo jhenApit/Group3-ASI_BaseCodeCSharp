@@ -261,7 +261,7 @@
 .main-content {
     position: relative;
     background: #E4E9F7;
-    height: 100%;
+    height: 100vh;
     left: 260px;
     width: calc(100% - 260px);
     transition: all 0.5s ease;
@@ -273,7 +273,7 @@
 }
 
 @media only screen and (max-width: 400px) {
-    .sidebar.close .nav-links ul .sub-menu, .logo-img {
+    .sidebar.close .nav-links ul .sub-menu{
         display: none;
     }
 
@@ -281,9 +281,9 @@
         width: 75px;
     }
 
-        .sidebar.close {
-            width: 0;
-        }
+    .sidebar.close {
+        width: 75px;
+    }
 
     .main-content {
         left: 75px;

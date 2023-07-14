@@ -11,10 +11,12 @@ namespace Basecode.WebApp.Controllers
     public class AdminController : Controller
     {
         private readonly IHrEmployeeService _service;
+        private readonly IErrorHandling _errorHandling;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        public AdminController(IHrEmployeeService service)
+        public AdminController(IHrEmployeeService service, IErrorHandling errorHandling)
         {
             _service = service;
+            _errorHandling = errorHandling;
         }
         public IActionResult AdminDashboard(string Email)
         {
@@ -40,7 +42,7 @@ namespace Basecode.WebApp.Controllers
                 var data = _service.CreateHrAccount(hrEmployee);
                 if (!data.Result)
                 {
-                    _logger.Error(ErrorHandling.SetLog(data));
+                    _logger.Error(_errorHandling.SetLog(data));
                     ViewBag.ErrorMessage = data.Message;
                     return View(hrEmployee);
                 }
@@ -89,7 +91,7 @@ namespace Basecode.WebApp.Controllers
             var data = _service.EditHrAccount(hrEmployee);
             if (!data.Result)
             {
-                _logger.Error(ErrorHandling.SetLog(data));
+                _logger.Error(_errorHandling.SetLog(data));
                 ViewBag.ErrorMessage = data.Message;
                 return View("EditHrAccountView", hrEmployee);
             }

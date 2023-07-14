@@ -13,5 +13,6 @@ namespace Basecode.Data.Interfaces
         IQueryable<Applicant> RetrieveAll();
         Applicant GetByName(string name);
         void Add(Applicant applicant);
+        Applicant GetByApplicantId(string trackerId);
     }
 }

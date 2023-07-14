@@ -1,13 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.Data.Models
 {
     public class Applicant
     {
-        [Required]
         public int Id { get; set; } // Primary Key
-
+        public string? ApplicantId { get; set; }
         public int? JobId { get; set; } // Foreign Key
 
         [Required(ErrorMessage = "ApplicationDate is required.")]
@@ -28,21 +28,13 @@ namespace Basecode.Data.Models
         public int PhoneNumber { get; set; } 
 
         [EmailAddress(ErrorMessage = "Email must be a valid email address.")]
-        public string? Email { get; set; } 
+        public string? Email { get; set; }
+        public ApplicationStatus Status { get; set; }
 
-        public enum AdditionalInfo 
-        {
-            // Define enum values here
-        }
+        public AdditionalInfo AdditionalInfo { get; set; }
 
-        public enum ApplicationStatus 
-        {
-            // Define enum values here
-        }
+        public ApplicationStatus ApplicationStatus { get; set; }
 
-        public enum Requirements 
-        {
-            // Define enum values here
-        }
+        public Requirements Requirements { get; set; }
     }
 }

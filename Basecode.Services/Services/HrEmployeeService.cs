@@ -110,6 +110,10 @@ namespace Basecode.Services.Services
                     _logContent.ErrorCode = "400. Edit Failed!";
                     _logContent.Message = "Email already exists";
                 }
+                else
+                {
+                    _logContent.Result = true;
+                }
             }
             else
             {

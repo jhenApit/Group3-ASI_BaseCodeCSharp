@@ -1,6 +1,7 @@
 ﻿using Basecode.Data.Dtos;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
+using Basecode.Services.Utils;
 using Basecode.WebApp.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -11,45 +12,45 @@ namespace G3HAS_Unit_Tests.Controllers
     public class AdminControllerTests
     {
         private readonly Mock<IHrEmployeeService> _serviceMock;
+        private readonly Mock<IErrorHandling> _ehMock;
         private readonly AdminController _controller;
 
         public AdminControllerTests()
         {
             _serviceMock = new Mock<IHrEmployeeService>();
-            _controller = new AdminController(_serviceMock.Object);
+            _ehMock = new Mock<IErrorHandling>();
+            _controller = new AdminController(_serviceMock.Object, _ehMock.Object);
         }
 
         [Fact]
-        public void AdminDashboard_ReturnsViewWithHrEmployee()
+        public void AdminDashboard_ValidEmail_ReturnsViewResult()
         {
             // Arrange
-            string email = "test@example.com";
-            var hrEmployee = new HrEmployee(); // Create a sample HrEmployee object
-            _serviceMock.Setup(s => s.GetByEmail(email)).Returns(hrEmployee);
+            var email = "test@example.com";
+            var hrEmployee = new HrEmployee();
+            _serviceMock.Setup(x => x.GetByEmail(email)).Returns(hrEmployee);
 
             // Act
             var result = _controller.AdminDashboard(email);
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsAssignableFrom<HrEmployee>(viewResult.Model);
-            Assert.Equal(hrEmployee, model);
+            Assert.Equal(hrEmployee, viewResult.Model);
         }
 
         [Fact]
-        public void HrList_ReturnsViewWithData()
+        public void HrList_ReturnsViewResult()
         {
             // Arrange
-            var hrEmployees = new List<HrEmployee>(); // Create a list of HrEmployee objects
-            _serviceMock.Setup(s => s.RetrieveAll()).Returns(hrEmployees);
+            var hrEmployees = new List<HrEmployee>();
+            _serviceMock.Setup(x => x.RetrieveAll()).Returns(hrEmployees);
 
             // Act
             var result = _controller.HrList();
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsAssignableFrom<List<HrEmployee>>(viewResult.Model);
-            Assert.Equal(hrEmployees, model);
+            Assert.Equal(hrEmployees, viewResult.Model);
         }
 
         [Fact]

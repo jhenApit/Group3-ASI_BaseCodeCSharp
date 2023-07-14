@@ -1,0 +1,87 @@
+﻿.make-center {
+    display: flex;
+    max-width: 960px;
+    align-items: center;
+    justify-content: center;
+    margin: 15vh auto 0px auto;
+}
+
+.application-status-container {
+    font-family: 'Montserrat', sans-serif;
+    max-width: 720px;
+    border-radius: 1.5rem;
+    background-color: white;
+}
+
+    .application-status-container .header {
+        border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+    }
+
+        .application-status-container .header .title {
+            font-weight: 700;
+        }
+
+    .application-status-container .body {
+        margin: 5rem 0px 5rem 0px;
+    }
+
+.search-container {
+    display: flex;
+    height: 4rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    border: none;
+    border-radius: 1.5rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+    .search-container input[type="text"] {
+        height: 4rem;
+        padding: 8px;
+        border-radius: 1.5rem 0 0 1.5rem;
+        flex: 1;
+        font-style: italic;
+        font-size: 1.3rem;
+    }
+
+    .search-container ::placeholder,
+    .search-container :-ms-input-placeholder {
+        color: gray;
+        opacity: 0.7;
+    }
+
+    .search-container button[type="submit"] {
+        height: 4rem;
+        padding: 0px 2.5rem;
+        background-color: #FC1F22;
+        color: #fff;
+        border-radius: 0 1.5rem 1.5rem 0;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 1.25rem;
+    }
+
+.text-white {
+    color: #fff !important;
+}
+
+.font-italic {
+    font-style: italic !important;
+}
+
+.font-weight-bold {
+    font-weight: 700 !important;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.text-red {
+    color: red !important;
+}
+
+.text-skyblue {
+    color: skyblue;
+}

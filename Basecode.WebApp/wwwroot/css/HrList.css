@@ -1,6 +1,9 @@
-﻿.content {
+﻿body, .main-content {
+    background: #E4E9F7;
+}
+
+.content {
     height: 100%;
-    background-color: #F0F6F7;
 }
 
 .logo-icon {
@@ -60,37 +63,8 @@
     color: white;
 }
 
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    width: 325px;
-    height: 100%;
-    overflow: auto;
-}
-
-li a {
-    display: block;
-    color: white;
-    padding: 30px 20px;
-    text-decoration: none;
-    font-family: "Montserrat", sans-serif;
-    font-size: 20px;
-}
-
 .menu-icon {
     padding-right: 10px;
-}
-
-li a.active {
-    background-color: #1E1E1E;
-    border-right: 7px solid #FF0000;
-    color: white;
-}
-
-li a:hover:not(.active) {
-    background-color: #555;
-    color: white;
 }
 
 .heading {

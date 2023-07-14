@@ -22,8 +22,8 @@
         </div>
 
         <ul class="nav-links">
-            <li class="nav-item clicked">
-                <a href="#">
+            <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("AdminDashboard") ? "clicked" : "")">
+                <a asp-controller="Admin" asp-action="AdminDashboard">
                     <i class='bx bxs-grid-alt'></i>
                     <span class="link_name">Dashboard</span>
                 </a>
@@ -31,16 +31,13 @@
                     <li><p class="link_name" href="#">Dashboard</p></li>
                 </ul>
             </li>
-            <li class="nav-item">
-                <a href="#">
+            <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("HrList") ? "clicked" : "")">
+                <a asp-controller="Admin" asp-action="HrList">
                     <i class='bx bxs-user-account'></i>
                     <span class="link_name">Users</span>
                 </a>
-                <ul class="sub-menu blank">
-                    <li><p class="link_name" href="#">Users</p></li>
-                </ul>
             </li>
-            <li class="nav-item">
+            <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("JobPostList") || ViewContext.RouteData.Values["action"].ToString().Equals("ApplicantList") ? " clicked" : "" )">
                 <div class="icon-link">
                     <a href="#">
                         <i class='bx bxs-briefcase'></i>
@@ -50,11 +47,11 @@
                 </div>
                 <ul class="sub-menu">
                     <li><p class="link_name" href="#">Jobs</p></li>
-                    <li><a href="#" class="sub-menu-item">Job Posting</a></li>
-                    <li><a href="#" class="sub-menu-item">Applicants</a></li>
+                    <li><a asp-controller="Hr" asp-action="JobPostList" class="sub-menu-item">Job Posting</a></li>
+                    <li><a asp-controller="Hr" asp-action="ApplicantList" class="sub-menu-item">Applicants</a></li>
                 </ul>
             </li>
-            <li class="nav-item">
+            <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("Schedules") ? "clicked" : "")">
                 <div class="icon-link">
                     <a href="#">
                         <i class='bx bxs-calendar-check'></i>
@@ -64,7 +61,7 @@
                 </div>
                 <ul class="sub-menu">
                     <li><p class="link_name" href="#">Schedules</p></li>
-                    <li><a href="#" class="sub-menu-item">Interviews</a></li>
+                    <li><a asp-controller="Hr" asp-action="Schedules" class="sub-menu-item">Interviews</a></li>
                 </ul>
             </li>
             <li class="nav-item">

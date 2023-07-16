@@ -72,5 +72,10 @@ namespace Basecode.WebApp.Controllers
             // If the model is not valid or the user is not logged in, return the EditJobPosting view with the appropriate error
             return View("EditJobPosting", model);
         }
+
+        public IActionResult JobApplicantsOverview()
+        {
+            return View();
+        }
     }
 }

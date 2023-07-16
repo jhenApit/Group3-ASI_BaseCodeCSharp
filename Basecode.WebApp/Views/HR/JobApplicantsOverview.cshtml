@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Job Applicants Overview";
+    Layout = "_SideBarAdmin";
+    <link rel="stylesheet" href="~/css/JobApplicantsOverview.css" />
+}
+
+<div class="job-post-container">
+    <div class="job-post-header">
+        <h1>@ViewData["Title"]</h1>
+    </div>
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search..." />
+    </div>
+</div>
+<div class="table-container">
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Position Name</th>
+                    <th>No. of Applicants</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 1; i <= 20; i++)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>Position @i</td>
+                        <td>@i</td>
+                        <td>
+                            <a asp-route-id="@i" asp-controller="HR" asp-action="ViewJobPost">View Applicants</a>                         
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#searchInput').on('input', function () {
+            var searchQuery = $(this).val().toLowerCase();
+
+            $('tbody tr').each(function () {
+                var id = $(this).find('td:first-child').text().toLowerCase();
+                var position = $(this).find('td:nth-child(2)').text().toLowerCase();
+                var name = $(this).find('td:nth-child(3)').text().toLowerCase();
+                var status = $(this).find('td:nth-child(4)').text().toLowerCase();
+
+                if (id.includes(searchQuery) || position.includes(searchQuery) || name.includes(searchQuery) || status.includes(searchQuery)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+    });
+</script>

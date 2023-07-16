@@ -18,12 +18,21 @@ namespace Basecode.WebApp.Controllers
             _service = service;
             _errorHandling = errorHandling;
         }
+        /// <summary>
+        /// Retrieves the HR employee with the specified email and displays the admin dashboard.
+        /// </summary>
+        /// <param name="Email">Email of the HR employee</param>
+        /// <returns>The admin dashboard view with the HR employee's details</returns>
         public IActionResult AdminDashboard(string Email)
         {
             var hrEmployee = _service.GetByEmail(Email);
             return View(hrEmployee);
         }
 
+        /// <summary>
+        /// Retrieves all HR employees and displays the HR list.
+        /// </summary>
+        /// <returns>The HR list view with all HR employee data</returns>
         public IActionResult HrList()
         {
             var data = _service.RetrieveAll();
@@ -31,10 +40,10 @@ namespace Basecode.WebApp.Controllers
         }
 
         /// <summary>
-        /// Creates account for the HR.
+        /// Creates an account for the HR employee.
         /// </summary>
-        /// <param name="hrEmployee">Details of the HR employee</param>
-        /// <returns>Redirect to the HrList page, displaying the updated list of accounts, including the newly created account.</returns>
+        /// <param name="hrEmployee">Details of the HR employee to be created</param>
+        /// <returns>Redirects to the HrList page, displaying the updated list of accounts, including the newly created account</returns>
         public IActionResult CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
             if (ModelState.IsValid)
@@ -54,10 +63,10 @@ namespace Basecode.WebApp.Controllers
         }
 
         /// <summary>
-        /// Shows the account selected for editing
+        /// Displays the account selected for editing.
         /// </summary>
-        /// <param name="id">the id of the account selected</param>
-        /// <returns>view of the page with the details of the account</returns>
+        /// <param name="id">The ID of the account selected</param>
+        /// <returns>View of the page with the details of the account</returns>
         public IActionResult EditHrAccountView(int id)
         {
             // Retrieve the HR employee from the database using the ID
@@ -77,13 +86,12 @@ namespace Basecode.WebApp.Controllers
         }
 
         /// <summary>
-        /// checks for server side error
-        /// updates account
+        /// Checks for server-side errors and updates the HR account.
         /// </summary>
-        /// <param name="hrEmployee">the object passed to be updated</param>
+        /// <param name="hrEmployee">The HR employee object to be updated</param>
         /// <returns>
-        /// if there are errors page will return to edithraccountview
-        /// if no errors page will redirect to hrlist
+        /// If there are errors, returns to the EditHrAccountView with error message
+        /// If no errors, redirects to the HrList page
         /// </returns>
         [HttpPost]
         public IActionResult EditHrAccount(HREmployeeUpdationDto hrEmployee)
@@ -105,18 +113,33 @@ namespace Basecode.WebApp.Controllers
 
         }
 
+        /// <summary>
+        /// Deletes the HR account with the specified ID.
+        /// </summary>
+        /// <param name="id">The ID of the HR account to be deleted</param>
+        /// <returns>Redirects to the HrList page</returns>
         public IActionResult DeleteHrAccount(int id)
         {
             _service.SemiDelete(id);
             return RedirectToAction("HrList");
         }
 
+        /// <summary>
+        /// Updates the HR employee's account.
+        /// </summary>
+        /// <param name="hrEmployee">The updated HR employee details</param>
+        /// <returns>Redirects to the HrList page</returns>
         public IActionResult Update(HREmployeeUpdationDto hrEmployee)
         {
             _service.Update(hrEmployee);
             return RedirectToAction("HrList");
         }
 
+        /// <summary>
+        /// Adds a new HR employee account.
+        /// </summary>
+        /// <param name="hrEmployee">The new HR employee details</param>
+        /// <returns>Redirects to the HrList page</returns>
         [HttpPost]
         public IActionResult Add(HREmployeeCreationDto hrEmployee)
         {

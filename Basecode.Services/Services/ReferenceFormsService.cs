@@ -24,11 +24,19 @@ namespace Basecode.Services.Services
             _mapper = mapper;
         }
 
-        public List<ReferenceForms> RetrieveAll() 
+        /// <summary>
+        /// Retrieves all reference forms.
+        /// </summary>
+        /// <returns>A list of ReferenceForms.</returns>
+        public List<ReferenceForms> RetrieveAll()
         {
             return _repository.RetrieveAll().ToList();
         }
 
+        /// <summary>
+        /// Adds a new reference form.
+        /// </summary>
+        /// <param name="referenceFormsDto">The ReferenceFormsCreationDto object containing the data for the new reference form.</param>
         public void Add(ReferenceFormsCreationDto referenceFormsDto)
         {
             var referenceFormsModel = _mapper.Map<ReferenceForms>(referenceFormsDto);
@@ -36,15 +44,26 @@ namespace Basecode.Services.Services
             _repository.Add(referenceFormsModel);
         }
 
+        /// <summary>
+        /// Retrieves a reference form by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the reference form to retrieve.</param>
+        /// <returns>The ReferenceForms object with the specified ID, or null if not found.</returns>
         public ReferenceForms? GetById(int id)
         {
             return _repository.GetById(id);
         }
 
+        /// <summary>
+        /// Retrieves a reference form by a character reference ID.
+        /// </summary>
+        /// <param name="characterReferenceId">The ID of the character reference associated with the reference form.</param>
+        /// <returns>The ReferenceForms object with the specified character reference ID, or null if not found.</returns>
         public ReferenceForms? GetByCharacterReferenceId(int characterReferenceId)
         {
             return _repository.GetByCharacterReferenceId(characterReferenceId);
         }
+
     }
 
 }

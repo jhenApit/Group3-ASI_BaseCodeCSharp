@@ -19,6 +19,12 @@ namespace Basecode.Services.Services
             _repository = repository;
             _mapper = mapper;
         }
+
+        /// <summary>
+        /// Retrieves an applicant by their ID.
+        /// </summary>
+        /// <param name="id">The ID of the applicant.</param>
+        /// <returns>The applicant with the specified ID.</returns>
         public Applicant GetById(int id)
         {
             return _repository.GetById(id);

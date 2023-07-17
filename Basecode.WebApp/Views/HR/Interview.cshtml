@@ -27,7 +27,7 @@
                 </div>
             </div>
         </div>
-        <button class="add-interviewer text-nowrap">
+        <button class="add-interviewer b-red text-nowrap" data-toggle="modal" data-target="#addInterviewerModal">
             <p class="select-text">
                 Add Interviewer
             </p>
@@ -38,7 +38,7 @@
             <p class="upcoming-text">
                 UPCOMING INTERVIEWS
             </p>
-            <button class="new-interview text-nowrap">
+            <button class="new-interview b-blue text-nowrap">
                 <p class="select-text">
                     NEW INTERVIEW
                 </p>
@@ -57,40 +57,26 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>July 6, 2023, 10:00 - 11:00</td>
-                    <td>John Doe</td>
-                    <td>HR Interview</td>
-                    <td>
-                        <button class="btn b-blue">
-                            <p class="select-text">
-                                EDIT
-                            </p>
-                        </button>
-                        <button class="btn b-red">
-                            <p class="select-text">
-                                CANCEL
-                            </p>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>July 6, 2023, 10:00 - 11:00</td>
-                    <td>John Doe</td>
-                    <td>HR Interview</td>
-                    <td>
-                        <button class="btn b-blue">
-                            <p class="select-text">
-                                EDIT
-                            </p>
-                        </button>
-                        <button class="btn b-red">
-                            <p class="select-text">
-                                CANCEL
-                            </p>
-                        </button>
-                    </td>
-                </tr>
+                @for(var i = 1; i <= 10; i++)
+                {
+                    <tr>
+                        <td>July 6, 2023, 10:00 - 11:00</td>
+                        <td>John Doe</td>
+                        <td>HR Interview</td>
+                        <td>
+                            <button class="btn b-blue button-edit-cancel">
+                                <p class="select-text">
+                                    EDIT
+                                </p>
+                            </button>
+                            <button class="btn b-red button-edit-cancel" data-toggle="modal" data-target="#cancelInterviewModal">
+                                <p class="select-text">
+                                    CANCEL
+                                </p>
+                            </button>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
@@ -98,3 +84,69 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
+
+
+<!-- Add Interviewer Modal -->
+<div class="modal fade" id="addInterviewerModal" tabindex="-1" role="dialog" aria-labelledby="addInterviewerModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Interviewer</h5>
+                <button type="button" class="close border-0 bg-transparent" data-dismiss="modal" aria-label="Close">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="interviewer-name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="interviewer-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="interviewer-email" class="col-form-label">Email:</label>
+                        <input type="email" class="form-control" id="interviewer-email">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn b-cancel" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn b-red">Add Interviewer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cancel Interview Modal -->
+<div class="modal fade" id="cancelInterviewModal" tabindex="-1" role="dialog" aria-labelledby="cancelInterviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content py-3">
+            <div class="modal-body">
+                <p class="text-center">This Interview Schedule will be <strong>deleted.</strong></p>
+                <p class="text-center"><strong><span style="color: #FF0000;">Warning!</span> This cannot be undone!</strong></p>
+                <div class="d-flex justify-content-center align-items-center gap-3">
+                    <button type="button" class="btn b-cancel px-5" data-dismiss="modal">CANCEL</button>
+                    <button type="button" class="btn b-red px-5">DELETE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Interview Success Modal -->
+<div class="modal fade" id="deleteInterviewSuccessModal" tabindex="-1" role="dialog" aria-labelledby="deleteInterviewSuccessModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content p-5">
+            <div class="modal-body">
+                <p class="text-center">
+                    <strong>
+                        Interview Schedule
+                        successfully deleted.
+                    </strong>
+                </p>
+                <div class="d-flex justify-content-center align-items-center">
+                    <button type="button" class="btn b-red px-5">OKAY</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

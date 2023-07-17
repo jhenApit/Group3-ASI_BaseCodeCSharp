@@ -9,10 +9,10 @@ namespace Basecode.Data.Interfaces
 {
     public interface IApplicantRepository
     {
-        Applicant GetById(int id);
+        Applicant? GetById(int id);
         IQueryable<Applicant> RetrieveAll();
-        Applicant GetByName(string name);
+        Applicant? GetByName(string name);
         void Add(Applicant applicant);
-        Applicant GetByApplicantId(string trackerId);
+        Applicant? GetByApplicantId(string trackerId);
     }
 }

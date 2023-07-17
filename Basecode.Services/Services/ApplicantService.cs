@@ -21,13 +21,11 @@ namespace Basecode.Services.Services
             _mapper = mapper;
         }
 
-<<<<<<< HEAD
         /// <summary>
         /// Retrieves an applicant by their ID.
         /// </summary>
         /// <param name="id">The ID of the applicant.</param>
         /// <returns>The applicant with the specified ID.</returns>
-=======
         public void Add(ApplicantCreationDto applicant)
         {
             var applicantModel = _mapper.Map<Applicant>(applicant);
@@ -49,7 +47,6 @@ namespace Basecode.Services.Services
             return _repository.GetByApplicantId(applicantId);
         }
 
->>>>>>> 8878fdf (Add class for enumerated values)
         public Applicant GetById(int id)
         {
             return _repository.GetById(id);

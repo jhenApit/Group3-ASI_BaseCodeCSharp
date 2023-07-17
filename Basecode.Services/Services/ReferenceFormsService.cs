@@ -12,7 +12,7 @@ using Basecode.Services.Utils;
 
 namespace Basecode.Services.Services
 {
-    public class ReferenceFormsService : ErrorHandling, IReferenceFormsService
+    public class ReferenceFormsService : IReferenceFormsService
     {
         private readonly IReferenceFormsRepository _repository;
         private readonly IMapper _mapper;

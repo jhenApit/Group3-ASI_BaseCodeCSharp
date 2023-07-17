@@ -12,7 +12,7 @@ using Basecode.Services.Utils;
 
 namespace Basecode.Services.Services
 {
-    public class CharacterReferencesService : ErrorHandling, ICharacterReferencesService
+    public class CharacterReferencesService : ICharacterReferencesService
     {
         private readonly ICharacterReferencesRepository _repository;
         private readonly IMapper _mapper;

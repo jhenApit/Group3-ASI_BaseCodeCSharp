@@ -40,5 +40,14 @@ namespace Basecode.WebApp.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Displays the details of a applicant's application.
+        /// </summary>
+        /// <returns>The view containing the application details.</returns>
+        public IActionResult ApplicantDetail()
+        {
+            return View();
+        }
+
     }
 }

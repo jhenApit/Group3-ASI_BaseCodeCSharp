@@ -31,11 +31,6 @@ namespace Basecode.WebApp.Controllers
             return View();
         }
 
-        public IActionResult Interview()
-        {
-            return View();
-        }
-
         /// <summary>
         /// Displays the details of a specific job post.
         /// </summary>
@@ -45,6 +40,10 @@ namespace Basecode.WebApp.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Displays the interview page
+        /// </summary>
+        /// <returns>The view containing the list of interviews</returns>
         public IActionResult Interview()
         {
             return View();

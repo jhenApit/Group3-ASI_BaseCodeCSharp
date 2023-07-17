@@ -74,6 +74,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [RegularExpression(@"^[\sa-zA-Z\s]+$", ErrorMessage = "Name must contain only letters")]
             [Display(Name = "Name")]
             public string Name { get; set; }
             /// <summary>

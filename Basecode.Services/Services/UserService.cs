@@ -51,7 +51,7 @@ namespace Basecode.Services.Services
             _userRepository.Delete(user);
         }
 
-        public Task<User> FindUserAsync(string userName, string password)
+        public Task<IdentityUser> FindUserAsync(string userName, string password)
         {
             return _userRepository.FindUserAsync(userName, password);
         }

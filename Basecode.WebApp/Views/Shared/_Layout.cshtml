@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    var request = HttpContextAccessor.HttpContext.Request;
+    var urlSegments = request.Path.Value.Trim('/').Split('/');
+    var activeUrl = urlSegments != null && urlSegments.Length > 1 ? urlSegments[1] : null;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -19,22 +27,20 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-evenly">
                     <ul class="navbar-nav flex-grow-1 align-items-center">
-                        <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("Index") ? "nav-selected" : "")">
+                        <li class="nav-item @(activeUrl == null || activeUrl == "Index" ? "nav-selected" : "")">
                             <a class="nav-link fs-5 fw-semibold mx-3" asp-area="" asp-controller="Home" asp-action="Index">HOME</a>
                         </li>
-                        <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("FindJobs") || ViewContext.RouteData.Values["action"].ToString().Equals("JobDescription") ? "nav-selected" : "")">
+                        <li class="nav-item @(urlSegments[0] == "Job" ? "nav-selected" : "")">
                             <a class="nav-link fs-5 fw-semibold mx-3" asp-area="" asp-controller="Job" asp-action="FindJobs">FIND JOBS</a>
                         </li>
-                        <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("TrackApplication") ? "nav-selected" : "")">
+                        <li class="nav-item @(activeUrl == "TrackApplication" ? "nav-selected" : "")">
                             <a class="nav-link fs-5 fw-semibold mx-3" asp-area="" asp-controller="Applicant" asp-action="TrackApplication">TRACK APPLICATION</a>
                         </li>
-                        <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("ContactUs") ? "nav-selected" : "")">
+                        <li class="nav-item @(activeUrl == "ContactUs" ? "nav-selected" : "")">
                             <a class="nav-link fs-5 fw-semibold mx-3" asp-area="" asp-controller="Applicant" asp-action="ContactUs">CONTACT US</a>
                         </li>
                     </ul>
-                    <div class="col-md-3 text-end">
-                        <button type="button" class="btn btn-primary me-2"><a class="nav-link login-btn fw-bolder p-2 w-100" asp-area="" asp-controller="Login" asp-action="Index">LOGIN</a></button>
-                    </div>
+                    <partial name ="_LoginPartial" />
                 </div>
             </div>
         </nav>

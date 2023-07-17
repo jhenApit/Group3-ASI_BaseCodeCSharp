@@ -7,7 +7,7 @@ using Basecode.Services.Utils;
 
 namespace Basecode.Services.Services
 {
-    public class InterviewersService : ErrorHandling, IInterviewersService
+    public class InterviewersService : IInterviewersService
     {
         private readonly IInterviewersRepository _repository;
         private readonly IMapper _mapper;

@@ -10,7 +10,7 @@ using Basecode.Services.Utils;
 
 namespace Basecode.Services.Services
 {
-    public class JobPostingsService : ErrorHandling, IJobPostingsService
+    public class JobPostingsService : IJobPostingsService
     {
         private readonly IJobPostingsRepository _repository;
         private readonly IMapper _mapper;

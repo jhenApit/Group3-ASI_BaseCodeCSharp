@@ -48,5 +48,14 @@ namespace Basecode.WebApp.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// Displays the Create Interview Page
+        /// </summary>
+        /// <returns>Redirects to the Interview Page</returns>
+        public IActionResult CreateInterview()
+        {
+            return View();
+        }
     }
 }

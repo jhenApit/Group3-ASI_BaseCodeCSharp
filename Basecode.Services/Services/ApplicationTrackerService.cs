@@ -12,7 +12,7 @@ using Basecode.Services.Utils;
 
 namespace Basecode.Services.Services
 {
-    public class ApplicationTrackerService : ErrorHandling, IApplicationTrackerService
+    public class ApplicationTrackerService : IApplicationTrackerService
     {
         private readonly IApplicationTrackerRepository _repository;
         private readonly IMapper _mapper;

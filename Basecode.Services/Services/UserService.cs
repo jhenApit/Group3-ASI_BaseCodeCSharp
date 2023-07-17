@@ -26,7 +26,7 @@ namespace Basecode.Services.Services
             return _userRepository.FindById(id);
         }
 
-        public User FindUser(string userName)
+        public IdentityUser FindUser(string userName)
         {
             return _userRepository.FindUser(userName);
         }

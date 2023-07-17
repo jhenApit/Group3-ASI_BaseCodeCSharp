@@ -9,7 +9,7 @@ namespace Basecode.Services.Interfaces
     {
         User FindByUsername(string username);
         User FindById(string id);
-        User FindUser(string userName);
+        IdentityUser FindUser(string userName);
         IEnumerable<User> FindAll();
         bool Create(User user);
         bool Update(User user);

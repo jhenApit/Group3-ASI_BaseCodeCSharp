@@ -44,7 +44,7 @@ namespace G3HAS_Unit_Tests.Services
         {
             // Arrange
             int invalidId = -1;
-            _repositoryMock.Setup(repo => repo.GetById(invalidId)).Returns((Applicant)null);
+            _repositoryMock.Setup(repo => repo.GetById(invalidId)).Returns((Applicant)null!);
 
             // Act
             Applicant actualApplicant = _service.GetById(invalidId);

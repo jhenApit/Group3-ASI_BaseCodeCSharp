@@ -17,6 +17,10 @@
     flex-direction: row;
 }
 
+.back {
+    color: black;
+}
+
 .back-button {
     margin-right: 0.5em;
     text-decoration: none;

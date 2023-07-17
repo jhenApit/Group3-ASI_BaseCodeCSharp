@@ -35,6 +35,32 @@
     text-decoration: none !important;
 }
 
+.sidebar .header-container .menu-icon{
+    left: 20px;
+    height: 77px;
+    display: flex;
+    align-items: center;
+    padding: 20px 5px;
+    width: max-content;
+    position: relative;
+}
+.sidebar.close .header-container .menu-icon {
+    left: 0px;
+    height: 77px;
+    display: flex;
+    align-items: center;
+    padding: 20px 5px;
+    width: max-content;
+    position: relative;
+}
+
+.sidebar .header-container .menu-icon .bx-menu{
+    color: #11101d;
+    font-size: 35px;
+    cursor: pointer;
+    font-weight: 300;
+}
+
 .sidebar .logo-details img {
     width: 50px;
     border-radius: 5px;
@@ -246,8 +272,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 0;
     transition: all 0.5s ease;
+}
+
+.sidebar .logout-section:hover{
+    background: #EC2224;
 }
 
 .sidebar.close .logout-section {
@@ -256,6 +285,10 @@
 
 .sidebar.close .logout-section {
     width: 78px;
+}
+
+.sidebar.close .logout-section i:hover {
+    color: #ff0000;
 }
 
 .main-content {

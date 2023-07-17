@@ -2,6 +2,7 @@
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 
@@ -11,12 +12,14 @@ namespace Basecode.WebApp.Controllers
     public class AdminController : Controller
     {
         private readonly IHrEmployeeService _service;
+        private readonly IAdminService _admin_service;
         private readonly IErrorHandling _errorHandling;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        public AdminController(IHrEmployeeService service, IErrorHandling errorHandling)
+        public AdminController(IHrEmployeeService service, IErrorHandling errorHandling, IAdminService admin_service)
         {
             _service = service;
             _errorHandling = errorHandling;
+            _admin_service = admin_service;
         }
         /// <summary>
         /// Retrieves the HR employee with the specified email and displays the admin dashboard.
@@ -147,5 +150,26 @@ namespace Basecode.WebApp.Controllers
             return RedirectToAction("HrList");
         }
 
+        public IActionResult CreateRole()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateRole(CreateRoleDto createRoleDto)
+        {
+            if (ModelState.IsValid)
+            {
+
+                IdentityResult result = await _admin_service.CreateRole(createRoleDto.RoleName);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("AdminDashboard", "Admin");
+                }
+            }
+
+            return View();
+        }
     }
 }

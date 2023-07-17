@@ -1,4 +1,8 @@
-﻿@using Basecode.Data.Models
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<IdentityUser> UserManager
+
+@using Basecode.Data.Models
 @model HrEmployee
 
 @{
@@ -13,7 +17,7 @@
         <div class="top-header">
             <div class="header-details d-flex">
                 <p class="welcome">WELCOME</p>
-                <p class="name">[Name]!</p>
+                <p class="name">@UserManager.GetUserName(User)!</p>
                 <i class='bx bx-user-circle'></i>
             </div>
         </div>

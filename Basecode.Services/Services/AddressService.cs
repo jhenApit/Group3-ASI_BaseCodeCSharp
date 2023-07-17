@@ -13,7 +13,7 @@ using static Basecode.Services.Utils.ErrorHandling;
 
 namespace Basecode.Services.Services
 {
-    public class AddressService : ErrorHandling, IAddressService
+    public class AddressService : IAddressService
     {
         private readonly IAddressRepository _repository;
         private readonly IMapper _mapper;
@@ -63,7 +63,6 @@ namespace Basecode.Services.Services
         {
             return _repository.GetByCity(city);
         }
-
 
     }
 }

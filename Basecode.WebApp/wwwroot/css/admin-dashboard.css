@@ -35,24 +35,18 @@
     font-size: 50px;
     padding: 0 10px 0 5px;
 }
-.tag {
-    font-size: 75px;
-    font-weight: 800;
-    color: #ff0000;
-    display: flex;
-    justify-content: center;
-    margin: 0;
-}
+
 .upper-cards {
+    margin-top: 2rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+    gap: 1.5rem;
     justify-content: center;
 }
 .upper-cards .card {
     width: 30rem;
     height: 15rem;
-    border-radius: 10px;
+    border-radius: 5px;
     padding: 5px 10px;
 }
 
@@ -67,12 +61,12 @@
     justify-content: space-evenly;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: .5rem;
+    gap: 4.5rem;
 }
 .upper-cards .card p {
     font-size: 45px;
     font-weight: bolder;
-    padding: 20px 0 15px 55px;
+    padding: 20px;
 }
 
 .upper-cards .card i {
@@ -83,15 +77,15 @@
 .bottom-cards {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+    gap: 1.5rem;
     margin-top: 1.5rem;
     justify-content: center;
 }
 
 .bottom-cards .left.card {
-    width: 30rem;
-    height: 29.5rem;
-    border-radius: 10px;
+    width: 31rem;
+    height: 36rem;
+    border-radius: 5px;
     padding: 5px 10px;
 }
 
@@ -103,9 +97,9 @@
 }
 
 .bottom-cards .right.card {
-    width: 62rem;
-    height: 29.5rem;
-    border-radius: 10px;
+    width: 63rem;
+    height: 36rem;
+    border-radius: 5px;
     padding: 5px 10px;
 }
 

@@ -8,45 +8,15 @@
     background-color: white;
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
-    padding: 15px;
+    padding: 23px;
     overflow-x: hidden;
-    margin: 0;
 }
 
 .header {
     font-size: small;
 }
-
-.search-bar {
-    display: flex;
-    align-items: center;
-}
-
-    .search-bar input {
-        padding: 10px;
-        width: calc(100vw - 60vw);
-        border-radius: 5px;
-    }
-
-    .search-bar button {
-        padding: 15px;
-        color: white;
-        background-color: red;
-        border-radius: 5px;
-        border: none;
-    }
-
-        .search-bar button a {
-            color: white;
-            text-decoration: none;
-        }
-
-        .search-bar button:hover {
-            box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
-            cursor: pointer;
-        }
 
 .table-container {
     padding: 50px;

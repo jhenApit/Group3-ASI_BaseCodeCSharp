@@ -4,12 +4,9 @@
     <link rel="stylesheet" href="~/css/JobApplicantsOverview.css" />
 }
 
-<div class="job-post-container">
-    <div class="job-post-header">
+<div class="container">
+    <div class="header">
         <h1>@ViewData["Title"]</h1>
-    </div>
-    <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Search..." />
     </div>
 </div>
 <div class="table-container">
@@ -20,7 +17,7 @@
                     <th>ID</th>
                     <th>Position Name</th>
                     <th>No. of Applicants</th>
-                    <th>Action</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -31,7 +28,7 @@
                         <td>Position @i</td>
                         <td>@i</td>
                         <td>
-                            <a asp-route-id="@i" asp-controller="HR" asp-action="ViewJobPost">View Applicants</a>                         
+                            <a asp-route-id="@i" asp-controller="HR" asp-action="ViewApplicants">View Applicants</a>
                         </td>
                     </tr>
                 }

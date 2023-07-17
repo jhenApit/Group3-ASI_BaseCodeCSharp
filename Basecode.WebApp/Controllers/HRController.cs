@@ -77,5 +77,10 @@ namespace Basecode.WebApp.Controllers
         {
             return View();
         }
+
+        public IActionResult ViewApplicants()
+        {
+            return View();
+        }
     }
 }

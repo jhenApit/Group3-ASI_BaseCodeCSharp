@@ -20,12 +20,14 @@ namespace Basecode.WebApp
             services.AddScoped<IHrEmployeeService, HrEmployeeService>();
             services.AddScoped<IJobPostingsService, JobPostingsService>();
             services.AddScoped<IApplicantService, ApplicantService>();
+            services.AddScoped<IAdminService, AdminService>();
             
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IHrEmployeeRepository, HrEmployeeRepository>();
             services.AddScoped<IJobPostingsRepository, JobPostingsRepository>();
             services.AddScoped<IApplicantRepository, ApplicantRepository>();
+            services.AddScoped<IAdminRepository, AdminRepository>();
 
         }
     }

@@ -62,3 +62,14 @@
         color: white;
         cursor: pointer;
     }
+
+.b-red {
+    background: #FF0000;
+    color: white;
+}
+
+    .b-red:hover {
+        background: #cc0000;
+        color: white;
+        cursor: pointer;
+    }

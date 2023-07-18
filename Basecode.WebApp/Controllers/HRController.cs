@@ -90,5 +90,14 @@ namespace Basecode.WebApp.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// Allows HR to edit an interview
+        /// </summary>
+        /// <returns>Redirect to Edit Interview Page</returns>
+        public IActionResult EditInterview()
+        {
+            return View();
+        }
     }
 }

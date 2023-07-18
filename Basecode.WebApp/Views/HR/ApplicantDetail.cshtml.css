@@ -13,6 +13,10 @@ a {
     text-decoration: none;
 }
 
+.back-icon {
+    height: 3rem;
+    width: 3rem;
+}
 .status {
     color: white;
     border-radius: 1rem;
@@ -37,6 +41,8 @@ a {
     color: white;
     border-radius: 1rem;
     background-color: #00FF00;
+    height: 100%;
+    text-align: center;
 }
 
 .partial-view-selector {
@@ -56,7 +62,7 @@ a {
 }
 
 .body-container {
-    padding: 2rem !important;
+    padding: 3rem !important;
     background-color: #e4e9f7;
 }
 
@@ -92,4 +98,13 @@ td {
     vertical-align: middle !important;
     padding-top: 1rem;
     padding-bottom: 1rem;
+}
+
+.resume {
+    padding: 1rem 2rem;
+    border: 1px solid #55729B;
+    border-radius: 0.5rem;
+    background-color: white;
+    color: #55729B;
+    font-size: 0.75rem;
 }

@@ -113,7 +113,24 @@
             </div>
         </div>
         <div class="d-grid d-md-flex justify-content-md-end">
-            <button class="btn b-blue px-4" type="submit">ADD SCHEDULE</button>
+            <button class="btn b-blue px-4" data-toggle="modal" data-target="#overlapModal">ADD SCHEDULE</button>
         </div>
     </form>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
+
+<!-- Overlap Modal -->
+<div class="modal fade" id="overlapModal" tabindex="-1" role="dialog" aria-labelledby="overlapModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content px-3 py-4">
+            <div class="modal-body">
+                <p class="text-center"><strong>Inputed Date and Time ovelap with other Interviews.</strong></p>
+                <div class="d-flex justify-content-center align-items-center gap-3">
+                    <button type="button" class="btn b-red px-5 mt-2">OKAY</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -56,25 +56,34 @@
                 </tr>
             </thead>
             <tbody>
-                @for (var i = 1; i <= 10; i++)
+                @if (0 == 0) //temporary condition, shows when data is null, will update with db is available
                 {
                     <tr>
-                        <td>July 6, 2023, 10:00 - 11:00</td>
-                        <td>John Doe</td>
-                        <td>HR Interview</td>
-                        <td>
-                            <button class="btn b-blue button-edit-cancel">
-                                <p class="select-text">
-                                    EDIT
-                                </p>
-                            </button>
-                            <button class="btn b-red button-edit-cancel" data-toggle="modal" data-target="#cancelInterviewModal">
-                                <p class="select-text">
-                                    CANCEL
-                                </p>
-                            </button>
-                        </td>
+                        <td class="text-muted" colspan="4"><em>No upcoming interviews</em></td>
                     </tr>
+                }
+                else
+                {
+                    @for (var i = 1; i <= 10; i++)
+                    {
+                        <tr>
+                            <td>July 6, 2023, 10:00 - 11:00</td>
+                            <td>John Doe</td>
+                            <td>HR Interview</td>
+                            <td>
+                                <button class="btn b-blue button-edit-cancel">
+                                    <p class="select-text">
+                                        EDIT
+                                    </p>
+                                </button>
+                                <button class="btn b-red button-edit-cancel" data-toggle="modal" data-target="#cancelInterviewModal">
+                                    <p class="select-text">
+                                        CANCEL
+                                    </p>
+                                </button>
+                            </td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

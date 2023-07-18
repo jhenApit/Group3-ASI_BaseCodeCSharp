@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Basecode.Data.Dtos.JobPostings;
 using Basecode.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Basecode.WebApp.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Bearer", Roles ="hr,admin")]
     public class HRController : Controller
     {
         /// <summary>

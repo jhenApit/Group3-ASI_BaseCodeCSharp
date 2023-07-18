@@ -16,11 +16,11 @@ namespace Basecode.WebApp.Controllers
         private readonly IJobPostingsService _jobpostingService;
 
         public HRController() { }
-        public HRController(/*UserManager<HrEmployee> userManager,*/ IJobPostingsService jobposting)
+        /*public HRController(UserManager<HrEmployee> userManager, IJobPostingsService jobposting)
         {
-            //_userManager = userManager;
+            _userManager = userManager;
             _jobpostingService = jobposting;
-        }
+        }*/
         public IActionResult JobPostList()
         {
             return View();
@@ -71,6 +71,24 @@ namespace Basecode.WebApp.Controllers
 
             // If the model is not valid or the user is not logged in, return the EditJobPosting view with the appropriate error
             return View("EditJobPosting", model);
+        }
+
+        /// <summary>
+        /// View List of Upcoming Interviews
+        /// </summary>
+        /// <returns>Redirect to Interview Page</returns>
+        public IActionResult Interview()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Allows HR to create a new interview entry
+        /// </summary>
+        /// <returns>Redirect to Create Interview Page</returns>
+        public IActionResult CreateInterview()
+        {
+            return View();
         }
     }
 }

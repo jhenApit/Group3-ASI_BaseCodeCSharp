@@ -12,6 +12,12 @@
         </div>
     </div>
     <form method="post" class="create-interview-form">
+        <div>
+            <a asp-action="Interview" class="back d-flex gap-2 text-decoration-none align-items-center justify-content-start">
+                <i class="fa-solid fa-arrow-left"></i>
+                <p class="m-0">Back</p>
+            </a>
+        </div>
         <div class="section-interview">
             <div class="d-flex flex-row align-items-center">
                 <p class="section-text">
@@ -96,7 +102,7 @@
                 <div class="col-12 form-group">
                     <label for="interviewType">Interview Type:</label>
                     <select class="form-select w-50" id="interviewType" name="interviewType" required>
-                        <option selected disabled value="">Select an interview type...</option>
+                        <option selected disabled value=""><em>Select an interview type...</em></option>
                         <option value="For HR Interview">For HR Interview</option>
                         <option value="For Technical Interview">For Technical Interview</option>
                         <option value="For Technical Exam">For Technical Exam</option>

@@ -75,7 +75,7 @@ namespace Basecode.WebApp.Authentication
             var now = DateTime.UtcNow;
             var claims = new List<Claim>();
 
-            var userRoles = db.UserRoles.Where(i => i.UserId == user.Id);
+            var userRoles = db.UserRoles.Where(i => i.UserId == user.Id).ToList();
             foreach (var u in userRoles)
             {
                 var role = db.Roles.Single(i => i.Id == u.RoleId);

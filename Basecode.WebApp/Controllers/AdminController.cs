@@ -2,6 +2,7 @@
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
@@ -9,6 +10,7 @@ using NLog;
 
 namespace Basecode.WebApp.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "admin")]
     public class AdminController : Controller
     {
         private readonly IHrEmployeeService _service;

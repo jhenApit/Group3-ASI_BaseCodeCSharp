@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace Basecode.WebApp.Areas.Identity.Pages.Account
 {
@@ -21,11 +23,14 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        static HttpClient client = new HttpClient(); 
 
         public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;
+
+            client = new HttpClient();
         }
 
         /// <summary>
@@ -99,10 +104,20 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
 
             ReturnUrl = returnUrl;
         }
+        public class Token
+        {
+            public string Username { get; set; }
+            public string Password { get; set; }
+        }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/Admin/AdminDashboard");
+
+            client.BaseAddress = new Uri("https://localhost:57123/");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
@@ -114,6 +129,15 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+
+                    Token token = new Token()
+                    {
+                        Username = Input.Email,
+                        Password = Input.Password
+                    };
+                    
+                    HttpResponseMessage response = await client.PostAsJsonAsync(
+                        "api/token", token);
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

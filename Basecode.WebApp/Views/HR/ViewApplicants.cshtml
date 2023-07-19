@@ -1,0 +1,203 @@
+﻿@{
+    ViewData["Title"] = "Applicants";
+    Layout = "_SideBarAdmin";
+    <link rel="stylesheet" href="~/css/ViewApplicants.css" />
+}
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+</div>
+<div class="content">
+    <div class="header">
+        <a title="Back to previous page" asp-controller="HR" asp-action="JobApplicantsOverview">
+            <img src="/images/icons/back-icon.png" class="return-icon" alt="Back Icon" />
+        </a>
+        <h3>Software Engineer</h3>
+        <div class="open">OPEN</div>
+        <div class="urgent">URGENT</div>
+        <div class="select-container">
+            <label for="status">Status:</label>
+            <select id="status" name="status">
+                <option value="ALL">ALL</option>
+                <option value="DEPLOYED">DEPLOYED</option>
+                <option value="FOR REVIEW">FOR REVIEW</option>
+                <option value="FOR SCREENING">FOR SCREENING</option>
+                <option value="INTERVIEW">INTERVIEW</option>
+                <option value="ONBOARDING">ONBOARDING</option>
+                <option value="SHORTLISTED">SHORTLISTED</option>
+                <option value="UNDERGOING JOB OFFER">UNDERGOING JOB OFFER</option>
+            </select>
+        </div>
+    </div>
+    <div class="btn-container">
+        <div class="qualified-container">
+            <a title="Qualified Applicants" asp-controller="HR" asp-action="ViewApplicants">
+                QUALIFIED
+            </a>
+            <span class="count">100</span>
+        </div>
+        <div class="disqualified-container">
+            <a title="Disqualified Applicants" asp-controller="HR" asp-action="DisqualifiedApplicants">
+                DISQUALIFIED
+            </a>
+            <span class="count">10</span>
+        </div>
+    </div>
+
+    <div class="title-header" data-title="FOR REVIEW">
+        <p>FOR REVIEW</p>
+        <span class="count">12</span>
+    </div> 
+    <div class="applicant-container" data-title="FOR REVIEW">
+        <h4>FIRSTNAME LASTNAME</h4>
+        <a class="view-btn" asp-controller="HR" asp-action="ViewApplicants">
+            VIEW APPLICATION
+        </a>
+        <a class="middle-btn" asp-controller="HR" asp-action="ViewApplicants">
+            SHORTLIST
+        </a>
+        <a class="reject-btn" asp-controller="HR" asp-action="ViewApplicants">
+            REJECT
+        </a>
+    </div>
+    <div class="applicant-container" data-title="FOR REVIEW">
+        <h4>FIRSTNAME LASTNAME</h4>
+        <a class="view-btn" asp-controller="HR" asp-action="ViewApplicants">
+            VIEW APPLICATION
+        </a>
+        <a class="middle-btn" asp-controller="HR" asp-action="ViewApplicants">
+            SHORTLIST
+        </a>
+        <a class="reject-btn" asp-controller="HR" asp-action="ViewApplicants">
+            REJECT
+        </a>
+    </div>
+
+    <div class="title-header" data-title="SHORTLISTED">
+        <p>SHORTLISTED</p>
+        <span class="count">12</span>
+    </div>
+    <div class="applicant-container" data-title="SHORTLISTED">
+        <h4>FIRSTNAME LASTNAME</h4>
+        <a class="view-btn" asp-controller="HR" asp-action="ViewApplicants">
+            VIEW APPLICATION
+        </a>
+        <a class="middle-btn" asp-controller="HR" asp-action="ViewApplicants">
+            FOR SCREENING
+        </a>
+        <a class="reject-btn" asp-controller="HR" asp-action="ViewApplicants">
+            REJECT
+        </a>
+    </div>
+
+    <div class="title-header" data-title="FOR SCREENING">
+        <p>FOR SCREENING</p>
+        <span class="count">12</span>
+    </div>
+    <div class="applicant-container" data-title="FOR SCREENING">
+        <h4>FIRSTNAME LASTNAME</h4>
+        <a class="view-btn" asp-controller="HR" asp-action="ViewApplicants">
+            VIEW APPLICATION
+        </a>
+        <a class="middle-btn" asp-controller="HR" asp-action="ViewApplicants">
+            INVITE TO INTERVIEW
+        </a>
+        <a class="reject-btn" asp-controller="HR" asp-action="ViewApplicants">
+            REJECT
+        </a>
+    </div>
+
+    <div class="title-header" data-title="INTERVIEW">
+        <p>INTERVIEW</p>
+        <span class="count">12</span>
+    </div>
+    <div class="applicant-container" data-title="INTERVIEW">
+        <h4>FIRSTNAME LASTNAME</h4>
+        <a class="view-btn" asp-controller="HR" asp-action="ViewApplicants">
+            VIEW APPLICATION
+        </a>
+        <a class="middle-btn" asp-controller="HR" asp-action="ViewApplicants">
+            SEND JOB OFFER
+        </a>
+        <a class="reject-btn" asp-controller="HR" asp-action="ViewApplicants">
+            REJECT
+        </a>
+    </div>
+
+    <div class="title-header" data-title="UNDERGOING JOB OFFER">
+        <p>UNDERGOING JOB OFFER</p>
+        <span class="count">12</span>
+    </div>
+    <div class="applicant-container" data-title="UNDERGOING JOB OFFER">
+        <h4>FIRSTNAME LASTNAME</h4>
+        <a class="view-btn" asp-controller="HR" asp-action="ViewApplicants">
+            VIEW APPLICATION
+        </a>
+        <a class="middle-btn" asp-controller="HR" asp-action="ViewApplicants">
+            CONFIRM
+        </a>
+        <a class="reject-btn" asp-controller="HR" asp-action="ViewApplicants">
+            DECLINE
+        </a>
+    </div>
+
+    <div class="title-header" data-title="ONBOARDING">
+        <p>ONBOARDING</p>
+        <span class="count">12</span>
+    </div>
+    <div class="applicant-container" data-title="ONBOARDING">
+        <h4>FIRSTNAME LASTNAME</h4>
+        <a class="view-btn" asp-controller="HR" asp-action="ViewApplicants">
+            VIEW APPLICATION
+        </a>
+        <a class="middle-btn" asp-controller="HR" asp-action="ViewApplicants">
+            DEPLOY
+        </a>
+    </div>
+
+    <div class="title-header" data-title="DEPLOYED">
+        <p>DEPLOYED</p>
+        <span class="count">12</span>
+    </div>
+    <div class="applicant-container" data-title="DEPLOYED">
+        <h4>FIRSTNAME LASTNAME</h4>
+        <a class="view-btn" asp-controller="HR" asp-action="ViewApplicants">
+            VIEW APPLICATION
+        </a>
+    </div>
+
+</div>
+
+<script>
+    const statusDropdown = document.getElementById('status');
+    const titleHeaders = document.querySelectorAll('.title-header');
+    const applicantContainers = document.querySelectorAll('.applicant-container');
+
+    statusDropdown.onchange = function () {
+        const selectedStatus = this.value;
+
+        titleHeaders.forEach(header => {
+            header.style.display = 'none';
+        });
+
+        const selectedHeader = document.querySelector('.title-header[data-title="' + selectedStatus + '"]');
+        if (selectedHeader) {
+            selectedHeader.style.display = 'flex';
+        }
+
+        if (selectedStatus === 'ALL') {
+            applicantContainers.forEach(container => {
+                container.style.display = 'flex';
+            });
+        } else {
+            applicantContainers.forEach(container => {
+                container.style.display = 'none';
+            });
+
+            const selectedContainers = document.querySelectorAll('.applicant-container[data-title="' + selectedStatus + '"]');
+            selectedContainers.forEach(container => {
+                container.style.display = 'flex';
+            });
+        }
+    };
+</script>

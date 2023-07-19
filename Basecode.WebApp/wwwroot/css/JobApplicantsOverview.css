@@ -4,54 +4,20 @@
     background-color: #e4e9f7;
 }
 
-.job-post-container {
+.container {
     background-color: white;
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
-    padding: 15px;
+    padding: 25px 22px 22px 50px;
     overflow-x: hidden;
-    margin: 0;
 }
 
-.job-post-header h1{
-    margin-left: 40px;
-    font-size: x-large;
-    padding-top: 6px;
-    font-weight: bold;
-}
-
-.search-bar {
-    display: flex;
-    align-items: center;
-}
-
-    .search-bar input {
-        margin-right: 15px;
-        padding: 10px;
-        width: calc(100vw - 60vw);
-        border-radius: 5px;
+    .container h1 {
+        font-size: x-large;
+        font-weight: bold;
     }
-
-    .search-bar button {
-        padding: 12px;
-        color: white;
-        background-color: red;
-        border-radius: 5px;
-        border: none;
-    }
-
-        .search-bar button a {
-            border: solid 1px red;
-            color: white;
-            text-decoration: none;
-        }
-
-        .search-bar button:hover {
-            box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
-            cursor: pointer;
-        }
 
 .table-container {
     padding: 50px;
@@ -92,13 +58,13 @@
     gap: 8px;
 }
 
-.job-post-action-icon {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-    cursor: pointer;
-}
-
 a {
     text-decoration: none;
+    font-weight: bold;
+    color: #55729B;
 }
+
+    a:hover {
+        cursor: pointer;
+        color: red;
+    }

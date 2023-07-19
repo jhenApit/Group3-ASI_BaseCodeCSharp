@@ -4,7 +4,7 @@
     background-color: #e4e9f7;
 }
 
-.create-container {
+.edit-container {
     background-color: white;
     width: 100%;
     display: flex;
@@ -14,10 +14,10 @@
     overflow-x: hidden;
 }
 
-    .create-container h1 {
+    .edit-container h1 {
         margin-left: 40px;
         font-size: x-large;
-        padding-top: 7px;
+        padding-top: 8px;
         font-weight: bold;
     }
 
@@ -27,7 +27,6 @@
     margin-right: 10px;
     cursor: pointer;
 }
-
 
 .content {
     width: 80%;

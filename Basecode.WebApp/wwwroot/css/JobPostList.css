@@ -15,8 +15,11 @@
     margin: 0;
 }
 
-.job-post-header {
-    font-size: small;
+.job-post-header h1{
+    margin-left: 40px;
+    font-size: x-large;
+    padding-top: 6px;
+    font-weight: bold;
 }
 
 .search-bar {
@@ -32,7 +35,7 @@
     }
 
     .search-bar button {
-        padding: 15px;
+        padding: 12px;
         color: white;
         background-color: red;
         border-radius: 5px;
@@ -40,6 +43,7 @@
     }
 
         .search-bar button a {
+            border: solid 1px red;
             color: white;
             text-decoration: none;
         }

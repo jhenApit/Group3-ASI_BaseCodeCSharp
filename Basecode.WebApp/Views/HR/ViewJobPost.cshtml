@@ -12,7 +12,7 @@
 			<a title="Back to previous page" asp-controller="HR" asp-action="JobPostList">
 				<img src="/images/icons/back-icon.png" class="back-icon" alt="Back Icon" />
 			</a>
-			<h1>Software Developers</h1>
+			<h3>Software Developers</h3>
 			<div class="status-container">
 				<p>Urgent</p>
 			</div>
@@ -53,7 +53,5 @@
 			</div>
 		</div>
 	</div>
-	<button class="edit-button" type="button">
-		<a asp-controller="HR" asp-action="EditJobPost">EDIT</a>
-	</button>
+	<a class="edit-button" type="button" asp-controller="HR" asp-action="EditJobPost">EDIT</a>
 </div>

@@ -1,7 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Job Posting";
     Layout = "_SideBarAdmin";
-
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/JobPostList.css" />
 }
@@ -43,7 +42,7 @@
                                 <img src="~/images/icons/edit.png" alt="Edit" class="job-post-action-icon" />
                             </a>
                             <!-- Button trigger modal -->
-                            <a title="Delete">
+                            <a title="Delete" href="#" data-bs-toggle="modal" data-bs-target="#@("modal-" + @i)">
                                 <img src="~/images/icons/delete.png" alt="Delete" class="job-post-action-icon" />
                             </a>
                         </td>
@@ -53,7 +52,6 @@
         </table>
     </div>
 </div>
-
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>

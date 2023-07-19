@@ -3,16 +3,11 @@
     Layout = "_SideBarAdmin";
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/CreateJobPost.css" />
+    <link rel="stylesheet" href="~/css/EditJobPost.css" />
 }   
 
-<div class="create-container">
-    <a title="Back to previous page" asp-controller="HR" asp-action="JobPostList">
-        <img src="/images/icons/back-icon.png" class="return-icon" alt="Back Icon" />
-    </a>
-    <div class="create-title">
-        <h1>@ViewData["Title"]</h1>
-    </div>
+<div class="edit-container">
+    <h1>@ViewData["Title"]</h1>
 </div>
 <div class="content">
     <p>Input all the required details to add a new job post.</p>
@@ -98,9 +93,10 @@
             <option value="Internship">Internship</option>
         </select>
     </div>
-    <button class="save-button" type="button">
-        <a asp-controller="HR" asp-action="JobPostList">SAVE</a>
-    </button>
+    <div class="bottom-btn">
+        <a class="cancel-btn" type="button" asp-controller="HR" asp-action="JobPostList">CANCEL</a>
+        <a class="save-button" type="button" asp-controller="HR" asp-action="JobPostList">SAVE</a>
+    </div>
 </div>
 
 <!-- Script for description, qualification and responsibility input fields-->

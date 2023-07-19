@@ -32,7 +32,11 @@ namespace Basecode.Data.Repositories
         /// </summary>
         /// <param name="id">The ID of the applicant to retrieve.</param>
         /// <returns>The applicant with the specified ID, or null if not found.</returns>
-        public Applicant GetById(int id)
+        public Applicant? GetByApplicantId(string applicantId)
+        {
+            return _context.Applicants.FirstOrDefault(e => e.ApplicantId == applicantId);
+        }
+        public Applicant? GetById(int id)
         {
             return _context.Applicants.Find(id)!;
         }
@@ -42,7 +46,7 @@ namespace Basecode.Data.Repositories
         /// </summary>
         /// <param name="name">The name of the applicant to retrieve.</param>
         /// <returns>The applicant with the specified name, or null if not found.</returns>
-        public Applicant GetByName(string name)
+        public Applicant? GetByName(string name)
         {
             return _context.Applicants.FirstOrDefault(e => e.Name == name)!;
         }

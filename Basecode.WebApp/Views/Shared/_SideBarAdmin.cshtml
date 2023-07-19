@@ -7,18 +7,23 @@
     <title>@ViewBag.Title</title>
 
     <link rel="stylesheet" href="~/css/sidebar.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Basecode.WebApp.styles.css" asp-append-version="true" />
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
     <div class="sidebar open">
         <div class="header-container">
-            <a class="logo-details">
+            <a class="logo-details" asp-controller="Admin" asp-action="AdminDashboard">
                 <img src="~/images/asi-a-logo.jpg" alt="Alliance Logo" class="alliance-logo">
                 <div class="logo-name">
                     <span class="company-name">lliance</span>
                     <span class="company-type">Alliance Software Incorporated</span>
                 </div>
             </a>
+            <div class="menu-icon">
+                <i class='bx bx-menu'></i>
+            </div>
         </div>
 
         <ul class="nav-links">
@@ -28,7 +33,7 @@
                     <span class="link_name">Dashboard</span>
                 </a>
                 <ul class="sub-menu blank">
-                    <li><p class="link_name" href="#">Dashboard</p></li>
+                    <li><p class="link_name">Dashboard</p></li>
                 </ul>
             </li>
             <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("HrList") ? "clicked" : "")">
@@ -36,8 +41,11 @@
                     <i class='bx bxs-user-account'></i>
                     <span class="link_name">Users</span>
                 </a>
+                <ul class="sub-menu blank">
+                    <li><p class="link_name">Users</p></li>
+                </ul>
             </li>
-            <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("JobPostList") || ViewContext.RouteData.Values["action"].ToString().Equals("ApplicantList") ? " clicked" : "" )">
+            <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("JobPostList") || ViewContext.RouteData.Values["action"].ToString().Equals("ApplicantList") || ViewContext.RouteData.Values["action"].ToString().Equals("ApplicantDetail") ? " clicked" : "" )">
                 <div class="icon-link">
                     <a href="#">
                         <i class='bx bxs-briefcase'></i>
@@ -71,7 +79,7 @@
                         <span class="link_name">Logout</span>
                     </a>
                     <ul class="sub-menu blank">
-                        <li><a class="link_name" href="#">Logout</a></li>
+                        <li><p class="link_name">Logout</p></li>
                     </ul>
                 </div>
             </li>
@@ -83,6 +91,7 @@
     </main>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/sidebar.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

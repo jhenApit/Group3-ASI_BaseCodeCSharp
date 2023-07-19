@@ -1,4 +1,5 @@
 ﻿using Basecode.Data.Dtos;
+using Basecode.Data.Dtos.HrEmployee;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Basecode.WebApp.Controllers
 {
-    [Authorize(AuthenticationSchemes = "Bearer", Roles ="hr,admin")]
     public class HRController : Controller
     {
         /// <summary>

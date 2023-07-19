@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using Basecode.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -18,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Basecode.Data.Dtos;
 
 namespace Basecode.WebApp.Areas.Identity.Pages.Account
 {
@@ -30,14 +32,16 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
-        
+        private readonly IHrEmployeeService _hr_service;
+
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IHrEmployeeService hr_service)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -46,6 +50,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _roleManager = roleManager;
+            _hr_service = hr_service;
         }
 
         /// <summary>
@@ -115,11 +120,17 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+            returnUrl ??= Url.Content("~/Admin/AdminDashboard");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                var hrEmployee = new HREmployeeCreationDto
+                {
+                    Name = Input.Name,
+                    Email = Input.Email,
+                    Password = Input.Password
+                };
 
                 await _userStore.SetUserNameAsync(user, Input.Name, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -129,6 +140,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
+                    _hr_service.Add(hrEmployee);
                     var userRole = _roleManager.FindByNameAsync("HR").Result;
                     if(userRole != null) 
                     {

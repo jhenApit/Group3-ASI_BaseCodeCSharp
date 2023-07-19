@@ -20,6 +20,7 @@ namespace Basecode.WebApp
             services.AddIdentity<IdentityUser, IdentityRole>()
                     .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<BasecodeContext>()
+                    .AddSignInManager<SignInManager<IdentityUser>>()
                     .AddDefaultUI()
                     .AddDefaultTokenProviders();      
         }

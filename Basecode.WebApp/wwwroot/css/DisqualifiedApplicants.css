@@ -35,8 +35,13 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    font-size: 20px;
 }
+
+    .header h3 {
+        padding-top: 10px;
+        font-size: 25px;
+        font-weight: bolder;
+    }
 
     .header .open {
         padding: 5px 10px;
@@ -156,6 +161,12 @@
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
 }
 
+    .applicant-container h4 {
+        padding-top: 7px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
 .view-btn {
     margin-left: auto;
     text-decoration: none;
@@ -169,6 +180,8 @@
 }
 
     .view-btn:hover {
+        text-decoration: none;
+        color: white;
         box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
         cursor: pointer;
     }

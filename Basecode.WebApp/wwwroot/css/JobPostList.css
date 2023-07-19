@@ -15,12 +15,12 @@
     margin: 0;
 }
 
-.job-post-header h1{
-    margin-left: 40px;
-    font-size: x-large;
-    padding-top: 6px;
-    font-weight: bold;
-}
+    .job-post-header h1{
+        margin-left: 40px;
+        font-size: x-large;
+        padding-top: 6px;
+        font-weight: bold;
+    }
 
 .search-bar {
     display: flex;

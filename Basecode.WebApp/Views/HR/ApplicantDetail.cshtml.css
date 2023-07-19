@@ -7,10 +7,23 @@
     padding: 15px;
     overflow-x: hidden;
     margin: 0;
+    position: fixed;
+}
+
+.body-container {
+    padding: 3rem !important;
+    background-color: #e4e9f7;
 }
 
 a {
     text-decoration: none;
+}
+
+.photo-container {
+    height: 100px;
+    width: 100px;
+    border: 1px solid #55729B;
+    border-radius: 0.4rem !important;
 }
 
 .back-icon {
@@ -27,6 +40,9 @@ a {
     border-color: #55729B;
     color: white;
     border-radius: 1rem;
+}
+
+.shortlist, .btn-secondary {
     background-color: #55729B;
 }
 
@@ -59,11 +75,6 @@ a {
     color: #55729B;
     border-bottom: solid 1px #55729B;
     font-size: 1.25rem;
-}
-
-.body-container {
-    padding: 3rem !important;
-    background-color: #e4e9f7;
 }
 
 .text-bold {
@@ -108,3 +119,22 @@ td {
     color: #55729B;
     font-size: 0.75rem;
 }
+
+.modal-content {
+    border-radius: 1rem;
+    border: none;
+}
+
+.modal-header {
+    background-color: #55729B;
+    border-radius: 1rem 1rem 0px 0px;
+    border: 1px solid rgba(0,0,0,.2);
+    color: white;
+}
+
+    .modal-header .close {
+        border: none;
+        background-color: #55729B;
+        color: white;
+        font-size: 1rem;
+    }

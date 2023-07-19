@@ -36,6 +36,7 @@
 
     .search-bar button {
         padding: 12px;
+        padding: 12px;
         color: white;
         background-color: red;
         border-radius: 5px;
@@ -43,6 +44,7 @@
     }
 
         .search-bar button a {
+            border: solid 1px red;
             border: solid 1px red;
             color: white;
             text-decoration: none;

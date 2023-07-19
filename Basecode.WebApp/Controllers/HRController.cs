@@ -1,4 +1,4 @@
-﻿using Basecode.Data.Models;
+using Basecode.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Basecode.Data.Dtos.JobPostings;
@@ -15,12 +15,12 @@ namespace Basecode.WebApp.Controllers
         private readonly UserManager<HrEmployee> _userManager;
         private readonly IJobPostingsService _jobpostingService;
 
-        //public HRController() { }
-        public HRController(/*UserManager<HrEmployee> userManager,*/ IJobPostingsService jobposting)
+        public HRController() { }
+        /*public HRController(UserManager<HrEmployee> userManager, IJobPostingsService jobposting)
         {
-            //_userManager = userManager;
+            _userManager = userManager;
             _jobpostingService = jobposting;
-        }
+        }*/
         public IActionResult JobPostList()
         {
             return View();
@@ -53,6 +53,15 @@ namespace Basecode.WebApp.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Displays the details of a applicant's application.
+        /// </summary>
+        /// <returns>The view containing the application details.</returns>
+        public IActionResult ApplicantDetail()
+        {
+            return View();
+        }
+        
         [HttpPost]
         public async Task<IActionResult> UpdateJobPosting(JobPostingsUpdationDto model)
         {
@@ -73,17 +82,29 @@ namespace Basecode.WebApp.Controllers
             return View("EditJobPosting", model);
         }
 
-        public IActionResult JobApplicantsOverview()
+        /// <summary>
+        /// View List of Upcoming Interviews
+        /// </summary>
+        /// <returns>Redirect to Interview Page</returns>
+        public IActionResult Interview()
         {
             return View();
         }
 
-        public IActionResult ViewApplicants()
+        /// <summary>
+        /// Allows HR to create a new interview entry
+        /// </summary>
+        /// <returns>Redirect to Create Interview Page</returns>
+        public IActionResult CreateInterview()
         {
             return View();
         }
 
-        public IActionResult DisqualifiedApplicants()
+        /// <summary>
+        /// Allows HR to edit an interview
+        /// </summary>
+        /// <returns>Redirect to Edit Interview Page</returns>
+        public IActionResult EditInterview()
         {
             return View();
         }

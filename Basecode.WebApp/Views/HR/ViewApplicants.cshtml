@@ -5,15 +5,13 @@
 }
 
 <div class="container">
-    <a title="Back to previous page" asp-controller="HR" asp-action="JobApplicantsOverview">
-        <img src="/images/icons/back-icon.png" class="return-icon" alt="Back Icon" />
-    </a>
-    <div class="title">
-        <h1>@ViewData["Title"]</h1>
-    </div>
+    <h1>@ViewData["Title"]</h1>
 </div>
 <div class="content">
     <div class="header">
+        <a title="Back to previous page" asp-controller="HR" asp-action="JobApplicantsOverview">
+            <img src="/images/icons/back-icon.png" class="return-icon" alt="Back Icon" />
+        </a>
         <h3>Software Engineer</h3>
         <div class="open">
             <p>OPEN</p>
@@ -43,7 +41,7 @@
             <span class="count">100</span>
         </div>
         <div class="disqualified-container">
-            <a title="Disqualified Applicants" asp-controller="HR" asp-action="ViewApplicants">
+            <a title="Disqualified Applicants" asp-controller="HR" asp-action="DisqualifiedApplicants">
                 DISQUALIFIED
             </a>
             <span class="count">10</span>
@@ -59,7 +57,7 @@
         <a class="view-btn" asp-controller="HR" asp-action="ViewApplicants">
             VIEW APPLICATION
         </a>
-        <a class="shortlist-btn" asp-controller="HR" asp-action="ViewApplicants">
+        <a class="middle-btn" asp-controller="HR" asp-action="ViewApplicants">
             SHORTLIST
         </a>
         <a class="reject-btn" asp-controller="HR" asp-action="ViewApplicants">
@@ -71,7 +69,7 @@
         <a class="view-btn" asp-controller="HR" asp-action="ViewApplicants">
             VIEW APPLICATION
         </a>
-        <a class="shortlist-btn" asp-controller="HR" asp-action="ViewApplicants">
+        <a class="middle-btn" asp-controller="HR" asp-action="ViewApplicants">
             SHORTLIST
         </a>
         <a class="reject-btn" asp-controller="HR" asp-action="ViewApplicants">
@@ -88,8 +86,8 @@
         <a class="view-btn" asp-controller="HR" asp-action="ViewApplicants">
             VIEW APPLICATION
         </a>
-        <a class="shortlist-btn" asp-controller="HR" asp-action="ViewApplicants">
-            SHORTLIST
+        <a class="middle-btn" asp-controller="HR" asp-action="ViewApplicants">
+            FOR SCREENING
         </a>
         <a class="reject-btn" asp-controller="HR" asp-action="ViewApplicants">
             REJECT
@@ -105,8 +103,8 @@
         <a class="view-btn" asp-controller="HR" asp-action="ViewApplicants">
             VIEW APPLICATION
         </a>
-        <a class="shortlist-btn" asp-controller="HR" asp-action="ViewApplicants">
-            SHORTLIST
+        <a class="middle-btn" asp-controller="HR" asp-action="ViewApplicants">
+            INVITE TO INTERVIEW
         </a>
         <a class="reject-btn" asp-controller="HR" asp-action="ViewApplicants">
             REJECT
@@ -122,8 +120,8 @@
         <a class="view-btn" asp-controller="HR" asp-action="ViewApplicants">
             VIEW APPLICATION
         </a>
-        <a class="shortlist-btn" asp-controller="HR" asp-action="ViewApplicants">
-            SHORTLIST
+        <a class="middle-btn" asp-controller="HR" asp-action="ViewApplicants">
+            SEND JOB OFFER
         </a>
         <a class="reject-btn" asp-controller="HR" asp-action="ViewApplicants">
             REJECT
@@ -139,11 +137,11 @@
         <a class="view-btn" asp-controller="HR" asp-action="ViewApplicants">
             VIEW APPLICATION
         </a>
-        <a class="shortlist-btn" asp-controller="HR" asp-action="ViewApplicants">
-            SHORTLIST
+        <a class="middle-btn" asp-controller="HR" asp-action="ViewApplicants">
+            CONFIRM
         </a>
         <a class="reject-btn" asp-controller="HR" asp-action="ViewApplicants">
-            REJECT
+            DECLINE
         </a>
     </div>
 
@@ -156,11 +154,8 @@
         <a class="view-btn" asp-controller="HR" asp-action="ViewApplicants">
             VIEW APPLICATION
         </a>
-        <a class="shortlist-btn" asp-controller="HR" asp-action="ViewApplicants">
-            SHORTLIST
-        </a>
-        <a class="reject-btn" asp-controller="HR" asp-action="ViewApplicants">
-            REJECT
+        <a class="middle-btn" asp-controller="HR" asp-action="ViewApplicants">
+            DEPLOY
         </a>
     </div>
 
@@ -172,12 +167,6 @@
         <h4>FIRSTNAME LASTNAME</h4>
         <a class="view-btn" asp-controller="HR" asp-action="ViewApplicants">
             VIEW APPLICATION
-        </a>
-        <a class="shortlist-btn" asp-controller="HR" asp-action="ViewApplicants">
-            SHORTLIST
-        </a>
-        <a class="reject-btn" asp-controller="HR" asp-action="ViewApplicants">
-            REJECT
         </a>
     </div>
 

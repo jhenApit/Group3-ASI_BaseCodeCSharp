@@ -85,19 +85,18 @@
 .qualified-container {
     display: flex;
     padding: 8px 20px;
-    color: white;
-    background-color: #55729B;
-    border: solid 1px #55729B;
     align-items: flex-start;
     color: white;
     font-size: 12px;
+    color: #55729B;
+    border: solid 1px #55729B;
 }
 
     .qualified-container a {
         display: block;
         text-align: left;
         text-decoration: none;
-        color: white;
+        color: #55729B;
         font-size: 12px;
         font-weight: bold;
         margin-right: 15px;
@@ -107,18 +106,19 @@
 .disqualified-container {
     display: flex;
     padding: 8px 20px;
-    color: #55729B;
-    border: solid 1px #55729B;
     align-items: flex-start;
     color: #55729B;
     font-size: 12px;
+    color: white;
+    background-color: #55729B;
+    border: solid 1px #55729B;
 }
 
     .disqualified-container a {
         display: block;
         text-align: left;
         text-decoration: none;
-        color: #55729B;
+        color: white;
         font-size: 12px;
         font-weight: bold;
         margin-right: 15px;
@@ -169,38 +169,6 @@
 }
 
     .view-btn:hover {
-        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
-        cursor: pointer;
-    }
-
-.middle-btn {
-    text-decoration: none;
-    color: white;
-    background-color: #55729B;
-    padding: 5px 20px;
-    border-radius: 5px;
-    margin-right: 10px;
-    width: 250px;
-    text-align: center;
-}
-
-    .middle-btn:hover {
-        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
-        cursor: pointer;
-    }
-
-.reject-btn {
-    text-decoration: none;
-    color: white;
-    background-color: red;
-    padding: 5px 20px;
-    border-radius: 5px;
-    margin-right: 10px;
-    width: 250px;
-    text-align: center;
-}
-
-    .reject-btn:hover {
         box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
         cursor: pointer;
     }

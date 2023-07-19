@@ -15,7 +15,7 @@ namespace Basecode.WebApp.Controllers
         private readonly UserManager<HrEmployee> _userManager;
         private readonly IJobPostingsService _jobpostingService;
 
-        public HRController() { }
+        //public HRController() { }
         public HRController(/*UserManager<HrEmployee> userManager,*/ IJobPostingsService jobposting)
         {
             //_userManager = userManager;
@@ -79,6 +79,11 @@ namespace Basecode.WebApp.Controllers
         }
 
         public IActionResult ViewApplicants()
+        {
+            return View();
+        }
+
+        public IActionResult DisqualifiedApplicants()
         {
             return View();
         }

@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "Applicants";
+    Layout = "_SideBarAdmin";
+    <link rel="stylesheet" href="~/css/DisqualifiedApplicants.css" />
+}
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+</div>
+<div class="content">
+    <div class="header">
+        <a title="Back to previous page" asp-controller="HR" asp-action="JobApplicantsOverview">
+            <img src="/images/icons/back-icon.png" class="return-icon" alt="Back Icon" />
+        </a>
+        <h3>Software Engineer</h3>
+        <div class="open">
+            <p>OPEN</p>
+        </div>
+        <div class="urgent">
+            <p>URGENT</p>
+        </div>
+        <div class="select-container">
+            <label for="status">Status:</label>
+            <select id="status" name="status">
+                <option value="ALL">ALL</option>
+                <option value="REJECTED">REJECTED</option>
+            </select>
+        </div>
+    </div>
+    <div class="btn-container">
+        <div class="qualified-container">
+            <a title="Qualified Applicants" asp-controller="HR" asp-action="ViewApplicants">
+                QUALIFIED
+            </a>
+            <span class="count">100</span>
+        </div>
+        <div class="disqualified-container">
+            <a title="Disqualified Applicants" asp-controller="HR" asp-action="DisqualifiedApplicants">
+                DISQUALIFIED
+            </a>
+            <span class="count">10</span>
+        </div>
+    </div>
+
+    <div class="title-header" data-title="REJECTED">
+        <p>REJECTED</p>
+        <span class="count">12</span>
+    </div> 
+    <div class="applicant-container" data-title="REJECTED">
+        <h4>FIRSTNAME LASTNAME</h4>
+        <a class="view-btn" asp-controller="HR" asp-action="ViewApplicants">
+            VIEW APPLICATION
+        </a>
+    </div>
+    <div class="applicant-container" data-title="FOR REVIEW">
+        <h4>FIRSTNAME LASTNAME</h4>
+        <a class="view-btn" asp-controller="HR" asp-action="ViewApplicants">
+            VIEW APPLICATION
+        </a>
+    </div>
+</div>

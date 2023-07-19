@@ -10,13 +10,14 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding: 23px;
+    padding: 22px 22px 22px 50px;
     overflow-x: hidden;
 }
 
-.header {
-    font-size: small;
-}
+    .container h1 {
+        font-size: x-large;
+        font-weight: bold;
+    }
 
 .table-container {
     padding: 50px;

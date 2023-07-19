@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace Basecode.Data.Models
 {
-    public class ApplicationTracker
+    public class CurrentHires
     {
-        public int Id { get; set; }
+        public int Id { get; set; } 
         public int ApplicantId { get; set; }
-        public string? TrackerId { get; set; }
-        public enum ApplicationStatus
+        public int PositionId { get; set; }
+        public enum HStatus
         {
             //values
         }
-        public ApplicationStatus Status { get; set; }
+        public HStatus HireStatus { get; set; }
+        public DateTime HireDate { get; set; } 
     }
 }

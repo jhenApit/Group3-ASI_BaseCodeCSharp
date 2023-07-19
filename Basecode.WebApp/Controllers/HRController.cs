@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Basecode.WebApp.Controllers
 {
+    [Authorize(Roles = "hr")]
     public class HRController : Controller
     {
         public IActionResult JobPostList()

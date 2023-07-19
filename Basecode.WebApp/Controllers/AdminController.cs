@@ -1,7 +1,9 @@
-﻿using Basecode.Data.Dtos.HrEmployee;
+﻿using Basecode.Data.Dtos;
+using Basecode.Data.Dtos.HrEmployee;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 
@@ -147,5 +149,9 @@ namespace Basecode.WebApp.Controllers
             return RedirectToAction("HrList");
         }
 
+        public IActionResult CreateRole()
+        {
+            return View();
+        }
     }
 }

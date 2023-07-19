@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,33 @@ namespace Basecode.Data.Enums
         public enum InterviewType
         {
             //values
+        }
+        public enum WorkSetup
+        {
+            Online,
+            Onsite,
+            Hybrid
+        }
+        public enum WorkingHours
+        {
+            EightHourShift,
+            FourHourShift
+        }
+        public enum JobStatus
+        {
+            Open,
+            Urgent,
+            Closed,
+            OnHold
+        }
+        public enum EmploymentType
+        {
+            FullTime,
+            PartTime,
+            Temporary,
+            Contract,
+            Freelance,
+            Internship
         }
 
     }

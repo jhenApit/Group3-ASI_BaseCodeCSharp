@@ -34,6 +34,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Admin\AdminDashboard.cshtml" />
+    <None Include="Views\Admin\CreateHrAccount.cshtml" />
+    <None Include="Views\Admin\EditHrAccountView.cshtml" />
+    <None Include="Views\Admin\HrList.cshtml" />
+    <None Include="Views\HR\ApplicantDetail.cshtml" />
+    <None Include="Views\HR\CreateInterview.cshtml" />
+    <None Include="Views\HR\CreateJobPost.cshtml" />
+    <None Include="Views\HR\DisqualifiedApplicants.cshtml" />
+    <None Include="Views\HR\EditInterview.cshtml" />
+    <None Include="Views\HR\EditJobPost.cshtml" />
+    <None Include="Views\HR\Interview.cshtml" />
+    <None Include="Views\HR\JobApplicantsOverview.cshtml" />
+    <None Include="Views\HR\JobPostList.cshtml" />
+    <None Include="Views\HR\ViewApplicants.cshtml" />
+    <None Include="Views\HR\ViewJobPost.cshtml" />
     <None Include="wwwroot\images\building.png" />
   </ItemGroup>
 

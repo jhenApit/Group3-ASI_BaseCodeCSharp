@@ -10,6 +10,7 @@ using NLog;
 
 namespace Basecode.WebApp.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
         private readonly IHrEmployeeService _service;

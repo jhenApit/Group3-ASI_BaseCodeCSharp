@@ -108,5 +108,32 @@ namespace Basecode.WebApp.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// Allows HR to view job applicants
+        /// </summary>
+        /// <returns>Redirect to Job Applicant Overview Page</returns>
+        public IActionResult JobApplicantsOverview()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Allows HR to view job applicants in a specific job post with different status
+        /// </summary>
+        /// <returns>Redirect to View Applicants Page</returns>
+        public IActionResult ViewApplicants()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Allows HR to view disqualified job applicants in a specific job post
+        /// </summary>
+        /// <returns>Redirect to View Disqualified Applicants Page</returns>
+        public IActionResult DisqualifiedApplicants()
+        {
+            return View();
+        }
     }
 }

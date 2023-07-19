@@ -23,27 +23,27 @@
                         </div>
                         <div class="hr-list-container">
                             <div class="hr-list-data">
-                                <a asp-action="CreateHrAccount" class="create-account-button">
-                                    Create Account
-                                </a>
-
+                                <div class="search-bar">
+                                    <input type="text" id="searchInput" placeholder="Search..." />
+                                    <a asp-action="CreateHrAccount" class="create-account-button" type="button">
+                                        Create Account
+                                    </a>
+                                </div>
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
                                             <th>Name</th>
                                             <th>Email Address</th>
-                                            <th>Actions</th>
+                                            <th style="text-align: center;">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach (var hrEmployee in Model)
                                         {
                                             <tr>
-                                                <td>@hrEmployee.Id</td>
                                                 <td>@hrEmployee.Name</td>
                                                 <td>@hrEmployee.Email</td>
-                                                <td>
+                                                <td style="text-align: center;">
                                                     <a asp-route-id="@hrEmployee.Id" asp-action="EditHrAccountView">
                                                         <img src="~/images/icons/edit.png" alt="Edit" class="hr-list-action-icon" />
                                                     </a>
@@ -56,7 +56,6 @@
                                         }
                                     </tbody>
                                 </table>
-
                             </div>
                         </div>
                     </div>
@@ -74,15 +73,14 @@
             <div class="modal-content">
                 <div class="modal-header text-center">
                     <h5 class="modal-title" id="exampleModalLabel">Warning!</h5>
-
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
-                    <p>
-                        <strong>@(hrEmployee.Name + "'s")</strong> account will be <strong>deleted</strong>
+                    <p class="delete-msg">
+                        <strong>@(hrEmployee.Name + "'s")</strong> account will be <strong>deleted.</strong>
                     </p>
                     <p>
-                        <strong><span class="text-danger">WARNING!</span> This cannot be undone</strong>
+                        <strong><span class="text-danger">WARNING!</span> This cannot be undone!</strong>
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -113,3 +111,25 @@
         </div>
     </div>
 }
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#searchInput').on('input', function () {
+            var searchQuery = $(this).val().toLowerCase();
+
+            $('tbody tr').each(function () {
+                var id = $(this).find('td:first-child').text().toLowerCase();
+                var position = $(this).find('td:nth-child(2)').text().toLowerCase();
+                var name = $(this).find('td:nth-child(3)').text().toLowerCase();
+                var status = $(this).find('td:nth-child(4)').text().toLowerCase();
+
+                if (id.includes(searchQuery) || position.includes(searchQuery) || name.includes(searchQuery) || status.includes(searchQuery)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+    });
+</script>

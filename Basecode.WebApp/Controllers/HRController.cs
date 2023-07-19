@@ -1,4 +1,4 @@
-﻿using Basecode.Data.Models;
+using Basecode.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Basecode.Data.Dtos.JobPostings;
@@ -53,6 +53,15 @@ namespace Basecode.WebApp.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Displays the details of a applicant's application.
+        /// </summary>
+        /// <returns>The view containing the application details.</returns>
+        public IActionResult ApplicantDetail()
+        {
+            return View();
+        }
+        
         [HttpPost]
         public async Task<IActionResult> UpdateJobPosting(JobPostingsUpdationDto model)
         {

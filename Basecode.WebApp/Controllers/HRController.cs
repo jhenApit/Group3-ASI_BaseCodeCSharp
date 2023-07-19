@@ -1,41 +1,27 @@
-using Basecode.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Basecode.Services.Interfaces;
-using Basecode.Services.Services;
-using Basecode.Services.Utils;
-using Microsoft.AspNetCore.Identity;
+using NLog;
 using Basecode.Data.Dtos.JobPostings;
-using Basecode.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Basecode.Services.Interfaces;
-using Basecode.Services.Services;
-using Basecode.Services.Utils;
-using Microsoft.AspNetCore.Identity;
-using Basecode.Data.Dtos.JobPostings;
-using Basecode.Data.Dtos.HrEmployee;
 
 namespace Basecode.WebApp.Controllers
 {
     [Authorize(Roles = "hr,admin")]
     public class HRController : Controller
     {
-        private readonly IHrEmployeeService _service;
-        private readonly IJobPostingsService _jobPostingsService;
-        public HRController(IHrEmployeeService service, IJobPostingsService jobPostingsService)
-        {
-            _service = service;
-            _jobPostingsService = jobPostingsService;
-        }
+        private readonly IJobPostingsService _jobpostingService;
+        private readonly IErrorHandling _errorHandling;
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public IActionResult AdminDashboard(string Email)
+        public HRController(IJobPostingsService jobposting, IErrorHandling errorHandling)
         {
-            var hrEmployee = _service.GetByEmail(Email);
-            return View(hrEmployee);
+            _jobpostingService = jobposting;
+            _errorHandling = errorHandling;
         }
         public IActionResult JobPostList()
         {
-            return View();
+            var data = _jobpostingService.RetrieveAll();
+            return View(data);
         }
 
         /// <summary>
@@ -51,20 +37,85 @@ namespace Basecode.WebApp.Controllers
         /// Displays the form to edit an existing job post.
         /// </summary>
         /// <returns>The view containing the job post edit form.</returns>
-        public IActionResult EditJobPost()
+        public IActionResult EditJobPost(int id)
         {
-            return View();
+            var jobPosting = _jobpostingService.GetById(id);
+
+            if (jobPosting == null)
+            {
+                // Handle the case where the job posting is not found, for example, redirect to an error page or show an error message
+                return RedirectToAction("JobPostList");
+            }
+            var jobPostingDto = new JobPostingsUpdationDto
+            {
+                Name = jobPosting.Name,
+                Description = jobPosting.Description,
+                Qualifications = jobPosting.Qualifications,
+                Responsibilities = jobPosting.Responsibilities,
+                WorkSetup = jobPosting.WorkSetup,
+                JobStatus = jobPosting.JobStatus,
+                Hours = jobPosting.Hours,
+                EmploymentType = jobPosting.EmploymentType
+            };
+            return View(jobPostingDto);
+
         }
 
         /// <summary>
         /// Displays the details of a specific job post.
         /// </summary>
         /// <returns>The view containing the job post details.</returns>
-        public IActionResult ViewJobPost()
+        public IActionResult ViewJobPost(int id)
         {
-            return View();
+            var job = _jobpostingService.GetById(id);
+            return View(job);
+        }
+        [HttpPost]
+        public IActionResult Add(JobPostingsCreationDto jobPostingsCreationDto)
+        {
+            if (ModelState.IsValid)
+            {
+                var data = _jobpostingService.CreateJobPosting(jobPostingsCreationDto);
+                if (!data.Result)
+                {
+                    _logger.Error(_errorHandling.SetLog(data));
+                    ViewBag.ErrorMessage = data.Message;
+                    return View(jobPostingsCreationDto);
+                }
+                _jobpostingService.Add(jobPostingsCreationDto);
+                return RedirectToAction("JobPostList");
+            }
+            ModelState.Clear();
+            return View(jobPostingsCreationDto);
         }
 
+        [HttpPost]
+        public IActionResult Update(JobPostingsUpdationDto jobPostingsUpdationDto)
+        {
+            if (ModelState.IsValid)
+            {
+                var data = _jobpostingService.UpdateJobPosting(jobPostingsUpdationDto);
+                if (!data.Result)
+                {
+                    _logger.Error(_errorHandling.SetLog(data));
+                    ViewBag.ErrorMessage = data.Message;
+                    return View(jobPostingsUpdationDto);
+                }
+                _jobpostingService.Update(jobPostingsUpdationDto);
+                return RedirectToAction("JobPostList");
+            }
+            return View("EditJobPost", jobPostingsUpdationDto);
+        }
+
+        public IActionResult DeleteJob(int id)
+        {
+            var job = _jobpostingService.GetById(id);
+            if (job != null)
+            {
+                _jobpostingService.PermaDelete(id);
+            }
+            return RedirectToAction("JobPostList");
+        }
         /// <summary>
         /// Displays the details of a applicant's application.
         /// </summary>
@@ -85,7 +136,7 @@ namespace Basecode.WebApp.Controllers
                 if (loggedInUser != null)
                 {
                     model.UpdatedById = 1;
-                    _jobPostingsService.Update(model);
+                    _jobpostingService.Update(model);
                     return RedirectToAction("JobPostList");
                 }
             }

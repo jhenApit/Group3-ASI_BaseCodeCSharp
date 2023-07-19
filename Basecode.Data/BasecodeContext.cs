@@ -7,9 +7,9 @@ namespace Basecode.Data
 {
     public class BasecodeContext : IdentityDbContext<IdentityUser>
     {
-        public BasecodeContext (DbContextOptions<BasecodeContext> options)
+        public BasecodeContext(DbContextOptions<BasecodeContext> options)
             : base(options)
-        {}
+        { }
 
         public void InsertNew(RefreshToken token)
         {

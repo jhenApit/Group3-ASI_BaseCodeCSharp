@@ -1,10 +1,11 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
-    Layout = "~/Views/Shared/_SideBarAdmin.cshtml";
+    ViewData["CreateHrAccount"] = "CREATE HR ACCOUNT";
+    Layout = "_SideBarAdmin";
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/CreateAccount.css" />
+    <script src="https://kit.fontawesome.com/b68ff1da95.js" crossorigin="anonymous"></script>
 }
 <body>
     <div class="container-fluid h-100">
@@ -13,14 +14,17 @@
                 <div class="col content d-flex flex-column p-0">
                     <div class="bg">
                         <h1 class="header-text m-0">
-                            <a asp-action="HrList" class="text-decoration-none">
-                                <i class="fa-solid fa-less-than back"></i>
-                            </a>
                             CREATE ACCOUNT
                         </h1>
                     </div>
-                    <div>
-                        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <div class="desc">
+                        <p class="p-0">
+                            As an admin, you can create an account for the HRs in your company.<br />
+                            Please fill out the form below to complete the process.
+                        </p>
+                    </div>
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <div class="container-fluid text-black w-50">
                             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                             @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
                             {
@@ -28,14 +32,8 @@
                                     @Html.Raw(ViewBag.ErrorMessage)
                                 </div>
                             }
-                            <div class="desc">
-                                <p class="px-5 m-0">
-                                    As an admin, you can create an account for the HRs in your company.
-                                    Please fill out the form below to complete the process.
-                                </p>
-                            </div>
                             <div class="form-floating mb-3">
-                                <input asp-for="Input.Name" class="form-control" autocomplete="username" aria-required="true" placeholder="Jon Doe" />
+                                <input asp-for="Input.Name" class="form-control" autocomplete="name" aria-required="true" placeholder="Jon Doe" />
                                 <label asp-for="Input.Name">Name</label>
                                 <span asp-validation-for="Input.Name" class="text-danger"></span>
                             </div><div class="form-floating mb-3">
@@ -53,9 +51,12 @@
                                 <label asp-for="Input.ConfirmPassword">Confirm Password</label>
                                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                             </div>
-                            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-                        </form>
-                    </div>
+                            <div class="bottom-btn mb-3">
+                                <a class="cancel-btn" type="button" asp-controller="Admin" asp-action="HrList">Cancel</a>
+                                <button id="registerSubmit" type="submit" class="save-btn">Create Account</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

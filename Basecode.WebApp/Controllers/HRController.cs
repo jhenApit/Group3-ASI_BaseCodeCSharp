@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Authorization;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Services;
 using Basecode.Services.Utils;
+using Microsoft.AspNetCore.Identity;
+using Basecode.Data.Dtos.JobPostings;
+using Basecode.Data.Dtos.HrEmployee;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -14,10 +17,11 @@ namespace Basecode.WebApp.Controllers
     public class HRController : Controller
     {
         private readonly IHrEmployeeService _service;
-
-        public HRController(IHrEmployeeService service)
+        private readonly IJobPostingsService _jobPostingsService;
+        public HRController(IHrEmployeeService service, IJobPostingsService jobPostingsService)
         {
             _service = service;
+            _jobPostingsService = jobPostingsService;
         }
 
         public IActionResult AdminDashboard(string Email)
@@ -77,7 +81,7 @@ namespace Basecode.WebApp.Controllers
                 if (loggedInUser != null)
                 {
                     model.UpdatedById = 1;
-                    _jobpostingService.Update(model);
+                    _jobPostingsService.Update(model);
                     return RedirectToAction("JobPostList");
                 }
             }

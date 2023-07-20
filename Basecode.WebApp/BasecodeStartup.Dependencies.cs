@@ -21,14 +21,17 @@ namespace Basecode.WebApp
             services.AddScoped<IJobPostingsService, JobPostingsService>();
             services.AddScoped<IApplicantService, ApplicantService>();
             services.AddScoped<IAdminService, AdminService>();
-            services.AddTransient<IEmailService, EmailService>();
-            
+            services.AddScoped<IAddressService, AddressService>();
+            services.AddScoped<ICharacterReferencesService, CharacterReferencesService>();
+
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IHrEmployeeRepository, HrEmployeeRepository>();
             services.AddScoped<IJobPostingsRepository, JobPostingsRepository>();
             services.AddScoped<IApplicantRepository, ApplicantRepository>();
             services.AddScoped<IAdminRepository, AdminRepository>();
+            services.AddScoped<IAddressRepository, AddressRepository>();
+            services.AddScoped<ICharacterReferencesRepository, CharacterReferencesRepository>();
 
         }
     }

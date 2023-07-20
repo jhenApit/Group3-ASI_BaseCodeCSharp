@@ -56,19 +56,33 @@ namespace Basecode.Data.Enums
         }
         public enum HireStatus
         {
-            //values
+            Confirmed,
+            NotConfirmed,
+            Rejected
         }
         public enum Requirements
         {
-            //values
+            CONFIRMED,
+            TBC
         }
         public enum AdditionalInfo
         {
-            //values
+            LinkedInJobPost,
+            AllianceRecreuitmentTeam,
+            FriendsAndPeers,
+            Facebook,
+            Twitter,
+            Instagram,
+            AllianceCareersPage
         }
         public enum InterviewType
         {
-            //values
+            HRInterview,
+            TechnicalExam,
+            TechnicalInterview,
+            UndergoingBackgroundCheck,
+            FinalInterview,
+            Failed
         }
         public enum WorkSetup
         {

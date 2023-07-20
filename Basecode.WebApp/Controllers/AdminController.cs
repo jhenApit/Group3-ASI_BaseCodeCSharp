@@ -1,10 +1,12 @@
 ﻿using Basecode.Data.Dtos.HrEmployee;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
+using Basecode.Services.Services;
 using Basecode.Services.Utils;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
-
+using System.Net;
+using System.Net.Mail;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -13,11 +15,13 @@ namespace Basecode.WebApp.Controllers
         private readonly IHrEmployeeService _service;
         private readonly IErrorHandling _errorHandling;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        public AdminController(IHrEmployeeService service, IErrorHandling errorHandling)
+		private readonly IEmailService _emailService;
+		public AdminController(IHrEmployeeService service, IErrorHandling errorHandling, IEmailService emailService)
         {
             _service = service;
             _errorHandling = errorHandling;
-        }
+			_emailService = emailService;
+		}
         /// <summary>
         /// Retrieves the HR employee with the specified email and displays the admin dashboard.
         /// </summary>
@@ -26,7 +30,7 @@ namespace Basecode.WebApp.Controllers
         public IActionResult AdminDashboard(string Email)
         {
             var hrEmployee = _service.GetByEmail(Email);
-            return View(hrEmployee);
+			return View(hrEmployee);
         }
 
         /// <summary>
@@ -35,8 +39,8 @@ namespace Basecode.WebApp.Controllers
         /// <returns>The HR list view with all HR employee data</returns>
         public IActionResult HrList()
         {
-            var data = _service.RetrieveAll();
-            return View(data);
+			var data = _service.RetrieveAll();
+			return View(data);
         }
 
         /// <summary>
@@ -44,7 +48,7 @@ namespace Basecode.WebApp.Controllers
         /// </summary>
         /// <param name="hrEmployee">Details of the HR employee to be created</param>
         /// <returns>Redirects to the HrList page, displaying the updated list of accounts, including the newly created account</returns>
-        public IActionResult CreateHrAccount(HREmployeeCreationDto hrEmployee)
+        public async Task<IActionResult> CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
             if (ModelState.IsValid)
             {
@@ -56,7 +60,17 @@ namespace Basecode.WebApp.Controllers
                     return View(hrEmployee);
                 }
                 _service.Add(hrEmployee);
-                return RedirectToAction("HrList");
+
+				var recipient = "jm.senening08@gmail.com";
+				var subject = "Alliance Human Resource Account";
+				var body = $"Dear Mr/Mrs {hrEmployee.Name}, <br/> <br/> This is your human resource account. <br/>" +
+		                   $"<br/> Email: {hrEmployee.Email} <br/> Password: {hrEmployee.Password} <br/>" +
+		                   "<br/> You can edit your profile once you've logged in.";
+
+
+				await _emailService.SendEmail(recipient, subject, body);
+
+				return RedirectToAction("HrList");
             }
             ModelState.Clear();
             return View(hrEmployee);
@@ -144,6 +158,7 @@ namespace Basecode.WebApp.Controllers
         public IActionResult Add(HREmployeeCreationDto hrEmployee)
         {
             _service.Add(hrEmployee);
+
             return RedirectToAction("HrList");
         }
 

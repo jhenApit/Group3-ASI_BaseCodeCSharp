@@ -7,10 +7,11 @@ namespace Basecode.WebApp.Controllers
     public class ApplicantController : Controller
     {
         private readonly IApplicantService _service;
-
-        public ApplicantController(IApplicantService service)
+        private readonly IEmailService _emailService;
+        public ApplicantController(IApplicantService service, IEmailService emailService)
         {
             _service = service;
+            _emailService = emailService;
         }
 
         /// <summary>
@@ -57,7 +58,13 @@ namespace Basecode.WebApp.Controllers
         /// <returns>The application form view.</returns>
         public IActionResult ApplicationForm()
         {
-            return View();
+            var recipient = "jm.senening08@gmail.com";
+            var subject = "Application Update";
+            var body = "Your application ID is APPL-1234";
+
+            _emailService.SendEmail(recipient, subject, body);
+
+			return View();
         }
 
         /// <summary>

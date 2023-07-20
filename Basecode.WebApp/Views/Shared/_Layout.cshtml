@@ -20,10 +20,14 @@
     <header>
         <nav class="navbar navbar-expand-md navbar-toggleable-md navbar-light bg-black border-bottom box-shadow mb-3 p-0 fixed-top">
             <div class="container-fluid">
-                <a class="navbar-brand text-white me-3" asp-area="" asp-controller="Home" asp-action="Index"></a>
-                <div class="d-block d-md-none col text-end">
-                    <button type="button" class="btn btn-primary me-2"><a class="nav-link login-btn fw-bolder p-2 w-100" asp-area="" asp-controller="Login" asp-action="Index">LOGIN</a></button>
-                </div>
+                @if (User.IsInRole("admin") || User.IsInRole("hr"))
+                {
+                    <a class="navbar-brand text-white me-3" asp-area="" asp-controller="hr" asp-action="AdminDashboard"></a>
+                }
+                else
+                {
+                        <a class="navbar-brand text-white me-3" asp-area="" asp-controller="Home" asp-action="Index"></a>
+                }
                 <div class="navbar-collapse d-md-inline-flex justify-content-evenly">
                     <ul class="navbar-nav flex-grow-1 align-items-center">
                         <li class="nav-item @(activeUrl == null || activeUrl == "Index" ? "nav-selected" : "")">

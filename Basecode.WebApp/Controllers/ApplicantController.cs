@@ -18,10 +18,10 @@ namespace Basecode.WebApp.Controllers
         /// </summary>
         /// <param name="id">The ID of the applicant.</param>
         /// <returns>The view displaying the track status of the applicant.</returns>
-        public IActionResult TrackStatus(int id)
+        public IActionResult TrackStatus(string applicantId)
         {
-            Applicant data = _service.GetById(id);
-            return View(data);
+            Applicants data = _service.GetByApplicantId(applicantId);
+            return View("ApplicationStatus",data);
         }
 
         /// <summary>
@@ -34,7 +34,8 @@ namespace Basecode.WebApp.Controllers
         }
 
         /// <summary>
-        /// Displays the track application page.
+        /// Displays the track application page 
+        /// when the user clicks on it on the header of the landing page
         /// </summary>
         /// <returns>The track application view.</returns>
         public IActionResult TrackApplication()

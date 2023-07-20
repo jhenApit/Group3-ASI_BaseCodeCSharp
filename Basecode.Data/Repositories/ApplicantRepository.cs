@@ -21,24 +21,24 @@ namespace Basecode.Data.Repositories
         /// Adds a new applicant to the database.
         /// </summary>
         /// <param name="applicant">The applicant to be added.</param>
-        public void Add(Applicant applicant)
+        public void Add(Applicants applicant)
         {
             _context.Applicants.Add(applicant);
             _context.SaveChanges();
         }
 
         /// <summary>
-        /// Retrieves an applicant from the database by their ID.
+        /// Retrieves an applicant from the database by their ApplicantID.
         /// </summary>
-        /// <param name="id">The ID of the applicant to retrieve.</param>
+        /// <param name="applicantId">The ID of the applicant to retrieve.</param>
         /// <returns>The applicant with the specified ID, or null if not found.</returns>
-        public Applicant? GetByApplicantId(string applicantId)
+        public Applicants? GetByApplicantId(string applicantId)
         {
-            return _context.Applicants.FirstOrDefault(e => e.ApplicantId == applicantId);
+            return _context.Applicants.SingleOrDefault(e => e.ApplicantId == applicantId);
         }
-        public Applicant? GetById(int id)
+        public Applicants? GetById(int id)
         {
-            return _context.Applicants.Find(id)!;
+            return _context.Applicants.Find(id);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Basecode.Data.Repositories
         /// </summary>
         /// <param name="name">The name of the applicant to retrieve.</param>
         /// <returns>The applicant with the specified name, or null if not found.</returns>
-        public Applicant? GetByName(string name)
+        public Applicants? GetByName(string name)
         {
             return _context.Applicants.FirstOrDefault(e => e.Name == name)!;
         }
@@ -55,9 +55,9 @@ namespace Basecode.Data.Repositories
         /// Retrieves all applicants from the database.
         /// </summary>
         /// <returns>An IQueryable collection of all applicants.</returns>
-        public IQueryable<Applicant> RetrieveAll()
+        public IQueryable<Applicants> RetrieveAll()
         {
-            return this.GetDbSet<Applicant>();
+            return this.GetDbSet<Applicants>();
         }
 
     }

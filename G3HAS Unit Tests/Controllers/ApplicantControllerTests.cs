@@ -27,7 +27,7 @@ namespace G3HAS_Unit_Tests.Controllers
         {
             // Arrange
             int applicantId = 123;
-            Applicant expectedData = new Applicant { /* initialize expected applicant data */ };
+            Applicants expectedData = new Applicants { /* initialize expected applicant data */ };
             _serviceMock.Setup(x => x.GetById(applicantId)).Returns(expectedData);
 
             // Act

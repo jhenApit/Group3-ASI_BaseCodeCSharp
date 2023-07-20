@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,44 @@ namespace Basecode.Data.Enums
     {
         public enum ApplicationStatus
         {
-            //values
+            [Description("Rejected")]
+            Rejected,
+
+            [Description("Shortlisted")]
+            Shortlisted,
+
+            [Description("For Screening")]
+            ForScreening,
+
+            [Description("For HR Interview")]
+            ForHRInterview,
+
+            [Description("For Technical Interview")]
+            ForTechnicalInterview,
+
+            [Description("For Technical Exam")]
+            ForTechnicalExam,
+
+            [Description("Undergoing Background Check")]
+            UndergoingBackgroundCheck,
+
+            [Description("For Final Interview")]
+            ForFinalInterview,
+
+            [Description("Undergoing Job Offer")]
+            UndergoingJobOffer,
+
+            [Description("Confirmed")]
+            Confirmed,
+
+            [Description("Not Confirmed")]
+            NotConfirmed,
+
+            [Description("Onboarding")]
+            Onboarding,
+
+            [Description("Deployed")]
+            Deployed
         }
         public enum HireStatus
         {

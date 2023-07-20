@@ -23,6 +23,7 @@ namespace Basecode.WebApp.Controllers
             _errorHandling = errorHandling;
             _admin_service = admin_service;
         }
+        [Authorize(Roles = "hr,admin")]
         public IActionResult AdminDashboard(string Email)
         {
             var hrEmployee = _service.GetByEmail(Email);

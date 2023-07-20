@@ -92,8 +92,8 @@ namespace Basecode.Data.Enums
         }
         public enum WorkingHours
         {
-            EightHour,
-            FourHour
+            EightHourShift,
+            FourHourShift
         }
         public enum JobStatus
         {

@@ -19,7 +19,6 @@ namespace Basecode.Data.Dtos
 
         public int PhoneNumber { get; set; }
         public string? Email { get; set; }
-        public ApplicationStatus Status { get; set; }
 
         public AdditionalInfo AdditionalInfo { get; set; }
 

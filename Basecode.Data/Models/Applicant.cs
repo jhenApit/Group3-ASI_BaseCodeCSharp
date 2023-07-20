@@ -4,7 +4,7 @@ using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.Data.Models
 {
-    public class Applicant
+    public class Applicants
     {
         public int Id { get; set; } // Primary Key
         public string? ApplicantId { get; set; }
@@ -29,7 +29,6 @@ namespace Basecode.Data.Models
 
         [EmailAddress(ErrorMessage = "Email must be a valid email address.")]
         public string? Email { get; set; }
-        public ApplicationStatus Status { get; set; }
 
         public AdditionalInfo AdditionalInfo { get; set; }
 

@@ -1,15 +1,17 @@
-﻿@{
+﻿@using Basecode.Data.Models
+@model Applicants
+@{
     ViewData["Title"] = "Track Application";
 }
-
+<!-- This is the view when the user clicks track status in the header -->
 
 <div class="make-center">
     <div class="col">
         <p class="display-4 mt-5 font-weight-bold font-italic text-white">Track your <span class="text-danger">application status</span> here!</p>
         <div class="container">
-            <form method="get" action="@Url.Action("TrackStatus", "Applicant")">
+            <form method="post" asp-controller="Applicant" asp-action="TrackStatus">
                 <div class="search-container">
-                    <input type="text" class="form-control text-center search-bar" id="trackingNumber" name="id" placeholder="Enter your application ID here...">
+                    <input asp-for="ApplicantId" type="text" class="form-control text-center search-bar" placeholder="Enter your application ID here...">
                     <button type="submit" class="btn track-status-button">Track</button>
                 </div>
             </form>
@@ -29,7 +31,7 @@
     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header justify-content-center pb-4">
-                <img class ="notice-icon" src="~/images/icons/notice_icon.svg" />
+                <img class="notice-icon" src="~/images/icons/notice_icon.svg" />
                 <button type="button" class="close d-none" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

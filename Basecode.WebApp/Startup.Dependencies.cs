@@ -20,9 +20,10 @@ namespace Basecode.WebApp
             services.AddScoped<IHrEmployeeService, HrEmployeeService>();
             services.AddScoped<IJobPostingsService, JobPostingsService>();
             services.AddScoped<IApplicantService, ApplicantService>();
-            
-            // Repositories
-            services.AddScoped<IUserRepository, UserRepository>();
+			services.AddTransient<IEmailService, EmailService>();
+
+			// Repositories
+			services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IHrEmployeeRepository, HrEmployeeRepository>();
             services.AddScoped<IJobPostingsRepository, JobPostingsRepository>();
             services.AddScoped<IApplicantRepository, ApplicantRepository>();

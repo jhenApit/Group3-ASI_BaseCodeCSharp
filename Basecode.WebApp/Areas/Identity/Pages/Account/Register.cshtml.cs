@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Basecode.Data.Dtos;
+using Basecode.Data.Dtos.HrEmployee;
 
 namespace Basecode.WebApp.Areas.Identity.Pages.Account
 {

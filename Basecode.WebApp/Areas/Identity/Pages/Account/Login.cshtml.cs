@@ -112,7 +112,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/Admin/AdminDashboard");
+            returnUrl ??= Url.Content("~/Hr/AdminDashboard");
 
             client.BaseAddress = new Uri("https://localhost:57123/");
             client.DefaultRequestHeaders.Accept.Clear();

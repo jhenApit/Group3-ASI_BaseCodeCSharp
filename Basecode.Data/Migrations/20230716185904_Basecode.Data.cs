@@ -76,6 +76,7 @@ namespace Basecode.Data.Migrations
                     table.PrimaryKey("PK_AspNetRoles", x => x.Id);
                 });
 
+
             migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
@@ -124,6 +125,7 @@ namespace Basecode.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -136,6 +138,12 @@ namespace Basecode.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_HrEmployees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HrEmployees_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -215,26 +223,6 @@ namespace Basecode.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RefreshToken", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "User",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserID = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_User", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -381,6 +369,57 @@ namespace Basecode.Data.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+
+            //add roles
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[]
+                {"Id", "Name", "NormalizedName", "ConcurrencyStamp"
+                },
+                values: new object[,]
+                {
+                    { "1","admin", "ADMIN", Guid.NewGuid().ToString() },
+                    { "2", "hr", "HR", Guid.NewGuid().ToString() }
+                });
+
+            //Create admin account
+            migrationBuilder.InsertData(
+           table: "AspNetUsers",
+           columns: new[]
+           {
+                "Id",
+                "UserName",
+                "NormalizedUserName",
+                "Email",
+                "NormalizedEmail",
+                "EmailConfirmed",
+                "PasswordHash",
+                "SecurityStamp",
+                "ConcurrencyStamp",
+                "PhoneNumber",
+                "PhoneNumberConfirmed",
+                "TwoFactorEnabled",
+                "LockoutEnd",
+                "LockoutEnabled",
+                "AccessFailedCount"
+           },
+           values: new object[,]
+           {
+                { "1", "admin", "ADMIN", "admin@asi-dev2.com", "ADMIN@ASI-DEV2.COM", true, "AQAAAAIAAYagAAAAEH5a85Bn0MNwV4GKhUKR6sN7LmTb9awIvOp+KcXboZjUyUN3q9JS+l8nMtCZGNa0xA==", Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), null, false, false, null, false, 0 }
+           });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[]
+                {
+                    "UserId",
+                    "RoleId"
+                },
+                values: new object[,]
+                {
+                    { "1" , "1" }
+                });
         }
 
         /// <inheritdoc />

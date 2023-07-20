@@ -6,9 +6,9 @@ using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Net.NetworkInformation;
-
 
 
 namespace Basecode.Services.Services

@@ -6,9 +6,9 @@ namespace Basecode.Data.Models
 {
     public class Applicants
     {
-        public int Id { get; set; } // Primary Key
+        public int Id { get; set; } // Primary Key this should be the identity
         public string? ApplicantId { get; set; }
-        public int? JobId { get; set; } // Foreign Key
+        public int? JobId { get; set; } // Foreign Key to the JobPostings table
 
         [Required(ErrorMessage = "ApplicationDate is required.")]
         [DataType(DataType.DateTime)]

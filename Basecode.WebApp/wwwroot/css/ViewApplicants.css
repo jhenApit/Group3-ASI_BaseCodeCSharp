@@ -1,0 +1,222 @@
+body, main{
+    font-family: "Montserrat", sans-serif;
+    background-color: #e4e9f7;
+}
+
+.container {
+    background-color: white;
+    max-width: 100vw;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 25px 20px 20px 50px;
+    overflow-x: hidden;
+}
+
+    .container h1 {
+        font-size: x-large;
+        font-weight: bold;
+    }
+
+.return-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.content {
+    padding: 20px 20px 20px 40px;
+}
+
+.header {
+    margin: 0 20px 20px 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+    .header h3 {
+        padding-top: 10px;
+        font-size: 25px;
+        font-weight: bolder;
+    }
+
+    .header .open {
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        margin-left: 10px;
+        background-color: #00FF00;
+        color: white;
+        font-weight: bold;
+        font-size: 14px;
+        border-radius: 10px;
+    }
+
+    .header .urgent {
+        padding: 5px 10px;
+        border: 1px solid #ccc;
+        margin-left: 10px;
+        background-color: red;
+        color: white;
+        font-weight: bold;
+        font-size: 14px;
+        border-radius: 10px;
+    }
+
+.select-container {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+    .select-container label {
+        margin: 5px;
+    }
+
+    .select-container select {
+        padding: 5px;
+        font-size: 14px;
+    }
+
+.btn-container {
+    margin: 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.qualified-container {
+    display: flex;
+    padding: 8px 20px;
+    color: white;
+    background-color: #55729B;
+    border: solid 1px #55729B;
+    align-items: flex-start;
+    color: white;
+    font-size: 12px;
+}
+
+    .qualified-container a {
+        display: block;
+        text-align: left;
+        text-decoration: none;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+        margin-right: 15px;
+    }
+
+
+.disqualified-container {
+    display: flex;
+    padding: 8px 20px;
+    color: #55729B;
+    border: solid 1px #55729B;
+    align-items: flex-start;
+    color: #55729B;
+    font-size: 12px;
+}
+
+    .disqualified-container a {
+        display: block;
+        text-align: left;
+        text-decoration: none;
+        color: #55729B;
+        font-size: 12px;
+        font-weight: bold;
+        margin-right: 15px;
+    }
+
+.title-header {
+    display: flex;
+    align-items: center;
+    padding: 8px 10px;
+    display: flex;
+    margin: 20px;
+    border-bottom: solid 2px #55729B;
+    font-weight: bold;
+    color: #55729B;
+    font-size: 18px;
+}
+
+    .title-header p {
+        margin: 0;
+        padding-right: 10px;
+    }
+
+    .title-header .count {
+        font-size: 13px;
+    }
+
+.applicant-container {
+    margin: 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: white;
+    padding: 20px 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+}
+
+    .applicant-container h4 {
+        padding-top: 7px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+.view-btn {
+    margin-left: auto;
+    text-decoration: none;
+    color: white;
+    background-color: #55729B;
+    padding: 5px 20px;
+    border-radius: 5px;
+    margin-right: 10px;
+    width: 250px;
+    text-align: center;
+}
+
+    .view-btn:hover {
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+        text-decoration: none;
+        color: white;
+    }
+
+.middle-btn {
+    text-decoration: none;
+    color: white;
+    background-color: #55729B;
+    padding: 5px 20px;
+    border-radius: 5px;
+    margin-right: 10px;
+    width: 250px;
+    text-align: center;
+}
+
+    .middle-btn:hover {
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+        text-decoration: none;
+        color: white;
+    }
+
+.reject-btn {
+    text-decoration: none;
+    color: white;
+    background-color: red;
+    padding: 5px 20px;
+    border-radius: 5px;
+    margin-right: 10px;
+    width: 250px;
+    text-align: center;
+}
+
+    .reject-btn:hover {
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+        text-decoration: none;
+        color: white;
+    }

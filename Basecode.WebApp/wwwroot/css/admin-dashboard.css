@@ -1,11 +1,20 @@
+body {
+    margin: 0;
+    font-family: "Montserrat", sans-serif;
+    background-color: #e4e9f7;
+}
+
 .top-header {
     height: 78px;
     background: #ffffff;
     display: flex;
-    justify-content: right;
+    justify-content: flex-end;
+    align-items: center;
+    box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.5);
 }
 
 .top-header .tab-label{
+    align-items: center;
     font-size: 45px;
     font-weight: 900;
     padding: 0 10px;
@@ -31,29 +40,40 @@
     font-size: 20px;
     font-weight: bold;
 }
+
 .top-header .header-details i {
     font-size: 50px;
     padding: 0 10px 0 5px;
 }
+
+
 .tag {
-    font-size: 75px;
-    font-weight: 800;
+    font-size: 30px;
+    font-weight: 900;
     color: #ff0000;
     display: flex;
     justify-content: center;
-    margin: 0;
+    margin: 20px;
 }
+
 .upper-cards {
+    margin-top: 2rem;
+    margin-top: 20px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+    gap: 1.5rem;
+    gap: 1rem;
     justify-content: center;
 }
+
 .upper-cards .card {
     width: 30rem;
     height: 15rem;
-    border-radius: 10px;
+    border-radius: 5px;
     padding: 5px 10px;
+    height: 11rem;
+    border-radius: 10px;
+    padding: 10px;
 }
 
 .upper-cards .card h3,
@@ -64,34 +84,38 @@
 }
 
 .upper-cards .card .card-content {
-    justify-content: space-evenly;
+    justify-content: center;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    gap: 4.5rem;
     gap: .5rem;
+    align-items: center;
 }
+
 .upper-cards .card p {
-    font-size: 45px;
+    font-size: 80px;
     font-weight: bolder;
-    padding: 20px 0 15px 55px;
+    padding: 20px;
 }
 
 .upper-cards .card i {
     font-size: 110px;
-    padding: 10px 20px;
 }
 
 .bottom-cards {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+    gap: 1.5rem;
     margin-top: 1.5rem;
+    gap: 1rem;
+    margin-top: 1rem;
     justify-content: center;
 }
 
 .bottom-cards .left.card {
-    width: 30rem;
-    height: 29.5rem;
-    border-radius: 10px;
+    width: 31rem;
+    height: 36rem;
+    border-radius: 5px;
     padding: 5px 10px;
 }
 
@@ -103,9 +127,9 @@
 }
 
 .bottom-cards .right.card {
-    width: 62rem;
-    height: 29.5rem;
-    border-radius: 10px;
+    width: 63rem;
+    height: 36rem;
+    border-radius: 5px;
     padding: 5px 10px;
 }
 
@@ -125,7 +149,6 @@
 .bottom-cards .right.card .label .view-all:hover {
     color: #ff0000;  
 }
-
 
 .bottom-cards .right.card table {
     border-collapse: collapse;

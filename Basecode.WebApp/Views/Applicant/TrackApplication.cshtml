@@ -1,17 +1,47 @@
 ﻿@{
     ViewData["Title"] = "Track Application";
-    <link rel="stylesheet" href="~/css/TrackApplication.css">
 }
 
 
-<div class="position-absolute top-50 start-50 translate-middle text-center">
-    <p class="text-center display-4 mt-5 font-weight-bold font-italic text-white">Track your <span class="text-danger">application status</span> here!</p>
-    <div class="container">
-        <form method="get" action="@Url.Action("TrackStatus", "Applicant")">
-            <div class="search-container">
-                <input type="text" class="form-control" id="trackingNumber" name="id" placeholder="&#128269; Enter your application ID here">
-                <button type="submit" class="btn track-status-button">Track</button>
+<div class="make-center">
+    <div class="col">
+        <p class="display-4 mt-5 font-weight-bold font-italic text-white">Track your <span class="text-danger">application status</span> here!</p>
+        <div class="container">
+            <form method="get" action="@Url.Action("TrackStatus", "Applicant")">
+                <div class="search-container">
+                    <input type="text" class="form-control text-center search-bar" id="trackingNumber" name="id" placeholder="Enter your application ID here...">
+                    <button type="submit" class="btn track-status-button">Track</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- This button is just a test to see if the modal would pop-up -->
+<!-- Remind me to remove this when backend of this page is functional, TY -Arvin -->
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#IDnotExistModal">
+    Test ID not exist modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="IDnotExistModal" tabindex="-1" role="dialog" aria-labelledby="IDnotExistModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center pb-4">
+                <img class ="notice-icon" src="~/images/icons/notice_icon.svg" />
+                <button type="button" class="close d-none" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-        </form>
+            <div class="modal-body">
+                <h3 class="text-center">ID does not Exist</h3>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    <h5 class="pb-0 m-0">Close</h5>
+                </button>
+            </div>
+        </div>
     </div>
 </div>

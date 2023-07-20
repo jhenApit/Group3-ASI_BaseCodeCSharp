@@ -1,93 +1,71 @@
-﻿@using Basecode.Data.Dtos
+﻿@using Basecode.Data.Dtos;
+@using Basecode.Data.Dtos.HrEmployee
 @model HREmployeeCreationDto
 @{
-    ViewData["CreateHrAccount"] = "CREATE HR ACCOUNT";
-    Layout = "_SideBarAdmin";
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/CreateAccount.css" />
-    <script src="https://kit.fontawesome.com/b68ff1da95.js" crossorigin="anonymous"></script>
-}   
+	ViewData["CreateHrAccount"] = "CREATE HR ACCOUNT";
+	Layout = "_SideBarAdmin";
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/CreateAccount.css" />
+	<script src="https://kit.fontawesome.com/b68ff1da95.js" crossorigin="anonymous"></script>
+}
 
 <body>
-    <div class="container-fluid h-100">
-        <div class="flex-nowrap">
-            <div class="row h-100">
-                <div class="col content d-flex flex-column p-0">
-                    <div class="bg">
-                        <h1 class="header-text m-0">
-                            <a asp-action="HrList" class="text-decoration-none">
-                                <i class="fa-solid fa-less-than back"></i>
-                            </a>
-                            CREATE ACCOUNT
-                        </h1>
-                    </div>
-                    <div>
-                        <form method="post" asp-action="CreateHrAccount">
-                            @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
-                            {
-                                <div class="alert alert-danger text-center m-0" role="alert">
-                                    @Html.Raw(ViewBag.ErrorMessage)
-                                </div>
-                            }
-                            <div class="desc">
-                                <p class="px-5 m-0">
-                                    As an admin, you can create an account for the HRs in your company.
-                                    Please fill out the form below to complete the process.
-                                </p>
-                            </div>
-                            <div class="form-group">
-                                <label for="name">
-                                    Name:
-                                </label>
-                                <div style="width:90%">
-                                    <input asp-for="Name" type="text" id="name" class="form-control" />
-                                    <span asp-validation-for="Name" class="text-danger w-100"></span>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="email">
-                                    Email Address:
-                                </label>
-                                <div style="width:90%">
-                                    <input asp-for="Email" type="email" id="email" class="form-control" />
-                                    <span asp-validation-for="Email" class="text-danger w-100"></span>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="password">
-                                    Password:
-                                </label>
-                                <div style="width:90%">
-                                    <input asp-for="Password" type="password" id="password" class="form-control" />
-                                    <span asp-validation-for="Password" class="text-danger w-100"></span>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="isAdmin">
-                                    Admin:
-                                </label>
-                                <div class="form-check form-switch" style="width:90%">
-                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                </div>
-                            </div>
-
-                            <button type="submit" class="save-changes-button">
-                                Create Account
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="container-fluid h-100">
+		<div class="flex-nowrap">
+			<div class="row h-100">
+				<div class="col content d-flex flex-column p-0">
+					<div class="bg">
+						<h1 class="header-text m-0">
+							CREATE ACCOUNT
+						</h1>
+					</div>
+					<div class="desc">
+						<p class="p-0">
+							As an admin, you can create an account for the HRs in your company.<br />
+							Please fill out the form below to complete the process.
+						</p>
+					</div>
+					<form method="post" asp-action="CreateHrAccount">
+						<div class="container-fluid text-black w-50">
+							@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+							{
+								<div class="alert alert-danger" role="alert">
+									@Html.Raw(ViewBag.ErrorMessage)
+								</div>
+							}
+							<div class="form-floating mb-3">
+								<input asp-for="Name" type="text" class="form-control" id="name" placeholder="name">
+								<label for="name" class="form-label">Name</label>
+								<span asp-validation-for="Name" class="text-danger"></span>
+							</div>
+							<div class="form-floating mb-3">
+								<input asp-for="Email" type="email" class="form-control" id="email" placeholder="name@example.com">
+								<label asp-for="Email" for="email" class="form-label">Email Address</label>
+								<span asp-validation-for="Email" class="text-danger"></span>
+							</div>
+							<div class="form-floating mb-3">
+								<input asp-for="Password" type="password" class="form-control" id="password" placeholder="password">
+								<label asp-for="Password" for="password" class="form-label">Password</label>
+								<span asp-validation-for="Password" class="text-danger"></span>
+							</div>
+							<div class="form-check form-switch">
+								<input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+								<label class="form-check-label" for="flexSwitchCheckDefault">Set as Admin</label>
+							</div>
+							<div class="bottom-btn">
+								<a class="cancel-btn" type="button" asp-controller="Admin" asp-action="HrList">Cancel</a>
+								<button type="submit" value="Login" class="save-btn">Create Account</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 
 @section Scripts{
-    @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
 }
-             

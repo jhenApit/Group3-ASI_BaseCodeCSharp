@@ -1,0 +1,57 @@
+﻿@{
+	ViewData["Title"] = "View Job Post";
+	Layout = "_SideBarAdmin";
+
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/ViewJobPost.css">
+}
+
+<div class="container">
+	<div class="view-page-container">
+		<div class="job-header">
+			<a title="Back to previous page" asp-controller="HR" asp-action="JobPostList">
+				<img src="/images/icons/back-icon.png" class="back-icon" alt="Back Icon" />
+			</a>
+			<h3>Software Developers</h3>
+			<div class="status-container">
+				<p>Urgent</p>
+			</div>
+		</div>
+		<div class="details-content">
+			<div class="sub-header">
+				<div class="sub-container">
+					<img src="/images/icons/star.png" class="star-img" alt="star" />
+					<p>8-Hour Shift</p>
+				</div>
+				<div class="sub-container">
+					<img src="/images/icons/star.png" class="star-img" alt="star" />
+					<p>Onsite</p>
+				</div>
+				<div class="sub-container">
+					<img src="/images/icons/star.png" class="star-img" alt="star" />
+					<p>Full-time</p>
+				</div>
+			</div>
+			<div class="description-container">
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam bibendum pretium magna, id bibendum justo auctor id. Nunc tristique quam lorem, at iaculis nunc feugiat vel. </p>
+			</div>
+			<div class="job-details-content">
+				<h3>Job Qualifications</h3>
+				<ul>
+					<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam bibendum pretium magna, id bibendum justo auctor id. Nunc tristique quam lorem, at iaculis nunc feugiat vel. </li>
+					<li>Nunc tristique quam lorem, at iaculis nunc feugiat vel. Sed blandit, elit eu fringilla egestas, dolor mi congue urna, nec tempor nisl enim nec orci.</li>
+					<li>Nulla facilisi. Donec interdum cursus ipsum, sed efficitur lorem elementum in. Vestibulum consectetur elit eget quam tincidunt, id laoreet tellus posuere. Praesent id purus dolor.</li>
+				</ul>
+			</div>
+			<div class="job-details-content">
+				<h3>Job Responsibilities</h3>
+				<ul>
+					<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam bibendum pretium magna, id bibendum justo auctor id.</li>
+					<li>Nunc tristique quam lorem, at iaculis nunc feugiat vel. Sed blandit, elit eu fringilla egestas, dolor mi congue urna, nec tempor nisl enim nec orci.</li>
+					<li>Nulla facilisi. Donec interdum cursus ipsum, sed efficitur lorem elementum in. Vestibulum consectetur elit eget quam tincidunt, id laoreet tellus posuere. Praesent id purus dolor.</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<a class="edit-button" type="button" asp-controller="HR" asp-action="EditJobPost">EDIT</a>
+</div>

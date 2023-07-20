@@ -12,7 +12,9 @@ namespace Basecode.Data.Dtos
     {
         public string? ApplicantId { get; set; }
         public int? JobId { get; set; } // Foreign Key
-        public string? Name { get; set; }
+        public string? FirstName { get; set; }
+        public string? MiddleName { get; set; }
+        public string? LastName { get; set; }
         public DateTime BirthDate { get; set; }
 
         public byte[]? Photo { get; set; }

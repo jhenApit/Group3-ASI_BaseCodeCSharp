@@ -1,4 +1,5 @@
-﻿using Basecode.Data.Models;
+﻿using Basecode.Data.Dtos;
+using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,11 +7,15 @@ namespace Basecode.WebApp.Controllers
 {
     public class ApplicantController : Controller
     {
-        private readonly IApplicantService _service;
+        private readonly IApplicantService _applicantService;
+        private readonly IAddressService _addressService;
+        private readonly ICharacterReferencesService _characterService;
 
-        public ApplicantController(IApplicantService service)
+        public ApplicantController(IApplicantService applicantService, IAddressService addressService, ICharacterReferencesService characterService)
         {
-            _service = service;
+            _applicantService = applicantService;
+            _addressService = addressService;
+            _characterService = characterService;
         }
 
         /// <summary>
@@ -20,7 +25,7 @@ namespace Basecode.WebApp.Controllers
         /// <returns>The view displaying the track status of the applicant.</returns>
         public IActionResult TrackStatus(string applicantId)
         {
-            Applicants data = _service.GetByApplicantId(applicantId);
+            Applicants data = _applicantService.GetByApplicantId(applicantId);
             return View("ApplicationStatus",data);
         }
 
@@ -56,9 +61,21 @@ namespace Basecode.WebApp.Controllers
         /// Displays the application form page.
         /// </summary>
         /// <returns>The application form view.</returns>
-        public IActionResult ApplicationForm()
+        public IActionResult ApplicationFormViewModel()
         {
-            return View();
+            // Assuming you have your models populated
+            var applicantModel = new ApplicantCreationDto(); // ApplicantCreationDto
+            var addressModel = new AddressCreationDto(); // AddressCreationDto
+            var characterReferencesModel = new CharacterReferencesCreationDto(); // CharacterReferencesCreationDto
+
+            var viewModel = new ApplicationFormViewModel
+            {
+                Applicant = applicantModel,
+                Address = addressModel,
+                CharacterReferences = characterReferencesModel
+            };
+
+            return View(viewModel);
         }
 
         /// <summary>
@@ -68,6 +85,24 @@ namespace Basecode.WebApp.Controllers
         public IActionResult TermsAndConditions()
         {
             return View();
+        }
+
+        /// <summary>
+        /// after clicking the submit button in application form view,
+        /// it will lead to this controller. that handles the adding.
+        /// it is not tested coz i'm having trouble figuring out how to insert
+        /// 2 character ref at one post :)) --Kath
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult ApplicationForm(ApplicationFormViewModel model)
+        {
+            _applicantService.Add(model.Applicant);
+            _addressService.Add(model.Address);
+            _characterService.Add(model.CharacterReferences);
+            
+            return View("ApplicationForm");
         }
 
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
@@ -64,11 +65,22 @@ namespace Basecode.Data.Enums
         }
         public enum AdditionalInfo
         {
-            //values
+            [Description("LinkedIn Job Post")]
+            LinkedInJobPost,
+            [Description("Recruitment Team")]
+            RecruitmentTeam,
+            [Description("Peers & Friends")]
+            PeersFriends,
+            [Description("Social Media Platforms")]
+            SocialMediaPlatforms,
+            [Description("Career Page")]
+            CareerPage,
+            [Description("Others")]
+            Others
         }
         public enum InterviewType
         {
-            //values
+            //value
         }
         public enum WorkSetup
         {

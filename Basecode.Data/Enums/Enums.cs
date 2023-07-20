@@ -57,11 +57,17 @@ namespace Basecode.Data.Enums
         }
         public enum HireStatus
         {
-            //values
+            [Description("Confirmed")]
+            Confirmed,
+            [Description("Not Confirmed")]
+            NotConfirmed,
+            [Description("Rejected")]
+            Rejected
         }
         public enum Requirements
         {
-            //values
+            CONFIRMED,
+            TBC
         }
         public enum AdditionalInfo
         {
@@ -80,7 +86,18 @@ namespace Basecode.Data.Enums
         }
         public enum InterviewType
         {
-            //value
+            [Description("HR Interview")]
+            HRInterview,
+            [Description("Technical Exam")]
+            TechnicalExam,
+            [Description("Technical Interview")]
+            TechnicalInterview,
+            [Description("Undergoing Background Check")]
+            UndergoingBackgroundCheck,
+            [Description("Final Interview")]
+            FinalInterview,
+            [Description("Failed")]
+            Failed
         }
         public enum WorkSetup
         {
@@ -90,7 +107,9 @@ namespace Basecode.Data.Enums
         }
         public enum WorkingHours
         {
+            [Description("8")]
             EightHourShift,
+            [Description("4")]
             FourHourShift
         }
         public enum JobStatus
@@ -102,11 +121,17 @@ namespace Basecode.Data.Enums
         }
         public enum EmploymentType
         {
+            [Description("Full-Time")]
             FullTime,
+            [Description("Part-Time")]
             PartTime,
+            [Description("Temporary")]
             Temporary,
+            [Description("Contract")]
             Contract,
+            [Description("Freelance")]
             Freelance,
+            [Description("Internship")]
             Internship
         }
 

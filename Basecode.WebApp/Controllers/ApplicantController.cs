@@ -1,18 +1,23 @@
 ﻿using Basecode.Data.Dtos;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
+using Basecode.Services.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Basecode.WebApp.Controllers
 {
     public class ApplicantController : Controller
     {
+        private readonly IApplicantService _service;
+        private readonly IEmailService _emailService;
         private readonly IApplicantService _applicantService;
         private readonly IAddressService _addressService;
         private readonly ICharacterReferencesService _characterService;
 
-        public ApplicantController(IApplicantService applicantService, IAddressService addressService, ICharacterReferencesService characterService)
+        public ApplicantController(IApplicantService service, IEmailService emailService, IApplicantService applicantService, IAddressService addressService, ICharacterReferencesService characterService)
         {
+            _service = service;
+            _emailService = emailService;
             _applicantService = applicantService;
             _addressService = addressService;
             _characterService = characterService;
@@ -61,6 +66,17 @@ namespace Basecode.WebApp.Controllers
         /// Displays the application form page.
         /// </summary>
         /// <returns>The application form view.</returns>
+        public IActionResult ApplicationForm()
+        {
+            var recipient = "jm.senening08@gmail.com";
+            var subject = "Application Update";
+            var body = "Your application ID is APPL-1234";
+
+            _emailService.SendEmail(recipient, subject, body);
+
+            return View();
+        }
+
         public IActionResult ApplicationFormViewModel()
         {
             // Assuming you have your models populated

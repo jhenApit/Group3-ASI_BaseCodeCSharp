@@ -8,6 +8,7 @@
 @{
     ViewData["Title"] = "Admin Dashboard";
     Layout = "~/Views/Shared/_SideBarAdmin.cshtml";
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/admin-dashboard.css" />
 }
@@ -17,10 +18,12 @@
         <div class="top-header">
             <div class="header-details d-flex">
                 <p class="welcome">WELCOME</p>
-                <a id="manage" class="name nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserName(User)!!!</a>
+                <p class="name"><a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserName(User)!!!</a></p>
                 <i class='bx bx-user-circle'></i>
             </div>
         </div>
+
+         <p class="tag">WE LOVE WHAT WE DO</p>
  
         <!--Upper Cards-->
         <div class="upper-cards d-flex container-md">

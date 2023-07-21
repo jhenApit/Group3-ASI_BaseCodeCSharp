@@ -1,30 +1,54 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Basecode.Services.Interfaces;
+using Basecode.Services.Services;
+using Basecode.Services.Utils;
 using Microsoft.AspNetCore.Identity;
 using NLog;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Basecode.Services.Interfaces;
+using Basecode.Services.Services;
+using Basecode.Services.Utils;
+using Microsoft.AspNetCore.Identity;
+using Basecode.Data.Dtos.JobPostings;
+using Basecode.Data.Dtos.HrEmployee;
 using Basecode.Data.Dtos.JobPostings;
 
 namespace Basecode.WebApp.Controllers
 {
+    [Authorize(Roles = "hr,admin")]
     public class HRController : Controller
     {
+        private readonly IHrEmployeeService _service;
+        private readonly IJobPostingsService _jobPostingsService;
+        private readonly IErrorHandling _errorHandling;
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+        public HRController(IHrEmployeeService service, IJobPostingsService jobPostingsService, IErrorHandling errorHandling)
+        {
+            _service = service;
+            _jobPostingsService = jobPostingsService;
+            _errorHandling = errorHandling;
+        }
+
+
         /// <summary>
         /// Displays the list of job posts.
         /// </summary>
         /// <returns>The view containing the job post list.</returns>
-        private readonly IJobPostingsService _jobpostingService;
-        private readonly IErrorHandling _errorHandling;
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public HRController(IJobPostingsService jobposting, IErrorHandling errorHandling)
+
+        public IActionResult AdminDashboard(string Email)
         {
-            _jobpostingService = jobposting;
-            _errorHandling = errorHandling;
+            var hrEmployee = _service.GetByEmail(Email);
+            return View(hrEmployee);
         }
+
         public IActionResult JobPostList()
         {
-            var data = _jobpostingService.RetrieveAll();
+            var data = _jobPostingsService.RetrieveAll();
             return View(data);
         }
 
@@ -43,7 +67,7 @@ namespace Basecode.WebApp.Controllers
         /// <returns>The view containing the job post edit form.</returns>
         public IActionResult EditJobPost(int id)
         {
-            var jobPosting = _jobpostingService.GetById(id);
+            var jobPosting = _jobPostingsService.GetById(id);
 
             if (jobPosting == null)
             {
@@ -71,7 +95,7 @@ namespace Basecode.WebApp.Controllers
         /// <returns>The view containing the job post details.</returns>
         public IActionResult ViewJobPost(int id)
         {
-            var job = _jobpostingService.GetById(id);
+            var job = _jobPostingsService.GetById(id);
             return View(job);
         }
         [HttpPost]
@@ -79,14 +103,14 @@ namespace Basecode.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var data = _jobpostingService.CreateJobPosting(jobPostingsCreationDto);
+                var data = _jobPostingsService.CreateJobPosting(jobPostingsCreationDto);
                 if (!data.Result)
                 {
                     _logger.Error(_errorHandling.SetLog(data));
                     ViewBag.ErrorMessage = data.Message;
                     return View(jobPostingsCreationDto);
                 }
-                _jobpostingService.Add(jobPostingsCreationDto);
+                _jobPostingsService.Add(jobPostingsCreationDto);
                 return RedirectToAction("JobPostList");
             }
             ModelState.Clear();
@@ -98,14 +122,14 @@ namespace Basecode.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var data = _jobpostingService.UpdateJobPosting(jobPostingsUpdationDto);
+                var data = _jobPostingsService.UpdateJobPosting(jobPostingsUpdationDto);
                 if (!data.Result)
                 {
                     _logger.Error(_errorHandling.SetLog(data));
                     ViewBag.ErrorMessage = data.Message;
                     return View(jobPostingsUpdationDto);
                 }
-                _jobpostingService.Update(jobPostingsUpdationDto);
+                _jobPostingsService.Update(jobPostingsUpdationDto);
                 return RedirectToAction("JobPostList");
             }
             return View("EditJobPost", jobPostingsUpdationDto);
@@ -113,10 +137,10 @@ namespace Basecode.WebApp.Controllers
 
         public IActionResult DeleteJob(int id)
         {
-            var job = _jobpostingService.GetById(id);
+            var job = _jobPostingsService.GetById(id);
             if (job != null)
             {
-                _jobpostingService.PermaDelete(id);
+                _jobPostingsService.PermaDelete(id);
             }
             return RedirectToAction("JobPostList");
         }
@@ -140,7 +164,7 @@ namespace Basecode.WebApp.Controllers
                 if (loggedInUser != null)
                 {
                     model.UpdatedById = 1;
-                    _jobpostingService.Update(model);
+                    _jobPostingsService.Update(model);
                     return RedirectToAction("JobPostList");
                 }
             }

@@ -4,13 +4,12 @@
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/CreateJobPost.css" />
-    <link rel="stylesheet" href="~/css/suneditor.min.css">
 }
 
 <div class="create-container">
     <h1>@ViewData["Title"]</h1>
 </div>
-<div class="content">
+<div class="content"> 
     <p>Input all the required details to add a new job post.</p>
     <div class="input-container">
         <label for="position">Position:</label>
@@ -21,7 +20,7 @@
         <label for="description">Description:</label>
         <div class="description-input-rows">
             <div class="description-input-row">
-                <textarea id="editor" name="description" class="description-input">Hello World!</textarea>
+                <textarea id="description" name="description" class="description-input" rows="4"></textarea>
             </div>
         </div>
     </div>
@@ -30,8 +29,7 @@
         <label for="qualification">Qualification:</label>
         <div class="qualification-input-rows">
             <div class="qualification-input-row">
-                <input type="text" class="qualification-input" />
-                <button class="remove-button">Remove</button>
+                <textarea id="qualification" name="qualification" class="qualification-input" rows="4"></textarea>
             </div>
         </div>
     </div>
@@ -40,8 +38,7 @@
         <label for="responsibility">Responsibility:</label>
         <div class="responsibility-input-rows">
             <div class="responsibility-input-row">
-                <input type="text" class="responsibility-input" />
-                <button class="remove-button">Remove</button>
+                <textarea id="responsibility" name="responsibility" class="responsibility-input" rows="4"></textarea>
             </div>
         </div>
     </div>
@@ -60,7 +57,7 @@
             <option value="8-Hour Shift">8-Hour Shift</option>
             <option value="4-Hour Shift">4-Hour Shift</option>
         </select>
-    </div>
+    </div> 
     <div class="select-container">
         <label for="status">Status:</label>
         <select id="status" name="status">
@@ -86,9 +83,3 @@
         <a class="save-button" type="button" asp-controller="HR" asp-action="JobPostList">SAVE</a>
     </div>
 </div>
-
-<!-- Script for description, qualification and responsibility input fields-->
-<script src="~/js/suneditor.min.js" asp-append-version="true"></script>
-<script>
-    SUNEDITOR.create('editor');
-</script>

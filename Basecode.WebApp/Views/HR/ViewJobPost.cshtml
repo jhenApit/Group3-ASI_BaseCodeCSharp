@@ -41,19 +41,15 @@
 				<h3>Job Qualifications</h3>
 				<ul>
 					<li>@Model.Qualifications</li>
-					<li>Nunc tristique quam lorem, at iaculis nunc feugiat vel. Sed blandit, elit eu fringilla egestas, dolor mi congue urna, nec tempor nisl enim nec orci.</li>
-					<li>Nulla facilisi. Donec interdum cursus ipsum, sed efficitur lorem elementum in. Vestibulum consectetur elit eget quam tincidunt, id laoreet tellus posuere. Praesent id purus dolor.</li>
 				</ul>
 			</div>
 			<div class="job-details-content">
 				<h3>Job Responsibilities</h3>
 				<ul>
 					<li>@Model.Responsibilities</li>
-					<li>Nunc tristique quam lorem, at iaculis nunc feugiat vel. Sed blandit, elit eu fringilla egestas, dolor mi congue urna, nec tempor nisl enim nec orci.</li>
-					<li>Nulla facilisi. Donec interdum cursus ipsum, sed efficitur lorem elementum in. Vestibulum consectetur elit eget quam tincidunt, id laoreet tellus posuere. Praesent id purus dolor.</li>
 				</ul>
 			</div>
 		</div>
 	</div>
-	<a class="edit-button" type="button" asp-controller="HR" asp-action="EditJobPost">EDIT</a>
+	<a class="edit-button" asp-route-id="@Model.Id" asp-controller="HR" asp-action="EditJobPost">EDIT</a>
 </div>

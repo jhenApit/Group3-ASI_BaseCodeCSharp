@@ -1,19 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Basecode.Services.Interfaces;
-using Basecode.Services.Services;
-using Basecode.Services.Utils;
-using Microsoft.AspNetCore.Identity;
 using NLog;
-using Basecode.Data.Models;
-using Basecode.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Basecode.Services.Interfaces;
-using Basecode.Services.Services;
-using Basecode.Services.Utils;
-using Microsoft.AspNetCore.Identity;
-using Basecode.Data.Dtos.JobPostings;
-using Basecode.Data.Dtos.HrEmployee;
 using Basecode.Data.Dtos.JobPostings;
 
 namespace Basecode.WebApp.Controllers

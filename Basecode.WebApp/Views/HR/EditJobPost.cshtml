@@ -15,6 +15,7 @@
 
 <form id="update-form" method="post" asp-controller="HR" asp-action="Update">
     <div class="content">
+        <input type="hidden" asp-for="Id" />
         <p>Input all the required details to add a new job post.</p>
         <div class="input-container">
             <label for="position">Position:</label>
@@ -99,7 +100,7 @@
         </div>
         <div class="bottom-btn">
             <a class="cancel-btn" type="button" asp-controller="HR" asp-action="JobPostList">CANCEL</a>
-            <a class="save-button" type="button" asp-controller="HR" asp-action="JobPostList">SAVE</a>
+            <button class="save-button" type="submit">SAVE</button>
         </div>
     </div>
 </form>

@@ -10,10 +10,10 @@ namespace Basecode.Services.Interfaces
 {
     public interface IApplicantService
     {
-        Applicant GetById(int id);
-        List<Applicant> RetrieveAll();
-        Applicant GetByName(string name);
+        Applicants GetById(int id);
+        List<Applicants> RetrieveAll();
+        Applicants GetByName(string name);
         void Add(ApplicantCreationDto applicant);
-        Applicant GetByApplicantId(string trackerId);
+        Applicants GetByApplicantId(string trackerId);
     }
 }

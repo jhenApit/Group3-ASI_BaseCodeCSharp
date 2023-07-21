@@ -1,4 +1,5 @@
-﻿using Basecode.Data.Models;
+﻿using Basecode.Data.Dtos;
+using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -9,11 +10,17 @@ namespace Basecode.WebApp.Controllers
     {
         private readonly IApplicantService _service;
         private readonly IEmailService _emailService;
+        private readonly IApplicantService _applicantService;
+        private readonly IAddressService _addressService;
+        private readonly ICharacterReferencesService _characterService;
 
-        public ApplicantController(IApplicantService service, IEmailService emailService)
+        public ApplicantController(IApplicantService service, IEmailService emailService, IApplicantService applicantService, IAddressService addressService, ICharacterReferencesService characterService)
         {
             _service = service;
             _emailService = emailService;
+            _applicantService = applicantService;
+            _addressService = addressService;
+            _characterService = characterService;
         }
 
         /// <summary>
@@ -21,10 +28,10 @@ namespace Basecode.WebApp.Controllers
         /// </summary>
         /// <param name="id">The ID of the applicant.</param>
         /// <returns>The view displaying the track status of the applicant.</returns>
-        public IActionResult TrackStatus(int id)
+        public IActionResult TrackStatus(string applicantId)
         {
-            Applicant data = _service.GetById(id);
-            return View(data);
+            Applicants data = _applicantService.GetByApplicantId(applicantId);
+            return View("ApplicationStatus",data);
         }
 
         /// <summary>
@@ -37,7 +44,8 @@ namespace Basecode.WebApp.Controllers
         }
 
         /// <summary>
-        /// Displays the track application page.
+        /// Displays the track application page 
+        /// when the user clicks on it on the header of the landing page
         /// </summary>
         /// <returns>The track application view.</returns>
         public IActionResult TrackApplication()
@@ -60,13 +68,30 @@ namespace Basecode.WebApp.Controllers
         /// <returns>The application form view.</returns>
         public IActionResult ApplicationForm()
         {
-			var recipient = "jm.senening08@gmail.com";
-			var subject = "Application Update";
-			var body = "Your application ID is APPL-1234";
+            var recipient = "jm.senening08@gmail.com";
+            var subject = "Application Update";
+            var body = "Your application ID is APPL-1234";
 
-			_emailService.SendEmail(recipient, subject, body);
+            _emailService.SendEmail(recipient, subject, body);
 
-			return View();
+            return View();
+        }
+
+        public IActionResult ApplicationFormViewModel()
+        {
+            // Assuming you have your models populated
+            var applicantModel = new ApplicantCreationDto(); // ApplicantCreationDto
+            var addressModel = new AddressCreationDto(); // AddressCreationDto
+            var characterReferencesModel = new CharacterReferencesCreationDto(); // CharacterReferencesCreationDto
+
+            var viewModel = new ApplicationFormViewModel
+            {
+                Applicant = applicantModel,
+                Address = addressModel,
+                CharacterReferences = characterReferencesModel
+            };
+
+            return View(viewModel);
         }
 
         /// <summary>
@@ -76,6 +101,24 @@ namespace Basecode.WebApp.Controllers
         public IActionResult TermsAndConditions()
         {
             return View();
+        }
+
+        /// <summary>
+        /// after clicking the submit button in application form view,
+        /// it will lead to this controller. that handles the adding.
+        /// it is not tested coz i'm having trouble figuring out how to insert
+        /// 2 character ref at one post :)) --Kath
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult ApplicationForm(ApplicationFormViewModel model)
+        {
+            _applicantService.Add(model.Applicant);
+            _addressService.Add(model.Address);
+            _characterService.Add(model.CharacterReferences);
+            
+            return View("ApplicationForm");
         }
 
     }

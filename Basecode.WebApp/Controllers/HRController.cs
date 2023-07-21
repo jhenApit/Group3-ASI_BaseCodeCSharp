@@ -103,7 +103,6 @@ namespace Basecode.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                jobPostingsCreationDto.Description = string.Join(", ", jobPostingsCreationDto.Descriptions);
                 jobPostingsCreationDto.Qualifications = string.Join(", ", jobPostingsCreationDto.QualificationList);
                 jobPostingsCreationDto.Responsibilities = string.Join(", ", jobPostingsCreationDto.ResponsibilityList);
                 var data = _jobPostingsService.CreateJobPosting(jobPostingsCreationDto);

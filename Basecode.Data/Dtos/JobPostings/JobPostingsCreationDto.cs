@@ -10,7 +10,6 @@ namespace Basecode.Data.Dtos.JobPostings
     public class JobPostingsCreationDto
     {
         public string? Name { get; set; }
-        public List<string> Descriptions { get; set; }
         public string? Description { get; set; }
         public List<string> ResponsibilityList { get; set; }
         public string? Responsibilities { get; set; }

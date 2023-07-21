@@ -23,14 +23,9 @@
             <label for="description">Description:</label>
             <div class="description-input-rows">
                 <div class="description-input-row">
-                    <input asp-for="Descriptions[0]" type="text" class="description-input" />
-                    <button class="remove-button" type="button">Remove</button>
+                    <input asp-for="Description" type="text" class="description-input" />
                 </div>
             </div>
-        </div>
-        <div class="button-container">
-            <label class="hidden-label"></label>
-            <button id="add-description" class="add-more-btn" type="button">Add more</button>
         </div>
 
         <div class="input-container">
@@ -103,36 +98,6 @@
 <!-- Script for description, qualification and responsibility input fields-->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('add-description').addEventListener('click', function () {
-            var inputRows = document.querySelector('.description-input-rows');
-            var inputCount = inputRows.children.length;
-            var newRow = document.createElement('div');
-            newRow.className = 'description-input-row';
-
-            var inputField = document.createElement('input');
-            inputField.type = 'text';
-            inputField.className = 'description-input';
-            inputField.name = 'Descriptions[' + inputCount + ']';
-            newRow.appendChild(inputField);
-
-            var removeButton = document.createElement('button');
-            removeButton.className = 'remove-button';
-            removeButton.textContent = 'Remove';
-            removeButton.addEventListener('click', function () {
-                var rowToRemove = this.parentNode;
-                rowToRemove.parentNode.removeChild(rowToRemove);
-            });
-            newRow.appendChild(removeButton);
-
-            inputRows.appendChild(newRow);
-
-            if (inputCount === 0) {
-                var firstRow = inputRows.children[0];
-                var firstRemoveButton = firstRow.querySelector('.remove-button');
-                firstRemoveButton.style.display = 'inline-block';
-            }
-        });
-
         document.getElementById('add-qualification').addEventListener('click', function () {
             var qualificationRows = document.querySelector('.qualification-input-rows');
             var inputCount = qualificationRows.children.length;

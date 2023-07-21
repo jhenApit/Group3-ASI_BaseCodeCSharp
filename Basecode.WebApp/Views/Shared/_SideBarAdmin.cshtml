@@ -64,7 +64,7 @@
                 <ul class="sub-menu">
                     <li><p class="link_name" href="#">Jobs</p></li>
                     <li><a asp-controller="Hr" asp-action="JobPostList" class="sub-menu-item">Job Posting</a></li>
-                    <li><a asp-controller="Hr" asp-action="ApplicantList" class="sub-menu-item">Applicants</a></li>
+                    <li><a asp-controller="Hr" asp-action="JobApplicantsOverview" class="sub-menu-item">Applicants</a></li>
                 </ul>
             </li>
             <li class="nav-item @(activeUrl == "Schedules" ? " clicked" : "" )">
@@ -77,7 +77,7 @@
                 </div>
                 <ul class="sub-menu">
                     <li><p class="link_name" href="#">Schedules</p></li>
-                    <li><a asp-controller="Hr" asp-action="Schedules" class="sub-menu-item">Interviews</a></li>
+                    <li><a asp-controller="Hr" asp-action="Interview" class="sub-menu-item">Interviews</a></li>
                 </ul>
             </li>
             <li class="nav-item">

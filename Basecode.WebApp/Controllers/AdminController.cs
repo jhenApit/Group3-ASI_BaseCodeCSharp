@@ -1,6 +1,7 @@
 ﻿using Basecode.Data.Dtos.HrEmployee;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
+using Basecode.Services.Services;
 using Basecode.Services.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -14,14 +15,16 @@ namespace Basecode.WebApp.Controllers
     public class AdminController : Controller
     {
         private readonly IHrEmployeeService _service;
-        private readonly IAdminService _admin_service;
+        private readonly IAdminService _adminService;
         private readonly IErrorHandling _errorHandling;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        public AdminController(IHrEmployeeService service, IErrorHandling errorHandling, IAdminService admin_service)
+        private readonly IEmailService _emailService;
+        public AdminController(IHrEmployeeService service, IErrorHandling errorHandling, IAdminService adminService, IEmailService emailService)
         {
             _service = service;
             _errorHandling = errorHandling;
-            _admin_service = admin_service;
+            _adminService = adminService;
+            _emailService = emailService;
         }
 
 
@@ -40,7 +43,7 @@ namespace Basecode.WebApp.Controllers
         /// </summary>
         /// <param name="hrEmployee">Details of the HR employee to be created</param>
         /// <returns>Redirects to the HrList page, displaying the updated list of accounts, including the newly created account</returns>
-        public IActionResult CreateHrAccount(HREmployeeCreationDto hrEmployee)
+        public async Task<IActionResult> CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
             if (ModelState.IsValid)
             {
@@ -52,7 +55,17 @@ namespace Basecode.WebApp.Controllers
                     return View(hrEmployee);
                 }
                 _service.Add(hrEmployee);
-                return RedirectToAction("HrList");
+
+				var recipient = "jm.senening08@gmail.com";
+				var subject = "Alliance Human Resource Account";
+				var body = $"Dear Mr/Mrs {hrEmployee.Name}, <br/> <br/> This is your human resource account. <br/>" +
+						   $"<br/> Email: {hrEmployee.Email} <br/> Password: {hrEmployee.Password} <br/>" +
+						   "<br/> You can edit your profile once you've logged in.";
+
+
+				await _emailService.SendEmail(recipient, subject, body);
+
+				return RedirectToAction("HrList");
             }
             ModelState.Clear();
             return View(hrEmployee);

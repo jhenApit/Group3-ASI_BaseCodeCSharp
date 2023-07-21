@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-<<<<<<< HEAD
-=======
 using System.Drawing;
->>>>>>> 2f3734acf27a794f17e56026a9115d7ca915ea97
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
@@ -60,16 +57,11 @@ namespace Basecode.Data.Enums
         }
         public enum HireStatus
         {
-<<<<<<< HEAD
-            Confirmed,
-            NotConfirmed,
-=======
             [Description("Confirmed")]
             Confirmed,
             [Description("Not Confirmed")]
             NotConfirmed,
             [Description("Rejected")]
->>>>>>> 2f3734acf27a794f17e56026a9115d7ca915ea97
             Rejected
         }
         public enum Requirements
@@ -79,23 +71,6 @@ namespace Basecode.Data.Enums
         }
         public enum AdditionalInfo
         {
-<<<<<<< HEAD
-            LinkedInJobPost,
-            AllianceRecreuitmentTeam,
-            FriendsAndPeers,
-            Facebook,
-            Twitter,
-            Instagram,
-            AllianceCareersPage
-        }
-        public enum InterviewType
-        {
-            HRInterview,
-            TechnicalExam,
-            TechnicalInterview,
-            UndergoingBackgroundCheck,
-            FinalInterview,
-=======
             [Description("LinkedIn Job Post")]
             LinkedInJobPost,
             [Description("Recruitment Team")]
@@ -122,7 +97,6 @@ namespace Basecode.Data.Enums
             [Description("Final Interview")]
             FinalInterview,
             [Description("Failed")]
->>>>>>> 2f3734acf27a794f17e56026a9115d7ca915ea97
             Failed
         }
         public enum WorkSetup
@@ -133,13 +107,9 @@ namespace Basecode.Data.Enums
         }
         public enum WorkingHours
         {
-<<<<<<< HEAD
-            EightHourShift,
-=======
             [Description("8")]
             EightHourShift,
             [Description("4")]
->>>>>>> 2f3734acf27a794f17e56026a9115d7ca915ea97
             FourHourShift
         }
         public enum JobStatus
@@ -151,13 +121,6 @@ namespace Basecode.Data.Enums
         }
         public enum EmploymentType
         {
-<<<<<<< HEAD
-            FullTime,
-            PartTime,
-            Temporary,
-            Contract,
-            Freelance,
-=======
             [Description("Full-Time")]
             FullTime,
             [Description("Part-Time")]
@@ -169,7 +132,6 @@ namespace Basecode.Data.Enums
             [Description("Freelance")]
             Freelance,
             [Description("Internship")]
->>>>>>> 2f3734acf27a794f17e56026a9115d7ca915ea97
             Internship
         }
 

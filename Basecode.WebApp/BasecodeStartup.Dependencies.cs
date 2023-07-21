@@ -7,7 +7,7 @@ using Basecode.Services.Services;
 
 namespace Basecode.WebApp
 {
-    public partial class Startup
+    public partial class BasecodeStartup
     {
         private void ConfigureDependencies(IServiceCollection services)
         {            
@@ -20,12 +20,15 @@ namespace Basecode.WebApp
             services.AddScoped<IHrEmployeeService, HrEmployeeService>();
             services.AddScoped<IJobPostingsService, JobPostingsService>();
             services.AddScoped<IApplicantService, ApplicantService>();
+            services.AddScoped<IAdminService, AdminService>();
+            services.AddTransient<IEmailService, EmailService>();
             
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IHrEmployeeRepository, HrEmployeeRepository>();
             services.AddScoped<IJobPostingsRepository, JobPostingsRepository>();
             services.AddScoped<IApplicantRepository, ApplicantRepository>();
+            services.AddScoped<IAdminRepository, AdminRepository>();
 
         }
     }

@@ -6,9 +6,9 @@ using Basecode.Services.Utils;
 
 namespace Basecode.WebApp
 {
-    public partial class Startup
+    public partial class BasecodeStartup
     {
-        public Startup(IConfiguration configuration)
+        public BasecodeStartup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -30,6 +30,7 @@ namespace Basecode.WebApp
             services.AddScoped<IApplicantService, ApplicantService>();
             services.AddScoped<IErrorHandling, ErrorHandling>();
             services.AddScoped<IApplicantRepository, ApplicantRepository>();
+            services.AddMvc(options => options.EnableEndpointRouting = false);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,13 +48,14 @@ namespace Basecode.WebApp
 
             app.UseStaticFiles();           // Enables the use of static files
             app.UseHttpsRedirection();      // Enables redirection of HTTP to HTTPS requests.
-            app.UseCors("CorsPolicy");      // Enables CORS                              
-            app.UseAuthentication();        // Enables the ConfigureAuth service.
-
+            app.UseCors("CorsPolicy");      // Enables CORS
+            
             app.UseRouting();
-            this.ConfigureRoutes(app);      // Configuration for API controller routing
-
+            app.UseAuthentication();        // Enables the ConfigureAuth service.
+            app.UseMvc();
             app.UseAuthorization();
+            
+            this.ConfigureRoutes(app);      // Configuration for API controller routing
             this.ConfigureAuth(app);        // Configuration for Token Authentication
         }
 

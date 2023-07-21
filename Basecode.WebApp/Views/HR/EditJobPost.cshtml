@@ -15,6 +15,7 @@
 
 <form id="update-form" method="post" asp-controller="HR" asp-action="Update">
     <div class="content">
+        <input type="hidden" asp-for="Id" />
         <p>Input all the required details to add a new job post.</p>
         <div class="input-container">
             <label for="position">Position:</label>

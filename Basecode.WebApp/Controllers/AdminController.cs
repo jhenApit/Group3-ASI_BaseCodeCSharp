@@ -161,22 +161,5 @@ namespace Basecode.WebApp.Controllers
         {
             return View();
         }
-
-        //[HttpPost]
-        //public async Task<IActionResult> CreateRole(CreateRoleDto createRoleDto)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-
-        //        IdentityResult result = await _admin_service.CreateRole(createRoleDto.RoleName);
-
-        //        if (result.Succeeded)
-        //        {
-        //            return RedirectToAction("AdminDashboard", "Admin");
-        //        }
-        //    }
-
-        //    return View();
-        //}
     }
 }

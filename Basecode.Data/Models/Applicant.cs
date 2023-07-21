@@ -15,7 +15,10 @@ namespace Basecode.Data.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime ApplicationDate { get; set; }
 
-        public string? Name { get; set; } 
+        public string? FirstName { get; set; }
+        public string? MiddleName { get; set; }
+        public string? LastName { get; set; }
+        public string? Name => $"{FirstName} {MiddleName} {LastName}";
 
         [Required(ErrorMessage = "BirthDate is required.")]
         [DataType(DataType.Date)]

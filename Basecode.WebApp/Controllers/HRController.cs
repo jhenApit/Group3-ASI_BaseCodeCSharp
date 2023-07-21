@@ -9,6 +9,7 @@ namespace Basecode.WebApp.Controllers
     [Authorize(Roles = "hr,admin")]
     public class HRController : Controller
     {
+        
         private readonly IJobPostingsService _jobpostingService;
         private readonly IErrorHandling _errorHandling;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();

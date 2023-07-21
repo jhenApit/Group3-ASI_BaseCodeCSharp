@@ -138,6 +138,7 @@ namespace Basecode.Services.Services
                         _logContent.Result = false;
                         _logContent.ErrorCode = "400. Edit Failed!";
                         _logContent.Message = "Position Name already exists.";
+<<<<<<< HEAD
                         //return _logContent;
                     }
                     _logContent.Result = true;
@@ -146,15 +147,28 @@ namespace Basecode.Services.Services
                 //if job exists and job name entered is the same as the current name
                 _logContent.Result = true;
                 //return _logContent;
+=======
+                        return _logContent;
+                    }
+                }
+                //if job exists and job name entered is the same as the current name
+                _logContent.Result = true;
+                return _logContent;
+>>>>>>> 2f3734acf27a794f17e56026a9115d7ca915ea97
             }
             else
             {
                 _logContent.Result = false;
                 _logContent.ErrorCode = "400. Edit Failed!";
                 _logContent.Message = "Job with ID doesn't exist.";
+<<<<<<< HEAD
                 //return _logContent;
             }
             return _logContent;
+=======
+                return _logContent;
+            }
+>>>>>>> 2f3734acf27a794f17e56026a9115d7ca915ea97
         }
 
     }

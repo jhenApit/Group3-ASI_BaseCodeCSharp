@@ -35,9 +35,9 @@ namespace Basecode.Services.Services
         }
         private static string? GenerateRandomApplicantId()
         {
-            const string allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            const string allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             var random = new Random();
-            var result = new string(Enumerable.Repeat(allowedChars, 8)
+            var result = new string(Enumerable.Repeat(allowedChars, 15)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
             return result;
         }

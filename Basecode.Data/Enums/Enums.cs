@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+<<<<<<< HEAD
+=======
+using System.Drawing;
+>>>>>>> 2f3734acf27a794f17e56026a9115d7ca915ea97
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
@@ -56,8 +60,16 @@ namespace Basecode.Data.Enums
         }
         public enum HireStatus
         {
+<<<<<<< HEAD
             Confirmed,
             NotConfirmed,
+=======
+            [Description("Confirmed")]
+            Confirmed,
+            [Description("Not Confirmed")]
+            NotConfirmed,
+            [Description("Rejected")]
+>>>>>>> 2f3734acf27a794f17e56026a9115d7ca915ea97
             Rejected
         }
         public enum Requirements
@@ -67,6 +79,7 @@ namespace Basecode.Data.Enums
         }
         public enum AdditionalInfo
         {
+<<<<<<< HEAD
             LinkedInJobPost,
             AllianceRecreuitmentTeam,
             FriendsAndPeers,
@@ -82,6 +95,34 @@ namespace Basecode.Data.Enums
             TechnicalInterview,
             UndergoingBackgroundCheck,
             FinalInterview,
+=======
+            [Description("LinkedIn Job Post")]
+            LinkedInJobPost,
+            [Description("Recruitment Team")]
+            RecruitmentTeam,
+            [Description("Peers & Friends")]
+            PeersFriends,
+            [Description("Social Media Platforms")]
+            SocialMediaPlatforms,
+            [Description("Career Page")]
+            CareerPage,
+            [Description("Others")]
+            Others
+        }
+        public enum InterviewType
+        {
+            [Description("HR Interview")]
+            HRInterview,
+            [Description("Technical Exam")]
+            TechnicalExam,
+            [Description("Technical Interview")]
+            TechnicalInterview,
+            [Description("Undergoing Background Check")]
+            UndergoingBackgroundCheck,
+            [Description("Final Interview")]
+            FinalInterview,
+            [Description("Failed")]
+>>>>>>> 2f3734acf27a794f17e56026a9115d7ca915ea97
             Failed
         }
         public enum WorkSetup
@@ -92,7 +133,13 @@ namespace Basecode.Data.Enums
         }
         public enum WorkingHours
         {
+<<<<<<< HEAD
             EightHourShift,
+=======
+            [Description("8")]
+            EightHourShift,
+            [Description("4")]
+>>>>>>> 2f3734acf27a794f17e56026a9115d7ca915ea97
             FourHourShift
         }
         public enum JobStatus
@@ -104,11 +151,25 @@ namespace Basecode.Data.Enums
         }
         public enum EmploymentType
         {
+<<<<<<< HEAD
             FullTime,
             PartTime,
             Temporary,
             Contract,
             Freelance,
+=======
+            [Description("Full-Time")]
+            FullTime,
+            [Description("Part-Time")]
+            PartTime,
+            [Description("Temporary")]
+            Temporary,
+            [Description("Contract")]
+            Contract,
+            [Description("Freelance")]
+            Freelance,
+            [Description("Internship")]
+>>>>>>> 2f3734acf27a794f17e56026a9115d7ca915ea97
             Internship
         }
 

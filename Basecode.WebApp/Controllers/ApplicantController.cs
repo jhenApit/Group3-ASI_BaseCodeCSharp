@@ -1,4 +1,5 @@
-﻿using Basecode.Data.Models;
+﻿using Basecode.Data.Dtos;
+using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +10,15 @@ namespace Basecode.WebApp.Controllers
     {
         private readonly IApplicantService _service;
         private readonly IEmailService _emailService;
+        private readonly IApplicantService _applicantService;
+        private readonly IAddressService _addressService;
+        private readonly ICharacterReferencesService _characterService;
 
-        public ApplicantController(IApplicantService service, IEmailService emailService)
+        public ApplicantController(IEmailService emailService, IApplicantService applicantService, IAddressService addressService, ICharacterReferencesService characterService)
         {
-            _service = service;
+            _applicantService = applicantService;
+            _addressService = addressService;
+            _characterService = characterService;
             _emailService = emailService;
         }
 
@@ -59,7 +65,7 @@ namespace Basecode.WebApp.Controllers
         /// Displays the application form page.
         /// </summary>
         /// <returns>The application form view.</returns>
-        public IActionResult ApplicationForm()
+        public IActionResult ApplicationFormViewModel()
         {
 			var recipient = "jm.senening08@gmail.com";
 			var subject = "Application Update";
@@ -77,6 +83,24 @@ namespace Basecode.WebApp.Controllers
         public IActionResult TermsAndConditions()
         {
             return View();
+        }
+
+        /// <summary>
+        /// after clicking the submit button in application form view,
+        /// it will lead to this controller. that handles the adding.
+        /// it is not tested coz i'm having trouble figuring out how to insert
+        /// 2 character ref at one post :)) --Kath
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult ApplicationForm(ApplicationFormViewModel model)
+        {
+            _applicantService.Add(model.Applicant);
+            _addressService.Add(model.Address);
+            _characterService.Add(model.CharacterReferences);
+            
+            return View("ApplicationForm");
         }
 
     }

@@ -1,19 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Basecode.Services.Interfaces;
-using Basecode.Services.Services;
-using Basecode.Services.Utils;
-using Microsoft.AspNetCore.Identity;
 using NLog;
-using Basecode.Data.Models;
-using Basecode.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Basecode.Services.Interfaces;
-using Basecode.Services.Services;
-using Basecode.Services.Utils;
-using Microsoft.AspNetCore.Identity;
-using Basecode.Data.Dtos.JobPostings;
-using Basecode.Data.Dtos.HrEmployee;
 using Basecode.Data.Dtos.JobPostings;
 
 namespace Basecode.WebApp.Controllers
@@ -103,7 +91,9 @@ namespace Basecode.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var data = _jobPostingsService.CreateJobPosting(jobPostingsCreationDto);
+				jobPostingsCreationDto.Qualifications = string.Join(", ", jobPostingsCreationDto.QualificationList);
+				jobPostingsCreationDto.Responsibilities = string.Join(", ", jobPostingsCreationDto.ResponsibilityList);
+				var data = _jobPostingsService.CreateJobPosting(jobPostingsCreationDto);
                 if (!data.Result)
                 {
                     _logger.Error(_errorHandling.SetLog(data));
@@ -114,14 +104,16 @@ namespace Basecode.WebApp.Controllers
                 return RedirectToAction("JobPostList");
             }
             ModelState.Clear();
-            return View(jobPostingsCreationDto);
-        }
+			return View("JobPostList", jobPostingsCreationDto);
+		}
 
         [HttpPost]
         public IActionResult Update(JobPostingsUpdationDto jobPostingsUpdationDto)
         {
             if (ModelState.IsValid)
             {
+                jobPostingsUpdationDto.Qualifications = string.Join(", ", jobPostingsUpdationDto.QualificationList);
+                jobPostingsUpdationDto.Responsibilities = string.Join(", ", jobPostingsUpdationDto.ResponsibilityList);
                 var data = _jobPostingsService.UpdateJobPosting(jobPostingsUpdationDto);
                 if (!data.Result)
                 {

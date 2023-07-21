@@ -12,7 +12,9 @@ namespace Basecode.Data.Dtos.JobPostings
         public int Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
+        public List<string> ResponsibilityList { get; set; }
         public string? Responsibilities { get; set; }
+        public List<string> QualificationList { get; set; }
         public string? Qualifications { get; set; }
         public WorkSetup WorkSetup { get; set; }
         public WorkingHours Hours { get; set; }

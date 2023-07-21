@@ -233,11 +233,6 @@ p {
         color: red;
     }
 
-.sun-editor {
-    width: 100% !important;
-    height: 200px;
-}
-
 textarea {
     border-radius: .5rem;
     border: 1px solid #ccc;

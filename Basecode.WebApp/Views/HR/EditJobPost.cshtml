@@ -20,42 +20,27 @@
         <label for="description">Description:</label>
         <div class="description-input-rows">
             <div class="description-input-row">
-                <input type="text" class="description-input" />
-                <button class="remove-button">Remove</button>
+                <textarea id="description" name="description" class="description-input" rows="4"></textarea>
             </div>
         </div>
-    </div>
-    <div class="button-container">
-        <label class="hidden-label"></label>
-        <button id="add-description" class="add-more-btn">Add more</button>
     </div>
 
     <div class="input-container">
         <label for="qualification">Qualification:</label>
         <div class="qualification-input-rows">
             <div class="qualification-input-row">
-                <input type="text" class="qualification-input" />
-                <button class="remove-button">Remove</button>
+                <textarea id="qualification" name="qualification" class="qualification-input" rows="4"></textarea>
             </div>
         </div>
-    </div>
-    <div class="button-container">
-        <label class="hidden-label"></label>
-        <button id="add-qualification" class="add-more-btn">Add more</button>
     </div>
 
     <div class="input-container">
         <label for="responsibility">Responsibility:</label>
         <div class="responsibility-input-rows">
             <div class="responsibility-input-row">
-                <input type="text" class="responsibility-input" />
-                <button class="remove-button">Remove</button>
+                <textarea id="responsibility" name="responsibility" class="responsibility-input" rows="4"></textarea>
             </div>
         </div>
-    </div>
-    <div class="button-container">
-        <label class="hidden-label"></label>
-        <button id="add-responsibility" class="add-more-btn">Add more</button>
     </div>
 
     <div class="select-container">
@@ -98,104 +83,3 @@
         <a class="save-button" type="button" asp-controller="HR" asp-action="JobPostList">SAVE</a>
     </div>
 </div>
-
-<!-- Script for description, qualification and responsibility input fields-->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('add-description').addEventListener('click', function () {
-            var inputRows = document.querySelector('.description-input-rows');
-            var inputCount = inputRows.children.length;
-            var newRow = document.createElement('div');
-            newRow.className = 'description-input-row';
-
-            var inputField = document.createElement('input');
-            inputField.type = 'text';
-            inputField.className = 'description-input';
-            newRow.appendChild(inputField);
-
-            var removeButton = document.createElement('button');
-            removeButton.className = 'remove-button';
-            removeButton.textContent = 'Remove';
-            removeButton.addEventListener('click', function () {
-                var rowToRemove = this.parentNode;
-                rowToRemove.parentNode.removeChild(rowToRemove);
-            });
-            newRow.appendChild(removeButton);
-
-            inputRows.appendChild(newRow);
-
-            if (inputCount === 0) {
-                var firstRow = inputRows.children[0];
-                var firstRemoveButton = firstRow.querySelector('.remove-button');
-                firstRemoveButton.style.display = 'inline-block';
-            }
-        });
-
-        document.getElementById('add-qualification').addEventListener('click', function () {
-            var qualificationRows = document.querySelector('.qualification-input-rows');
-            var inputCount = qualificationRows.children.length;
-
-            var newRow = document.createElement('div');
-            newRow.className = 'qualification-input-row';
-
-            var inputField = document.createElement('input');
-            inputField.type = 'text';
-            inputField.className = 'qualification-input';
-            newRow.appendChild(inputField);
-
-            var removeButton = document.createElement('button');
-            removeButton.className = 'remove-button';
-            removeButton.textContent = 'Remove';
-            removeButton.addEventListener('click', function () {
-                var rowToRemove = this.parentNode;
-                rowToRemove.parentNode.removeChild(rowToRemove);
-            });
-            newRow.appendChild(removeButton);
-
-            qualificationRows.appendChild(newRow);
-
-            if (inputCount === 0) {
-                var firstRow = qualificationRows.children[0];
-                var firstRemoveButton = firstRow.querySelector('.remove-button');
-                firstRemoveButton.style.display = 'inline-block';
-            }
-        });
-
-        document.getElementById('add-responsibility').addEventListener('click', function () {
-            var responsibilityRows = document.querySelector('.responsibility-input-rows');
-            var inputCount = responsibilityRows.children.length;
-
-            var newRow = document.createElement('div');
-            newRow.className = 'responsibility-input-row';
-
-            var inputField = document.createElement('input');
-            inputField.type = 'text';
-            inputField.className = 'responsibility-input';
-            newRow.appendChild(inputField);
-
-            var removeButton = document.createElement('button');
-            removeButton.className = 'remove-button';
-            removeButton.textContent = 'Remove';
-            removeButton.addEventListener('click', function () {
-                var rowToRemove = this.parentNode;
-                rowToRemove.parentNode.removeChild(rowToRemove);
-            });
-            newRow.appendChild(removeButton);
-
-            responsibilityRows.appendChild(newRow);
-
-            if (inputCount === 0) {
-                var firstRow = responsibilityRows.children[0];
-                var firstRemoveButton = firstRow.querySelector('.remove-button');
-                firstRemoveButton.style.display = 'inline-block';
-            }
-        });
-
-        document.addEventListener('click', function (event) {
-            if (event.target.classList.contains('remove-button')) {
-                var rowToRemove = event.target.parentNode;
-                rowToRemove.parentNode.removeChild(rowToRemove);
-            }
-        });
-    });
-</script>

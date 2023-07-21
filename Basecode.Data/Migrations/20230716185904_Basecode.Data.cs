@@ -170,20 +170,21 @@ namespace Basecode.Data.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Responsibilities = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Qualifications = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    WorkSetup = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WorkSetup = table.Column<int>(type: "int", nullable: false),
                     Hours = table.Column<int>(type: "int", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedById = table.Column<int>(type: "int", nullable: false),
-                    UpdatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedById = table.Column<int>(type: "int", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    JobStatus = table.Column<int>(type: "int", nullable: false),
+                    EmploymentType = table.Column<int>(type: "int", nullable: false),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedById = table.Column<int>(type: "int", nullable: true),
+                    UpdatedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedById = table.Column<int>(type: "int", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_JobPostings", x => x.Id);
-                });
+                }
+            );
 
             migrationBuilder.CreateTable(
                 name: "ReferenceForms",

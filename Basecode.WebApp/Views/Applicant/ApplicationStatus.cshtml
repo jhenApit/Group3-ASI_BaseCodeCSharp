@@ -1,15 +1,17 @@
-﻿@using Basecode.Data.Models
-@model Applicant
+﻿@using Basecode.Data.Enums;
+@using Basecode.Data.Models
+@model Applicants
 @{
     ViewData["Title"] = "Track Application";
 }
+<!---This is the view to see the results of application tracking-->
 
 <div class="make-center">
     <div class="col">
         <div class="container">
-            <form method="get" action="@Url.Action("TrackStatus", "Applicant")">
+            <form method="get" asp-controller="Applicant" asp-action="TrackStatus">
                 <div class="search-container">
-                    <input type="text" class="form-control text-center search-bar" id="trackingNumber" name="id" placeholder="Enter your application ID here...">
+                    <input asp-for="ApplicantId" type="text" class="form-control text-center search-bar" placeholder="Enter your application ID here...">
                     <button type="submit" class="btn track-status-button">Track</button>
                 </div>
             </form>
@@ -42,7 +44,7 @@
                                 <h4 class="">Current Status:</h4>
                             </div>
                             <div class="col-sm-6 d-inline-flex justify-content-center justify-content-sm-start">
-                                <h4 class="text-skyblue font-italic">@Model.JobId</h4>
+                                <h4 class="text-skyblue font-italic">@EnumHelper.GetEnumDescription(Model.ApplicationStatus)</h4>
                             </div>
                         </div>
                     </div>
@@ -51,3 +53,4 @@
         </div>
     </div>
 </div>
+

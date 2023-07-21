@@ -29,11 +29,11 @@ namespace G3HAS_Unit_Tests.Services
         {
             // Arrange
             int applicantId = 1;
-            Applicant expectedApplicant = new Applicant { Id = applicantId };
+            Applicants expectedApplicant = new Applicants { Id = applicantId };
             _repositoryMock.Setup(repo => repo.GetById(applicantId)).Returns(expectedApplicant);
 
             // Act
-            Applicant actualApplicant = _service.GetById(applicantId);
+            Applicants actualApplicant = _service.GetById(applicantId);
 
             // Assert
             Assert.Equal(expectedApplicant, actualApplicant);
@@ -44,10 +44,10 @@ namespace G3HAS_Unit_Tests.Services
         {
             // Arrange
             int invalidId = -1;
-            _repositoryMock.Setup(repo => repo.GetById(invalidId)).Returns((Applicant)null!);
+            _repositoryMock.Setup(repo => repo.GetById(invalidId)).Returns((Applicants)null!);
 
             // Act
-            Applicant actualApplicant = _service.GetById(invalidId);
+            Applicants actualApplicant = _service.GetById(invalidId);
 
             // Assert
             Assert.Null(actualApplicant);

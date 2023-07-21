@@ -7,9 +7,9 @@ namespace Basecode.Data
 {
     public class BasecodeContext : IdentityDbContext<IdentityUser>
     {
-        public BasecodeContext (DbContextOptions<BasecodeContext> options)
+        public BasecodeContext(DbContextOptions<BasecodeContext> options)
             : base(options)
-        {}
+        { }
 
         public void InsertNew(RefreshToken token)
         {
@@ -24,7 +24,7 @@ namespace Basecode.Data
         }
 
         public virtual DbSet<HrEmployee> HrEmployees { get; set; }
-        public virtual DbSet<Applicant> Applicants { get; set; }
+        public virtual DbSet<Applicants> Applicants { get; set; }
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<CharacterReferences> CharacterReferences { get; set; }
         public virtual DbSet<ReferenceForms> ReferenceForms { get; set; }

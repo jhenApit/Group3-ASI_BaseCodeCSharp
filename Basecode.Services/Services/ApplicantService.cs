@@ -28,36 +28,36 @@ namespace Basecode.Services.Services
         /// <returns>The applicant with the specified ID.</returns>
         public void Add(ApplicantCreationDto applicant)
         {
-            var applicantModel = _mapper.Map<Applicant>(applicant);
+            var applicantModel = _mapper.Map<Applicants>(applicant);
             applicantModel.ApplicantId = GenerateRandomApplicantId();
             applicantModel.ApplicationDate = DateTime.Now;
             _repository.Add(applicantModel);
         }
         private static string? GenerateRandomApplicantId()
         {
-            const string allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            const string allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             var random = new Random();
-            var result = new string(Enumerable.Repeat(allowedChars, 8)
+            var result = new string(Enumerable.Repeat(allowedChars, 15)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
             return result;
         }
 
-        public Applicant GetByApplicantId(string applicantId)
+        public Applicants GetByApplicantId(string applicantId)
         {
             return _repository.GetByApplicantId(applicantId);
         }
 
-        public Applicant GetById(int id)
+        public Applicants GetById(int id)
         {
             return _repository.GetById(id);
         }
 
-        public Applicant GetByName(string name)
+        public Applicants GetByName(string name)
         {
             return _repository.GetByName(name);
         }
 
-        public List<Applicant> RetrieveAll()
+        public List<Applicants> RetrieveAll()
         {
             return _repository.RetrieveAll().ToList();
         }

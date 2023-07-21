@@ -1,6 +1,6 @@
 ﻿@using Basecode.Data.Models
 @using static Basecode.Data.Enums.Enums;
-@model List<JobPostings>
+@model List<JobPostings> 
 
 @{
     ViewData["Title"] = "Job Posting";
@@ -51,11 +51,11 @@
                                 <a asp-route-id="@jobPosting.Id" title="Edit" asp-controller="HR" asp-action="EditJobPost">
                                     <img src="~/images/icons/edit.png" alt="Edit" class="job-post-action-icon" />
                                 </a>
-                                <!-- Button trigger modal -->
-                                <a asp-route-id="@jobPosting.Id" asp-controller="HR" asp-action="DeleteJob" title="Delete">
-                                    <img src="~/images/icons/delete.png" alt="Delete" class="job-post-action-icon" />
-                                </a>
-                            </td>
+                         <!-- Button trigger modal -->
+                        <a asp-route-id="@jobPosting.Id" asp-controller="HR" asp-action="DeleteJob" title="Delete">
+                            <img src="~/images/icons/delete.png" alt="Delete" class="job-post-action-icon" />
+                        </a>
+                        </td>
                         </tr>
                     }
                 }

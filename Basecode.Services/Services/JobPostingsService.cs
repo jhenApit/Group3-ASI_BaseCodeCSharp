@@ -39,8 +39,8 @@ namespace Basecode.Services.Services
             JobPostingsModel.CreatedTime = DateTime.Now;
             JobPostingsModel.IsDeleted = false;
             JobPostingsModel.CreatedById = 1; //temporary id
-            JobPostingsModel.UpdatedTime = DateTime.Now;
-            JobPostingsModel.UpdatedById = 1;
+            JobPostingsModel.UpdatedTime = null;
+            JobPostingsModel.UpdatedById = null;
 
             _repository.Add(JobPostingsModel);
         }
@@ -150,9 +150,8 @@ namespace Basecode.Services.Services
                 _logContent.Result = false;
                 _logContent.ErrorCode = "400. Edit Failed!";
                 _logContent.Message = "Job with ID doesn't exist.";
+                return _logContent;
             }
-            return _logContent;
-
         }
 
     }

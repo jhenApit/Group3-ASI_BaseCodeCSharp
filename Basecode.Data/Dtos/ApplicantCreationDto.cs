@@ -10,6 +10,7 @@ namespace Basecode.Data.Dtos
 {
     public class ApplicantCreationDto
     {
+        public int Id { get; set; }
         public string? ApplicantId { get; set; }
         public int? JobId { get; set; } // Foreign Key
         public string? FirstName { get; set; }

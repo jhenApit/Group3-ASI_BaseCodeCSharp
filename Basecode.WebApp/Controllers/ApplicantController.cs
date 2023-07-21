@@ -20,6 +20,9 @@ namespace Basecode.WebApp.Controllers
             _addressService = addressService;
             _characterService = characterService;
             _emailService = emailService;
+            _applicantService = applicantService;
+            _addressService = addressService;
+            _characterService = characterService;
         }
 
         /// <summary>
@@ -29,7 +32,7 @@ namespace Basecode.WebApp.Controllers
         /// <returns>The view displaying the track status of the applicant.</returns>
         public IActionResult TrackStatus(string applicantId)
         {
-            Applicants data = _service.GetByApplicantId(applicantId);
+            Applicants data = _applicantService.GetByApplicantId(applicantId);
             return View("ApplicationStatus",data);
         }
 
@@ -67,13 +70,18 @@ namespace Basecode.WebApp.Controllers
         /// <returns>The application form view.</returns>
         public IActionResult ApplicationFormViewModel()
         {
-			var recipient = "jm.senening08@gmail.com";
-			var subject = "Application Update";
-			var body = "Your application ID is APPL-1234";
+            var recipient = "jm.senening08@gmail.com";
+            var subject = "Application Update";
+            var body = "Your application ID is APPL-1234";
 
-			_emailService.SendEmail(recipient, subject, body);
+            _emailService.SendEmail(recipient, subject, body);
 
-			return View();
+            return View();
+        }
+
+        public IActionResult ApplicationForm()
+        {
+            return View();
         }
 
         /// <summary>
@@ -94,12 +102,38 @@ namespace Basecode.WebApp.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult ApplicationForm(ApplicationFormViewModel model)
+        public IActionResult ApplicationFormProcess(ApplicationFormViewModel model)
         {
             _applicantService.Add(model.Applicant);
-            _addressService.Add(model.Address);
-            _characterService.Add(model.CharacterReferences);
-            
+            var address = new AddressCreationDto
+            {
+                ApplicantId = model.Applicant.Id,
+                Street = model.Address.Street,
+                City = model.Address.City,
+                Province = model.Address.Province,
+                ZipCode = model.Address.ZipCode
+            };
+            _addressService.Add(address);
+            var characRef1 = new CharacterReferencesCreationDto
+            {
+                ApplicantId = model.Applicant.Id,
+                Name = model.CharacterReferences1.Name,
+                Relationship = model.CharacterReferences1.Relationship,
+                Email = model.CharacterReferences1.Email,
+                MobileNumber = model.CharacterReferences1.MobileNumber
+            };
+            _characterService.Add(characRef1);
+
+            var characRef2 = new CharacterReferencesCreationDto
+            {
+                ApplicantId = model.Applicant.Id,
+                Name = model.CharacterReferences2.Name,
+                Relationship = model.CharacterReferences2.Relationship,
+                Email = model.CharacterReferences2.Email,
+                MobileNumber = model.CharacterReferences2.MobileNumber
+            };
+            _characterService.Add(characRef2);
+
             return View("ApplicationForm");
         }
 

@@ -9,16 +9,35 @@ namespace Basecode.WebApp.Controllers
     [Authorize(Roles = "hr,admin")]
     public class HRController : Controller
     {
-        
+        private readonly IHrEmployeeService _service;
         private readonly IJobPostingsService _jobpostingService;
         private readonly IErrorHandling _errorHandling;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public HRController(IJobPostingsService jobposting, IErrorHandling errorHandling)
+        public HRController(IHrEmployeeService service, IJobPostingsService jobPostingsService, IErrorHandling errorHandling)
         {
-            _jobpostingService = jobposting;
+            _service = service;
+            _jobpostingService = jobPostingsService;
             _errorHandling = errorHandling;
         }
+
+        /// <summary>
+        /// Displays the list of job posts.
+        /// </summary>
+        /// <returns>The view containing the job post list.</returns>
+
+
+        public IActionResult AdminDashboard(string Email)
+        {
+            var hrEmployee = _service.GetByEmail(Email);
+            return View(hrEmployee);
+        }
+
+
+        /// <summary>
+        /// Displays the list of job posts.
+        /// </summary>
+        /// <returns>The view containing the job post list.</returns>
         public IActionResult JobPostList()
         {
             var data = _jobpostingService.RetrieveAll();

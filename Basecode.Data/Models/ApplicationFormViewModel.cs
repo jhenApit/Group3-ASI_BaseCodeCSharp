@@ -11,6 +11,7 @@ namespace Basecode.Data.Models
     {
         public ApplicantCreationDto? Applicant { get; set; }
         public AddressCreationDto? Address { get; set; }
-        public CharacterReferencesCreationDto? CharacterReferences { get; set; }
+        public CharacterReferencesCreationDto? CharacterReferences1 { get; set; }
+        public CharacterReferencesCreationDto? CharacterReferences2 { get; set; }
     }
 }

@@ -21,6 +21,7 @@ namespace Basecode.WebApp
             services.AddScoped<IJobPostingsService, JobPostingsService>();
             services.AddScoped<IApplicantService, ApplicantService>();
             services.AddScoped<IAdminService, AdminService>();
+            services.AddTransient<IEmailService, EmailService>();
             services.AddScoped<IAddressService, AddressService>();
             services.AddScoped<ICharacterReferencesService, CharacterReferencesService>();
 

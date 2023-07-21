@@ -1,11 +1,16 @@
 ﻿using AutoMapper;
 using Basecode.Data;
 using Basecode.Data.Dtos.HrEmployee;
+using Basecode.Data.Dtos.JobPostings;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Net.NetworkInformation;
+
 
 namespace Basecode.Services.Services
 {
@@ -14,10 +19,12 @@ namespace Basecode.Services.Services
         private readonly IHrEmployeeRepository _repository;
         private readonly IMapper _mapper;
         private readonly LogContent _logContent = new();
-    
-        public HrEmployeeService(IHrEmployeeRepository repository, IMapper mapper) 
+        private readonly SignInManager<IdentityUser> _signInManager;
+
+        public HrEmployeeService(IHrEmployeeRepository repository, IMapper mapper, SignInManager<IdentityUser> signInManager) 
         {
             _repository = repository;
+            _signInManager = signInManager;
             _mapper = mapper;
         }
         /// <summary>
@@ -155,6 +162,39 @@ namespace Basecode.Services.Services
 
             return _logContent;
         }
+        /// <summary>
+        /// Handles the login and logging for the errors of the input
+        /// </summary>
+        /// <param name="email">the email input for log in</param>
+        /// <param name="password">the password input for log in</param>
+        /// <returns> the log content for the log in</returns>
+        public LogContent Login(string email, string password)
+        {
+            var hr = GetByEmail(email);
+
+            if (hr != null)
+            {
+                if (hr.Password != password)
+                {
+                    _logContent.Result = false;
+                    _logContent.ErrorCode = "401. Incorrect Password!";
+                    _logContent.Message = "Incorrect Password";
+                }
+                else
+                {
+                    _logContent.Result = true;
+                    _logContent.Message = "Login succesful for user " + email;
+                }
+            }
+            else
+            {
+                _logContent.Result = false;
+                _logContent.ErrorCode = "401. Incorrect Email!";
+                _logContent.Message = "Email doesn't exist";
+            }
+            return _logContent;
+        }
+
 
     }
 }

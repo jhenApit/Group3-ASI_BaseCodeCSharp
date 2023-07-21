@@ -1,135 +1,128 @@
-﻿@{
+﻿@using Basecode.Data.Dtos.JobPostings
+@using static Basecode.Data.Enums.Enums
+@model JobPostingsUpdationDto
+@{
     ViewData["Title"] = "Edit Job Posting";
     Layout = "_SideBarAdmin";
-
+    <link rel="stylesheet" href="~/css/CreateJobPost.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/EditJobPost.css" />
-}   
+}
 
 <div class="edit-container">
     <h1>@ViewData["Title"]</h1>
 </div>
-<div class="content">
-    <p>Input all the required details to add a new job post.</p>
-    <div class="input-container">
-        <label for="position">Position:</label>
-        <input id="position" type="text" name="position" />
-    </div>
 
-    <div class="input-container">
-        <label for="description">Description:</label>
-        <div class="description-input-rows">
-            <div class="description-input-row">
-                <input type="text" class="description-input" />
-                <button class="remove-button">Remove</button>
+<form id="update-form" method="post" asp-controller="HR" asp-action="Update">
+    <div class="content">
+        <input type="hidden" asp-for="Id" />
+        <p>Input all the required details to add a new job post.</p>
+        <div class="input-container">
+            <label for="position">Position:</label>
+            <input asp-for="Name" id="position" type="text" value="@Model.Name" />
+        </div>
+
+        <div class="input-container">
+            <label for="description">Description:</label>
+            <div class="description-input-rows">
+                <div class="description-input-row">
+                    <input asp-for="Description" type="text" class="description-input" value="@Model.Description" />
+                </div>
             </div>
         </div>
-    </div>
-    <div class="button-container">
-        <label class="hidden-label"></label>
-        <button id="add-description" class="add-more-btn">Add more</button>
-    </div>
 
-    <div class="input-container">
-        <label for="qualification">Qualification:</label>
-        <div class="qualification-input-rows">
-            <div class="qualification-input-row">
-                <input type="text" class="qualification-input" />
-                <button class="remove-button">Remove</button>
+        <div class="input-container">
+            @{
+                //Separating CSV values
+                string qualification = @Model.Qualifications;
+                string[] qualificationValues = qualification.Split(',');
+                int inputCount = 0;
+            }
+            <label for="qualification">Qualification:</label>
+            <div class="qualification-input-rows">
+                @foreach (var value in qualificationValues)
+                {
+                <div class="qualification-input-row">
+                        <input asp-for="QualificationList[inputCount]" type="text" class="qualification-input" value="@value.Trim()" />
+                    <button class="remove-button" type="button" style="display: block;">Remove</button>
+                </div>
+                    inputCount++;
+                }
             </div>
         </div>
-    </div>
-    <div class="button-container">
-        <label class="hidden-label"></label>
-        <button id="add-qualification" class="add-more-btn">Add more</button>
-    </div>
+        <div class="button-container">
+            <label class="hidden-label"></label>
+            <button id="add-qualification" class="add-more-btn" type="button">Add more</button>
+        </div>
 
-    <div class="input-container">
-        <label for="responsibility">Responsibility:</label>
-        <div class="responsibility-input-rows">
-            <div class="responsibility-input-row">
-                <input type="text" class="responsibility-input" />
-                <button class="remove-button">Remove</button>
+        <div class="input-container">
+            @{
+                //Separating CSV values
+                string responsibility = @Model.Responsibilities;
+                string[] responsibilityValues = responsibility.Split(',');
+                inputCount = 0;
+            }
+            <label for="responsibility">Responsibility:</label>
+            <div class="responsibility-input-rows">
+                @foreach (var value in responsibilityValues)
+                {
+                    <div class="qualification-input-row">
+                        <input asp-for="ResponsibilityList[inputCount]" type="text" class="qualification-input" value="@value.Trim()" />
+                        <button class="remove-button" type="button" style="display: block;">Remove</button>
+                    </div>
+                    inputCount++;
+                }
             </div>
         </div>
+        <div class="button-container">
+            <label class="hidden-label"></label>
+            <button id="add-responsibility" class="add-more-btn" type="button">Add more</button>
+        </div>
+        <div class="select-container">
+            <label for="worksetup">Work Setup:</label>
+            <select id="worksetup" asp-for="WorkSetup">
+                <option value="N/A"></option>
+                <option value="@WorkSetup.Online">Online</option>
+                <option value="@WorkSetup.Onsite">Onsite</option>
+                <option value="@WorkSetup.Hybrid">Hybrid (Onsite/Online)</option>
+            </select>
+            <label for="workinghours" style="margin-left: 20px;">Working Hours:</label>
+            <select id="workinghours" asp-for="Hours">
+                <option value="N/A"></option>
+                <option value="@WorkingHours.EightHourShift">8-Hour Shift</option>
+                <option value="@WorkingHours.FourHourShift">4-Hour Shift</option>
+            </select>
+        </div>
+        <div class="select-container">
+            <label for="status">Status:</label>
+            <select id="status" asp-for="JobStatus">
+                <option value="N/A"></option>
+                <option value="@JobStatus.Open">Open</option>
+                <option value="@JobStatus.Urgent">Urgent</option>
+                <option value="@JobStatus.Closed">Closed</option>
+                <option value="@JobStatus.OnHold">On Hold</option>
+            </select>
+            <label for="employmenttype" style="margin-left: 20px;">Employment Type:</label>
+            <select id="employmenttype" asp-for="EmploymentType">
+                <option value="N/A"></option>
+                <option value="@EmploymentType.FullTime">Full-time</option>
+                <option value="@EmploymentType.PartTime">Part-time</option>
+                <option value="@EmploymentType.Temporary">Temporary</option>
+                <option value="@EmploymentType.Contract">Contract</option>
+                <option value="@EmploymentType.Freelance">Freelance</option>
+                <option value="@EmploymentType.Internship">Internship</option>
+            </select>
+        </div>
+        <div class="bottom-btn">
+            <a class="cancel-btn" type="button" asp-controller="HR" asp-action="JobPostList">CANCEL</a>
+            <button class="save-button" type="submit">SAVE</button>
+        </div>
     </div>
-    <div class="button-container">
-        <label class="hidden-label"></label>
-        <button id="add-responsibility" class="add-more-btn">Add more</button>
-    </div>
-
-    <div class="select-container">
-        <label for="worksetup">Work Setup:</label>
-        <select id="worksetup" name="worksetup">
-            <option selected disabled value="">Choose...</option>
-            <option value="Online">Online</option>
-            <option value="Onsite">Onsite</option>
-            <option value="Hybrid (Onsite/Online)">Hybrid (Onsite/Online)</option>
-        </select>
-        <label for="workinghours" style="margin-left: 20px;">Working Hours:</label>
-        <select id="workinghours" name="workinghours">
-            <option selected disabled value="">Choose...</option>
-            <option value="8-Hour Shift">8-Hour Shift</option>
-            <option value="4-Hour Shift">4-Hour Shift</option>
-        </select>
-    </div>
-    <div class="select-container">
-        <label for="status">Status:</label>
-        <select id="status" name="status">
-            <option selected disabled value="">Choose...</option>
-            <option value="Open">Open</option>
-            <option value="Urgent">Urgent</option>
-            <option value="Closed">Closed</option>
-            <option value="On Hold">On Hold</option>
-        </select>
-        <label for="employmenttype" style="margin-left: 20px;">Employment Type:</label>
-        <select id="employmenttype" name="employmenttype">
-            <option selected disabled value="">Choose...</option>
-            <option value="Full-time">Full-time</option>
-            <option value="Part-time">Part-time</option>
-            <option value="Temporary">Temporary</option>
-            <option value="Contract">Contract</option>
-            <option value="Freelance">Freelance</option>
-            <option value="Internship">Internship</option>
-        </select>
-    </div>
-    <div class="bottom-btn">
-        <a class="cancel-btn" type="button" asp-controller="HR" asp-action="JobPostList">CANCEL</a>
-        <a class="save-button" type="button" asp-controller="HR" asp-action="JobPostList">SAVE</a>
-    </div>
-</div>
+</form>
 
 <!-- Script for description, qualification and responsibility input fields-->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('add-description').addEventListener('click', function () {
-            var inputRows = document.querySelector('.description-input-rows');
-            var inputCount = inputRows.children.length;
-            var newRow = document.createElement('div');
-            newRow.className = 'description-input-row';
-
-            var inputField = document.createElement('input');
-            inputField.type = 'text';
-            inputField.className = 'description-input';
-            newRow.appendChild(inputField);
-
-            var removeButton = document.createElement('button');
-            removeButton.className = 'remove-button';
-            removeButton.textContent = 'Remove';
-            removeButton.addEventListener('click', function () {
-                var rowToRemove = this.parentNode;
-                rowToRemove.parentNode.removeChild(rowToRemove);
-            });
-            newRow.appendChild(removeButton);
-
-            inputRows.appendChild(newRow);
-
-            if (inputCount === 0) {
-                var firstRow = inputRows.children[0];
-                var firstRemoveButton = firstRow.querySelector('.remove-button');
-                firstRemoveButton.style.display = 'inline-block';
-            }
-        });
 
         document.getElementById('add-qualification').addEventListener('click', function () {
             var qualificationRows = document.querySelector('.qualification-input-rows');
@@ -141,6 +134,7 @@
             var inputField = document.createElement('input');
             inputField.type = 'text';
             inputField.className = 'qualification-input';
+            inputField.name = 'QualificationList[' + inputCount + ']';
             newRow.appendChild(inputField);
 
             var removeButton = document.createElement('button');
@@ -171,6 +165,7 @@
             var inputField = document.createElement('input');
             inputField.type = 'text';
             inputField.className = 'responsibility-input';
+            inputField.name = 'QualificationList[' + inputCount + ']';
             newRow.appendChild(inputField);
 
             var removeButton = document.createElement('button');

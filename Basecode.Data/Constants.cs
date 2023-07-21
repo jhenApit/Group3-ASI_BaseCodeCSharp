@@ -4,6 +4,10 @@ namespace Basecode.Data
 {
     public static class Constants
     {
+        public class URI
+        {
+            public const string Address = "50148";
+        }
         public class Token
         {
             public const string Issuer = "Basecode:Issuer";

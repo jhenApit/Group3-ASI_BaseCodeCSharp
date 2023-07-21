@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Basecode.Data.Models
+@using static Basecode.Data.Enums.Enums;
+@model ApplicationFormViewModel
+@{
     ViewData["Title"] = "Application Form";
 }
 <div class="application-form-container">
@@ -14,7 +17,7 @@
         </div>
     </div>
     <div class="form">
-        <form method="post" enctype="multipart/form-data" id="application_form" novalidate>
+        <form asp-controller="HR" asp-action="ApplicationFormViewModel" enctype="multipart/form-data" id="application_form" novalidate>
             <!--Resume-->
             <div class="row text-header text-bold ps-2">Resume</div>
             <div class="row form-row form-group file-drop my-3 mx-1 py-4">
@@ -40,19 +43,19 @@
             <div class="row form-row mt-3">
                 <label>Name: </label>
                 <div class="col-sm-6 col-md-4 form-group mt-2">
-                    <input class="form-control" id="firstname" type="text" name="firstname" placeholder="First Name" required />
+                    <input asp-for ="Applicant.FirstName" class="form-control" type="text" name="firstname" placeholder="First Name" required />
                 </div> 
                 <div class="col-sm-6 col-md-4 form-group mt-2">
-                    <input class="form-control" id="middlename" type="text" name="middlename" placeholder="Middle Name" required />
+                    <input asp-for="Applicant.MiddleName" class="form-control" type="text" name="middlename" placeholder="Middle Name" required />
                 </div>
                 <div class="col-sm-6 col-md-4 form-group mt-2">
-                    <input class="form-control" id="lastname" type="text" name="lastname" placeholder="Last Name" required />
+                    <input asp-for="Applicant.LastName" class="form-control" type="text" name="lastname" placeholder="Last Name" required />
                 </div>
             </div>
             <div class="row form-row mt-3">
                 <div class="col-12 form-group mt-1">
                     <label for="birthday">Birthday:</label>
-                    <input class="form-control" id="birthday" type="date" name="birthday" required />
+                    <input asp-for="Applicant.BirthDate" class="form-control" type="date" name="birthday" required />
                 </div>
             </div>
             <div class="row form-row mt-3">
@@ -60,9 +63,9 @@
             </div>
             <div class="col-sm-6 col-md-3 form-group file-drop mt-1 mx-1 py-4">
                 <div>
-                    <img src="/images/icons/upload-image.png" />
+                    <img src="/images/icons/upload-image.png"/>
                 </div>
-                <input type="file" id="photo" name="photo" class="file-input" onchange="displayImageName('photo', 'photoText')" />
+                <input asp-for="Applicant.Photo" type="file" name="photo" class="file-input" onchange="displayImageName('photo', 'photoText')" />
                 <label for="photo" class="file-label">
                     <span id="photoText" class="file-text">Choose a file<br />or<br />Drag it here</span>
                 </label>
@@ -81,26 +84,26 @@
             <div class="row form-row mt-3">
                 <label>Address: </label>
                 <div class="col-12 form-group mt-2">
-                    <input class="form-control" id="street" type="text" name="street" placeholder="Street" required/>
+                    <input asp-for="Address.Street" class="form-control" id="street" type="text" name="street" placeholder="Street" required/>
                 </div>
                 <div class="col-sm-6 col-md-4 form-group mt-2">
-                    <input class="form-control" id="city" type="text" name="city" placeholder="City" required />
+                    <input asp-for="Address.City" class="form-control" id="city" type="text" name="city" placeholder="City" required />
                 </div>
                 <div class="col-sm-6 col-md-4 form-group mt-2">
-                    <input class="form-control" id="province" type="text" name="province" placeholder="Province / State" required/>
+                    <input asp-for="Address.Province" class="form-control" id="province" type="text" name="province" placeholder="Province / State" required/>
                 </div>
                 <div class="col-sm-6 col-md-4 form-group mt-2">
-                    <input class="form-control" id="zipcode" type="number" name="zipcode" placeholder="Postal / Zipcode" required />
+                    <input asp-for="Address.ZipCode" class="form-control" id="zipcode" type="number" name="zipcode" placeholder="Postal / Zipcode" required />
                 </div>
             </div>
             <div class="row form-row mt-3">
                 <div class="col-sm-6 form-group mt-1">
                     <label for="number">Phone Number:</label>
-                    <input class="form-control" id="number" type="number" name="number" required />
+                    <input asp-for="Applicant.PhoneNumber" class="form-control" id="number" type="number" name="number" required />
                 </div>
                 <div class="col-sm-6 form-group mt-1">
                     <label for="email">Email Address:</label>
-                    <input class="form-control" id="email" type="text" name="email" required />
+                    <input asp-for="Applicant.Email" class="form-control" id="email" type="text" name="email" required />
                 </div>
             </div>
             <!--References-->
@@ -113,19 +116,19 @@
                 <div class="row form-row">
                     <div class="col-sm-6 col-md-4 form-group mt-2">
                         <label for="name">Full Name: </label>
-                        <input class="form-control" id="name" type="text" name="name" required />
+                        <input asp-for="CharacterReferences.Name" class="form-control" id="name" type="text" name="name" required />
                     </div>
                     <div class="col-sm-6 col-md-4 form-group mt-2">
                         <label for="relationship">Relationship:</label>
-                        <input class="form-control" id="relationship" type="text" name="relationship" required />
+                        <input asp-for="CharacterReferences.Relationship" class="form-control" id="relationship" type="text" name="relationship" required />
                     </div>
                     <div class="col-sm-6 col-md-4 form-group mt-2">
                         <label for="email">Email Adress:</label>
-                        <input class="form-control" id="email" type="text" name="email" required/>
+                        <input asp-for="CharacterReferences.Email" class="form-control" id="email" type="text" name="email" required/>
                     </div>
                     <div class="col-sm-6 col-md-4 form-group mt-2">
                         <label for="number">Phone Number:</label>
-                        <input class="form-control" id="number" type="number" name="number" required />
+                        <input asp-for="CharacterReferences.MobileNumber" class="form-control" id="number" type="number" name="number" required />
                     </div>
                 </div>
             </div>
@@ -134,19 +137,19 @@
                 <div class="row form-row">
                     <div class="col-sm-6 col-md-4 form-group mt-2">
                         <label for="name">Full Name: </label>
-                        <input class="form-control" id="name" type="text" name="name" required/>
+                        <input asp-for="CharacterReferences.Name" class="form-control" id="name" type="text" name="name" required/>
                     </div>
                     <div class="col-sm-6 col-md-4 form-group mt-2">
                         <label for="relationship">Relationship:</label>
-                        <input class="form-control" id="relationship" type="text" name="relationship" required />
+                        <input asp-for="CharacterReferences.Relationship" class="form-control" id="relationship" type="text" name="relationship" required />
                     </div>
                     <div class="col-sm-6 col-md-4 form-group mt-2">
                         <label for="email">Email Adress:</label>
-                        <input class="form-control" id="email" type="text" name="email" required/>
+                        <input asp-for="CharacterReferences.Email" class="form-control" id="email" type="text" name="email" required/>
                     </div>
                     <div class="col-sm-6 col-md-4 form-group mt-2">
                         <label for="number">Phone Number:</label>
-                        <input class="form-control" id="number" type="number" name="number" required />
+                        <input asp-for="CharacterReferences.MobileNumber" class="form-control" id="number" type="number" name="number" required />
                     </div>
                 </div>
             </div>
@@ -157,12 +160,12 @@
                     <label for="additional">How did you hear about us?</label>
                     <select class="form-select mt-3" id="additional" name="additional" required>
                         <option selected disabled value="">Choose...</option>
-                        <option value="LinkedIn Job Post">LinkedIn Job Post</option>
-                        <option value="Recruitment Team">Recruitment Team</option>
-                        <option value="Peers & Friends">Peers & Friends</option>
-                        <option value="Social Media Platforms">Social Media Platforms</option>
-                        <option value="Career Page">Career Page</option>
-                        <option value="Others">Others</option>
+                        <option value="@AdditionalInfo.LinkedInJobPost">LinkedIn Job Post</option>
+                        <option value="@AdditionalInfo.RecruitmentTeam">Recruitment Team</option>
+                        <option value="@AdditionalInfo.PeersFriends">Peers & Friends</option>
+                        <option value="@AdditionalInfo.SocialMediaPlatforms">Social Media Platforms</option>
+                        <option value="@AdditionalInfo.CareerPage">Career Page</option>
+                        <option value="@AdditionalInfo.Others">Others</option>
                     </select>
                 </div>
             </div>
@@ -217,7 +220,7 @@
 
 <!-- Fill Application Submitted Modal -->
 <div class="modal fade" id="ApplicationSubmitted" tabindex="-1" role="dialog" aria-labelledby="ApplicationSubmittedLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header justify-content-center pb-4">
                 <img class="notice-icon" src="~/images/icons/notice_icon.svg" />
@@ -226,33 +229,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                <h4 class="text-center">Application has been <b>submitted</b> successfully!</h4>
+                <h4 class="text-center">Application has been <b>submitted</b> successfully!<br />Check your email.</h4>
             </div>
             <div class="modal-footer justify-content-center">
-                <div class="row justify-content-center">
-                    <div class="col-auto pt-1 mt-2 mt-sm-0">
-                        <h4 class="d-inline-flex mb-0">Application ID: </h4>
-                    </div>
-                    <div class="col-auto mt-2 mt-sm-0">
-                        <div class="input-group" id="CopyApplicationId">
-                            <input id="ApplicationId" class="form-control" type="text" value="123456789FASDAF" readonly/>
-                            <span class="input-group-text">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard" viewBox="0 0 16 16">
-                                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"></path>
-                                    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"></path>
-                                </svg>
-                            </span>
-                        </div>
-                        <div id="copied" class="copied text-center">
-                            Copied to clipboard!
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-auto mt-3 mt-lg-0">
-                        <button type="button" class="btn btn-primary mx-auto d-inline-flex" data-bs-dismiss="modal">
-                            <h5 class="px-3 py-1 m-0">Close</h5>
-                        </button>
-                    </div>
-                </div>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    <h5 class="pb-0 m-0">Close</h5>
+                </button>
             </div>
         </div>
     </div>
@@ -272,21 +254,5 @@
             event.stopPropagation();
         }
         this.classList.add('was-validated'); 
-    });
-
-    document.getElementById('CopyApplicationId').addEventListener('click', function () {
-        // Get the text field
-        var copyText = document.getElementById('ApplicationId');
-
-        // Select the text field
-        copyText.select();
-        copyText.setSelectionRange(0, 99999); // For mobile devices
-
-        // Copy the text inside the text field
-        navigator.clipboard.writeText(copyText.value);
-
-        // Notice user that ID is copied to clipboard
-        var copyNotice = document.getElementById('copied');
-        copyNotice.style.display = "block";
     });
 </script>

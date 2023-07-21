@@ -1,12 +1,4 @@
-﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
-
-@{
-    var request = HttpContextAccessor.HttpContext.Request;
-    var urlSegments = request.Path.Value.Trim('/').Split('/');
-    var activeUrl = urlSegments[1]; // Adjust the index as needed
-}
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="en">
 <head>
@@ -22,7 +14,7 @@
 <body>
     <div class="sidebar open">
         <div class="header-container">
-            <a class="logo-details" asp-controller="Home" asp-action="Index">
+            <a class="logo-details" asp-controller="Admin" asp-action="AdminDashboard">
                 <img src="~/images/asi-a-logo.jpg" alt="Alliance Logo" class="alliance-logo">
                 <div class="logo-name">
                     <span class="company-name">lliance</span>
@@ -35,8 +27,8 @@
         </div>
 
         <ul class="nav-links">
-            <li class="nav-item @(activeUrl == "AdminDashboard" ? " clicked" : "")">
-                <a asp-controller="HR" asp-action="AdminDashboard">
+            <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("AdminDashboard") ? "clicked" : "")">
+                <a asp-controller="Admin" asp-action="AdminDashboard">
                     <i class='bx bxs-grid-alt'></i>
                     <span class="link_name">Dashboard</span>
                 </a>
@@ -44,16 +36,16 @@
                     <li><p class="link_name">Dashboard</p></li>
                 </ul>
             </li>
-            @if (User.IsInRole("admin"))
-            {
-                <li class="nav-item @(activeUrl == "HrList"  || activeUrl == "Account" ? " clicked" : "")">
-                    <a asp-controller="Admin" asp-action="HrList">
-                        <i class='bx bxs-user-account'></i>
-                        <span class="link_name">Users</span>
-                    </a>
-                </li>
-            }
-            <li class="nav-item  @(activeUrl == "JobPostList" ? " clicked" : "" )">
+            <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("HrList") ? "clicked" : "")">
+                <a asp-controller="Admin" asp-action="HrList">
+                    <i class='bx bxs-user-account'></i>
+                    <span class="link_name">Users</span>
+                </a>
+                <ul class="sub-menu blank">
+                    <li><p class="link_name">Users</p></li>
+                </ul>
+            </li>
+            <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("JobPostList") || ViewContext.RouteData.Values["action"].ToString().Equals("ApplicantList") || ViewContext.RouteData.Values["action"].ToString().Equals("ApplicantDetail") ? " clicked" : "" )">
                 <div class="icon-link">
                     <a href="#">
                         <i class='bx bxs-briefcase'></i>
@@ -67,7 +59,7 @@
                     <li><a asp-controller="Hr" asp-action="ApplicantList" class="sub-menu-item">Applicants</a></li>
                 </ul>
             </li>
-            <li class="nav-item @(activeUrl == "Schedules" ? " clicked" : "" )">
+            <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString().Equals("Schedules") ? "clicked" : "")">
                 <div class="icon-link">
                     <a href="#">
                         <i class='bx bxs-calendar-check'></i>
@@ -82,12 +74,13 @@
             </li>
             <li class="nav-item">
                 <div class="logout-section">
-                    <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                        <button id="logout" type="submit" class="nav-link btn btn-link text-white border-0">
-                            <i class='bx bx-log-out'></i> 
-                            <span class="link_name">Logout</span>
-                        </button>
-                    </form>
+                    <a asp-controller="Home" asp-action="Index">
+                        <i class='bx bx-log-out'></i>
+                        <span class="link_name">Logout</span>
+                    </a>
+                    <ul class="sub-menu blank">
+                        <li><p class="link_name">Logout</p></li>
+                    </ul>
                 </div>
             </li>
         </ul>

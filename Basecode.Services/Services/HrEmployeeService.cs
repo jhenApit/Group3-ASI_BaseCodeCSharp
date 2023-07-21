@@ -6,11 +6,7 @@ using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Net.NetworkInformation;
-
 
 namespace Basecode.Services.Services
 {
@@ -19,12 +15,10 @@ namespace Basecode.Services.Services
         private readonly IHrEmployeeRepository _repository;
         private readonly IMapper _mapper;
         private readonly LogContent _logContent = new();
-        private readonly SignInManager<IdentityUser> _signInManager;
-
-        public HrEmployeeService(IHrEmployeeRepository repository, IMapper mapper, SignInManager<IdentityUser> signInManager) 
+    
+        public HrEmployeeService(IHrEmployeeRepository repository, IMapper mapper) 
         {
             _repository = repository;
-            _signInManager = signInManager;
             _mapper = mapper;
         }
         /// <summary>

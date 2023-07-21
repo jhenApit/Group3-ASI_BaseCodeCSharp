@@ -1,39 +1,26 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Basecode.Services.Interfaces;
-using Basecode.Services.Services;
-using Basecode.Services.Utils;
 using Microsoft.AspNetCore.Identity;
 using NLog;
 using Basecode.Data.Models;
+using Basecode.Services.Interfaces;
 using Basecode.Data.Dtos.JobPostings;
-using Basecode.Data.Dtos.HrEmployee;
 
 namespace Basecode.WebApp.Controllers
 {
-    [Authorize(Roles = "hr,admin")]
     public class HRController : Controller
     {
         /// <summary>
         /// Displays the list of job posts.
         /// </summary>
         /// <returns>The view containing the job post list.</returns>
-        private readonly IHrEmployeeService _service;
         private readonly IJobPostingsService _jobpostingService;
         private readonly IErrorHandling _errorHandling;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public HRController(IHrEmployeeService service, IJobPostingsService jobposting, IErrorHandling errorHandling)
+        public HRController(IJobPostingsService jobposting, IErrorHandling errorHandling)
         {
-            _service = service;
             _jobpostingService = jobposting;
             _errorHandling = errorHandling;
-        }
-
-        public IActionResult AdminDashboard(string Email)
-        {
-            var hrEmployee = _service.GetByEmail(Email);
-            return View(hrEmployee);
         }
         public IActionResult JobPostList()
         {

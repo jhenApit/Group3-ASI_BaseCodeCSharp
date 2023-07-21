@@ -6,9 +6,9 @@ using Basecode.Services.Utils;
 
 namespace Basecode.WebApp
 {
-    public partial class BasecodeStartup
+    public partial class Startup
     {
-        public BasecodeStartup(IConfiguration configuration)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -30,7 +30,6 @@ namespace Basecode.WebApp
             services.AddScoped<IApplicantService, ApplicantService>();
             services.AddScoped<IErrorHandling, ErrorHandling>();
             services.AddScoped<IApplicantRepository, ApplicantRepository>();
-            services.AddMvc(options => options.EnableEndpointRouting = false);
         }
 
 
@@ -49,14 +48,13 @@ namespace Basecode.WebApp
 
             app.UseStaticFiles();           // Enables the use of static files
             app.UseHttpsRedirection();      // Enables redirection of HTTP to HTTPS requests.
-            app.UseCors("CorsPolicy");      // Enables CORS
-            
-            app.UseRouting();
+            app.UseCors("CorsPolicy");      // Enables CORS                              
             app.UseAuthentication();        // Enables the ConfigureAuth service.
-            app.UseMvc();
-            app.UseAuthorization();
-            
+
+            app.UseRouting();
             this.ConfigureRoutes(app);      // Configuration for API controller routing
+
+            app.UseAuthorization();
             this.ConfigureAuth(app);        // Configuration for Token Authentication
         }
 

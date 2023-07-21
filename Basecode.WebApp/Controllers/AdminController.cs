@@ -3,7 +3,6 @@ using Basecode.Data.Dtos.HrEmployee;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
@@ -11,20 +10,26 @@ using NLog;
 
 namespace Basecode.WebApp.Controllers
 {
-    [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
         private readonly IHrEmployeeService _service;
-        private readonly IAdminService _admin_service;
         private readonly IErrorHandling _errorHandling;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        public AdminController(IHrEmployeeService service, IErrorHandling errorHandling, IAdminService admin_service)
+        public AdminController(IHrEmployeeService service, IErrorHandling errorHandling)
         {
             _service = service;
             _errorHandling = errorHandling;
-            _admin_service = admin_service;
         }
-
+        /// <summary>
+        /// Retrieves the HR employee with the specified email and displays the admin dashboard.
+        /// </summary>
+        /// <param name="Email">Email of the HR employee</param>
+        /// <returns>The admin dashboard view with the HR employee's details</returns>
+        public IActionResult AdminDashboard(string Email)
+        {
+            var hrEmployee = _service.GetByEmail(Email);
+            return View(hrEmployee);
+        }
 
         /// <summary>
         /// Retrieves all HR employees and displays the HR list.
@@ -148,22 +153,5 @@ namespace Basecode.WebApp.Controllers
         {
             return View();
         }
-
-        //[HttpPost]
-        //public async Task<IActionResult> CreateRole(CreateRoleDto createRoleDto)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-
-        //        IdentityResult result = await _admin_service.CreateRole(createRoleDto.RoleName);
-
-        //        if (result.Succeeded)
-        //        {
-        //            return RedirectToAction("AdminDashboard", "Admin");
-        //        }
-        //    }
-
-        //    return View();
-        //}
     }
 }

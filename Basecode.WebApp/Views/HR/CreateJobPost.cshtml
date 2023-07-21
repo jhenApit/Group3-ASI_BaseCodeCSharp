@@ -23,14 +23,14 @@
             <label for="description">Description:</label>
             <div class="description-input-rows">
                 <div class="description-input-row">
-                    <input asp-for="Description" type="text" class="description-input" />
-                    <button class="remove-button">Remove</button>
+                    <input asp-for="Description[0]" type="text" class="description-input" />
+                    <button class="remove-button" type="button">Remove</button>
                 </div>
             </div>
         </div>
         <div class="button-container">
             <label class="hidden-label"></label>
-            <button id="add-description" class="add-more-btn">Add more</button>
+            <button id="add-description" class="add-more-btn" type="button">Add more</button>
         </div>
 
         <div class="input-container">
@@ -38,13 +38,13 @@
             <div class="qualification-input-rows">
                 <div class="qualification-input-row">
                     <input asp-for="Qualifications" type="text" class="qualification-input" />
-                    <button class="remove-button">Remove</button>
+                    <button class="remove-button" type="button">Remove</button>
                 </div>
             </div>
         </div>
         <div class="button-container">
             <label class="hidden-label"></label>
-            <button id="add-qualification" class="add-more-btn">Add more</button>
+            <button id="add-qualification" class="add-more-btn" type="button">Add more</button>
         </div>
 
         <div class="input-container">
@@ -52,13 +52,13 @@
             <div class="responsibility-input-rows">
                 <div class="responsibility-input-row">
                     <input asp-for="Responsibilities" type="text" class="responsibility-input" />
-                    <button class="remove-button">Remove</button>
+                    <button class="remove-button" type="button">Remove</button>
                 </div>
             </div>
         </div>
         <div class="button-container">
             <label class="hidden-label"></label>
-            <button id="add-responsibility" class="add-more-btn">Add more</button>
+            <button id="add-responsibility" class="add-more-btn" type="button">Add more</button>
         </div>
 
         <div class="select-container">
@@ -112,6 +112,7 @@
             var inputField = document.createElement('input');
             inputField.type = 'text';
             inputField.className = 'description-input';
+            inputField.name = 'Description[' + inputCount + ']';
             newRow.appendChild(inputField);
 
             var removeButton = document.createElement('button');

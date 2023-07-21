@@ -6,12 +6,6 @@ using Basecode.Services.Utils;
 using Microsoft.AspNetCore.Identity;
 using NLog;
 using Basecode.Data.Models;
-using Basecode.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Basecode.Services.Interfaces;
-using Basecode.Services.Services;
-using Basecode.Services.Utils;
-using Microsoft.AspNetCore.Identity;
 using Basecode.Data.Dtos.JobPostings;
 using Basecode.Data.Dtos.HrEmployee;
 
@@ -20,12 +14,20 @@ namespace Basecode.WebApp.Controllers
     [Authorize(Roles = "hr,admin")]
     public class HRController : Controller
     {
+        /// <summary>
+        /// Displays the list of job posts.
+        /// </summary>
+        /// <returns>The view containing the job post list.</returns>
         private readonly IHrEmployeeService _service;
-        private readonly IJobPostingsService _jobPostingsService;
-        public HRController(IHrEmployeeService service, IJobPostingsService jobPostingsService)
+        private readonly IJobPostingsService _jobpostingService;
+        private readonly IErrorHandling _errorHandling;
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+        public HRController(IHrEmployeeService service, IJobPostingsService jobposting, IErrorHandling errorHandling)
         {
             _service = service;
-            _jobPostingsService = jobPostingsService;
+            _jobpostingService = jobposting;
+            _errorHandling = errorHandling;
         }
 
         public IActionResult AdminDashboard(string Email)
@@ -151,7 +153,7 @@ namespace Basecode.WebApp.Controllers
                 if (loggedInUser != null)
                 {
                     model.UpdatedById = 1;
-                    _jobPostingsService.Update(model);
+                    _jobpostingService.Update(model);
                     return RedirectToAction("JobPostList");
                 }
             }

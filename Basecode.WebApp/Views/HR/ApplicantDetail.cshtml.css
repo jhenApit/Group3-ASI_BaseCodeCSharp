@@ -4,11 +4,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
+    padding: 24.5px 15px;
     overflow-x: hidden;
     margin: 0;
     position: fixed;
 }
+
+    .container-header h2 {
+        font-size: x-large;
+        font-weight: bold;
+    }
 
 .body-container {
     padding: 3rem !important;
@@ -86,8 +91,8 @@ a {
     opacity: 1;
 }
 
-.form-select {
-    background-image: none !important;
+.reference {
+    background-image: none;
 }
 
 

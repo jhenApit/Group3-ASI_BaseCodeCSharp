@@ -20,8 +20,8 @@ a {
 }
 
 .photo-container {
-    height: 100px;
-    width: 100px;
+    height: 120px;
+    width: 120px;
     border: 1px solid #55729B;
     border-radius: 0.4rem !important;
 }
@@ -39,7 +39,7 @@ a {
 .shortlist {
     border-color: #55729B;
     color: white;
-    border-radius: 1rem;
+    border-radius: .5rem;
 }
 
 .shortlist, .btn-secondary {
@@ -49,7 +49,7 @@ a {
 .reject {
     border-color: #DC3545;
     color: white;
-    border-radius: 1rem;
+    border-radius: .5rem;
     background-color: #DC3545;
 }
 
@@ -85,6 +85,11 @@ a {
     background-color: white;
     opacity: 1;
 }
+
+.form-select {
+    background-image: none !important;
+}
+
 
 .form-select:disabled {
     background-color: white;

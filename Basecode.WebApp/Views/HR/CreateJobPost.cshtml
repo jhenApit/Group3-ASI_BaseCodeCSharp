@@ -23,7 +23,7 @@
             <label for="description">Description:</label>
             <div class="description-input-rows">
                 <div class="description-input-row">
-                    <input asp-for="Description[0]" type="text" class="description-input" />
+                    <input asp-for="Descriptions[0]" type="text" class="description-input" />
                     <button class="remove-button" type="button">Remove</button>
                 </div>
             </div>
@@ -37,7 +37,7 @@
             <label for="qualification">Qualification:</label>
             <div class="qualification-input-rows">
                 <div class="qualification-input-row">
-                    <input asp-for="Qualifications" type="text" class="qualification-input" />
+                    <input asp-for="QualificationList[0]" type="text" class="qualification-input" />
                     <button class="remove-button" type="button">Remove</button>
                 </div>
             </div>
@@ -51,7 +51,7 @@
             <label for="responsibility">Responsibility:</label>
             <div class="responsibility-input-rows">
                 <div class="responsibility-input-row">
-                    <input asp-for="Responsibilities" type="text" class="responsibility-input" />
+                    <input asp-for="ResponsibilityList[0]" type="text" class="responsibility-input" />
                     <button class="remove-button" type="button">Remove</button>
                 </div>
             </div>
@@ -112,7 +112,7 @@
             var inputField = document.createElement('input');
             inputField.type = 'text';
             inputField.className = 'description-input';
-            inputField.name = 'Description[' + inputCount + ']';
+            inputField.name = 'Descriptions[' + inputCount + ']';
             newRow.appendChild(inputField);
 
             var removeButton = document.createElement('button');
@@ -143,6 +143,7 @@
             var inputField = document.createElement('input');
             inputField.type = 'text';
             inputField.className = 'qualification-input';
+            inputField.name = 'QualificationList[' + inputCount + ']';
             newRow.appendChild(inputField);
 
             var removeButton = document.createElement('button');
@@ -173,6 +174,7 @@
             var inputField = document.createElement('input');
             inputField.type = 'text';
             inputField.className = 'responsibility-input';
+            inputField.name = 'ResponsibilityList[' + inputCount + ']';
             newRow.appendChild(inputField);
 
             var removeButton = document.createElement('button');

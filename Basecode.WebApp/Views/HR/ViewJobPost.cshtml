@@ -34,26 +34,40 @@
 					<p>@Model.EmploymentType</p>
 				</div>
 			</div>
-			<div class="description-container">
-				<p>@Model.Description</p>
-			</div>
+			@{
+				//Separating CSV values
+				string description = @Model.Description;
+				string[] descriptionValues = description.Split(',');
+				string qualification = @Model.Qualifications;
+				string[] qualificationValues = qualification.Split(',');
+				string responsibility = @Model.Responsibilities;
+				string[] responsibilityValues = responsibility.Split(',');
+			}
+			@foreach (var value in descriptionValues)
+			{
+				<div class="description-container">
+					<p>@value.Trim()</p>
+				</div>
+			}			
 			<div class="job-details-content">
 				<h3>Job Qualifications</h3>
 				<ul>
-					<li>@Model.Qualifications</li>
-					<li>Nunc tristique quam lorem, at iaculis nunc feugiat vel. Sed blandit, elit eu fringilla egestas, dolor mi congue urna, nec tempor nisl enim nec orci.</li>
-					<li>Nulla facilisi. Donec interdum cursus ipsum, sed efficitur lorem elementum in. Vestibulum consectetur elit eget quam tincidunt, id laoreet tellus posuere. Praesent id purus dolor.</li>
+					@foreach (var value in qualificationValues)
+					{
+						<li>@value.Trim()</li>
+					}
 				</ul>
 			</div>
 			<div class="job-details-content">
 				<h3>Job Responsibilities</h3>
 				<ul>
-					<li>@Model.Responsibilities</li>
-					<li>Nunc tristique quam lorem, at iaculis nunc feugiat vel. Sed blandit, elit eu fringilla egestas, dolor mi congue urna, nec tempor nisl enim nec orci.</li>
-					<li>Nulla facilisi. Donec interdum cursus ipsum, sed efficitur lorem elementum in. Vestibulum consectetur elit eget quam tincidunt, id laoreet tellus posuere. Praesent id purus dolor.</li>
+					@foreach (var value in responsibilityValues)
+					{
+						<li>@value.Trim()</li>
+					}
 				</ul>
 			</div>
 		</div>
 	</div>
-	<a class="edit-button" type="button" asp-controller="HR" asp-action="EditJobPost">EDIT</a>
+	<a class="edit-button" asp-controller="HR" asp-action="EditJobPost">EDIT</a>
 </div>

@@ -1,26 +1,38 @@
 using Basecode.Data.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Basecode.Services.Interfaces;
+using Basecode.Services.Services;
+using Basecode.Services.Utils;
 using Microsoft.AspNetCore.Identity;
 using Basecode.Data.Dtos.JobPostings;
 using Basecode.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Basecode.Services.Interfaces;
+using Basecode.Services.Services;
+using Basecode.Services.Utils;
+using Microsoft.AspNetCore.Identity;
+using Basecode.Data.Dtos.JobPostings;
+using Basecode.Data.Dtos.HrEmployee;
 
 namespace Basecode.WebApp.Controllers
 {
+    [Authorize(Roles = "hr,admin")]
     public class HRController : Controller
     {
-        /// <summary>
-        /// Displays the list of job posts.
-        /// </summary>
-        /// <returns>The view containing the job post list.</returns>
-        private readonly UserManager<HrEmployee> _userManager;
-        private readonly IJobPostingsService _jobpostingService;
-
-        public HRController() { }
-        /*public HRController(UserManager<HrEmployee> userManager, IJobPostingsService jobposting)
+        private readonly IHrEmployeeService _service;
+        private readonly IJobPostingsService _jobPostingsService;
+        public HRController(IHrEmployeeService service, IJobPostingsService jobPostingsService)
         {
-            _userManager = userManager;
-            _jobpostingService = jobposting;
-        }*/
+            _service = service;
+            _jobPostingsService = jobPostingsService;
+        }
+
+        public IActionResult AdminDashboard(string Email)
+        {
+            var hrEmployee = _service.GetByEmail(Email);
+            return View(hrEmployee);
+        }
         public IActionResult JobPostList()
         {
             return View();
@@ -73,7 +85,7 @@ namespace Basecode.WebApp.Controllers
                 if (loggedInUser != null)
                 {
                     model.UpdatedById = 1;
-                    _jobpostingService.Update(model);
+                    _jobPostingsService.Update(model);
                     return RedirectToAction("JobPostList");
                 }
             }

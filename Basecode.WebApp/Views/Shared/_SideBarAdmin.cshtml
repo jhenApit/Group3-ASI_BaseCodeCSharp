@@ -51,6 +51,9 @@
                         <i class='bx bxs-user-account'></i>
                         <span class="link_name">Users</span>
                     </a>
+                    <ul class="sub-menu blank">
+                        <li><p class="link_name">Users</p></li>
+                    </ul>
                 </li>
             }
             <li class="nav-item  @(activeUrl == "JobPostList" ? " clicked" : "" )">
@@ -62,7 +65,7 @@
                     <i class='bx bxs-chevron-down arrow'></i>
                 </div>
                 <ul class="sub-menu">
-                    <li><p class="link_name" href="#">Jobs</p></li>
+                    <li><p class="link_name">Jobs</p></li>
                     <li><a asp-controller="Hr" asp-action="JobPostList" class="sub-menu-item">Job Posting</a></li>
                     <li><a asp-controller="Hr" asp-action="JobApplicantsOverview" class="sub-menu-item">Applicants</a></li>
                 </ul>
@@ -76,19 +79,21 @@
                     <i class='bx bxs-chevron-down arrow'></i>
                 </div>
                 <ul class="sub-menu">
-                    <li><p class="link_name" href="#">Schedules</p></li>
-                    <li><a asp-controller="Hr" asp-action="Interview" class="sub-menu-item">Interviews</a></li>
+                    <li><p class="link_name">Schedules</p></li>
+                    <li><a asp-controller="Hr" asp-action="Schedules" class="sub-menu-item">Interviews</a></li>
                 </ul>
             </li>
             <li class="nav-item">
-                <div class="logout-section">
-                    <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                        <button id="logout" type="submit" class="nav-link btn btn-link text-white border-0">
-                            <i class='bx bx-log-out'></i> 
-                            <span class="link_name">Logout</span>
-                        </button>
-                    </form>
-                </div>
+                <form id="logoutForm" class="logout-section" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button id="logout" type="submit" class="nav-link btn btn-link text-white border-0">
+                        <i class='bx bx-log-out'></i> 
+                        <span class="link_name">Logout</span>
+                    </button>
+                    <ul class="sub-menu blank">
+                        <li><p class="link_name">Logout</p></li>
+                    </ul>
+                </form> 
+                
             </li>
         </ul>
     </div>

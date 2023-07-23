@@ -16,6 +16,8 @@ namespace Basecode.WebApp.Controllers
 
         public ApplicantController(IEmailService emailService, IApplicantService applicantService, IAddressService addressService, ICharacterReferencesService characterService)
         {
+            _service = service;
+            _emailService = emailService;
             _applicantService = applicantService;
             _addressService = addressService;
             _characterService = characterService;
@@ -68,6 +70,17 @@ namespace Basecode.WebApp.Controllers
         /// Displays the application form page.
         /// </summary>
         /// <returns>The application form view.</returns>
+        public IActionResult ApplicationForm()
+        {
+            var recipient = "jm.senening08@gmail.com";
+            var subject = "Application Update";
+            var body = "Your application ID is APPL-1234";
+
+            _emailService.SendEmail(recipient, subject, body);
+
+            return View();
+        }
+
         public IActionResult ApplicationFormViewModel()
         {
             var recipient = "jm.senening08@gmail.com";

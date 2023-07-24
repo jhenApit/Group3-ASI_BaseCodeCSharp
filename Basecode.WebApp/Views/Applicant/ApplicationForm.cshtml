@@ -6,15 +6,17 @@
 }
 <body class="applicantForm_body">
     <div class="application-form-container">
-        <div class="row">
+        <a asp-controller="Job" asp-action="JobDescription">
+            <p class="text-bold text-black mb-1 align-self-center me-3">
+                <img src="/images/icons/back-icon.png" class="back-icon mb-1" alt="" /> Back to Job Details
+            </p>
+        </a>
+        <div class="row mt-5 mt-sm-3">
             <h1 class="text-center">Software Engineer</h1>
         </div>
-        <div class="row mt-5 px-5">
-            <div class="col d-flex form-header mb-3">
-                <a asp-controller="Job" asp-action="JobDescription">
-                    <p class="text-bold text-black mb-1 align-self-center me-3">Job Details</p>
-                </a>
-                <p class="text-bold mb-1 ms-5 align-self-center text-red">Application</p>
+        <div class="row mt-3 px-5">
+            <div class="col form-header">
+                <p class="align-self-center text-red text-bold text-center">Application Form</p>
             </div>
         </div>
         <div class="form">
@@ -68,13 +70,13 @@
                     <div class="col-12 col-md-9 mt-3 mt-md-0">
                         <label>Name: </label>
                         <div class="row">
-                            <div class="col col-md-4 form-group mt-2">
+                            <div class="col-12 col-md-4 form-group mt-2">
                                 <input asp-for="Applicant.FirstName" class="form-control" type="text" name="firstname" placeholder="First Name" required />
                             </div>
-                            <div class="col col-md-4 form-group mt-2">
+                            <div class="col-12 col-md-4 form-group mt-2">
                                 <input asp-for="Applicant.MiddleName" class="form-control" type="text" name="middlename" placeholder="Middle Name" required />
                             </div>
-                            <div class="col col-md-4 form-group mt-2">
+                            <div class="col-12 col-md-4 form-group mt-2">
                                 <input asp-for="Applicant.LastName" class="form-control" type="text" name="lastname" placeholder="Last Name" required />
                             </div>
                         </div>

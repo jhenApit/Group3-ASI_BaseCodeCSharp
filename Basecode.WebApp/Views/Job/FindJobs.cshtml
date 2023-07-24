@@ -1,22 +1,37 @@
-﻿@using Basecode.Data.Models
+﻿@using Basecode.Data.Enums
+@using Basecode.Data.Models
 @model List<JobPostings>
 @{
     ViewData["Title"] = "Explore Jobs";
 }
 <body class="findJobs_body">
     <div class="container top-0">
+        <a asp-controller="Job" asp-action="FindJobs">
+            <p class="text-bold text-black mb-1 align-self-center me-3">
+                <img src="/images/icons/back-icon.png" class="back-icon mb-1" alt="" /> Back
+            </p>
+        </a>
         <h2 class="my-5 text-black text-bold">Open positions</h2>
 
         @foreach (var jobPosting in Model)
         {
-            <div class="border-rounded bg-white px-4 pt-4 pb-2 mb-4">
+            <div class="job-container px-4 pt-4 pb-2 mb-4">
                 <div class="row m-1">
                     <div class="col">
                         <h4 class="text-bold">@jobPosting.Name</h4>
-                        <div class="mb-2">
-                            <div class="d-inline border rounded ml-1 px-2 tags">@jobPosting.Hours Hours per week</div>
-                            <div class="d-inline border rounded ml-1 px-2 tags">@jobPosting.EmploymentType</div>
-                            <div class="d-inline border rounded ml-1 px-2 tags">@jobPosting.WorkSetup</div>
+                        <div class="d-flex mb-2">
+                            <div class="d-flex align-items-center border rounded mx-1 px-2 tags">
+                                <img src="/images/icons/star.png" class="star-icon my-1 me-1" alt="star" />
+                                @EnumHelper.GetEnumDescription(jobPosting.Hours)
+                            </div>
+                            <div class="d-flex align-items-center border rounded mx-1 px-2 tags">
+                                <img src="/images/icons/star.png" class="star-icon my-1 me-1" alt="star" />
+                                @EnumHelper.GetEnumDescription(jobPosting.EmploymentType)
+                            </div>
+                            <div class="d-flex align-items-center border rounded mx-1 px-2 tags">
+                                <img src="/images/icons/star.png" class="star-icon my-1 me-1" alt="star" />
+                                @EnumHelper.GetEnumDescription(jobPosting.WorkSetup)
+                            </div>
                         </div>
                         <div class="row px-3">
                             <div class="col">
@@ -24,18 +39,12 @@
                                     <li>
                                         @jobPosting.Description
                                     </li>
-                                    <li>
-                                        @jobPosting.Responsibilities
-                                    </li>
-                                    <li>
-                                        @jobPosting.Qualifications
-                                    </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-auto d-flex d-md-block justify-content-center">
-                        <button class="btn btn-primary px-5">
+                        <button class="btn btn-primary px-5 mt-3 mt-md-0">
                             <h5 class="m-0 p-0">
                                 <a class="nav-link" asp-route-id="@jobPosting.Id" asp-controller="Job" asp-action="JobDescription">View Job</a>
                             </h5>

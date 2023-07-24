@@ -12,11 +12,7 @@ body {
     background: linear-gradient(rgba(64, 64, 64, 0.48), rgba(64, 64, 64, 0.48)), url(../images/contactUsBackground.jpg) no-repeat center/cover fixed;
 }
 
-.findJobs_body {
-    background: rgba(255, 255, 255, 1) no-repeat center/cover;
-}
-
-.applicantForm_body {
+.findJobs_body, .applicantForm_body {
     background: rgba(245, 245, 245, 1) no-repeat center/cover;
 }
 

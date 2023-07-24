@@ -94,6 +94,11 @@ input[type=checkbox] {
     color: white;
 }
 
+.back-icon {
+    height: 1.5rem;
+    width: 1.5rem;
+}
+
 .text-footer {
     border-bottom: 1px solid black;
 }

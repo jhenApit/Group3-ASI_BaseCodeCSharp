@@ -76,28 +76,21 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account.Manage
             };
         }
 
-        public async Task<IActionResult> OnGetAsync(string userId)
+        public async Task<IActionResult> OnGetAsync()
         {
-            if (userId == null)
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
             {
-                var user = await _userManager.GetUserAsync(User);
-                await LoadAsync(user);
-                return Page();
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-            else
-            {
-                var user = await _userManager.FindByIdAsync(userId);
-                if (user == null)
-                {
-                    return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-                }
-            }
+
+            await LoadAsync(user);
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(string userId)
+        public async Task<IActionResult> OnPostAsync()
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");

@@ -10,8 +10,8 @@ namespace Basecode.Data.Dtos
     {
         public int Id { get; set; }
         public int ApplicantId { get; set; }
-        public string Street { get; set; } = string.Empty;
-        public string City { get; set; } = string.Empty;
+        public string? Street { get; set; } 
+        public string? City { get; set; } 
         public string? Province { get; set; } 
         public string? ZipCode { get; set; } 
     }

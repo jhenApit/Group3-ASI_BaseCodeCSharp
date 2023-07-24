@@ -12,17 +12,15 @@ namespace Basecode.WebApp.Controllers
         private readonly IApplicantService _applicantService;
         private readonly IAddressService _addressService;
         private readonly ICharacterReferencesService _characterService;
+        private readonly IJobPostingsService _jobPostingsService;
 
-        public ApplicantController(IEmailService emailService, IApplicantService applicantService, IAddressService addressService, ICharacterReferencesService characterService)
+        public ApplicantController(IJobPostingsService jobPostingsService, IEmailService emailService, IApplicantService applicantService, IAddressService addressService, ICharacterReferencesService characterService)
         {
             _emailService = emailService;
             _applicantService = applicantService;
             _addressService = addressService;
             _characterService = characterService;
-            _emailService = emailService;
-            _applicantService = applicantService;
-            _addressService = addressService;
-            _characterService = characterService;
+            _jobPostingsService = jobPostingsService;
         }
 
         /// <summary>
@@ -68,15 +66,22 @@ namespace Basecode.WebApp.Controllers
         /// Displays the application form page.
         /// </summary>
         /// <returns>The application form view.</returns>
-        public IActionResult ApplicationForm()
+        public IActionResult ApplicationForm(int id)
         {
-            var recipient = "jm.senening08@gmail.com";
-            var subject = "Application Update";
-            var body = "Your application ID is APPL-1234";
-
-            _emailService.SendEmail(recipient, subject, body);
-
-            return View();
+            var jobPosting = _jobPostingsService.GetById(id);
+            if (jobPosting != null)
+            {
+                var viewModel = new ApplicationFormViewModel();
+                viewModel.Applicant = new ApplicantCreationDto(); // Initialize the Applicant property
+                viewModel.Applicant.JobId = id;
+                Console.WriteLine("Job exists! " + id);
+                return View(viewModel);
+            }
+            else
+            {
+                Console.WriteLine("Job doesn't exist! " +id);
+                return View();
+            }
         }
 
         public IActionResult ApplicationFormViewModel()
@@ -108,9 +113,19 @@ namespace Basecode.WebApp.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult ApplicationFormProcess(ApplicationFormViewModel model)
+        public IActionResult ApplicationFormProcess(ApplicationFormViewModel model, IFormFile resumeFile)
         {
-            _applicantService.Add(model.Applicant);
+            if (resumeFile != null && resumeFile.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    resumeFile.CopyTo(memoryStream);
+
+                    // Convert the file content to a byte array and store it in the model
+                    model.Applicant.Resume = memoryStream.ToArray();
+                }
+            }
+            bool applicant = _applicantService.Add(model.Applicant);
             var address = new AddressCreationDto
             {
                 ApplicantId = model.Applicant.Id,
@@ -119,7 +134,7 @@ namespace Basecode.WebApp.Controllers
                 Province = model.Address.Province,
                 ZipCode = model.Address.ZipCode
             };
-            _addressService.Add(address);
+
             var characRef1 = new CharacterReferencesCreationDto
             {
                 ApplicantId = model.Applicant.Id,
@@ -128,7 +143,6 @@ namespace Basecode.WebApp.Controllers
                 Email = model.CharacterReferences1.Email,
                 MobileNumber = model.CharacterReferences1.MobileNumber
             };
-            _characterService.Add(characRef1);
 
             var characRef2 = new CharacterReferencesCreationDto
             {
@@ -138,8 +152,24 @@ namespace Basecode.WebApp.Controllers
                 Email = model.CharacterReferences2.Email,
                 MobileNumber = model.CharacterReferences2.MobileNumber
             };
-            _characterService.Add(characRef2);
 
+            if (applicant == true)
+            {
+                _addressService.Add(address);
+                _characterService.Add(characRef1);
+                _characterService.Add(characRef2);
+            }
+            else
+            {
+                Console.WriteLine("Addition Failed for applicant");
+                return View("JobPostList");
+            }
+
+            var recipient = model.Applicant.Email;
+            var subject = "Application Update";
+            var body = "Your application ID is " + model.Applicant.ApplicantId;
+
+            _emailService.SendEmail(recipient, subject, body);
             return View("ApplicationForm");
         }
 

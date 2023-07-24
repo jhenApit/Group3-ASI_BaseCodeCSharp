@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.Data.Models
@@ -24,7 +25,7 @@ namespace Basecode.Data.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime BirthDate { get; set; }
-
+        public byte[]? Resume { get; set; }
         public byte[]? Photo { get; set; } 
 
         [Phone(ErrorMessage = "MobileNo must be a valid phone number.")]

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.Data.Dtos
@@ -17,7 +18,7 @@ namespace Basecode.Data.Dtos
         public string? MiddleName { get; set; }
         public string? LastName { get; set; }
         public DateTime BirthDate { get; set; }
-
+        public byte[]? Resume { get; set; }
         public byte[]? Photo { get; set; }
 
         public int PhoneNumber { get; set; }
@@ -26,8 +27,6 @@ namespace Basecode.Data.Dtos
         public AdditionalInfo AdditionalInfo { get; set; }
 
         public ApplicationStatus ApplicationStatus { get; set; }
-
-        public Requirements Requirements { get; set; }
 
     }
 }

@@ -46,7 +46,7 @@
                                                 <td>@hrEmployee.Name</td>
                                                 <td>@hrEmployee.Email</td>
                                                 <td style="text-align: center;">
-                                                    <a asp-route-id="@hrEmployee.Id" asp-action="EditHrAccountView">
+                                                    <a id="manage" asp-route-userId="@hrEmployee.UserId" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
                                                         <img src="~/images/icons/edit.png" alt="Edit" class="hr-list-action-icon" />
                                                     </a>
                                                     <!-- Button trigger modal -->

@@ -76,9 +76,9 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account.Manage
             };
         }
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(string userId)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
@@ -109,7 +109,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account.Manage
                 if (existingUser != null)
                 {
                     // Email is already registered
-                    StatusMessage = "The username " + @Input.UserName + " is not available";
+                    StatusMessage = "The username '" + @Input.UserName + "' is not available";
                     return RedirectToPage();
                 }
                 var result = await _userManager.SetUserNameAsync(user, Input.UserName);

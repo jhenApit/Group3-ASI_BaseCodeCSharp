@@ -1,11 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Basecode.Data.Dtos.HrEmployee
 {
     public class HREmployeeUpdationDto
     {
         public int Id { get; set; }
+        public string UserName { get; set; }
         [Required(ErrorMessage = "The 'Name' field is required")]
         [JsonProperty(PropertyName = "name")]
         [StringLength(150, MinimumLength = 2, ErrorMessage = "Name must be at least 2 characters.")]

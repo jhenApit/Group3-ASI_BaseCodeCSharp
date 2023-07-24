@@ -20,12 +20,14 @@ namespace Basecode.WebApp.Controllers
         private readonly IErrorHandling _errorHandling;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IEmailService _emailService;
-        public AdminController(IHrEmployeeService service, IErrorHandling errorHandling, IAdminService adminService, IEmailService emailService)
+        private readonly UserManager<IdentityUser> _userManager;
+        public AdminController(IHrEmployeeService service, IErrorHandling errorHandling, IAdminService adminService, IEmailService emailService, UserManager<IdentityUser> userManager)
         {
             _service = service;
             _errorHandling = errorHandling;
             _adminService = adminService;
             _emailService = emailService;
+            _userManager = userManager;
         }
 
 
@@ -57,16 +59,16 @@ namespace Basecode.WebApp.Controllers
                 }
                 _service.Add(hrEmployee);
 
-				var recipient = "jm.senening08@gmail.com";
-				var subject = "Alliance Human Resource Account";
-				var body = $"Dear Mr/Mrs {hrEmployee.Name}, <br/> <br/> This is your human resource account. <br/>" +
-						   $"<br/> Email: {hrEmployee.Email} <br/> Password: {hrEmployee.Password} <br/>" +
-						   "<br/> You can edit your profile once you've logged in.";
+                var recipient = "jm.senening08@gmail.com";
+                var subject = "Alliance Human Resource Account";
+                var body = $"Dear Mr/Mrs {hrEmployee.Name}, <br/> <br/> This is your human resource account. <br/>" +
+                           $"<br/> Email: {hrEmployee.Email} <br/> Password: {hrEmployee.Password} <br/>" +
+                           "<br/> You can edit your profile once you've logged in.";
 
 
-				await _emailService.SendEmail(recipient, subject, body);
+                await _emailService.SendEmail(recipient, subject, body);
 
-				return RedirectToAction("HrList");
+                return RedirectToAction("HrList");
             }
             ModelState.Clear();
             return View(hrEmployee);
@@ -81,18 +83,27 @@ namespace Basecode.WebApp.Controllers
         {
             // Retrieve the HR employee from the database using the ID
             var hrEmployee = _service.GetById(id);
+            IdentityUser user = await _userManager.FindByIdAsync(hrEmployee.UserId);
 
-            // Create an instance of HREmployeeUpdationDto and populate it with data
-            var hrEmployeeDto = new HREmployeeUpdationDto
+            if (user != null)
             {
-                Name = hrEmployee.Name,
-                Email = hrEmployee.Email,
-                Password = hrEmployee.Password,
-                Id = hrEmployee.Id
-            };
+                // Access user attributes
+                string userName = user.UserName;
+                // Other user attributes you may want to access
+                // Create an instance of HREmployeeUpdationDto and populate it with data
+                var hrEmployeeDto = new HREmployeeUpdationDto
+                {
+                    Name = hrEmployee.Name,
+                    Email = hrEmployee.Email,
+                    Password = hrEmployee.Password,
+                    UserName = userName,
+                    Id = hrEmployee.Id
+                };
+                // Pass the HREmployeeUpdationDto as the model to the view
+                return View(hrEmployeeDto);
+            }
+            return View(hrEmployee);
 
-            // Pass the HREmployeeUpdationDto as the model to the view
-            return View(hrEmployeeDto);
         }
 
         /// <summary>
@@ -180,3 +191,4 @@ namespace Basecode.WebApp.Controllers
         //}
     }
 }
+

@@ -13,7 +13,7 @@ namespace Basecode.Services.Interfaces
         Applicants GetById(int id);
         List<Applicants> RetrieveAll();
         Applicants GetByName(string name);
-        void Add(ApplicantCreationDto applicant);
+        bool Add(ApplicantCreationDto applicant);
         Applicants GetByApplicantId(string trackerId);
     }
 }

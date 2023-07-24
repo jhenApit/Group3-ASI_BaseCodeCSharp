@@ -8,7 +8,6 @@ namespace Basecode.WebApp.Controllers
 {
     public class ApplicantController : Controller
     {
-        private readonly IApplicantService _service;
         private readonly IEmailService _emailService;
         private readonly IApplicantService _applicantService;
         private readonly IAddressService _addressService;
@@ -16,7 +15,6 @@ namespace Basecode.WebApp.Controllers
 
         public ApplicantController(IEmailService emailService, IApplicantService applicantService, IAddressService addressService, ICharacterReferencesService characterService)
         {
-            _service = service;
             _emailService = emailService;
             _applicantService = applicantService;
             _addressService = addressService;
@@ -89,11 +87,6 @@ namespace Basecode.WebApp.Controllers
 
             _emailService.SendEmail(recipient, subject, body);
 
-            return View();
-        }
-
-        public IActionResult ApplicationForm()
-        {
             return View();
         }
 

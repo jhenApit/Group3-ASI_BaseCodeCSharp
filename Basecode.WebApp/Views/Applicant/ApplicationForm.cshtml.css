@@ -43,11 +43,7 @@
     cursor: pointer;
 }
 
-.file-input {
-    display: none;
-}
-
-.file-label {
+.file-label, .photo-label {
     color: red;
     margin-top: 1rem ;
 }

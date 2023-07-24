@@ -52,17 +52,17 @@
                             <div>
                                 <img src="/images/icons/upload-image.png" />
                             </div>
-                            <input asp-for="Applicant.Photo" type="file" name="photo" class="file-input" onchange="displayImageName('photo', 'photoText')" />
-                            <label for="photo" class="file-label">
-                                <span id="photoText" class="file-text">Choose a file or Drag it here</span>
+                            <input asp-for="Applicant.Photo" type="file" name="photo" id="photoFile" class="file-input" onchange="displayImageName()" />
+                            <label for="photoFile" class="photo-label">
+                                <span id="photoText" class="photo-text">Choose a file or Drag it here</span>
                             </label>
 
                             <script>
-                                function displayImageName(photoInputId, photoTextId) {
-                                    var photoInput = document.getElementById(photoInputId);
-                                    var photoFileName = photoInput.files[0].name;
-                                    var photoText = document.getElementById(photoTextId);
-                                    photoText.textContent = photoFileName;
+                                function displayImageName() {
+                                    var photoInput = document.getElementById("photoFile");
+                                    var photoName = photoInput.files[0].name;
+                                    var photoText = document.querySelector(".photo-label, photo-text");
+                                    photoText.textContent = photoName;
                                 }
                             </script>
                         </div>

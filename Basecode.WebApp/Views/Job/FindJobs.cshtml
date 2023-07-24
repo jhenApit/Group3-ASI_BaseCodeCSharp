@@ -6,11 +6,6 @@
 }
 <body class="findJobs_body">
     <div class="container top-0">
-        <a asp-controller="Job" asp-action="FindJobs">
-            <p class="text-bold text-black mb-1 align-self-center me-3">
-                <img src="/images/icons/back-icon.png" class="back-icon mb-1" alt="" /> Back
-            </p>
-        </a>
         <h2 class="my-5 text-black text-bold">Open positions</h2>
 
         @foreach (var jobPosting in Model)

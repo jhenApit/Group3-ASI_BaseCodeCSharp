@@ -13,6 +13,12 @@ namespace Basecode.WebApp.Controllers
             _service = service;
         }
 
+        public readonly IReferenceFormsService _service;
+
+        public ReferencesController(IReferenceFormsService service)
+        {
+            _service = service;
+        }
         /// <summary>
         /// Shows the character reference questions in the first page.
         /// </summary>
@@ -22,11 +28,6 @@ namespace Basecode.WebApp.Controllers
             return View();
         }
 
-        /// <summary>
-        /// Temporarily stores the data from the first page and redirects to the second page.
-        /// </summary>
-        /// <param name="referenceFormsCreationDto">Answers</param>
-        /// <returns>Redirects to Page 2</returns>
         [HttpPost]
         public IActionResult ToPage2(ReferenceFormsCreationDto referenceFormsCreationDto)
         {
@@ -38,20 +39,11 @@ namespace Basecode.WebApp.Controllers
             return RedirectToAction("Page2");
         }
 
-        /// <summary>
-        /// Shows the character reference questions in the second page.
-        /// </summary>
-        /// <returns>Redirects to Page 2</returns>
         public IActionResult Page2()
         {
             return View();
         }
 
-        /// <summary>
-        /// Adds a new entry to the References database.
-        /// </summary>
-        /// <param name="referenceFormsCreationDto">Answers</param>
-        /// <returns>Redirects to the website's homepage</returns>
         [HttpPost]
         public IActionResult Submit(ReferenceFormsCreationDto referenceFormsCreationDto)
         {
@@ -61,7 +53,7 @@ namespace Basecode.WebApp.Controllers
 
             TempData.Clear();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Page1", referenceFormsCreationDto);
         }
     }
 }

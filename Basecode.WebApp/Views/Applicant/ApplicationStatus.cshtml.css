@@ -39,7 +39,7 @@
     .search-container input[type="text"] {
         height: 4rem;
         padding: 8px;
-        border-radius: 1.5rem 0 0 1.5rem;
+        border-radius: .5rem 0 0 .5rem;
         flex: 1;
         font-style: italic;
         font-size: 1.3rem;

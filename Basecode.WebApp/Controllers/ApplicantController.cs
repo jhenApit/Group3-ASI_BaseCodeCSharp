@@ -28,9 +28,10 @@ namespace Basecode.WebApp.Controllers
         /// </summary>
         /// <param name="id">The ID of the applicant.</param>
         /// <returns>The view displaying the track status of the applicant.</returns>
-        public IActionResult TrackStatus(string applicantId)
+        [HttpGet]
+        public ActionResult TrackStatus(string ApplicantId)
         {
-            Applicants data = _applicantService.GetByApplicantId(applicantId);
+            Applicants data = _applicantService.GetByApplicantId(ApplicantId);
             return View("ApplicationStatus",data);
         }
 
@@ -71,9 +72,13 @@ namespace Basecode.WebApp.Controllers
             var jobPosting = _jobPostingsService.GetById(id);
             if (jobPosting != null)
             {
-                var viewModel = new ApplicationFormViewModel();
-                viewModel.Applicant = new ApplicantCreationDto(); // Initialize the Applicant property
-                viewModel.Applicant.JobId = id;
+                var viewModel = new ApplicationFormViewModel
+                {
+                    Applicant = new ApplicantCreationDto
+                    {
+                        JobId = id // Set the JobId property in the ApplicantCreationDto
+                    }
+                };
                 Console.WriteLine("Job exists! " + id);
                 return View(viewModel);
             }
@@ -113,8 +118,9 @@ namespace Basecode.WebApp.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult ApplicationFormProcess(ApplicationFormViewModel model, IFormFile resumeFile)
+        public IActionResult ApplicationFormProcess( ApplicationFormViewModel model, IFormFile resumeFile, IFormFile photo)
         {
+            Console.WriteLine("" + model.Applicant.JobId);
             if (resumeFile != null && resumeFile.Length > 0)
             {
                 using (var memoryStream = new MemoryStream())
@@ -125,10 +131,34 @@ namespace Basecode.WebApp.Controllers
                     model.Applicant.Resume = memoryStream.ToArray();
                 }
             }
-            bool applicant = _applicantService.Add(model.Applicant);
+            if (photo != null && photo.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    photo.CopyTo(memoryStream);
+
+                    // Convert the file content to a byte array and store it in the model
+                    model.Applicant.Photo = memoryStream.ToArray();
+                }
+            }
+            /*var applicant = new ApplicantCreationDto
+            {
+                JobId = model.Applicant.JobId,
+                FirstName = model.Applicant.FirstName,
+                MiddleName = model.Applicant.MiddleName,
+                LastName = model.Applicant.LastName,
+                BirthDate = model.Applicant.BirthDate,
+                Resume = model.Applicant.Resume,
+                Photo = model.Applicant.Photo,
+                PhoneNumber = model.Applicant.PhoneNumber,
+                Email = model.Applicant.Email,
+                AdditionalInfo = model.Applicant.AdditionalInfo,
+                ApplicationStatus = model.Applicant.ApplicationStatus
+            };*/
+            var applicantIsInserted = _applicantService.Add(model.Applicant);
             var address = new AddressCreationDto
             {
-                ApplicantId = model.Applicant.Id,
+                ApplicantId = applicantIsInserted,
                 Street = model.Address.Street,
                 City = model.Address.City,
                 Province = model.Address.Province,
@@ -137,7 +167,7 @@ namespace Basecode.WebApp.Controllers
 
             var characRef1 = new CharacterReferencesCreationDto
             {
-                ApplicantId = model.Applicant.Id,
+                ApplicantId = applicantIsInserted,
                 Name = model.CharacterReferences1.Name,
                 Relationship = model.CharacterReferences1.Relationship,
                 Email = model.CharacterReferences1.Email,
@@ -146,14 +176,13 @@ namespace Basecode.WebApp.Controllers
 
             var characRef2 = new CharacterReferencesCreationDto
             {
-                ApplicantId = model.Applicant.Id,
+                ApplicantId = applicantIsInserted,
                 Name = model.CharacterReferences2.Name,
                 Relationship = model.CharacterReferences2.Relationship,
                 Email = model.CharacterReferences2.Email,
                 MobileNumber = model.CharacterReferences2.MobileNumber
             };
-
-            if (applicant == true)
+            if (applicantIsInserted != 0)
             {
                 _addressService.Add(address);
                 _characterService.Add(characRef1);
@@ -165,11 +194,11 @@ namespace Basecode.WebApp.Controllers
                 return View("JobPostList");
             }
 
-            var recipient = model.Applicant.Email;
+            /*var recipient = applicant.Email;
             var subject = "Application Update";
-            var body = "Your application ID is " + model.Applicant.ApplicantId;
+            var body = "Your application ID is " + applicant.ApplicantId;
 
-            _emailService.SendEmail(recipient, subject, body);
+            _emailService.SendEmail(recipient, subject, body);*/
             return View("ApplicationForm");
         }
 

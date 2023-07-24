@@ -26,13 +26,14 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="id">The ID of the applicant.</param>
         /// <returns>The applicant with the specified ID.</returns>
-        public bool Add(ApplicantCreationDto applicant)
+        public int Add(ApplicantCreationDto applicant)
         {
             var applicantModel = _mapper.Map<Applicants>(applicant);
             applicantModel.ApplicantId = GenerateRandomApplicantId();
             applicantModel.ApplicationDate = DateTime.Now;
+            applicantModel.ApplicationStatus = Data.Enums.Enums.ApplicationStatus.UndergoingBackgroundCheck;
             _repository.Add(applicantModel);
-            return true;
+            return applicantModel.Id;
         }
         private static string? GenerateRandomApplicantId()
         {

@@ -136,13 +136,28 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+                var existingUsername = await _userManager.FindByNameAsync(Input.Username);
                 var existingUser = await _userManager.FindByEmailAsync(Input.Email);
+                if (existingUsername != null)
+                {
+                    // Email is already registered
+                    ModelState.AddModelError(string.Empty, "The username " + @Input.Username + " is already taken");
+                    if (existingUser != null)
+                    {
+                        // Email is already registered
+                        ModelState.AddModelError(string.Empty, "The email " + @Input.Email + " is already registered to another account");
+                        return Page();
+                    }
+                    return Page();
+                }
                 if (existingUser != null)
                 {
                     // Email is already registered
-                    ModelState.AddModelError(string.Empty, "This email is already registered.");
+                    ModelState.AddModelError(string.Empty, "The email " + @Input.Email + " is already registered to another account");
                     return Page();
                 }
+
+
                 var user = CreateUser();
                 //create a employee entity
                 var hrEmployee = new HREmployeeCreationDto
@@ -150,8 +165,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
                     Name = string.IsNullOrEmpty(Input.MiddleName)
                         ? $"{Input.FirstName} {Input.LastName}"
                         : $"{Input.FirstName} {Input.MiddleName} {Input.LastName}",
-                    Email = Input.Email,
-                    Password = Input.Password
+                    Email = Input.Email
                 };
 
                 await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
@@ -176,8 +190,9 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    hrEmployee.UserId = userId;
+                    hrEmployee.UserId = user.Id;
                     //save user to employees table
+                    hrEmployee.Password = user.PasswordHash;
                     _hr_service.Add(hrEmployee);
                     return LocalRedirect(returnUrl);
                 }

@@ -8,11 +8,11 @@ namespace Basecode.Data.Dtos.HrEmployee
     public class HREmployeeUpdationDto
     {
         public int Id { get; set; }
+        public string UserId { get; set; }
         public string UserName { get; set; }
-        [Required(ErrorMessage = "The 'Name' field is required")]
-        [JsonProperty(PropertyName = "name")]
-        [StringLength(150, MinimumLength = 2, ErrorMessage = "Name must be at least 2 characters.")]
-        [RegularExpression(@"^[\sa-zA-Z\s]+$", ErrorMessage = "Name must contain only letters")]
+        public string FirstName { get; set; }
+        public string? MiddleName { get; set; }
+        public string LastName { get; set; }
         public string Name { get; set; } = string.Empty;
         [Required(ErrorMessage = "The 'Email' field is required")]
         [Display(Name = "Email")]

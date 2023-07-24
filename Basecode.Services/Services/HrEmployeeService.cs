@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Net.NetworkInformation;
+using static Basecode.Data.Constants;
 
 
 namespace Basecode.Services.Services
@@ -20,12 +21,15 @@ namespace Basecode.Services.Services
         private readonly IMapper _mapper;
         private readonly LogContent _logContent = new();
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public HrEmployeeService(IHrEmployeeRepository repository, IMapper mapper, SignInManager<IdentityUser> signInManager) 
+
+        public HrEmployeeService(IHrEmployeeRepository repository, IMapper mapper, SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
         {
             _repository = repository;
             _signInManager = signInManager;
             _mapper = mapper;
+            _userManager = userManager;
         }
         /// <summary>
         /// Retrieves all HR employees from the repository.
@@ -141,14 +145,33 @@ namespace Basecode.Services.Services
         /// <returns>The log content upon editing a HR account</returns>
         public LogContent EditHrAccount(HREmployeeUpdationDto hrEmployee)
         {
-            var hr = GetByEmail(hrEmployee.Email);
-            if (hr != null)
+            var hrEmail = GetByEmail(hrEmployee.Email);
+            if (hrEmail != null)
             {
-                if (hr.Id != hrEmployee.Id)
+                if (hrEmail.Id != hrEmployee.Id)
                 {
                     _logContent.Result = false;
                     _logContent.ErrorCode = "400. Edit Failed!";
                     _logContent.Message = "Email already exists";
+                }
+                else
+                {
+                    _logContent.Result = true;
+                }
+            }
+            else
+            {
+                _logContent.Result = true;
+            }
+
+            var hrUsername = GetById(hrEmployee.Id);
+            if (hrUsername != null)
+            {
+                if (hrUsername.User.Id != hrEmployee.UserId)
+                {
+                    _logContent.Result = false;
+                    _logContent.ErrorCode = "400. Edit Failed!";
+                    _logContent.Message = "Username is not available";
                 }
                 else
                 {

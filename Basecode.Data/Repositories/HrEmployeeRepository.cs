@@ -45,7 +45,7 @@ namespace Basecode.Data.Repositories
         /// <returns>The HrEmployee object with the specified ID.</returns>
         public HrEmployee GetById(int id)
         {
-            return _context.HrEmployees.Find(id)!;
+            return _context.HrEmployees.Include(e => e.User).FirstOrDefault(e => e.Id == id)!;
         }
 
         /// <summary>

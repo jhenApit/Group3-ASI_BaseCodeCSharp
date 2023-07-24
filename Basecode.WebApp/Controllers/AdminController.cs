@@ -79,16 +79,14 @@ namespace Basecode.WebApp.Controllers
         /// </summary>
         /// <param name="id">The ID of the account selected</param>
         /// <returns>View of the page with the details of the account</returns>
-        public IActionResult EditHrAccountView(int id)
+        public async Task<IActionResult> EditHrAccountView(int id)
         {
             // Retrieve the HR employee from the database using the ID
             var hrEmployee = _service.GetById(id);
-            IdentityUser user = await _userManager.FindByIdAsync(hrEmployee.UserId);
-
-            if (user != null)
+            if (hrEmployee != null)
             {
                 // Access user attributes
-                string userName = user.UserName;
+                string userName = hrEmployee.User.UserName;
                 // Other user attributes you may want to access
                 // Create an instance of HREmployeeUpdationDto and populate it with data
                 var hrEmployeeDto = new HREmployeeUpdationDto
@@ -97,6 +95,7 @@ namespace Basecode.WebApp.Controllers
                     Email = hrEmployee.Email,
                     Password = hrEmployee.Password,
                     UserName = userName,
+                    UserId = hrEmployee.User.Id,
                     Id = hrEmployee.Id
                 };
                 // Pass the HREmployeeUpdationDto as the model to the view
@@ -115,8 +114,9 @@ namespace Basecode.WebApp.Controllers
         /// If no errors, redirects to the HrList page
         /// </returns>
         [HttpPost]
-        public IActionResult EditHrAccount(HREmployeeUpdationDto hrEmployee)
+        public async Task<IActionResult> EditHrAccount(HREmployeeUpdationDto hrEmployee)
         {
+            hrEmployee.Name = hrEmployee.FirstName + ' ' + hrEmployee.MiddleName + ' ' + hrEmployee.LastName;
             var data = _service.EditHrAccount(hrEmployee);
             if (!data.Result)
             {
@@ -126,7 +126,14 @@ namespace Basecode.WebApp.Controllers
             }
             else if (ModelState.IsValid)
             {
-                // Perform account update logic
+                //get hremployee data
+                var hr = _service.GetById(hrEmployee.Id);
+                //get aspnetuser data
+                //update username
+                await _userManager.SetUserNameAsync(hr.User, hrEmployee.UserName);
+                await _userManager.GenerateChangeEmailTokenAsync(hr.User, hrEmployee.Email);
+                await _userManager.ChangePasswordAsync(hr.User, hr.Password, hrEmployee.Password);
+
                 _service.Update(hrEmployee);
                 return RedirectToAction("HrList");
             }

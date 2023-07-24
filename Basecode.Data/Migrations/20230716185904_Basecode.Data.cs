@@ -12,23 +12,6 @@ namespace Basecode.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Addresses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ApplicantId = table.Column<int>(type: "int", nullable: false),
-                    Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Province = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Addresses", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Applicants",
                 columns: table => new
                 {
@@ -48,6 +31,29 @@ namespace Basecode.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Addresses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ApplicantId = table.Column<int>(type: "int", nullable: false),
+                    Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Province = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Addresses_Applicants",
+                        column: x => x.ApplicantId,
+                        principalTable: "Applicants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ApplicationTrackers",
                 columns: table => new
                 {
@@ -60,6 +66,13 @@ namespace Basecode.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ApplicationTrackers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PK_ApplicationTrackers_Applicants",
+                        column: x => x.ApplicantId,
+                        principalTable: "Applicants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+
                 });
 
             migrationBuilder.CreateTable(
@@ -208,6 +221,72 @@ namespace Basecode.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ReferenceForms", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ReferenceForms_CharacterReferences",
+                        column: x => x.CharacterReferenceId,
+                        principalTable: "CharacterReferences",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CurrentHires",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ApplicantId = table.Column<int>(type: "int", nullable: false),
+                    PositionId = table.Column<int>(type: "int", nullable: false),
+                    HireStatus = table.Column<int>(type: "int", nullable: false),
+                    HireDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CurrentHires", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Exams",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ApplicantId = table.Column<int>(type: "int", nullable: false),
+                    ProctorId = table.Column<int>(type: "int", nullable: false),
+                    ExamType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ExamDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Results = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Exams", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Interviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ApplicantId = table.Column<int>(type: "int", nullable: false),
+                    InterviewerId = table.Column<int>(type: "int", nullable: false),
+                    InterviewType = table.Column<int>(type: "int", nullable: false),
+                    InterviewDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Results = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Interviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Interviews_HrEmployees",
+                        column: x => x.InterviewerId,
+                        principalTable: "HrEmployees",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Interviews_Interviewers",
+                        column: x => x.InterviewerId,
+                        principalTable: "Interviewers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -461,6 +540,15 @@ namespace Basecode.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "JobPostings");
+
+            migrationBuilder.DropTable(
+                name: "CurrentHires");
+
+            migrationBuilder.DropTable(
+                name: "Exams");
+
+            migrationBuilder.DropTable(
+                name: "Interviews");
 
             migrationBuilder.DropTable(
                 name: "ReferenceForms");

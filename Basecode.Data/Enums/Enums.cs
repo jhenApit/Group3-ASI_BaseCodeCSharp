@@ -101,22 +101,29 @@ namespace Basecode.Data.Enums
         }
         public enum WorkSetup
         {
+            [Description("Online")]
             Online,
+            [Description("On-site")]
             Onsite,
+            [Description("Hybrid")]
             Hybrid
         }
         public enum WorkingHours
         {
-            [Description("8")]
+            [Description("8-Hour shift")]
             EightHourShift,
-            [Description("4")]
+            [Description("4-Hour shift")]
             FourHourShift
         }
         public enum JobStatus
         {
+            [Description("Open")]
             Open,
+            [Description("Urgent")]
             Urgent,
+            [Description("Closed")]
             Closed,
+            [Description("On hold")]
             OnHold
         }
         public enum EmploymentType

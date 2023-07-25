@@ -5,9 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Basecode.Data.Dtos;
+using Basecode.Data.Dtos.JobPostings;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
+using Basecode.Services.Utils;
 
 namespace Basecode.Services.Services
 {
@@ -15,6 +17,7 @@ namespace Basecode.Services.Services
     {
         private readonly IApplicantRepository _repository;
         private readonly IMapper _mapper;
+        private readonly LogContent _logContent = new();
         public ApplicantService(IApplicantRepository repository, IMapper mapper)
         {
             _repository = repository;
@@ -62,6 +65,23 @@ namespace Basecode.Services.Services
         public List<Applicants> RetrieveAll()
         {
             return _repository.RetrieveAll().ToList();
+        }
+
+        public LogContent AddApplicantLogContent(ApplicantCreationDto applicantCreationDto)
+        {
+            Applicants applicant = GetByApplicantId(applicantCreationDto.ApplicantId);
+            if (applicant != null)
+            {
+                _logContent.Result = false;
+                _logContent.ErrorCode = "400";
+                _logContent.Message = "Applicant already applied for this job!";
+            }
+            else
+            {
+                _logContent.Result = true;
+            }
+
+            return _logContent;
         }
     }
 }

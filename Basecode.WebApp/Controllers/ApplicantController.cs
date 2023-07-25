@@ -1,8 +1,11 @@
 ﻿using Basecode.Data.Dtos;
+using Basecode.Data.Dtos.JobPostings;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Services;
+using Basecode.Services.Utils;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -13,14 +16,17 @@ namespace Basecode.WebApp.Controllers
         private readonly IAddressService _addressService;
         private readonly ICharacterReferencesService _characterService;
         private readonly IJobPostingsService _jobPostingsService;
+        private readonly IErrorHandling _errorHandling;
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public ApplicantController(IJobPostingsService jobPostingsService, IEmailService emailService, IApplicantService applicantService, IAddressService addressService, ICharacterReferencesService characterService)
+        public ApplicantController(IErrorHandling errorHandling, IJobPostingsService jobPostingsService, IEmailService emailService, IApplicantService applicantService, IAddressService addressService, ICharacterReferencesService characterService)
         {
             _emailService = emailService;
             _applicantService = applicantService;
             _addressService = addressService;
             _characterService = characterService;
             _jobPostingsService = jobPostingsService;
+            _errorHandling = errorHandling;
         }
 
         /// <summary>
@@ -142,64 +148,61 @@ namespace Basecode.WebApp.Controllers
                     model.Applicant.Photo = memoryStream.ToArray();
                 }
             }
-            /*var applicant = new ApplicantCreationDto
+            if (ModelState.IsValid)
             {
-                JobId = model.Applicant.JobId,
-                FirstName = model.Applicant.FirstName,
-                MiddleName = model.Applicant.MiddleName,
-                LastName = model.Applicant.LastName,
-                BirthDate = model.Applicant.BirthDate,
-                Resume = model.Applicant.Resume,
-                Photo = model.Applicant.Photo,
-                PhoneNumber = model.Applicant.PhoneNumber,
-                Email = model.Applicant.Email,
-                AdditionalInfo = model.Applicant.AdditionalInfo,
-                ApplicationStatus = model.Applicant.ApplicationStatus
-            };*/
-            var applicantIsInserted = _applicantService.Add(model.Applicant);
-            var address = new AddressCreationDto
-            {
-                ApplicantId = applicantIsInserted,
-                Street = model.Address.Street,
-                City = model.Address.City,
-                Province = model.Address.Province,
-                ZipCode = model.Address.ZipCode
-            };
+                var data = _applicantService.AddApplicantLogContent(model.Applicant);
+                if (!data.Result)
+                {
+                    _logger.Error(_errorHandling.SetLog(data));
+                    ViewBag.ErrorMessage = data.Message;
+                    return View(model.Applicant);
+                }
+                var applicantIsInserted = _applicantService.Add(model.Applicant);
+                var address = new AddressCreationDto
+                {
+                    ApplicantId = applicantIsInserted,
+                    Street = model.Address.Street,
+                    City = model.Address.City,
+                    Province = model.Address.Province,
+                    ZipCode = model.Address.ZipCode
+                };
 
-            var characRef1 = new CharacterReferencesCreationDto
-            {
-                ApplicantId = applicantIsInserted,
-                Name = model.CharacterReferences1.Name,
-                Relationship = model.CharacterReferences1.Relationship,
-                Email = model.CharacterReferences1.Email,
-                MobileNumber = model.CharacterReferences1.MobileNumber
-            };
+                var characRef1 = new CharacterReferencesCreationDto
+                {
+                    ApplicantId = applicantIsInserted,
+                    Name = model.CharacterReferences1.Name,
+                    Relationship = model.CharacterReferences1.Relationship,
+                    Email = model.CharacterReferences1.Email,
+                    MobileNumber = model.CharacterReferences1.MobileNumber
+                };
 
-            var characRef2 = new CharacterReferencesCreationDto
-            {
-                ApplicantId = applicantIsInserted,
-                Name = model.CharacterReferences2.Name,
-                Relationship = model.CharacterReferences2.Relationship,
-                Email = model.CharacterReferences2.Email,
-                MobileNumber = model.CharacterReferences2.MobileNumber
-            };
-            if (applicantIsInserted != 0)
-            {
-                _addressService.Add(address);
-                _characterService.Add(characRef1);
-                _characterService.Add(characRef2);
+                var characRef2 = new CharacterReferencesCreationDto
+                {
+                    ApplicantId = applicantIsInserted,
+                    Name = model.CharacterReferences2.Name,
+                    Relationship = model.CharacterReferences2.Relationship,
+                    Email = model.CharacterReferences2.Email,
+                    MobileNumber = model.CharacterReferences2.MobileNumber
+                };
+                if (applicantIsInserted != 0)
+                {
+                    _addressService.Add(address);
+                    _characterService.Add(characRef1);
+                    _characterService.Add(characRef2);
+                    var recipient = model.Applicant.Email;
+                    var subject = "Application Update";
+                    var body = "Your application ID is " + model.Applicant.ApplicantId;
+
+                    _emailService.SendEmail(recipient, subject, body);
+                }
+                else
+                {
+                    Console.WriteLine("Addition Failed for applicant");
+                    return View("ViewJobPost");
+                }
+                return View("ApplicationForm");
             }
-            else
-            {
-                Console.WriteLine("Addition Failed for applicant");
-                return View("JobPostList");
-            }
-
-            /*var recipient = applicant.Email;
-            var subject = "Application Update";
-            var body = "Your application ID is " + applicant.ApplicantId;
-
-            _emailService.SendEmail(recipient, subject, body);*/
+            ModelState.Clear();
             return View("ApplicationForm");
         }
 

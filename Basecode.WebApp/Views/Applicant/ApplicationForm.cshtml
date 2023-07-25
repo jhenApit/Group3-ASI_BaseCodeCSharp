@@ -7,7 +7,7 @@
 
 <div class="application-form-container">
     <div class="row">
-        <h1 class="text-center">Software Engineer</h1>
+        <h1 class="text-center">@Model?.JobPosting?.Name</h1>
     </div>
     <div class="row mt-5 px-5">
         <div class="col d-flex form-header mb-3">
@@ -20,7 +20,7 @@
     <div class="form">
         <form method="post" asp-route-id = "Applicant.JobId" asp-controller="Applicant" asp-action="ApplicationFormProcess" enctype="multipart/form-data" id="application_form" novalidate>
             <!--Hidden input field for the jobid-->
-            <input type="hidden" asp-for="Applicant.JobId" value="@Model.Applicant.JobId" />
+            <input type="hidden" asp-for="Applicant.JobId" value="@Model?.JobPosting?.Id" />
             <!--Resume-->
             <div class="row text-header text-bold ps-2">Resume</div>
             <div class="row form-row form-group file-drop my-3 mx-1 py-4">
@@ -189,11 +189,12 @@
                     </div>
                 </div>
                 <div class="col d-flex justify-content-center">
-                    <button class="btn btn-primary mt-2 py-2 px-5" type="submit" > <!--onclick="checkValidity()"> -->
+                    <button class="btn btn-primary mt-2 py-2 px-5" type="submit">Submit</button>
+                    <!--<button class="btn btn-primary mt-2 py-2 px-5" type="submit" > onclick="checkValidity()"> 
                         <a asp-controller="Applicant" asp-action="ApplicationFormProcess">
-                            <h5 class="submit-btn m-0">Submit</h5>
+                            <h5 class="submit-btn m-0">Submit</h5> 
                         </a>
-                    </button> 
+                    </button> -->
                 </div>
             </div>
         </form>

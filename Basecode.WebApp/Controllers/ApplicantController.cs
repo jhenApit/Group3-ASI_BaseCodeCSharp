@@ -74,9 +74,10 @@ namespace Basecode.WebApp.Controllers
             {
                 var viewModel = new ApplicationFormViewModel
                 {
-                    Applicant = new ApplicantCreationDto
+                    JobPosting = new JobPostings
                     {
-                        JobId = id // Set the JobId property in the ApplicantCreationDto
+                        Name = jobPosting.Name,
+                        Id = jobPosting.Id
                     }
                 };
                 Console.WriteLine("Job exists! " + id);

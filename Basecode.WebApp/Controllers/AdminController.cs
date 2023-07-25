@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
+using static Basecode.Data.Enums.Enums;
 
 
 namespace Basecode.WebApp.Controllers
@@ -19,12 +20,14 @@ namespace Basecode.WebApp.Controllers
         private readonly IErrorHandling _errorHandling;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IEmailService _emailService;
-        public AdminController(IHrEmployeeService service, IErrorHandling errorHandling, IAdminService adminService, IEmailService emailService)
+        private readonly EmailSender _emailSender;
+        public AdminController(IHrEmployeeService service, IErrorHandling errorHandling, IAdminService adminService, IEmailService emailService, EmailSender emailSender)
         {
             _service = service;
             _errorHandling = errorHandling;
             _adminService = adminService;
             _emailService = emailService;
+            _emailSender = emailSender;
         }
 
 
@@ -56,7 +59,7 @@ namespace Basecode.WebApp.Controllers
                 }
                 _service.Add(hrEmployee);
 
-				var recipient = "jm.senening08@gmail.com";
+                var recipient = "jm.senening08@gmail.com";
 				var subject = "Alliance Human Resource Account";
 				var body = $"Dear Mr/Mrs {hrEmployee.Name}, <br/> <br/> This is your human resource account. <br/>" +
 						   $"<br/> Email: {hrEmployee.Email} <br/> Password: {hrEmployee.Password} <br/>" +
@@ -64,6 +67,8 @@ namespace Basecode.WebApp.Controllers
 
 
 				await _emailService.SendEmail(recipient, subject, body);
+
+               // await _emailSender.SendEmailAsync(EmailType.HRCreationAccountEmail, "jm.senening08@gmail.com");
 
 				return RedirectToAction("HrList");
             }

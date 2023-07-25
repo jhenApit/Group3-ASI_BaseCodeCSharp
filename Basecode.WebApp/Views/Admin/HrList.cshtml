@@ -34,6 +34,7 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
+                                            <th>Username</th>
                                             <th>Name</th>
                                             <th>Email Address</th>
                                             <th style="text-align: center;">Actions</th>
@@ -43,6 +44,7 @@
                                         @foreach (var hrEmployee in Model)
                                         {
                                             <tr>
+                                                <td class="text-capitalize">@hrEmployee.User.UserName</td>
                                                 <td class="text-capitalize">@hrEmployee.Name</td>
                                                 <td>@hrEmployee.Email</td>
                                                 <td style="text-align: center;">

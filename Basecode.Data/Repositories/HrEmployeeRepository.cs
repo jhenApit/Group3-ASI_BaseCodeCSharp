@@ -25,7 +25,7 @@ namespace Basecode.Data.Repositories
         /// <returns>An IQueryable of HrEmployee.</returns>
         public IQueryable<HrEmployee> RetrieveAll()
         {
-            return this.GetDbSet<HrEmployee>().Where(e => !e.IsDeleted);
+            return this.GetDbSet<HrEmployee>().Where(e => !e.IsDeleted).Include(e => e.User);
         }
 
         /// <summary>

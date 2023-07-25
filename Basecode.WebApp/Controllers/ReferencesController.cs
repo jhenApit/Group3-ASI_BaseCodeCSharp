@@ -13,12 +13,6 @@ namespace Basecode.WebApp.Controllers
             _service = service;
         }
 
-        public readonly IReferenceFormsService _service;
-
-        public ReferencesController(IReferenceFormsService service)
-        {
-            _service = service;
-        }
         /// <summary>
         /// Shows the character reference questions in the first page.
         /// </summary>

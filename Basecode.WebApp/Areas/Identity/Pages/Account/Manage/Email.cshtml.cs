@@ -4,44 +4,44 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Basecode.Data.Dtos.HrEmployee;
-using Basecode.Services.Interfaces;
-using Basecode.Data.Models;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Basecode.WebApp.Areas.Identity.Pages.Account.Manage
 {
-    public class IndexModel : PageModel
+    public class EmailModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly IHrEmployeeService _service;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IEmailSender _emailSender;
 
-        public IndexModel(
+        public EmailModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-            IHrEmployeeService service)
+            IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _service = service;
+            _emailSender = emailSender;
         }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public string FirstName { get; set; }
-        public string MiddleName { get; set; }
-        public string LastName { get; set; }
-        public string Name { get; set; }
         public string Email { get; set; }
-        public string UserName { get; set; }
+
+        /// <summary>
+        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
+        ///     directly from your code. This API may change or be removed in future releases.
+        /// </summary>
+        public bool IsEmailConfirmed { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -67,29 +67,23 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account.Manage
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            public string FirstName { get; set; }
-            public string MiddleName { get; set; }
-            public string LastName { get; set; }
-            public string Name { get; set; }
             [Required]
-            [Display(Name = "Username")]
-            public string UserName { get; set; }
+            [EmailAddress]
+            [Display(Name = "New email")]
+            public string NewEmail { get; set; }
         }
 
         private async Task LoadAsync(IdentityUser user)
         {
-            var userName = await _userManager.GetUserNameAsync(user);
             var email = await _userManager.GetEmailAsync(user);
-            var hr = _service.GetByUserId(user.Id);
-            var name = hr.Name;
             Email = email;
-            UserName = userName;
-            Name = name;
+
             Input = new InputModel
             {
-                UserName = userName,
-                Name = name
+                NewEmail = email,
             };
+
+            IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -104,9 +98,8 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostChangeEmailAsync()
         {
-            Input.Name = Input.FirstName + ' ' + Input.MiddleName + ' ' + Input.LastName;
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -119,36 +112,59 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var userName = await _userManager.GetUserNameAsync(user);
-            if (Input.UserName != userName)
+            var email = await _userManager.GetEmailAsync(user);
+            if (Input.NewEmail != email)
             {
-                var existingUser = await _userManager.FindByNameAsync(Input.UserName);
-                if (existingUser != null)
-                {
-                    // Email is already registered
-                    StatusMessage = "The username '" + Input.UserName + "' is not available";
-                    return RedirectToPage();
-                }
-                var result = await _userManager.SetUserNameAsync(user, Input.UserName);
-                if (!result.Succeeded)
-                {
-                    StatusMessage = "Unexpected error when trying to set username";
-                    return RedirectToPage();
-                }
+                var userId = await _userManager.GetUserIdAsync(user);
+                var code = await _userManager.GenerateChangeEmailTokenAsync(user, Input.NewEmail);
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                var callbackUrl = Url.Page(
+                    "/Account/ConfirmEmailChange",
+                    pageHandler: null,
+                    values: new { area = "Identity", userId = userId, email = Input.NewEmail, code = code },
+                    protocol: Request.Scheme);
+                await _emailSender.SendEmailAsync(
+                    Input.NewEmail,
+                    "Confirm your email",
+                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                StatusMessage = "Confirmation link to change email sent. Please check your email.";
+                return RedirectToPage();
             }
-            var hr = _service.GetByUserId(user.Id);
-            var hrEmployeeDto = new HREmployeeUpdationDto
+
+            StatusMessage = "Your email is unchanged.";
+            return RedirectToPage();
+        }
+
+        public async Task<IActionResult> OnPostSendVerificationEmailAsync()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
             {
-                Name = Input.Name,
-                Email = user.Email,
-                Password = user.PasswordHash,
-                UserName = Input.UserName,
-                UserId = user.Id,
-                Id = hr.Id
-            };
-            _service.Update(hrEmployeeDto);
-            await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                await LoadAsync(user);
+                return Page();
+            }
+
+            var userId = await _userManager.GetUserIdAsync(user);
+            var email = await _userManager.GetEmailAsync(user);
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var callbackUrl = Url.Page(
+                "/Account/ConfirmEmail",
+                pageHandler: null,
+                values: new { area = "Identity", userId = userId, code = code },
+                protocol: Request.Scheme);
+            await _emailSender.SendEmailAsync(
+                email,
+                "Confirm your email",
+                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+            StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToPage();
         }
     }

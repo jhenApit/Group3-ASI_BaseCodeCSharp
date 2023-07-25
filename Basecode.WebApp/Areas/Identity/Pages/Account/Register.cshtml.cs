@@ -80,15 +80,26 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [RegularExpression(@"^[\sa-zA-Z\s]+$", ErrorMessage = "Name must contain only letters")]
-            [Display(Name = "Name")]
-            public string Name { get; set; }
+            [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Name must contain only letters")]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+            [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Name must contain only letters")]
+            [Display(Name = "Middle Name")]
+            public string? MiddleName { get; set; }
+            [Required]
+            [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Name must contain only letters")]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+            [Required]
+            [Display(Name = "Username")]
+            public string Username { get; set; }
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
             [EmailAddress]
+            [RegularExpression(@"^[a-zA-Z0-9_.+-]+@asi-dev2\.com$", ErrorMessage = "Email is not Alliance Email")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
@@ -125,15 +136,39 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+                var existingUsername = await _userManager.FindByNameAsync(Input.Username);
+                var existingUser = await _userManager.FindByEmailAsync(Input.Email);
+                if (existingUsername != null)
+                {
+                    // Email is already registered
+                    ModelState.AddModelError(string.Empty, "The username " + @Input.Username + " is already taken");
+                    if (existingUser != null)
+                    {
+                        // Email is already registered
+                        ModelState.AddModelError(string.Empty, "The email " + @Input.Email + " is already registered to another account");
+                        return Page();
+                    }
+                    return Page();
+                }
+                if (existingUser != null)
+                {
+                    // Email is already registered
+                    ModelState.AddModelError(string.Empty, "The email " + @Input.Email + " is already registered to another account");
+                    return Page();
+                }
+
+
                 var user = CreateUser();
+                //create a employee entity
                 var hrEmployee = new HREmployeeCreationDto
                 {
-                    Name = Input.Name,
-                    Email = Input.Email,
-                    Password = Input.Password
+                    Name = string.IsNullOrEmpty(Input.MiddleName)
+                        ? $"{Input.FirstName} {Input.LastName}"
+                        : $"{Input.FirstName} {Input.MiddleName} {Input.LastName}",
+                    Email = Input.Email
                 };
 
-                await _userStore.SetUserNameAsync(user, Input.Name, CancellationToken.None);
+                await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -141,7 +176,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
                     var userRole = _roleManager.FindByNameAsync("HR").Result;
-                    if(userRole != null) 
+                    if (userRole != null)
                     {
                         await _userManager.AddToRoleAsync(user, userRole.Name);
                     }
@@ -155,7 +190,9 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    hrEmployee.UserId = userId;
+                    hrEmployee.UserId = user.Id;
+                    //save user to employees table
+                    hrEmployee.Password = user.PasswordHash;
                     _hr_service.Add(hrEmployee);
                     return LocalRedirect(returnUrl);
                 }

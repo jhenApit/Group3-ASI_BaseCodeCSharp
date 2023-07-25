@@ -80,32 +80,16 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account.Manage
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var email = await _userManager.GetEmailAsync(user);
-            //if user is default admin
-            if (user.Id == "1")
+            var hr = _service.GetByUserId(user.Id);
+            var name = hr.Name;
+            Email = email;
+            UserName = userName;
+            Name = name;
+            Input = new InputModel
             {
-                Email = email;
-                UserName = userName;
-                var name = "admin account";
-                Name = name;
-                Input = new InputModel
-                {
-                    UserName = userName,
-                    Name = name
-                };
-            }
-            else
-            {
-                var hr = _service.GetByUserId(user.Id);
-                var name = hr.Name;
-                Email = email;
-                UserName = userName;
-                Name = name;
-                Input = new InputModel
-                {
-                    UserName = userName,
-                    Name = name
-                };
-            }
+                UserName = userName,
+                Name = name
+            };
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -122,7 +106,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            Input.Name =  Input.FirstName + ' ' + Input.MiddleName + ' ' + Input.LastName;
+            Input.Name = Input.FirstName + ' ' + Input.MiddleName + ' ' + Input.LastName;
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {

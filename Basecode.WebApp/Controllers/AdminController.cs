@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
+using static Basecode.Data.Constants;
 
 
 namespace Basecode.WebApp.Controllers
@@ -21,13 +22,21 @@ namespace Basecode.WebApp.Controllers
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IEmailService _emailService;
         private readonly UserManager<IdentityUser> _userManager;
-        public AdminController(IHrEmployeeService service, IErrorHandling errorHandling, IAdminService adminService, IEmailService emailService, UserManager<IdentityUser> userManager)
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public AdminController(
+            IHrEmployeeService service, 
+            IErrorHandling errorHandling, 
+            IAdminService adminService, 
+            IEmailService emailService, 
+            UserManager<IdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             _service = service;
             _errorHandling = errorHandling;
             _adminService = adminService;
             _emailService = emailService;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
 
@@ -35,9 +44,14 @@ namespace Basecode.WebApp.Controllers
         /// Retrieves all HR employees and displays the HR list.
         /// </summary>
         /// <returns>The HR list view with all HR employee data</returns>
-        public IActionResult HrList()
+        public async Task<IActionResult> HrList()
         {
             var data = _service.RetrieveAll();
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                data = data.Where(item => item.UserId != user.Id).ToList();
+            }
             return View(data);
         }
 
@@ -83,6 +97,8 @@ namespace Basecode.WebApp.Controllers
         {
             // Retrieve the HR employee from the database using the ID
             var hrEmployee = _service.GetById(id);
+            var hrRole = await _userManager.GetRolesAsync(hrEmployee.User);
+            var role = hrRole.FirstOrDefault();
             if (hrEmployee != null)
             {
                 // Access user attributes
@@ -98,6 +114,14 @@ namespace Basecode.WebApp.Controllers
                     UserId = hrEmployee.User.Id,
                     Id = hrEmployee.Id
                 };
+                if (role == "admin")
+                {
+                    hrEmployeeDto.IsAdmin = true;
+                }
+                else
+                {
+                    hrEmployeeDto.IsAdmin = false;
+                }
                 // Pass the HREmployeeUpdationDto as the model to the view
                 return View(hrEmployeeDto);
             }
@@ -133,7 +157,11 @@ namespace Basecode.WebApp.Controllers
                 await _userManager.SetUserNameAsync(hr.User, hrEmployee.UserName);
                 await _userManager.GenerateChangeEmailTokenAsync(hr.User, hrEmployee.Email);
                 await _userManager.ChangePasswordAsync(hr.User, hr.Password, hrEmployee.Password);
-
+                if (hrEmployee.IsAdmin)
+                {
+                    await _userManager.AddToRoleAsync(hr.User, "admin");
+                    await _userManager.RemoveFromRoleAsync(hr.User, "hr");
+                }
                 _service.Update(hrEmployee);
                 return RedirectToAction("HrList");
             }

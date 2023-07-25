@@ -93,8 +93,8 @@
                                 <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
                             <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                <label class="form-check-label" for="flexSwitchCheckDefault">Set as Admin</label>
+                                <input class="form-check-input" type="checkbox" id="isAdmin" asp-for="IsAdmin">
+                                <label class="form-check-label" asp-for="IsAdmin">Set as Admin</label>
                             </div>
                             <div class="bottom-btn">
                                 <a class="cancel-btn" type="button" asp-controller="Admin" asp-action="HrList">Cancel</a>

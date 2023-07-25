@@ -9,7 +9,7 @@
     <div class="col">
         <p class="display-4 mt-5 font-weight-bold font-italic text-white">Track your <span class="text-danger">application status</span> here!</p>
         <div class="container">
-            <form method="post" asp-controller="Applicant" asp-action="TrackStatus">
+            <form method="post" asp-controller="Applicant" asp-action="ApplicationStatus">
                 <div class="search-container">
                     <input asp-for="ApplicantId" type="text" class="form-control text-center search-bar" placeholder="Enter your application ID here...">
                     <button type="submit" class="btn track-status-button">Track</button>

@@ -30,15 +30,27 @@ namespace Basecode.WebApp.Controllers
         }
 
         /// <summary>
-        /// Retrieves the track status of an applicant based on the provided ID.
+        /// Retrieves the track status of an applicant based on the provided applicantID.
         /// </summary>
-        /// <param name="id">The ID of the applicant.</param>
-        /// <returns>The view displaying the track status of the applicant.</returns>
-        [HttpGet]
-        public ActionResult TrackStatus(string ApplicantId)
+        /// <param name="applicantId">The ID of the applicant.</param>
+        /// <returns>The view displaying the status of employment of the applicant.</returns>
+        public IActionResult ApplicationStatus(string ApplicantId)
         {
             Applicants data = _applicantService.GetByApplicantId(ApplicantId);
-            return View("ApplicationStatus",data);
+            Console.WriteLine("Applicant Id+" + ApplicantId);
+            if (data != null)
+            {
+                return View(data);
+            }
+            return RedirectToAction("TrackApplication");
+        }
+        /// <summary>
+        /// this displays the view for TrackApplication
+        /// </summary>
+        /// <returns>the view</returns>
+        public IActionResult TrackApplication()
+        {
+            return View();
         }
 
         /// <summary>
@@ -46,25 +58,6 @@ namespace Basecode.WebApp.Controllers
         /// </summary>
         /// <returns>The contact us view.</returns>
         public IActionResult ContactUs()
-        {
-            return View();
-        }
-
-        /// <summary>
-        /// Displays the track application page 
-        /// when the user clicks on it on the header of the landing page
-        /// </summary>
-        /// <returns>The track application view.</returns>
-        public IActionResult TrackApplication()
-        {
-            return View();
-        }
-
-        /// <summary>
-        /// Displays the application status page.
-        /// </summary>
-        /// <returns>The application status view.</returns>
-        public IActionResult ApplicationStatus()
         {
             return View();
         }
@@ -96,17 +89,6 @@ namespace Basecode.WebApp.Controllers
             }
         }
 
-        public IActionResult ApplicationFormViewModel()
-        {
-            var recipient = "jm.senening08@gmail.com";
-            var subject = "Application Update";
-            var body = "Your application ID is APPL-1234";
-
-            _emailService.SendEmail(recipient, subject, body);
-
-            return View();
-        }
-
         /// <summary>
         /// Displays the terms and conditions page.
         /// </summary>
@@ -127,7 +109,6 @@ namespace Basecode.WebApp.Controllers
         [HttpPost]
         public IActionResult ApplicationFormProcess( ApplicationFormViewModel model, IFormFile resumeFile, IFormFile photo)
         {
-            Console.WriteLine("" + model.Applicant.JobId);
             if (resumeFile != null && resumeFile.Length > 0)
             {
                 using (var memoryStream = new MemoryStream())

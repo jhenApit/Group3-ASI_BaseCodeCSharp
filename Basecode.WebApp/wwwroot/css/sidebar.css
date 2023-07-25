@@ -320,6 +320,15 @@
     color: #ff0000;
 }
 
+.sidebar.close .nav-links li .sub-menu.blank a {
+    padding: 0px;
+}
+
+.sidebar.close .nav-links li .sub-menu.blank p:hover {
+    color: #EC2224;
+    transition: all 0.3s ease;
+}
+
 .main-content {
     position: relative;
     background: #E4E9F7;

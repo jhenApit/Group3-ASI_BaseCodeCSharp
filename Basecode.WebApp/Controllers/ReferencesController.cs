@@ -41,13 +41,14 @@ namespace Basecode.WebApp.Controllers
         [HttpPost]
         public IActionResult Submit(ReferenceFormsCreationDto referenceFormsCreationDto)
         {
-            referenceFormsCreationDto.CharacterReferenceId = 1;
+            referenceFormsCreationDto.CharacterReferenceId = 2; //sets the character reference id, currently temporary
+            //if error, person as character reference is not in the database
 
             _service.Add(referenceFormsCreationDto);
 
             TempData.Clear();
 
-            return RedirectToAction("Page1", referenceFormsCreationDto);
+            return RedirectToAction("Index", "Home");
         }
     }
 }

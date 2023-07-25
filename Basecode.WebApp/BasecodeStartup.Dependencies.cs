@@ -4,6 +4,8 @@ using Basecode.Data.Interfaces;
 using Basecode.Data.Repositories;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Services;
+using Basecode.Services.Utils;
+using Basecode.Data.Models;
 
 namespace Basecode.WebApp
 {
@@ -22,7 +24,12 @@ namespace Basecode.WebApp
             services.AddScoped<IApplicantService, ApplicantService>();
             services.AddScoped<IAdminService, AdminService>();
             services.AddTransient<IEmailService, EmailService>();
-            
+            services.AddScoped<IAddressService, AddressService>();
+            services.AddScoped<ICharacterReferencesService, CharacterReferencesService>();
+            services.AddScoped<EmailService>();
+            services.AddScoped<EmailSender>();
+            services.AddSingleton<HrEmployee>();
+
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IHrEmployeeRepository, HrEmployeeRepository>();

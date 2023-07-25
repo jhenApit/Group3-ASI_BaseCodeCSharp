@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Basecode.Services.Interfaces;
 using NLog;
 using Basecode.Data.Dtos.JobPostings;
+using Microsoft.AspNetCore.Identity;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -11,14 +12,16 @@ namespace Basecode.WebApp.Controllers
     {
         private readonly IHrEmployeeService _service;
         private readonly IJobPostingsService _jobPostingsService;
-        private readonly IErrorHandling _errorHandling;
+        private readonly IErrorHandling _errorHandling; 
+        private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public HRController(IHrEmployeeService service, IJobPostingsService jobPostingsService, IErrorHandling errorHandling)
+        public HRController(IHrEmployeeService service, IJobPostingsService jobPostingsService, IErrorHandling errorHandling, UserManager<IdentityUser> userManager)
         {
             _service = service;
             _jobPostingsService = jobPostingsService;
             _errorHandling = errorHandling;
+            _userManager = userManager;
         }
 
 
@@ -30,7 +33,8 @@ namespace Basecode.WebApp.Controllers
 
         public IActionResult AdminDashboard(string Email)
         {
-            var hrEmployee = _service.GetByEmail(Email);
+            var user = _userManager.GetUserId(User);
+            var hrEmployee = _service.GetByUserId(user);
             return View(hrEmployee);
         }
 

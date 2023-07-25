@@ -26,7 +26,8 @@ namespace Basecode.WebApp.Controllers
 
         public IActionResult AdminDashboard(string Email)
         {
-            var hrEmployee = _service.GetByEmail(Email);
+            var user = _userManager.GetUserId(User);
+            var hrEmployee = _service.GetByUserId(user);
             return View(hrEmployee);
         }
 

@@ -4,10 +4,15 @@
     <link rel="stylesheet" href="~/css/JobApplicantsOverview.css" />
 }
 
-<div class="container">
-    <h1>@ViewData["Title"]</h1>
+<div class="container-header shadow-sm">
+    <div class="row">
+        <div class="col-auto d-flex align-items-lg-center ps-5">
+            <h2 class="m-0 ps-2">@ViewData["Title"]</h2>
+        </div>
+    </div>
 </div>
-<div class="table-container">
+<div class="pt-4"></div> <!-- a buffer to push content down so that header won't cover it' -->
+<div class="table-container mt-5">
     <div class="table-responsive">
         <table class="table">
             <thead>

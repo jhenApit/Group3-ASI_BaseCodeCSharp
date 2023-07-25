@@ -7,10 +7,12 @@ namespace Basecode.WebApp.Controllers
     public class ReferencesController : Controller
     {
         public readonly IReferenceFormsService _service;
+        public readonly ICharacterReferencesService _characterReferencesService;
 
-        public ReferencesController(IReferenceFormsService service)
+        public ReferencesController(IReferenceFormsService service, ICharacterReferencesService characterReferencesService)
         {
             _service = service;
+            _characterReferencesService = characterReferencesService;
         }
 
         /// <summary>
@@ -41,13 +43,16 @@ namespace Basecode.WebApp.Controllers
         [HttpPost]
         public IActionResult Submit(ReferenceFormsCreationDto referenceFormsCreationDto)
         {
-            referenceFormsCreationDto.CharacterReferenceId = 2; //sets the character reference id, currently temporary
-            //if error, person as character reference is not in the database
+            var id = 1; //temporary
+            if (_characterReferencesService.GetById(id) == null)
+            {
+                //error
+                return View("Error");
+            }
+            referenceFormsCreationDto.CharacterReferenceId = id; //temporary
 
             _service.Add(referenceFormsCreationDto);
-
             TempData.Clear();
-
             return RedirectToAction("Index", "Home");
         }
     }

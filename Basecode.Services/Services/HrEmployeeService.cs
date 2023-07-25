@@ -65,7 +65,10 @@ namespace Basecode.Services.Services
         {
             return _repository.GetById(id);
         }
-
+        public HrEmployee GetByUserId(string id)
+        {
+            return _repository.GetByUserId(id);
+        }
         /// <summary>
         /// Updates an existing HR employee in the repository.
         /// </summary>

@@ -47,6 +47,10 @@ namespace Basecode.Data.Repositories
         {
             return _context.HrEmployees.Include(e => e.User).FirstOrDefault(e => e.Id == id)!;
         }
+        public HrEmployee GetByUserId(string id)
+        {
+            return _context.HrEmployees.FirstOrDefault(e => e.UserId == id)!;
+        }
 
         /// <summary>
         /// Updates an existing HrEmployee record in the database.

@@ -43,7 +43,7 @@
                                         @foreach (var hrEmployee in Model)
                                         {
                                             <tr>
-                                                <td>@hrEmployee.Name</td>
+                                                <td class="text-capitalize">@hrEmployee.Name</td>
                                                 <td>@hrEmployee.Email</td>
                                                 <td style="text-align: center;">
                                                     <a asp-route-id="@hrEmployee.Id" asp-action="EditHrAccountView">

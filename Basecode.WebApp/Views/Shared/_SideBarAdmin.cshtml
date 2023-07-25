@@ -46,7 +46,7 @@
             </li>
             @if (User.IsInRole("admin"))
             {
-                <li class="nav-item @(activeUrl == "HrList"  || activeUrl == "Account" ? " clicked" : "")">
+                <li class="nav-item @(activeUrl == "HrList"  || activeUrl == "Account" || activeUrl == "EditHrAccountView" ? " clicked" : "")">
                     <a asp-controller="Admin" asp-action="HrList">
                         <i class='bx bxs-user-account'></i>
                         <span class="link_name">Users</span>

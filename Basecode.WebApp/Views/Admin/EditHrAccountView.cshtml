@@ -2,75 +2,115 @@
 @using Basecode.Data.Dtos.HrEmployee
 @model HREmployeeUpdationDto
 @{
-	ViewData["EditHrAccount"] = "EDIT HR EMPLOYEE ACCOUNT INFORMATION";
-	Layout = "_SideBarAdmin";
-	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-	<link rel="stylesheet" href="~/css/CreateAccount.css" />
-	<script src="https://kit.fontawesome.com/b68ff1da95.js" crossorigin="anonymous"></script>
+    ViewData["EditHrAccount"] = "EDIT HR EMPLOYEE ACCOUNT INFORMATION";
+    Layout = "_SideBarAdmin";
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/CreateAccount.css" />
+    <script src="https://kit.fontawesome.com/b68ff1da95.js" crossorigin="anonymous"></script>
 }
 
 <body>
-	<div class="container-fluid h-100">
-		<div class="flex-nowrap">
-			<div class="row h-100">
-				<div class="col content d-flex flex-column p-0">
-					<div class="bg">
-						<h1 class="header-text">
-							EDIT DETAILS
-						</h1>
-					</div>
-					<div class="desc">
-						<p class="p-0">
-							As an admin, you are able to edit an account for the HRs
-							in your company.
-						</p>
-					</div>
-					<form asp-action="EditHrAccount" method="POST">
-						<input type="hidden" asp-for="Id" />
-						<div class="container-fluid text-black w-50">
-							@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
-							{
-								<div class="alert alert-danger" role="alert">
-									@Html.Raw(ViewBag.ErrorMessage)
-								</div>
-							}
-							<div class="form-floating mb-3">
-								<input asp-for="Name" type="text" class="form-control" id="floatingInput"
-			placeholder="name">
-								<label for="floatingInput" class="form-label">Name</label>
-								<span asp-validation-for="Name" class="text-danger"></span>
-							</div>
-							<div class="form-floating mb-3">
-								<input asp-for="Email" type="email" class="form-control" id="floatingInput"
-			placeholder="name@example.com">
-								<label asp-for="Email" for="floatingInput" class="form-label">Email Address</label>
-								<span asp-validation-for="Email" class="text-danger"></span>
-							</div>
-							<div class="form-floating mb-3">
-								<input asp-for="Password" type="password" class="form-control" id="floatingInput"
-			placeholder="password">
-								<label asp-for="Password" for="floatingInput" class="form-label">Password</label>
-								<span asp-validation-for="Password" class="text-danger"></span>
-							</div>
-							<div class="form-check form-switch">
-								<input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-								<label class="form-check-label" for="flexSwitchCheckDefault">Set as Admin</label>
-							</div>
-							<div class="bottom-btn">
-								<a class="cancel-btn" type="button" asp-controller="Admin" asp-action="HrList">Cancel</a>
-								<button type="submit" value="Login" class="save-btn">Update Account</button>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="container-fluid h-100">
+        <div class="flex-nowrap">
+            <div class="row h-100">
+                <div class="col content d-flex flex-column p-0">
+                    <div class="bg">
+                        <h1 class="header-text">
+                            EDIT DETAILS
+                        </h1>
+                    </div>
+                    <div class="desc">
+                        <p class="p-0">
+                            As an admin, you are able to edit an account for the HRs
+                            in your company.
+                        </p>
+                    </div>
+                    <form asp-action="EditHrAccount" method="POST">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="UserId" />
+                        <div class="container-fluid text-black w-50">
+                            @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                            {
+                                <div class="alert alert-danger" role="alert">
+                                    @Html.Raw(ViewBag.ErrorMessage)
+                                </div>
+                            }
+                            @{
+                                string fullName = @Model.Name;
+                                string[] fullNameValues = fullName.Split(' ');
+                                string FirstName = fullNameValues.Length > 0 ? fullNameValues[0].Trim() : "";
+                                string MiddleName = fullNameValues.Length > 1 ? fullNameValues[1].Trim() : "";
+                                string LastName = fullNameValues.Length > 2 ? fullNameValues[2].Trim() : "";
+
+                            }
+                            @if (fullNameValues.Length < 3)
+                            {
+                                LastName = MiddleName;
+                                MiddleName = "";
+                            }
+                            <div class="row mb-3">
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <input asp-for="FirstName" type="text" class="form-control text-capitalize" id="floatingInput"
+                                               placeholder="name" value="@FirstName">
+                                        <label for="floatingInput" class="form-label">First Name</label>
+                                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <input asp-for="MiddleName" type="text" class="form-control text-capitalize" id="floatingInput"
+                                               placeholder="name" value="@MiddleName">
+                                        <label for="floatingInput" class="form-label">Middle Name</label>
+                                        <span asp-validation-for="MiddleName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <input asp-for="LastName" type="text" class="form-control text-capitalize" id="floatingInput"
+                                               placeholder="name" value="@LastName">
+                                        <label for="floatingInput" class="form-label">Last Name</label>
+                                        <span asp-validation-for="LastName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input asp-for="UserName" type="text" class="form-control" id="floatingInput"
+                                       placeholder="username">
+                                <label asp-for="UserName" for="floatingInput" class="form-label">Username</label>
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input asp-for="Email" type="email" class="form-control" id="floatingInput"
+                                       placeholder="name@example.com">
+                                <label asp-for="Email" for="floatingInput" class="form-label">Email Address</label>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input asp-for="Password" type="password" class="form-control" id="floatingInput"
+                                       placeholder="password">
+                                <label asp-for="Password" for="floatingInput" class="form-label">Password</label>
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="isAdmin" asp-for="IsAdmin">
+                                <label class="form-check-label" asp-for="IsAdmin">Set as Admin</label>
+                            </div>
+                            <div class="bottom-btn">
+                                <a class="cancel-btn" type="button" asp-controller="Admin" asp-action="HrList">Cancel</a>
+                                <button type="submit" value="Login" class="save-btn">Update Account</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 
 @section Scripts{
-	@{
-		await Html.RenderPartialAsync("_ValidationScriptsPartial");
-	}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

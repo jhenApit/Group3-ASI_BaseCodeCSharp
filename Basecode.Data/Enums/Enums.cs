@@ -32,5 +32,19 @@ namespace Basecode.Data.Enums
             //values
         }
 
+        public enum EmailType
+        {
+            HRCreationAccountEmail,
+            ScreeningEmailNotification,
+            ScreeningEmailApplicantID,
+            ScreeningEmailofApproval,
+            ScreeningEmailofRegrets,
+            InterviewEmailNotificationSchedule,
+            InterviewReminderEmail,
+            InterviewEmailofApprovalApplicantSchedule,
+            InterviewEmailNotificationAcceptedSchedule,
+            InterviewEmailOfApproval,
+            InterviewEmailOfRegrets
+        }
     }
 }

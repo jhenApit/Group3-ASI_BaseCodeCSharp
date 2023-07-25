@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +12,8 @@ namespace Basecode.Data.Dtos.HrEmployee
     public class HREmployeeCreationDto
     {
         public string UserId { get; set; }
+        [ForeignKey("UserId")]
+        public IdentityUser User { get; set; }
 
         [Required(ErrorMessage = "The 'Name' field is required")]
         [StringLength(150, MinimumLength = 2, ErrorMessage = "Name must be at least 2 characters.")]

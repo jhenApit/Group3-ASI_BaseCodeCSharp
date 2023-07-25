@@ -63,6 +63,31 @@ namespace Basecode.Services.Utils
                         body = "<h1>Dear New User,</h1><p>Thank you for joining our service.</p>";
                         break;
 
+                    case EmailType.InterviewReminderEmail:
+                        subject = "Welcome to Our Service";
+                        body = "<h1>Dear New User,</h1><p>Thank you for joining our service.</p>";
+                        break;
+
+                    case EmailType.InterviewEmailofApprovalApplicantSchedule:
+                        subject = "Welcome to Our Service";
+                        body = "<h1>Dear New User,</h1><p>Thank you for joining our service.</p>";
+                        break;
+
+                    case EmailType.InterviewEmailNotificationAcceptedSchedule:
+                        subject = "Welcome to Our Service";
+                        body = "<h1>Dear New User,</h1><p>Thank you for joining our service.</p>";
+                        break;
+
+                    case EmailType.InterviewEmailOfApproval:
+                        subject = "Welcome to Our Service";
+                        body = "<h1>Dear New User,</h1><p>Thank you for joining our service.</p>";
+                        break;
+
+                    case EmailType.InterviewEmailOfRegrets:
+                        subject = "Welcome to Our Service";
+                        body = "<h1>Dear New User,</h1><p>Thank you for joining our service.</p>";
+                        break;
+
                     default:
                         throw new ArgumentException("Invalid email type.");
                 }

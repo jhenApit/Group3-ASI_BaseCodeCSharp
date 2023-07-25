@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Basecode.Services.Interfaces;
 using NLog;
 using Basecode.Data.Dtos.JobPostings;
+using Basecode.Data.Dtos;
+using Basecode.Data.Models;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -11,13 +13,15 @@ namespace Basecode.WebApp.Controllers
     {
         private readonly IHrEmployeeService _service;
         private readonly IJobPostingsService _jobPostingsService;
+        private readonly IInterviewersService _interviewersService;
         private readonly IErrorHandling _errorHandling;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public HRController(IHrEmployeeService service, IJobPostingsService jobPostingsService, IErrorHandling errorHandling)
+        public HRController(IHrEmployeeService service, IJobPostingsService jobPostingsService, IInterviewersService interviewersService, IErrorHandling errorHandling)
         {
             _service = service;
             _jobPostingsService = jobPostingsService;
+            _interviewersService = interviewersService;
             _errorHandling = errorHandling;
         }
 
@@ -218,5 +222,32 @@ namespace Basecode.WebApp.Controllers
         {
             return View();
         }
+
+        #region Interviewer
+
+        [HttpPost]
+        public IActionResult AddInterviewer(Interviewers interviewers)
+        {
+            _interviewersService.Add(interviewers);
+            return RedirectToAction("Interview");
+            /*if (ModelState.IsValid)
+            {
+                jobPostingsCreationDto.Qualifications = string.Join(", ", jobPostingsCreationDto.QualificationList);
+                jobPostingsCreationDto.Responsibilities = string.Join(", ", jobPostingsCreationDto.ResponsibilityList);
+                var data = _jobPostingsService.CreateJobPosting(jobPostingsCreationDto);
+                if (!data.Result)
+                {
+                    _logger.Error(_errorHandling.SetLog(data));
+                    ViewBag.ErrorMessage = data.Message;
+                    return View(jobPostingsCreationDto);
+                }
+                _jobPostingsService.Add(jobPostingsCreationDto);
+                return RedirectToAction("JobPostList");
+            }
+            ModelState.Clear();
+            return View("JobPostList", jobPostingsCreationDto);*/
+        }
+
+        #endregion
     }
 }

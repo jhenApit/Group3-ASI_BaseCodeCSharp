@@ -24,6 +24,7 @@ namespace Basecode.WebApp
             services.AddTransient<IEmailService, EmailService>();
             services.AddScoped<IAddressService, AddressService>();
             services.AddScoped<ICharacterReferencesService, CharacterReferencesService>();
+            services.AddScoped<IInterviewersService, InterviewersService>();
 
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
@@ -33,6 +34,7 @@ namespace Basecode.WebApp
             services.AddScoped<IAdminRepository, AdminRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<ICharacterReferencesRepository, CharacterReferencesRepository>();
+            services.AddScoped<IInterviewersRepository, InterviewersRepository>();
 
         }
     }

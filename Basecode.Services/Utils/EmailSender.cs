@@ -13,10 +13,14 @@ namespace Basecode.Services.Utils
     {
         private readonly EmailService _emailService;
         private readonly HrEmployee _hrEmployee;
-        public EmailSender(EmailService emailService, HrEmployee hrEmployee)
+        private readonly Applicant _applicant;
+        private readonly Interviewers _interviewers;
+        public EmailSender(EmailService emailService, HrEmployee hrEmployee,Applicant applicant, Interviewers interviewers)
         {
             _emailService = emailService;
             _hrEmployee = hrEmployee;
+            _applicant = applicant;
+            _interviewers = interviewers;
         }
 
         public async Task SendEmailAsync(EmailType emailType, string recipient)
@@ -37,55 +41,71 @@ namespace Basecode.Services.Utils
                         break;
 
                     //Email for Screening
-                    case EmailType.ScreeningEmailNotification:
+                    case EmailType.ScreeningEmailNotificationHR:
                         subject = "Applicant's Status";
-                        body = "<h1>Dear New User,</h1><p>Thank you for joining our service.</p>";
+                        body = $"Dear Mr/Mrs {_hrEmployee.Name}, <br/> <br/> " +
+                               $"<p> Applicant {_applicant.Name} applicantion's status is {_applicant.Status}.</p>";
+                        break;
+
+                    case EmailType.ScreeningEmailNotificationApplicant:
+                        subject = "Applicant's Status";
+                        body = $"Dear Mr/Mrs {_applicant.Name}, <br/> <br/> <p>Your application status is {_applicant.Status}.</p>";
                         break;
 
                     case EmailType.ScreeningEmailApplicantID:
                         subject = "Applicantion Entry";
-                        body = "<h1>Dear Applicant,</h1><p>Your applicant ID is XYZ123.</p>";
+                        body = $"Dear Mr/Mrs {_applicant.Name},<br/> <br/> <p>Your applicant ID is {_applicant.ApplicantId}.</p>";
                         break;
 
-                    case EmailType.ScreeningEmailofApproval:
-                        subject = "Congratulations!";
-                        body = "<h1>Dear New User,</h1><p>Congratulations! Your application has been approved.</p>";
+                    case EmailType.ScreeningEmailofApproval: // contains 2 buttons Approve/Reject
+                        subject = "Approval Email";
+                        body = $"Dear Mr/Mrs {_hrEmployee.Name},<br/> <br/> <p>Congratulations!c Your application has been approved.</p>";
                         break;
 
                     case EmailType.ScreeningEmailofRegrets:
-                        subject = "Regarding Your Application";
-                        body = "<h1>Dear New User,</h1><p>We regret to inform you that your application was not successful.</p>";
+                        subject = "Email of Regrets";
+                        body = $"Dear Mr/Mrs {_applicant.Name}, <br/> <br/> <p>We regret to inform you that your application was not successful.</p>";
                         break;
 
                     //Email for Interview
-                    case EmailType.InterviewEmailNotificationSchedule:
-                        subject = "Welcome to Our Service";
-                        body = "<h1>Dear New User,</h1><p>Thank you for joining our service.</p>";
+                    case EmailType.InterviewEmailNotificationInterviewer:
+                        subject = "Interview Schedule";
+                        body = $"Dear Mr/Mrs {_interviewers.Name},<br/> <br/> <p>Thank you for joining our service.</p>";
                         break;
 
-                    case EmailType.InterviewReminderEmail:
-                        subject = "Welcome to Our Service";
-                        body = "<h1>Dear New User,</h1><p>Thank you for joining our service.</p>";
+                    case EmailType.InterviewEmailNotificationApplicant:
+                        subject = "Interview Schedule";
+                        body = $"Dear Mr/Mrs {_applicant.Name}, <br/> <br/><p>Thank you for joining our service.</p>";
+                        break;
+
+                    case EmailType.InterviewReminderEmailInterviewer:
+                        subject = "Schedule Reminder";
+                        body = $"Dear Mr/Mrs {_interviewers.Name}, <br/> <br/> <p>Thank you for joining our service.</p>";
+                        break;
+
+                    case EmailType.InterviewReminderEmailHR:
+                        subject = "Schedule Reminder";
+                        body = $"Dear Mr/Mrs {_hrEmployee.Name}, <br/> <br/> <p>Thank you for joining our service.</p>";
                         break;
 
                     case EmailType.InterviewEmailofApprovalApplicantSchedule:
-                        subject = "Welcome to Our Service";
-                        body = "<h1>Dear New User,</h1><p>Thank you for joining our service.</p>";
+                        subject = "Approved Schedule";
+                        body = $"Dear Mr/Mrs {_applicant.Name}, <br/> <br/> <p>Thank you for joining our service.</p>";
                         break;
 
                     case EmailType.InterviewEmailNotificationAcceptedSchedule:
-                        subject = "Welcome to Our Service";
-                        body = "<h1>Dear New User,</h1><p>Thank you for joining our service.</p>";
+                        subject = "Accepted Schedule";
+                        body = $"Dear Mr/Mrs {_interviewers.Name}, <br/> <br/> <p>Thank you for joining our service.</p>";
                         break;
 
-                    case EmailType.InterviewEmailOfApproval:
-                        subject = "Welcome to Our Service";
-                        body = "<h1>Dear New User,</h1><p>Thank you for joining our service.</p>";
+                    case EmailType.InterviewEmailOfApproval: // contains 2 buttons Passed/Failed
+                        subject = "Inteview/Examination Result";
+                        body = $"Dear Mr/Mrs {_hrEmployee.Name}, <br/> <br/> <p>Thank you for joining our service.</p>";
                         break;
 
                     case EmailType.InterviewEmailOfRegrets:
-                        subject = "Welcome to Our Service";
-                        body = "<h1>Dear New User,</h1><p>Thank you for joining our service.</p>";
+                        subject = "Email of Regrets";
+                        body = $"Dear Mr/Mrs {_applicant.Name}, <br/> <br/> <p>Thank you for joining our service.</p>";
                         break;
 
                     default:

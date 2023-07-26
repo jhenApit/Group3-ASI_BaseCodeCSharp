@@ -29,7 +29,7 @@ namespace Basecode.Data.Models
         public byte[]? Photo { get; set; } 
 
         [Phone(ErrorMessage = "MobileNo must be a valid phone number.")]
-        public int PhoneNumber { get; set; } 
+        public string? PhoneNumber { get; set; } 
 
         [EmailAddress(ErrorMessage = "Email must be a valid email address.")]
         public string? Email { get; set; }

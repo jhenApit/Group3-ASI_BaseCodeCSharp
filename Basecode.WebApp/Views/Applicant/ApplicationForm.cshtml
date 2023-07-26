@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="form">
-        <form method="post" asp-route-id = "Applicant.JobId" asp-controller="Applicant" asp-action="ApplicationFormProcess" enctype="multipart/form-data" id="application_form" novalidate>
+        <form method="post" asp-controller="Applicant" asp-action="ApplicationFormProcess" enctype="multipart/form-data" id="application_form" novalidate>
             <!--Hidden input field for the jobid-->
             <input type="hidden" asp-for="Applicant.JobId" value="@Model?.JobPosting?.Id" />
             <!--Resume-->

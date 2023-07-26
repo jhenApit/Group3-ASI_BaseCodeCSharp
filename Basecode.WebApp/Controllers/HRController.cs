@@ -187,15 +187,6 @@ namespace Basecode.WebApp.Controllers
         }
 
         /// <summary>
-        /// View List of Upcoming Interviews
-        /// </summary>
-        /// <returns>Redirect to Interview Page</returns>
-        public IActionResult Interview()
-        {
-            return View();
-        }
-
-        /// <summary>
         /// Allows HR to create a new interview entry
         /// </summary>
         /// <returns>Redirect to Create Interview Page</returns>
@@ -241,6 +232,24 @@ namespace Basecode.WebApp.Controllers
         }
 
         #region Interview
+
+        /// <summary>
+        /// View List of Upcoming Interviews
+        /// </summary>
+        /// <returns>Redirect to Interview Page</returns>
+        public IActionResult Interview()
+        {
+            var interviewers = new Interviewers();
+
+            var viewModel = new InterviewsViewModel
+            {
+                Interviewers = interviewers,
+                InterviewersList = _interviewersService.RetrieveAll(),
+                InterviewsList = _interviewsService.RetrieveAll()
+            };
+
+            return View(viewModel);
+        }
 
         public IActionResult AddInterview(InterviewsCreationDto interviewsCreationDto)
         {

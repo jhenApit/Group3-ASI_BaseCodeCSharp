@@ -15,12 +15,15 @@ namespace Basecode.Services.Utils
         private readonly HrEmployee _hrEmployee;
         private readonly Applicant _applicant;
         private readonly Interviewers _interviewers;
-        public EmailSender(EmailService emailService, HrEmployee hrEmployee,Applicant applicant, Interviewers interviewers)
+        private readonly CharacterReferences _characterReferences;
+        public EmailSender(EmailService emailService, HrEmployee hrEmployee,Applicant applicant, 
+                           Interviewers interviewers, CharacterReferences characterReferences)
         {
             _emailService = emailService;
             _hrEmployee = hrEmployee;
             _applicant = applicant;
             _interviewers = interviewers;
+            _characterReferences = characterReferences;
         }
 
         public async Task SendEmailAsync(EmailType emailType, string recipient)
@@ -106,6 +109,43 @@ namespace Basecode.Services.Utils
                     case EmailType.InterviewEmailOfRegrets:
                         subject = "Email of Regrets";
                         body = $"Dear Mr/Mrs {_applicant.Name}, <br/> <br/> <p>Thank you for joining our service.</p>";
+                        break;
+
+                    //Email for Background Check
+                    case EmailType.BackgroundCheckEmailofGratitude:
+                        subject = "Email of Gratitude";
+                        body = $"Dear Mr/Mrs {_characterReferences.Name}, <br/> <br/> <p>Thank you for joining our service.</p>";
+                        break;
+
+                    case EmailType.BackgroundCheckReminderEmail:
+                        subject = "Email of Gratitude";
+                        body = $"Dear Mr/Mrs {_applicant.Name}, <br/> <br/> <p>Thank you for joining our service.</p>";
+                        break;
+
+                    case EmailType.BackgroundCheckEmailNotification:
+                        subject = "Email of Gratitude";
+                        body = $"Dear Mr/Mrs {_hrEmployee.Name}, <br/> <br/> <p>Thank you for joining our service.</p>";
+                        break;
+
+                    case EmailType.BackgroundCheckEmailOfApproval:
+                        subject = "Email of Gratitude";
+                        body = $"Dear Mr/Mrs {_hrEmployee.Name}, <br/> <br/> <p>Thank you for joining our service.</p>";
+                        break;
+
+                    //Email for Job Offer
+                    case EmailType.JobOfferEmailOfApproval:
+                        subject = "Email of Gratitude";
+                        body = $"Dear Mr/Mrs {_hrEmployee.Name}, <br/> <br/> <p>Thank you for joining our service.</p>";
+                        break;
+
+                    case EmailType.JobOfferEmailNotification:
+                        subject = "Email of Gratitude";
+                        body = $"Dear Mr/Mrs {_hrEmployee.Name}, <br/> <br/> <p>Thank you for joining our service.</p>";
+                        break;
+
+                    case EmailType.JobOfferConfirmationEmail:
+                        subject = "Email of Gratitude";
+                        body = $"Dear Mr/Mrs {_hrEmployee.Name}, <br/> <br/> <p>Thank you for joining our service.</p>";
                         break;
 
                     default:

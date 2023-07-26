@@ -55,7 +55,7 @@ namespace Basecode.Data.Enums
 
             //Background Check
             BackgroundCheckEmailofGratitude,
-            BackgroundCheckeReminderEmail,
+            BackgroundCheckReminderEmail,
             BackgroundCheckEmailNotification,
             BackgroundCheckEmailOfApproval,
 

@@ -20,7 +20,7 @@ namespace Basecode.Data.Dtos.JobPostings
         public WorkingHours Hours { get; set; }
         public JobStatus JobStatus { get; set; }
         public EmploymentType EmploymentType { get; set; }
+        public string? UpdatedBy { get; set; }
         public DateTime UpdatedTime { get; set; }
-        public int UpdatedById { get; set; }
     }
 }

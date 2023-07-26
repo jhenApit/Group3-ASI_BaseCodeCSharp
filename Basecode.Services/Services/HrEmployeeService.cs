@@ -47,11 +47,6 @@ namespace Basecode.Services.Services
         public void Add(HREmployeeCreationDto hrEmployeeDto)
         {
             var hrEmployeeModel = _mapper.Map<HrEmployee>(hrEmployeeDto);
-            hrEmployeeModel.CreatedBy = System.Environment.UserName;
-            hrEmployeeModel.CreatedDate = DateTime.Now;
-            hrEmployeeModel.ModifiedBy = System.Environment.UserName;
-            hrEmployeeModel.ModifiedDate = DateTime.Now;
-            hrEmployeeModel.IsDeleted = false;
 
             _repository.Add(hrEmployeeModel);
         }
@@ -81,32 +76,19 @@ namespace Basecode.Services.Services
             hrEmployeeModel.Name = hrEmployee.Name;
             hrEmployeeModel.Email = hrEmployee.Email;
             hrEmployeeModel.Password = hrEmployee.Password;
-            hrEmployeeModel.ModifiedBy = System.Environment.UserName;
+            hrEmployeeModel.ModifiedBy = hrEmployee.ModifiedBy;
             hrEmployeeModel.ModifiedDate = DateTime.Now;
 
             _repository.Update(hrEmployeeModel);
         }
 
         /// <summary>
-        /// Marks an HR employee as deleted in the repository.
-        /// </summary>
-        /// <param name="id">The ID of the HR employee to mark as deleted</param>
-        public void SemiDelete(int id)
-        {
-            var hr = _repository.GetById(id);
-            hr.IsDeleted = true;
-            hr.ModifiedBy = System.Environment.UserName;
-            hr.ModifiedDate = DateTime.Now;
-            _repository.SemiDelete(hr);
-        }
-
-        /// <summary>
         /// Permanently deletes an HR employee from the repository.
         /// </summary>
         /// <param name="id">The ID of the HR employee to permanently delete</param>
-        public void PermaDelete(int id)
+        public void Delete(int id)
         {
-            _repository.PermaDelete(id);
+            _repository.Delete(id);
         }
 
         /// <summary>
@@ -220,7 +202,5 @@ namespace Basecode.Services.Services
             }
             return _logContent;
         }
-
-
     }
 }

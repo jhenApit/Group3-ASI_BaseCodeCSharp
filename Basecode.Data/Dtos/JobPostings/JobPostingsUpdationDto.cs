@@ -22,6 +22,5 @@ namespace Basecode.Data.Dtos.JobPostings
         public EmploymentType EmploymentType { get; set; }
         public DateTime UpdatedTime { get; set; }
         public int UpdatedById { get; set; }
-        public bool IsDeleted { get; set; }
     }
 }

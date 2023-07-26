@@ -21,7 +21,7 @@ namespace Basecode.WebApp.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public HRController(IHrEmployeeService service, IJobPostingsService jobPostingsService, IInterviewersService interviewersService, IErrorHandling errorHandling, UserManager<IdentityUser> userManager)
+        public HRController(IHrEmployeeService service, IJobPostingsService jobPostingsService, IInterviewersService interviewersService, IInterviewsService interviewsService, IErrorHandling errorHandling, UserManager<IdentityUser> userManager)
         {
             _service = service;
             _jobPostingsService = jobPostingsService;
@@ -229,6 +229,18 @@ namespace Basecode.WebApp.Controllers
         public IActionResult DisqualifiedApplicants()
         {
             return View();
+        }
+
+        #region Interview
+
+        public IActionResult AddInterview(InterviewsCreationDto interviewsCreationDto)
+        {
+            interviewsCreationDto.ApplicantId = 1;
+            interviewsCreationDto.InterviewerId = 1;
+            interviewsCreationDto.InterviewDate = DateTime.Now;
+            interviewsCreationDto.Results = false;
+            _interviewsService.Add(interviewsCreationDto);
+            return RedirectToAction("Interview");
         }
 
         #region Interview

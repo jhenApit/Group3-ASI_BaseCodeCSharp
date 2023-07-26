@@ -12,7 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Basecode.Data.Migrations
 {
     [DbContext(typeof(BasecodeContext))]
+<<<<<<<< HEAD:Basecode.Data/Migrations/20230727023004_Basecode.Data.Designer.cs
     [Migration("20230727023004_Basecode.Data")]
+========
+    [Migration("20230726080508_Basecode.Data")]
+>>>>>>>> ff6914a (add admin account):Basecode.Data/Migrations/20230726080508_Basecode.Data.Designer.cs
     partial class BasecodeData
     {
         /// <inheritdoc />
@@ -318,8 +322,13 @@ namespace Basecode.Data.Migrations
                     b.Property<string>("Responsibilities")
                         .HasColumnType("nvarchar(max)");
 
+<<<<<<<< HEAD:Basecode.Data/Migrations/20230727023004_Basecode.Data.Designer.cs
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
+========
+                    b.Property<int?>("UpdatedById")
+                        .HasColumnType("int");
+>>>>>>>> ff6914a (add admin account):Basecode.Data/Migrations/20230726080508_Basecode.Data.Designer.cs
 
                     b.Property<DateTime?>("UpdatedTime")
                         .HasColumnType("datetime2");

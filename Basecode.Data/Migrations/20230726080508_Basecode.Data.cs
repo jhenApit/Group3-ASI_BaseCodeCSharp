@@ -188,9 +188,15 @@ namespace Basecode.Data.Migrations
                     JobStatus = table.Column<int>(type: "int", nullable: false),
                     EmploymentType = table.Column<int>(type: "int", nullable: false),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+<<<<<<<< HEAD:Basecode.Data/Migrations/20230727023004_Basecode.Data.cs
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UpdatedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+========
+                    CreatedById = table.Column<int>(type: "int", nullable: false),
+                    UpdatedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedById = table.Column<int>(type: "int", nullable: true),
+>>>>>>>> ff6914a (add admin account):Basecode.Data/Migrations/20230726080508_Basecode.Data.cs
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -377,7 +383,12 @@ namespace Basecode.Data.Migrations
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+<<<<<<<< HEAD:Basecode.Data/Migrations/20230727023004_Basecode.Data.cs
                     ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+========
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+>>>>>>>> ff6914a (add admin account):Basecode.Data/Migrations/20230726080508_Basecode.Data.cs
                 },
                 constraints: table =>
                 {
@@ -429,6 +440,10 @@ namespace Basecode.Data.Migrations
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
 
+            migrationBuilder.CreateIndex(
+                name: "IX_HrEmployees_UserId",
+                table: "HrEmployees",
+                column: "UserId");
 
             //add roles
             migrationBuilder.InsertData(
@@ -472,12 +487,11 @@ namespace Basecode.Data.Migrations
                 table: "HrEmployees",
                 columns: new[]
                 {
-                    "Id",
                     "UserId",
                     "Name",
                     "Email",
                     "Password",
-                    "CreateBy",
+                    "CreatedBy",
                     "CreatedDate",
                     "ModifiedBy",
                     "ModifiedDate",
@@ -486,17 +500,16 @@ namespace Basecode.Data.Migrations
                 },
                 values: new object[,]
                 {
-                    { 
-                        "1", 
-                        "1", 
-                        "Admin Account", 
-                        "admin@asi-dev2.com", 
-                        "AQAAAAIAAYagAAAAEH5a85Bn0MNwV4GKhUKR6sN7LmTb9awIvOp+KcXboZjUyUN3q9JS+l8nMtCZGNa0xA==", 
+                    {
+                        "1",
+                        "Admin Account",
+                        "admin@asi-dev2.com",
+                        "AQAAAAIAAYagAAAAEH5a85Bn0MNwV4GKhUKR6sN7LmTb9awIvOp+KcXboZjUyUN3q9JS+l8nMtCZGNa0xA==",
                         "default",
                         DateTime.Now,
                         "default",
                         DateTime.Now,
-                        "False"
+                        false
                     }
                 });
 
@@ -511,7 +524,7 @@ namespace Basecode.Data.Migrations
                 {
                     { "1" , "1" }
                 });
-        }
+    }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)

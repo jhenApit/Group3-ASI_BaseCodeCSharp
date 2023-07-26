@@ -51,7 +51,7 @@
     </div>
     <div class="line"></div>
 </div>
-<div class="table-style">
+<div class="table-style pb-3">
     <table class="table">
         <thead>
             <tr>
@@ -74,7 +74,7 @@
                                 EDIT
                             </p>
                         </a>
-                        <button class="btn b-red button-edit-cancel" data-toggle="modal" data-target="#cancelInterviewModal">
+                        <button class="btn b-red button-edit-cancel" data-bs-toggle="modal" data-bs-target="#@("modal-" + interviews.Id)">
                             <p class="select-text">
                                 CANCEL
                             </p>
@@ -121,37 +121,50 @@
     </div>
 </div>
 
-<!-- Cancel Interview Modal -->
-<div class="modal fade" id="cancelInterviewModal" tabindex="-1" role="dialog" aria-labelledby="cancelInterviewModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content py-3">
-            <div class="modal-body">
-                <p class="text-center">This Interview Schedule will be <strong>deleted.</strong></p>
-                <p class="text-center"><strong><span style="color: #FF0000;">Warning!</span> This cannot be undone!</strong></p>
-                <div class="d-flex justify-content-center align-items-center gap-3">
-                    <button type="button" class="btn b-cancel px-5" data-dismiss="modal">CANCEL</button>
-                    <button type="button" class="btn b-red px-5">DELETE</button>
+@foreach (var interviews in Model.InterviewsList)
+{
+    <!-- Cancel Interview Modal -->
+    <div class="modal fade" id="@("modal-" + interviews.Id)" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h5 class="modal-title" id="exampleModalLabel">Warning!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="text-center">This Interview Schedule will be <strong>deleted.</strong></p>
+                    <p class="text-center"><strong><span style="color: #FF0000;">Warning!</span> This cannot be undone!</strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn b-cancel px-3" data-bs-dismiss="modal">CANCEL</button>
+                    <button type="button" class="btn b-red px-3" data-bs-target="#@("modal2-" + interviews.Id)" data-bs-toggle="modal" data-bs-dismiss="modal">
+                        DELETE
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Delete Interview Success Modal -->
-<div class="modal fade" id="deleteInterviewSuccessModal" tabindex="-1" role="dialog" aria-labelledby="deleteInterviewSuccessModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content p-5">
-            <div class="modal-body">
-                <p class="text-center">
-                    <strong>
-                        Interview Schedule
-                        successfully deleted.
-                    </strong>
-                </p>
-                <div class="d-flex justify-content-center align-items-center">
-                    <button type="button" class="btn b-red px-5">OKAY</button>
+    <!-- Delete Interview Success Modal -->
+    <div class="modal fade" id="@("modal2-" + interviews.Id)" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalToggleLabel2">Success</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="text-center">
+                        <strong>
+                            Interview Schedule
+                            successfully deleted.
+                        </strong>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-danger" asp-action="DeleteInterview" asp-route-id="@interviews.Id">OKAY</a>
                 </div>
             </div>
         </div>
     </div>
-</div>
+}

@@ -429,10 +429,88 @@ namespace Basecode.Data.Migrations
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_HrEmployees_UserId",
+
+            //add roles
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[]
+                {"Id", "Name", "NormalizedName", "ConcurrencyStamp"
+                },
+                values: new object[,]
+                {
+                    { "1","admin", "ADMIN", Guid.NewGuid().ToString() },
+                    { "2", "hr", "HR", Guid.NewGuid().ToString() }
+                });
+
+            //Create admin account
+            migrationBuilder.InsertData(
+           table: "AspNetUsers",
+           columns: new[]
+           {
+                "Id",
+                "UserName",
+                "NormalizedUserName",
+                "Email",
+                "NormalizedEmail",
+                "EmailConfirmed",
+                "PasswordHash",
+                "SecurityStamp",
+                "ConcurrencyStamp",
+                "PhoneNumber",
+                "PhoneNumberConfirmed",
+                "TwoFactorEnabled",
+                "LockoutEnd",
+                "LockoutEnabled",
+                "AccessFailedCount"
+           },
+           values: new object[,]
+           {
+                { "1", "admin", "ADMIN", "admin@asi-dev2.com", "ADMIN@ASI-DEV2.COM", true, "AQAAAAIAAYagAAAAEH5a85Bn0MNwV4GKhUKR6sN7LmTb9awIvOp+KcXboZjUyUN3q9JS+l8nMtCZGNa0xA==", Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), null, false, false, null, false, 0 }
+           });
+
+            migrationBuilder.InsertData(
                 table: "HrEmployees",
-                column: "UserId");
+                columns: new[]
+                {
+                    "Id",
+                    "UserId",
+                    "Name",
+                    "Email",
+                    "Password",
+                    "CreateBy",
+                    "CreatedDate",
+                    "ModifiedBy",
+                    "ModifiedDate",
+                    "IsDeleted"
+
+                },
+                values: new object[,]
+                {
+                    { 
+                        "1", 
+                        "1", 
+                        "Admin Account", 
+                        "admin@asi-dev2.com", 
+                        "AQAAAAIAAYagAAAAEH5a85Bn0MNwV4GKhUKR6sN7LmTb9awIvOp+KcXboZjUyUN3q9JS+l8nMtCZGNa0xA==", 
+                        "default",
+                        DateTime.Now,
+                        "default",
+                        DateTime.Now,
+                        "False"
+                    }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[]
+                {
+                    "UserId",
+                    "RoleId"
+                },
+                values: new object[,]
+                {
+                    { "1" , "1" }
+                });
         }
 
         /// <inheritdoc />

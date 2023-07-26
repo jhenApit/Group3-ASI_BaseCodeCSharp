@@ -5,9 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Basecode.Data.Dtos;
+using Basecode.Data.Dtos.JobPostings;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
+using Basecode.Services.Utils;
 
 namespace Basecode.Services.Services
 {
@@ -15,6 +17,7 @@ namespace Basecode.Services.Services
     {
         private readonly IApplicantRepository _repository;
         private readonly IMapper _mapper;
+        private readonly LogContent _logContent = new();
         public ApplicantService(IApplicantRepository repository, IMapper mapper)
         {
             _repository = repository;
@@ -26,12 +29,14 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="id">The ID of the applicant.</param>
         /// <returns>The applicant with the specified ID.</returns>
-        public void Add(ApplicantCreationDto applicant)
+        public int Add(ApplicantCreationDto applicant)
         {
             var applicantModel = _mapper.Map<Applicants>(applicant);
             applicantModel.ApplicantId = GenerateRandomApplicantId();
             applicantModel.ApplicationDate = DateTime.Now;
+            applicantModel.ApplicationStatus = Data.Enums.Enums.ApplicationStatus.UndergoingBackgroundCheck;
             _repository.Add(applicantModel);
+            return applicantModel.Id;
         }
         private static string? GenerateRandomApplicantId()
         {
@@ -60,6 +65,23 @@ namespace Basecode.Services.Services
         public List<Applicants> RetrieveAll()
         {
             return _repository.RetrieveAll().ToList();
+        }
+
+        public LogContent AddApplicantLogContent(ApplicantCreationDto applicantCreationDto)
+        {
+            Applicants applicant = GetByApplicantId(applicantCreationDto.ApplicantId);
+            if (applicant != null)
+            {
+                _logContent.Result = false;
+                _logContent.ErrorCode = "400";
+                _logContent.Message = "Applicant already applied for this job!";
+            }
+            else
+            {
+                _logContent.Result = true;
+            }
+
+            return _logContent;
         }
     }
 }

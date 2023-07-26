@@ -261,25 +261,11 @@ namespace Basecode.WebApp.Controllers
             return RedirectToAction("Interview");
         }
 
-        /*public IActionResult Add(JobPostingsCreationDto jobPostingsCreationDto)
+        public IActionResult DeleteInterview(int id)
         {
-            if (ModelState.IsValid)
-            {
-				jobPostingsCreationDto.Qualifications = string.Join(", ", jobPostingsCreationDto.QualificationList);
-				jobPostingsCreationDto.Responsibilities = string.Join(", ", jobPostingsCreationDto.ResponsibilityList);
-				var data = _jobPostingsService.CreateJobPosting(jobPostingsCreationDto);
-                if (!data.Result)
-                {
-                    _logger.Error(_errorHandling.SetLog(data));
-                    ViewBag.ErrorMessage = data.Message;
-                    return View(jobPostingsCreationDto);
-                }
-                _jobPostingsService.Add(jobPostingsCreationDto);
-                return RedirectToAction("JobPostList");
-            }
-            ModelState.Clear();
-			return View("JobPostList", jobPostingsCreationDto);
-		}*/
+            _interviewsService.Delete(id);
+            return RedirectToAction("Interview");
+        }
 
         #endregion
 

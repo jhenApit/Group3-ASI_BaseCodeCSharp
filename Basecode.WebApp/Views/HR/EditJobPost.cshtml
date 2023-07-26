@@ -70,8 +70,8 @@
             <div class="responsibility-input-rows">
                 @foreach (var value in responsibilityValues)
                 {
-                    <div class="qualification-input-row">
-                        <input asp-for="ResponsibilityList[inputCount]" type="text" class="qualification-input" value="@value.Trim()" />
+                    <div class="responsibility-input-row">
+                        <input asp-for="ResponsibilityList[inputCount]" type="text" class="responsibility-input" value="@value.Trim()" />
                         <button class="remove-button" type="button" style="display: block;">Remove</button>
                     </div>
                     inputCount++;
@@ -169,7 +169,7 @@
             var inputField = document.createElement('input');
             inputField.type = 'text';
             inputField.className = 'responsibility-input';
-            inputField.name = 'QualificationList[' + inputCount + ']';
+            inputField.name = 'ResponsibilitiesList[' + inputCount + ']';
             newRow.appendChild(inputField);
 
             var removeButton = document.createElement('button');

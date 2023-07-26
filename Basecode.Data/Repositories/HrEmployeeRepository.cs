@@ -25,7 +25,7 @@ namespace Basecode.Data.Repositories
         /// <returns>An IQueryable of HrEmployee.</returns>
         public IQueryable<HrEmployee> RetrieveAll()
         {
-            return this.GetDbSet<HrEmployee>().Where(e => !e.IsDeleted);
+            return this.GetDbSet<HrEmployee>().Where(e => !e.IsDeleted).Include(e => e.User);
         }
 
         /// <summary>
@@ -45,7 +45,11 @@ namespace Basecode.Data.Repositories
         /// <returns>The HrEmployee object with the specified ID.</returns>
         public HrEmployee GetById(int id)
         {
-            return _context.HrEmployees.Find(id)!;
+            return _context.HrEmployees.Include(e => e.User).FirstOrDefault(e => e.Id == id)!;
+        }
+        public HrEmployee GetByUserId(string id)
+        {
+            return _context.HrEmployees.FirstOrDefault(e => e.UserId == id)!;
         }
 
         /// <summary>

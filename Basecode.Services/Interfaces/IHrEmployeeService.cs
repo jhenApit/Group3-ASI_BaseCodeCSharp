@@ -16,6 +16,7 @@ namespace Basecode.Services.Interfaces
         HrEmployee GetByEmail(string email);
         void Add(HREmployeeCreationDto hrEmployee);
         HrEmployee GetById(int id);
+        HrEmployee GetByUserId(string id);
         void Update(HREmployeeUpdationDto hrEmployee);
         void SemiDelete(int id);
         void PermaDelete(int id);

@@ -5,6 +5,7 @@ using NLog;
 using Basecode.Data.Dtos.JobPostings;
 using Basecode.Data.Dtos;
 using Basecode.Data.Models;
+using Basecode.Data.Dtos.Interviews;
 using Microsoft.AspNetCore.Identity;
 
 namespace Basecode.WebApp.Controllers
@@ -15,6 +16,7 @@ namespace Basecode.WebApp.Controllers
         private readonly IHrEmployeeService _service;
         private readonly IJobPostingsService _jobPostingsService;
         private readonly IInterviewersService _interviewersService;
+        private readonly IInterviewsService _interviewsService;
         private readonly IErrorHandling _errorHandling;
         private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -24,6 +26,7 @@ namespace Basecode.WebApp.Controllers
             _service = service;
             _jobPostingsService = jobPostingsService;
             _interviewersService = interviewersService;
+            _interviewsService = interviewsService;
             _errorHandling = errorHandling;
             _userManager = userManager;
         }
@@ -237,6 +240,40 @@ namespace Basecode.WebApp.Controllers
             return View();
         }
 
+        #region Interview
+
+        public IActionResult AddInterview(InterviewsCreationDto interviewsCreationDto)
+        {
+            interviewsCreationDto.ApplicantId = 1;
+            interviewsCreationDto.InterviewerId = 1;
+            interviewsCreationDto.InterviewDate = DateTime.Now;
+            interviewsCreationDto.Results = false;
+            _interviewsService.Add(interviewsCreationDto);
+            return RedirectToAction("Interview");
+        }
+
+        /*public IActionResult Add(JobPostingsCreationDto jobPostingsCreationDto)
+        {
+            if (ModelState.IsValid)
+            {
+				jobPostingsCreationDto.Qualifications = string.Join(", ", jobPostingsCreationDto.QualificationList);
+				jobPostingsCreationDto.Responsibilities = string.Join(", ", jobPostingsCreationDto.ResponsibilityList);
+				var data = _jobPostingsService.CreateJobPosting(jobPostingsCreationDto);
+                if (!data.Result)
+                {
+                    _logger.Error(_errorHandling.SetLog(data));
+                    ViewBag.ErrorMessage = data.Message;
+                    return View(jobPostingsCreationDto);
+                }
+                _jobPostingsService.Add(jobPostingsCreationDto);
+                return RedirectToAction("JobPostList");
+            }
+            ModelState.Clear();
+			return View("JobPostList", jobPostingsCreationDto);
+		}*/
+
+        #endregion
+
         #region Interviewer
 
         [HttpPost]
@@ -262,6 +299,6 @@ namespace Basecode.WebApp.Controllers
             return View("JobPostList", jobPostingsCreationDto);*/
         }
 
-        #endregion
-    }
+    #endregion
+}
 }

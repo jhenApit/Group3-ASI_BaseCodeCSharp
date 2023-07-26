@@ -251,11 +251,13 @@ namespace Basecode.WebApp.Controllers
             return View(viewModel);
         }
 
+        [HttpPost]
         public IActionResult AddInterview(InterviewsCreationDto interviewsCreationDto)
         {
+            Console.WriteLine(interviewsCreationDto.InterviewDate);
             interviewsCreationDto.ApplicantId = 1;
             interviewsCreationDto.InterviewerId = 1;
-            interviewsCreationDto.InterviewDate = DateTime.Now;
+            interviewsCreationDto.InterviewDate = interviewsCreationDto.InterviewDate;
             interviewsCreationDto.Results = false;
             _interviewsService.Add(interviewsCreationDto);
             return RedirectToAction("Interview");

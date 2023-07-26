@@ -62,25 +62,34 @@
             </tr>
         </thead>
         <tbody>
-            @foreach(var interviews in Model.InterviewsList)
+            @if (Model.InterviewsList == null || Model.InterviewsList.Count == 0)
             {
                 <tr>
-                    <td>@interviews.InterviewDate</td>
-                    <td>@interviews.ApplicantId</td>
-                    <td>@interviews.InterviewType</td>
-                    <td>
-                        <a asp-action="EditInterview" class="btn b-blue button-edit-cancel">
-                            <p class="select-text">
-                                EDIT
-                            </p>
-                        </a>
-                        <button class="btn b-red button-edit-cancel" data-bs-toggle="modal" data-bs-target="#@("modal-" + interviews.Id)">
-                            <p class="select-text">
-                                CANCEL
-                            </p>
-                        </button>
-                    </td>
+                    <td class="text-muted lead" colspan="4"><em>No upcoming interviews</em></td>
                 </tr>
+            }
+            else
+            {
+                @foreach (var interviews in Model.InterviewsList)
+                {
+                    <tr>
+                        <td>@interviews.InterviewDate</td>
+                        <td>@interviews.ApplicantId</td>
+                        <td>@interviews.InterviewType</td>
+                        <td>
+                            <a asp-action="EditInterview" class="btn b-blue button-edit-cancel">
+                                <p class="select-text">
+                                    EDIT
+                                </p>
+                            </a>
+                            <button class="btn b-red button-edit-cancel" data-bs-toggle="modal" data-bs-target="#@("modal-" + interviews.Id)">
+                                <p class="select-text">
+                                    CANCEL
+                                </p>
+                            </button>
+                        </td>
+                    </tr>
+                }
             }
         </tbody>
     </table>

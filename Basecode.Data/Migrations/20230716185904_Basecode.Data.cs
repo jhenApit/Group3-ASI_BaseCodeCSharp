@@ -479,6 +479,38 @@ namespace Basecode.Data.Migrations
            });
 
             migrationBuilder.InsertData(
+                table: "HrEmployees",
+                columns: new[]
+                {
+                    "Id",
+                    "UserId",
+                    "Name",
+                    "Email",
+                    "Password",
+                    "CreateBy",
+                    "CreatedDate",
+                    "ModifiedBy",
+                    "ModifiedDate",
+                    "IsDeleted"
+
+                },
+                values: new object[,]
+                {
+                    { 
+                        "1", 
+                        "1", 
+                        "Admin Account", 
+                        "admin@asi-dev2.com", 
+                        "AQAAAAIAAYagAAAAEH5a85Bn0MNwV4GKhUKR6sN7LmTb9awIvOp+KcXboZjUyUN3q9JS+l8nMtCZGNa0xA==", 
+                        "default",
+                        DateTime.Now,
+                        "default",
+                        DateTime.Now,
+                        "False"
+                    }
+                });
+
+            migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[]
                 {

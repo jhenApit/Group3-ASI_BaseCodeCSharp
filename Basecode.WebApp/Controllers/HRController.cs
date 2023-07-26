@@ -24,6 +24,8 @@ namespace Basecode.WebApp.Controllers
             _userManager = userManager;
         }
 
+
+
         public IActionResult AdminDashboard(string Email)
         {
             var hrEmployee = _service.GetByEmail(Email);

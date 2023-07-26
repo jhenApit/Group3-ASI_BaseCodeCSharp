@@ -183,19 +183,7 @@ namespace Basecode.WebApp.Controllers
                 }
                 return View("ApplicationForm");
             }
-            foreach (var modelStateEntry in ModelState)
-            {
-                var key = modelStateEntry.Key;
-                var errors = modelStateEntry.Value.Errors;
-                foreach (var error in errors)
-                {
-                    // Log or display the validation error messages
-                    Console.WriteLine($"Validation Error for {key}: {error.ErrorMessage}");
-                }
-            }
             ModelState.Clear();
-            Console.WriteLine("wHY THE FUCK ISNT IT VALID");
-
             return View("ApplicationForm");
         }
 

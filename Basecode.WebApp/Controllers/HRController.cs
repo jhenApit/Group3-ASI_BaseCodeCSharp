@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Basecode.Services.Interfaces;
 using NLog;
 using Basecode.Data.Dtos.JobPostings;
+using Basecode.Data.Dtos;
+using Basecode.Data.Models;
+using Basecode.Data.Dtos.Interviews;
 using Microsoft.AspNetCore.Identity;
 
 namespace Basecode.WebApp.Controllers

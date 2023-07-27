@@ -12,8 +12,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Views\HR\ApplicantsOverviewOrig.cshtml" />
     <Content Remove="wwwroot\css\application-form.cshtml" />
     <Content Remove="wwwroot\css\application-form.cshtml.cs" />
+    <Content Remove="wwwroot\css\DisqualifiedApplicants.css" />
+    <Content Remove="wwwroot\css\ViewApplicants.css" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,13 +48,10 @@
     <None Include="Views\HR\ApplicantDetail.cshtml" />
     <None Include="Views\HR\CreateInterview.cshtml" />
     <None Include="Views\HR\CreateJobPost.cshtml" />
-    <None Include="Views\HR\DisqualifiedApplicants.cshtml" />
     <None Include="Views\HR\EditInterview.cshtml" />
     <None Include="Views\HR\EditJobPost.cshtml" />
     <None Include="Views\HR\Interview.cshtml" />
-    <None Include="Views\HR\JobApplicantsOverview.cshtml" />
     <None Include="Views\HR\JobPostList.cshtml" />
-    <None Include="Views\HR\ViewApplicants.cshtml" />
     <None Include="Views\HR\ViewJobPost.cshtml" />
     <None Include="wwwroot\images\building.png" />
   </ItemGroup>

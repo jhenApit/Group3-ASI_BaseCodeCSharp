@@ -12,7 +12,7 @@ namespace Basecode.WebApp.Controllers
     {
         private readonly IHrEmployeeService _service;
         private readonly IJobPostingsService _jobPostingsService;
-        private readonly IErrorHandling _errorHandling;
+        private readonly IErrorHandling _errorHandling; 
         private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -28,7 +28,8 @@ namespace Basecode.WebApp.Controllers
 
         public IActionResult AdminDashboard(string Email)
         {
-            var hrEmployee = _service.GetByEmail(Email);
+            var user = _userManager.GetUserId(User);
+            var hrEmployee = _service.GetByUserId(user);
             return View(hrEmployee);
         }
 

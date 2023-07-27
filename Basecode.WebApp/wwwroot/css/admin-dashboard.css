@@ -2,6 +2,7 @@ body {
     margin: 0;
     font-family: "Montserrat", sans-serif;
     background-color: #e4e9f7;
+    font-size: calc(.75rem + 0.2vw);
 }
 
 .top-header {

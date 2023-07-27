@@ -40,13 +40,15 @@
                     </a>
                 </div>
                 <div class="col-4">
-                    <div class="dashboard-cards p-3">
-                        <h3 class="card-title">CANDIDATE</h3>
-                        <div class="card-content p-3">
-                            <i class='bx bxs-briefcase-alt-2 card-icon'></i>
-                            <p class="card-value p-3">80</p>
+                    <a asp-controller="Hr" asp-action="JobApplicantsOverview">
+                        <div class="dashboard-cards p-3">
+                            <h3 class="card-title">CANDIDATE</h3>
+                            <div class="card-content p-3">
+                                <i class='bx bxs-briefcase-alt-2 card-icon'></i>
+                                <p class="card-value p-3">80</p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-4">
                     <div class="dashboard-cards p-3">
@@ -73,7 +75,7 @@
                     <div class="dashboard-cards bottom-card p-3">
                         <div class="d-flex justify-content-between">
                             <h3 class="card-title">UPCOMING INTERVIEWS</h3>
-                            <a>
+                            <a asp-controller="Hr" asp-action="Schedules">
                                 <p class="d-flex view-all m-0 ms-auto">
                                         View All
                                         <i class='bx bx-chevron-right fs-3'></i>

@@ -13,7 +13,7 @@ namespace Basecode.Services.Interfaces
     {
         Applicants GetById(int id);
         List<Applicants> RetrieveAll();
-        Applicants GetByName(string name);
+        Applicants GetByName(string fname, string mname, string lname);
         int Add(ApplicantCreationDto applicant);
         Applicants GetByApplicantId(string trackerId);
         public LogContent AddApplicantLogContent(ApplicantCreationDto applicant);

@@ -19,6 +19,7 @@ namespace Basecode.Data.Dtos
         public string? MiddleName { get; set; }
         [Required(ErrorMessage = "Please enter your last name.")]
         public string? LastName { get; set; }
+        public string? Name => $"{FirstName} {MiddleName} {LastName}";
         [Required(ErrorMessage = "Please enter your birsthday.")]
         public DateTime BirthDate { get; set; }
         public byte[]? Resume { get; set; }

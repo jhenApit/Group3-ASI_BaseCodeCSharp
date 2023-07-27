@@ -10,6 +10,7 @@ using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
+using Basecode.Data.RandomIDGenerator;
 
 namespace Basecode.Services.Services
 {
@@ -17,6 +18,7 @@ namespace Basecode.Services.Services
     {
         private readonly IApplicantRepository _repository;
         private readonly IMapper _mapper;
+        private readonly IDGenerator _idGenerator = new();
         private readonly LogContent _logContent = new();
         public ApplicantService(IApplicantRepository repository, IMapper mapper)
         {
@@ -32,20 +34,13 @@ namespace Basecode.Services.Services
         public int Add(ApplicantCreationDto applicant)
         {
             var applicantModel = _mapper.Map<Applicants>(applicant);
-            applicantModel.ApplicantId = GenerateRandomApplicantId();
+            applicantModel.ApplicantId = _idGenerator.GenerateRandomApplicantId();
             applicantModel.ApplicationDate = DateTime.Now;
-            applicantModel.ApplicationStatus = Data.Enums.Enums.ApplicationStatus.UndergoingBackgroundCheck;
+            applicantModel.ApplicationStatus = Data.Enums.Enums.ApplicationStatus.Received;
             _repository.Add(applicantModel);
             return applicantModel.Id;
         }
-        private static string? GenerateRandomApplicantId()
-        {
-            const string allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var random = new Random();
-            var result = new string(Enumerable.Repeat(allowedChars, 15)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
-            return result;
-        }
+        
 
         public Applicants GetByApplicantId(string applicantId)
         {
@@ -57,9 +52,9 @@ namespace Basecode.Services.Services
             return _repository.GetById(id);
         }
 
-        public Applicants GetByName(string name)
+        public Applicants GetByName(string fname, string mname, string lname)
         {
-            return _repository.GetByName(name);
+            return _repository.GetByName(fname, mname, lname);
         }
 
         public List<Applicants> RetrieveAll()
@@ -69,8 +64,8 @@ namespace Basecode.Services.Services
 
         public LogContent AddApplicantLogContent(ApplicantCreationDto applicantCreationDto)
         {
-            Applicants applicant = GetByApplicantId(applicantCreationDto.ApplicantId);
-            if (applicant != null)
+            Applicants applicant = GetByName(applicantCreationDto.FirstName, applicantCreationDto.MiddleName, applicantCreationDto.LastName);
+            if (applicant != null && applicant.JobId == applicantCreationDto.JobId)
             {
                 _logContent.Result = false;
                 _logContent.ErrorCode = "400";

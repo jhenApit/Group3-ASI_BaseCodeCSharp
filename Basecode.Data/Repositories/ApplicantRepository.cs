@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 using Basecode.Data.Interfaces;
@@ -46,9 +47,9 @@ namespace Basecode.Data.Repositories
         /// </summary>
         /// <param name="name">The name of the applicant to retrieve.</param>
         /// <returns>The applicant with the specified name, or null if not found.</returns>
-        public Applicants? GetByName(string name)
+        public Applicants? GetByName(string fname, string mname, string lname)
         {
-            return _context.Applicants.FirstOrDefault(e => e.Name == name)!;
+            return _context.Applicants.FirstOrDefault(e => e.FirstName == fname && e.MiddleName == mname && e.LastName == lname);
         }
 
         /// <summary>

@@ -4,6 +4,7 @@ using Basecode.Services.Interfaces;
 using NLog;
 using Basecode.Data.Dtos.JobPostings;
 using Microsoft.AspNetCore.Identity;
+using Basecode.Data.ViewModels;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -12,16 +13,30 @@ namespace Basecode.WebApp.Controllers
     {
         private readonly IHrEmployeeService _service;
         private readonly IJobPostingsService _jobPostingsService;
+        private readonly IApplicantService _applicantService;
+        private readonly ICurrentHiresService _currentHiresService;
+        private readonly IInterviewsService _interviewsService;
         private readonly IErrorHandling _errorHandling; 
         private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public HRController(IHrEmployeeService service, IJobPostingsService jobPostingsService, IErrorHandling errorHandling, UserManager<IdentityUser> userManager)
+        public HRController(
+            IHrEmployeeService service, 
+            IJobPostingsService jobPostingsService, 
+            IErrorHandling errorHandling, 
+            UserManager<IdentityUser> userManager, 
+            IApplicantService applicantService,
+            ICurrentHiresService currentHiresService,
+            IInterviewsService interviewersService
+            )
         {
             _service = service;
             _jobPostingsService = jobPostingsService;
             _errorHandling = errorHandling;
             _userManager = userManager;
+            _applicantService = applicantService;
+            _currentHiresService = currentHiresService;
+            _interviewsService = interviewersService;
         }
 
 
@@ -29,8 +44,15 @@ namespace Basecode.WebApp.Controllers
         public IActionResult AdminDashboard()
         {
             var user = _userManager.GetUserId(User);
-            var hrEmployee = _service.GetByUserId(user);
-            return View(hrEmployee);
+            var model = new DashboardView
+            {
+                User = _service.GetByUserId(user),
+                JobCount = _jobPostingsService.RetrieveAll().Count(),
+                CandidateCount = _applicantService.RetrieveAll().Count(),
+                EmployeeCount = _currentHiresService.RetrieveAll().Count(),
+                Schedules = _interviewsService.RetrieveAll()
+            };
+            return View(model);
         }
 
 

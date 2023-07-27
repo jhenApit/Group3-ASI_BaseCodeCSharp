@@ -69,6 +69,7 @@
                         <h3 class="card-title">APPLICATIONS</h3>
                         <div class="chart-container mt-4">
                             <canvas class="applicant-chart"></canvas>
+                            <input type="hidden" id="dataCount" value=55 />
                         </div>
                     </div>
                 </div>
@@ -76,12 +77,15 @@
                     <div class="dashboard-cards bottom-card p-3">
                         <div class="d-flex justify-content-between">
                             <h3 class="card-title">UPCOMING INTERVIEWS</h3>
-                            <a asp-controller="Hr" asp-action="Schedules">
-                                <p class="d-flex view-all m-0 ms-auto">
+                            @if (Model.Schedules.Count() > 0)
+                            {
+                                <a asp-controller="Hr" asp-action="Schedules">
+                                    <p class="d-flex view-all m-0 ms-auto">
                                         View All
                                         <i class='bx bx-chevron-right fs-3'></i>
-                                </p>
-                            </a>
+                                    </p>
+                                </a>
+                            }
                         </div>
                         <!-- Only a maximum of 6 rows can be added ,pls -->
                         <table class="table mt-3">
@@ -93,54 +97,27 @@
                                     <th scope="col" class="col-3">Interview Type</th>
                                 </tr>
                             </thead>
-                           @* <tbody class="text-center">
-                                @foreach (var interview in Model.Schedules)
-                                {
-                                    <tr>@interview.InterviewDate</tr>
-                                    <tr>@interview.TimeStart</tr>
-                                    <tr>@interview.TimeEnd</tr>
-                                    <tr>@interview.Interviewer</tr>
-                                    <tr>@interview.Applicant</tr>
-                                    <tr>@interview.InterviewType</tr>
-                                }
-                            </tbody>*@
                             <tbody class="text-center">
-                                <tr>
-                                    <td>July 2, 2023 11AM - 12NN</td>
-                                    <td>Jane Marie Doe</td>
-                                    <td>Jovert Maharlika</td>
-                                    <td>HR Interview</td>
-                                </tr>
-                                <tr>
-                                    <td>July 3, 2023 11AM - 12NN</td>
-                                    <td>Jane Marie Doe</td>
-                                    <td>Kris P. Bacon</td>
-                                    <td>Technical Interview</td>
-                                </tr>
-                                <tr>
-                                    <td>July 4, 2023 1PM - 2PM</td>
-                                    <td>桐ヶ谷一人</td>
-                                    <td>遥桐谷</td>
-                                    <td>Final Interview</td>
-                                </tr>
-                                <tr>
-                                    <td>July 4, 2023 2PM - 3PM</td>
-                                    <td>桐ヶ谷一人</td>
-                                    <td>百合あゆみ</td>
-                                    <td>Final Interview</td>
-                                </tr>
-                                <tr>
-                                    <td>July 5, 2023 11AM - 12NN</td>
-                                    <td>Jane Marie Doe</td>
-                                    <td>Muhammad Ahlli</td>
-                                    <td>HR Interview</td>
-                                </tr>
-                                <tr>
-                                    <td>July 6, 2023 3PM - 4PM</td>
-                                    <td>桐ヶ谷一人</td>
-                                    <td>五条悟</td>
-                                    <td>Technical Interview</td>
-                                </tr>
+                                @if(Model.Schedules.Count() == 0)
+                                {
+                                    <tr>
+                                        <td colspan="6">NO INTERVIEWS</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    @foreach (var interview in Model.Schedules)
+                                    {
+                                        <tr>
+                                            <td>@interview.InterviewDate</td>
+                                            <td>@interview.TimeStart</td>
+                                            <td>@interview.TimeEnd</td>
+                                            <td>@interview.Interviewer</td>
+                                            <td>@interview.Applicant</td>
+                                            <td>@interview.InterviewType</td>
+                                        </tr>
+                                    }
+                                }
                             </tbody>
                         </table>
                     </div>

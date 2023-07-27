@@ -1,6 +1,8 @@
-﻿const chartData = {
+﻿const dataCount = parseInt(document.getElementById("dataCount").value);
+
+const chartData = {
     labels: ["Developers", "Designers", "Managers", "Others"],
-    data: [55, 26, 13, 6]
+    data: [dataCount, 26, 13, 6]
 }
 
 const applicantChart = document.querySelector(".applicant-chart");

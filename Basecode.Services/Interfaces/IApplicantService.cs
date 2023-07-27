@@ -15,7 +15,9 @@ namespace Basecode.Services.Interfaces
         List<Applicants> RetrieveAll();
         Applicants GetByName(string fname, string mname, string lname);
         int Add(ApplicantCreationDto applicant);
-        Applicants GetByApplicantId(string trackerId);
+        int Update(Applicants applicant);
+
+		Applicants GetByApplicantId(string trackerId);
         public LogContent AddApplicantLogContent(ApplicantCreationDto applicant);
     }
 }

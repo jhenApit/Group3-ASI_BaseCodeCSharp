@@ -62,46 +62,50 @@
 						<td style ="@colorStyle">@EnumHelper.GetEnumDescription(((ApplicationStatus)Enum.Parse(typeof(ApplicationStatus), applicant.ApplicationStatus.ToString())))</td>
 						<td>
 							<div class="applicant-container" data-title="@applicant.ApplicationStatus">
-										@switch (applicant.ApplicationStatus)
-										{
-											case ApplicationStatus.Received:
-											<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview">SHORTLIST</a>
-											<a class="reject-btn" asp-controller="HR" asp-action="JobApplicantsOverview">REJECT</a>
-													break;
-											case ApplicationStatus.Shortlisted:
-											<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview">FOR SCREENING</a>
-											<a class="reject-btn" asp-controller="HR" asp-action="JobApplicantsOverview">REJECT</a>
-													break;
-											case ApplicationStatus.ForScreening:
-											<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview">INVITE TO HR INTERVIEW</a>
-											<a class="reject-btn" asp-controller="HR" asp-action="JobApplicantsOverview">REJECT</a>
-													break;
-											case ApplicationStatus.ForHRInterview:
-											<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview">INVITE TO TECHNICAL INTERVIEW</a>
-											<a class="reject-btn" asp-controller="HR" asp-action="JobApplicantsOverview">REJECT</a>
-													break;
-											case ApplicationStatus.ForTechnicalInterview:
-											<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview">INVITE TO TECHNICAL EXAM</a>
-											<a class="reject-btn" asp-controller="HR" asp-action="JobApplicantsOverview">REJECT</a>
-													break;
-											case ApplicationStatus.UndergoingBackgroundCheck:
-											<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview">INVITE TO FINAL INTERVIEW</a>
-											<a class="reject-btn" asp-controller="HR" asp-action="JobApplicantsOverview">REJECT</a>
-													break;
-											case ApplicationStatus.ForFinalInterview:
-											<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview">SEND JOB OFFER</a>
-											<a class="reject-btn" asp-controller="HR" asp-action="JobApplicantsOverview">REJECT</a>
-													break;
-											case ApplicationStatus.UndergoingJobOffer:
-											<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview">CONFIRM</a>
-											<a class="decline-btn" asp-controller="HR" asp-action="JobApplicantsOverview">DECLINE</a>
-													break;
-											case ApplicationStatus.Onboarding:
-											<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview" style="justify-content: flex-start !important;">DEPLOY </a>
-												break;
-											default:
-												break;
-										}
+								@switch (applicant.ApplicationStatus)
+								{
+									case ApplicationStatus.Received:
+									<a asp-route-id ="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="ShortListApplicant">SHORTLIST</a>
+									<a asp-route-id ="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
+											break;
+									case ApplicationStatus.Shortlisted:
+									<a asp-route-id ="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="ForScreeningApplicant">FOR SCREENING</a>
+									<a asp-route-id ="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
+											break;
+									case ApplicationStatus.ForScreening:
+									<a asp-route-id ="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="InviteToHRInterview">INVITE TO HR INTERVIEW</a>
+										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
+											break;
+									case ApplicationStatus.ForHRInterview:
+									<a asp-route-id ="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="InviteToTechnicalInterview">INVITE TO TECHNICAL INTERVIEW</a>
+										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
+											break;
+									case ApplicationStatus.ForTechnicalInterview:
+									<a asp-route-id ="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="InviteToTechnicalExam">INVITE TO TECHNICAL EXAM</a>
+										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
+											break;
+									case ApplicationStatus.ForTechnicalExam:
+									<a asp-route-id ="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="CheckBackground">CHECK BACKGROUND</a>
+										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
+											break;
+									case ApplicationStatus.UndergoingBackgroundCheck:
+									<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="InviteToFinalInterview">INVITE TO FINAL INTERVIEW</a>
+										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
+											break;
+									case ApplicationStatus.ForFinalInterview:
+									<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="SendJobOffer">SEND JOB OFFER</a>
+										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
+											break;
+									case ApplicationStatus.UndergoingJobOffer:
+									<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="ConfirmApplicant">CONFIRM</a>
+									<a asp-route-id="@applicant.Id" class="decline-btn" asp-controller="HR" asp-action="DeclineApplicant">DECLINE</a>
+											break;
+									case ApplicationStatus.Onboarding:
+									<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="DeployApplicant" style="justify-content: flex-start !important;">DEPLOY </a>
+										break;
+									default:
+										break;
+								}
 							</div>
 						</td>
 					</tr>

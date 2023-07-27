@@ -60,6 +60,19 @@ namespace Basecode.Data.Repositories
         {
             return this.GetDbSet<Applicants>();
         }
+        /// <summary>
+        /// This update the applicant form the database
+        /// </summary>
+        /// <param name="applicant"> the applicant model to update</param>
+		public void Update(Applicants applicant)
+		{
+            var existingApplicant = _context.Applicants.Find(applicant.Id);
+            if(existingApplicant != null)
+            {
+                existingApplicant.ApplicationStatus = applicant.ApplicationStatus;
+				_context.SaveChanges();
+			}
+		}
 
-    }
+	}
 }

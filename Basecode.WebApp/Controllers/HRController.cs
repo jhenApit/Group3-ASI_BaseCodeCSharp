@@ -4,6 +4,8 @@ using Basecode.Services.Interfaces;
 using NLog;
 using Basecode.Data.Dtos.JobPostings;
 using Microsoft.AspNetCore.Identity;
+using static Basecode.Data.Enums.Enums;
+using Basecode.Data.Dtos;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -238,5 +240,161 @@ namespace Basecode.WebApp.Controllers
         {
             return View();
         }
-    }
+        public IActionResult ShortListApplicant(int id)
+        {
+            var applicant = _applicantService.GetById(id);
+            if(applicant != null)
+            {
+                applicant.ApplicationStatus = ApplicationStatus.Shortlisted;
+                _applicantService.Update(applicant);
+                return RedirectToAction("JobApplicantsOverview");
+            }
+            Console.WriteLine("Applicant not found!");
+			return RedirectToAction("JobApplicantsOverview");
+		}
+		public IActionResult ForScreeningApplicant(int id)
+		{
+			var applicant = _applicantService.GetById(id);
+			if (applicant != null)
+			{
+				applicant.ApplicationStatus = ApplicationStatus.ForScreening;
+				_applicantService.Update(applicant);
+				return RedirectToAction("JobApplicantsOverview");
+			}
+			Console.WriteLine("Applicant not found!");
+			return RedirectToAction("JobApplicantsOverview");
+		}
+		public IActionResult InviteToHRInterview(int id)
+		{
+			var applicant = _applicantService.GetById(id);
+			if (applicant != null)
+			{
+				applicant.ApplicationStatus = ApplicationStatus.ForHRInterview;
+				_applicantService.Update(applicant);
+				return RedirectToAction("JobApplicantsOverview");
+			}
+			Console.WriteLine("Applicant not found!");
+			return RedirectToAction("JobApplicantsOverview");
+		}
+		public IActionResult InviteToTechnicalInterview(int id)
+		{
+			var applicant = _applicantService.GetById(id);
+			if (applicant != null)
+			{
+				applicant.ApplicationStatus = ApplicationStatus.ForTechnicalInterview;
+				_applicantService.Update(applicant);
+				return RedirectToAction("JobApplicantsOverview");
+			}
+			Console.WriteLine("Applicant not found!");
+			return RedirectToAction("JobApplicantsOverview");
+		}
+		public IActionResult InviteToTechnicalExam(int id)
+		{
+			var applicant = _applicantService.GetById(id);
+			if (applicant != null)
+			{
+				applicant.ApplicationStatus = ApplicationStatus.ForTechnicalExam;
+				_applicantService.Update(applicant);
+				return RedirectToAction("JobApplicantsOverview");
+			}
+			Console.WriteLine("Applicant not found!");
+			return RedirectToAction("JobApplicantsOverview");
+		}
+		public IActionResult InviteToFinalInterview(int id)
+		{
+			var applicant = _applicantService.GetById(id);
+			if (applicant != null)
+			{
+				applicant.ApplicationStatus = ApplicationStatus.ForFinalInterview;
+				_applicantService.Update(applicant);
+				return RedirectToAction("JobApplicantsOverview");
+			}
+			Console.WriteLine("Applicant not found!");
+			return RedirectToAction("JobApplicantsOverview");
+		}
+		public IActionResult SendJobOffer(int id)
+		{
+			var applicant = _applicantService.GetById(id);
+			if (applicant != null)
+			{
+				applicant.ApplicationStatus = ApplicationStatus.UndergoingJobOffer;
+				_applicantService.Update(applicant);
+				return RedirectToAction("JobApplicantsOverview");
+			}
+			Console.WriteLine("Applicant not found!");
+			return RedirectToAction("JobApplicantsOverview");
+		}
+
+        /// <summary>
+        /// when the confirm button is clicked meaning the applicant accepted the job offer
+        /// so the next status is the onboarding of the applicant
+        /// </summary>
+        /// <param name="id">id of the applicant</param>
+        /// <returns>the view for the status update</returns>
+		public IActionResult ConfirmApplicant(int id)
+		{
+			var applicant = _applicantService.GetById(id);
+			if (applicant != null)
+			{
+				applicant.ApplicationStatus = ApplicationStatus.Onboarding;
+				_applicantService.Update(applicant);
+				return RedirectToAction("JobApplicantsOverview");
+			}
+			Console.WriteLine("Applicant not found!");
+			return RedirectToAction("JobApplicantsOverview");
+		}
+		public IActionResult DeployApplicant(int id)
+		{
+			var applicant = _applicantService.GetById(id);
+			if (applicant != null)
+			{
+				applicant.ApplicationStatus = ApplicationStatus.Deployed;
+				_applicantService.Update(applicant);
+				return RedirectToAction("JobApplicantsOverview");
+			}
+			Console.WriteLine("Applicant not found!");
+			return RedirectToAction("JobApplicantsOverview");
+		}
+        /// <summary>
+        /// when applicant does not accept the job offer
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+		public IActionResult DeclineApplicant(int id)
+		{
+			var applicant = _applicantService.GetById(id);
+			if (applicant != null)
+			{
+				applicant.ApplicationStatus = ApplicationStatus.NotConfirmed;
+				_applicantService.Update(applicant);
+				return RedirectToAction("JobApplicantsOverview");
+			}
+			Console.WriteLine("Applicant not found!");
+			return RedirectToAction("JobApplicantsOverview");
+		}
+		public IActionResult RejectApplicant(int id)
+		{
+			var applicant = _applicantService.GetById(id);
+			if (applicant != null)
+			{
+				applicant.ApplicationStatus = ApplicationStatus.Rejected;
+				_applicantService.Update(applicant);
+				return RedirectToAction("JobApplicantsOverview");
+			}
+			Console.WriteLine("Applicant not found!");
+			return RedirectToAction("JobApplicantsOverview");
+		}
+		public IActionResult CheckBackground(int id)
+		{
+			var applicant = _applicantService.GetById(id);
+			if (applicant != null)
+			{
+				applicant.ApplicationStatus = ApplicationStatus.UndergoingBackgroundCheck;
+				_applicantService.Update(applicant);
+				return RedirectToAction("JobApplicantsOverview");
+			}
+			Console.WriteLine("Applicant not found!");
+			return RedirectToAction("JobApplicantsOverview");
+		}
+	}
 }

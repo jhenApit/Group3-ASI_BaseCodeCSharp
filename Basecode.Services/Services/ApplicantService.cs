@@ -61,8 +61,13 @@ namespace Basecode.Services.Services
         {
             return _repository.RetrieveAll().ToList();
         }
+		public int Update(Applicants applicant)
+		{
+			_repository.Update(applicant);
+			return applicant.Id;
+		}
 
-        public LogContent AddApplicantLogContent(ApplicantCreationDto applicantCreationDto)
+		public LogContent AddApplicantLogContent(ApplicantCreationDto applicantCreationDto)
         {
             Applicants applicant = GetByName(applicantCreationDto.FirstName, applicantCreationDto.MiddleName, applicantCreationDto.LastName);
             if (applicant != null && applicant.JobId == applicantCreationDto.JobId)

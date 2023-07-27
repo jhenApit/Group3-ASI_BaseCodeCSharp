@@ -13,6 +13,8 @@ namespace Basecode.Data.Interfaces
         IQueryable<Applicants> RetrieveAll();
         Applicants? GetByName(string fname, string mname, string lname);
         void Add(Applicants applicant);
-        Applicants? GetByApplicantId(string trackerId);
-    }
+        Applicants? GetByApplicantId(string applicantId);
+        public void Update(Applicants applicant);
+
+	}
 }

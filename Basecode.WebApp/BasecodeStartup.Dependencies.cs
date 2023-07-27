@@ -25,6 +25,7 @@ namespace Basecode.WebApp
             services.AddScoped<IAddressService, AddressService>();
             services.AddScoped<ICharacterReferencesService, CharacterReferencesService>();
             services.AddScoped<IReferenceFormsService, ReferenceFormsService>();
+            services.AddScoped<ICurrentHiresService, CurrentHiresService>();
 
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
@@ -35,6 +36,7 @@ namespace Basecode.WebApp
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<ICharacterReferencesRepository, CharacterReferencesRepository>();
             services.AddScoped<IReferenceFormsRepository, ReferenceFormsRepository>();
+            services.AddScoped<ICurrentHiresRepository, CurrentHiresRepository>();
 
         }
     }

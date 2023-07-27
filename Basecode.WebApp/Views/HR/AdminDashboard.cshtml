@@ -2,8 +2,8 @@
 
 @inject UserManager<IdentityUser> UserManager
 
-@using Basecode.Data.Models
-@model HrEmployee
+@using Basecode.Data.ViewModels
+@model DashboardView
 
 @{
     ViewData["Title"] = "Dashboard";
@@ -20,7 +20,7 @@
             </div>
             <div class="header-details d-flex">
                 <p class="welcome">WELCOME</p>
-                <p class="name"><a id="manage" class="nav-link text-dark text-capitalize" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@Model.Name</a></p>
+                <p class="name"><a id="manage" class="nav-link text-dark text-capitalize" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@Model.User.Name</a></p>
                 <i class='bx bx-user-circle'></i>
             </div>
         </div>
@@ -35,7 +35,7 @@
                             <h3 class="card-title">JOB POSTS</h3>
                             <div class="card-content p-3">
                                 <i class='bx bxs-user-check card-icon'></i>
-                                <p class="card-value p-3">80</p>
+                                <p class="card-value p-3">@Model.JobCount</p>
                             </div>
                         </div>
                     </a>
@@ -46,7 +46,7 @@
                             <h3 class="card-title">CANDIDATE</h3>
                             <div class="card-content p-3">
                                 <i class='bx bxs-briefcase-alt-2 card-icon'></i>
-                                <p class="card-value p-3">80</p>
+                                <p class="card-value p-3">@Model.CandidateCount</p>
                             </div>
                         </div>
                     </a>
@@ -56,7 +56,7 @@
                         <h3 class="card-title">NEW HIRES</h3>
                         <div class="card-content p-3">
                             <i class='bx bxs-user-rectangle card-icon'></i>
-                            <p class="card-value p-3">80</p>
+                            <p class="card-value p-3">@Model.EmployeeCount</p>
                         </div>
                     </div>
                 </div>
@@ -93,6 +93,17 @@
                                     <th scope="col" class="col-3">Interview Type</th>
                                 </tr>
                             </thead>
+                           @* <tbody class="text-center">
+                                @foreach (var interview in Model.Schedules)
+                                {
+                                    <tr>@interview.InterviewDate</tr>
+                                    <tr>@interview.TimeStart</tr>
+                                    <tr>@interview.TimeEnd</tr>
+                                    <tr>@interview.Interviewer</tr>
+                                    <tr>@interview.Applicant</tr>
+                                    <tr>@interview.InterviewType</tr>
+                                }
+                            </tbody>*@
                             <tbody class="text-center">
                                 <tr>
                                     <td>July 2, 2023 11AM - 12NN</td>

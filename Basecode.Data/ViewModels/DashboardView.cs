@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Basecode.Data.ViewModels
 {
-    public class AdminDashboardView
+    public class DashboardView
     {
         public HrEmployee User { get; set; }
-        public JobPostings Jobs { get; set; }
-        public Applicants Candidates { get; set; }
-        public CurrentHires Employees { get; set; }
-        public Interviews Schedules { get; set; }
+        public int JobCount { get; set; }
+        public int CandidateCount { get; set; }
+        public int EmployeeCount { get; set; }
+        public List<Interviews> Schedules { get; set; }
     }
 }

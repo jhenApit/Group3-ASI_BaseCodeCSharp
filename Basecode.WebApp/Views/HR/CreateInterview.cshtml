@@ -79,7 +79,7 @@
             <div class="row align-items-center">
                 <div class="col">
                     <label for="date">Date:</label>
-                    <input asp-for="InterviewDate" class="form-control" id="date" type="date" name="date" required />
+                    <input class="form-control" id="date" type="datetime-local" name="date" required />
                 </div>
                 <div class="col d-flex flex-row gap-4">
                     <div class="col w-25">
@@ -91,6 +91,7 @@
                         <input class="form-control" id="endTime" type="time" name="endTime" required />
                     </div>
                 </div>
+                <input type="hidden" id="interviewDate" name="InterviewDate" asp-for="InterviewDate" />
             </div>
         </div>
         <div class="section-interview">
@@ -107,10 +108,6 @@
                     <label for="interviewType">Interview Type:</label>
                     <select asp-for="InterviewType" class="form-select w-50" id="interviewType" name="interviewType" required>
                         <option selected disabled value="N/A"><em>Select an interview type...</em></option>
-                        @foreach (var interviewType in Enum.GetValues(typeof(InterviewType)))
-                        {
-                            <option value="@interviewType">@interviewType</option>
-                        }
                         <option value="@InterviewType.HRInterview">For HR Interview</option>
                         <option value="@InterviewType.TechnicalInterview">For Technical Interview</option>
                         <option value="@InterviewType.TechnicalExam">For Technical Exam</option>
@@ -127,13 +124,23 @@
             </div>
         </div>
         <div class="d-grid d-md-flex justify-content-md-end">
-            <button type="submit" class="btn b-blue px-4">ADD SCHEDULE</button>
+            <button type="submit" class="btn b-blue px-4" onClick="submitForm()">ADD SCHEDULE</button>
         </div>
     </form>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
+
+<script>
+    function submitForm() {
+        var selectedDate = document.getElementById("date").value;
+
+        document.getElementById("interviewDate").value = selectedDate;
+
+        document.querySelector("form").submit();
+    }
+</script>
 
 <!-- Overlap Modal -->
 <div class="modal fade" id="overlapModal" tabindex="-1" role="dialog" aria-labelledby="overlapModalLabel" aria-hidden="true">

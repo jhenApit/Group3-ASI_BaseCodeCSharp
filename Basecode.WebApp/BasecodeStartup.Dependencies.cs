@@ -28,7 +28,10 @@ namespace Basecode.WebApp
             services.AddScoped<ICharacterReferencesService, CharacterReferencesService>();
             services.AddScoped<EmailService>();
             services.AddScoped<EmailSender>();
-            services.AddSingleton<HrEmployee>();
+            services.AddScoped<HrEmployee>();
+            services.AddScoped<Applicant>();
+            services.AddScoped<Interviewers>();
+            services.AddScoped<CharacterReferences>();
 
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();

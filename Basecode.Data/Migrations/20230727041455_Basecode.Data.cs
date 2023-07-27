@@ -491,8 +491,6 @@ namespace Basecode.Data.Migrations
                 name: "IX_CharacterReferences_ApplicantId",
                 table: "CharacterReferences",
                 column: "ApplicantId");
-<<<<<<<< HEAD:Basecode.Data/Migrations/20230727041455_Basecode.Data.cs
-========
 
             migrationBuilder.CreateIndex(
                 name: "IX_CurrentHires_ApplicantId",
@@ -523,37 +521,7 @@ namespace Basecode.Data.Migrations
                 name: "IX_ReferenceForms_CharacterReferenceId",
                 table: "ReferenceForms",
                 column: "CharacterReferenceId");
->>>>>>>> 8d4283928fa342101972709c6108080eefbebe97:Basecode.Data/Migrations/20230727034824_Basecode.Data.cs
 
-            migrationBuilder.CreateIndex(
-                name: "IX_CurrentHires_ApplicantId",
-                table: "CurrentHires",
-                column: "ApplicantId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Exams_ApplicantId",
-                table: "Exams",
-                column: "ApplicantId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HrEmployees_UserId",
-                table: "HrEmployees",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Interviews_ApplicantId",
-                table: "Interviews",
-                column: "ApplicantId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Interviews_InterviewerId",
-                table: "Interviews",
-                column: "InterviewerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ReferenceForms_CharacterReferenceId",
-                table: "ReferenceForms",
-                column: "CharacterReferenceId");
             //add roles
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
@@ -618,15 +586,9 @@ namespace Basecode.Data.Migrations
            },
            values: new object[,]
            {
-<<<<<<<< HEAD:Basecode.Data/Migrations/20230727041455_Basecode.Data.cs
-                {
-                   "1",
-                   "Default Admin Account",
-========
                 { 
                    "1", 
                    "Default Admin Account", 
->>>>>>>> 8d4283928fa342101972709c6108080eefbebe97:Basecode.Data/Migrations/20230727034824_Basecode.Data.cs
                    "admin@asi-dev2.com",
                    "AQAAAAIAAYagAAAAEH5a85Bn0MNwV4GKhUKR6sN7LmTb9awIvOp+KcXboZjUyUN3q9JS+l8nMtCZGNa0xA==",
                    "Default",

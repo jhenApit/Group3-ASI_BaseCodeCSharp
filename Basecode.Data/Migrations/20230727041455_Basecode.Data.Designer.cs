@@ -12,7 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Basecode.Data.Migrations
 {
     [DbContext(typeof(BasecodeContext))]
+<<<<<<<< HEAD:Basecode.Data/Migrations/20230727041455_Basecode.Data.Designer.cs
     [Migration("20230727041455_Basecode.Data")]
+========
+    [Migration("20230727034824_Basecode.Data")]
+>>>>>>>> 8d4283928fa342101972709c6108080eefbebe97:Basecode.Data/Migrations/20230727034824_Basecode.Data.Designer.cs
     partial class BasecodeData
     {
         /// <inheritdoc />

@@ -1,4 +1,11 @@
-﻿@{
+﻿@using Basecode.Data.Enums;
+@using Basecode.Data.Models
+@using static Basecode.Data.Enums.Enums;
+@using Basecode.Services.Interfaces
+@using System.Drawing;
+@inject IJobPostingsService jobPostingService
+@model List<Applicants>
+@{
 	ViewData["Title"] = "Job Applicants Overview";
 	Layout = "_SideBarAdmin";
 	<meta name="viewport" content="width=device-width" />
@@ -31,8 +38,8 @@
 			<option value="REJECTED">REJECTED</option>
 		</select>
 	</div>
-	<div class="table-responsive">
-		<table class="table">
+	<div class="table-responsive" style="text-align: center;">
+		<table class="table" style="margin-left:auto; margin-right:auto; text-align: left;">
 			<thead>
 				<tr>
 					<th style="border-left: 10px solid #55729B; border-bottom: none;">Applicant Name</th>
@@ -42,7 +49,63 @@
 				</tr>
 			</thead>
 			<tbody>
-				<!-- Data rows will be added dynamically via JavaScript -->
+				<!-- Data rows displayed here -->
+				@foreach (var applicant in Model)
+				{
+					Color statusColor = EnumHelper.GetColorForApplicationStatus(applicant.ApplicationStatus);
+					string colorStyle = $"color: {ColorTranslator.ToHtml(statusColor)}";
+					var jobPosting = jobPostingService.GetById(applicant.JobId);
+					var positionName = jobPosting != null ? jobPosting.Name : "Position Not Found";
+					<tr>
+						<td>@applicant.Name</td>
+						<td>@positionName</td>
+						<td style ="@colorStyle">@EnumHelper.GetEnumDescription(((ApplicationStatus)Enum.Parse(typeof(ApplicationStatus), applicant.ApplicationStatus.ToString())))</td>
+						<td>
+							<div class="applicant-container" data-title="@applicant.ApplicationStatus">
+										@switch (applicant.ApplicationStatus)
+										{
+											case ApplicationStatus.Received:
+											<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview">SHORTLIST</a>
+											<a class="reject-btn" asp-controller="HR" asp-action="JobApplicantsOverview">REJECT</a>
+													break;
+											case ApplicationStatus.Shortlisted:
+											<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview">FOR SCREENING</a>
+											<a class="reject-btn" asp-controller="HR" asp-action="JobApplicantsOverview">REJECT</a>
+													break;
+											case ApplicationStatus.ForScreening:
+											<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview">INVITE TO HR INTERVIEW</a>
+											<a class="reject-btn" asp-controller="HR" asp-action="JobApplicantsOverview">REJECT</a>
+													break;
+											case ApplicationStatus.ForHRInterview:
+											<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview">INVITE TO TECHNICAL INTERVIEW</a>
+											<a class="reject-btn" asp-controller="HR" asp-action="JobApplicantsOverview">REJECT</a>
+													break;
+											case ApplicationStatus.ForTechnicalInterview:
+											<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview">INVITE TO TECHNICAL EXAM</a>
+											<a class="reject-btn" asp-controller="HR" asp-action="JobApplicantsOverview">REJECT</a>
+													break;
+											case ApplicationStatus.UndergoingBackgroundCheck:
+											<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview">INVITE TO FINAL INTERVIEW</a>
+											<a class="reject-btn" asp-controller="HR" asp-action="JobApplicantsOverview">REJECT</a>
+													break;
+											case ApplicationStatus.ForFinalInterview:
+											<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview">SEND JOB OFFER</a>
+											<a class="reject-btn" asp-controller="HR" asp-action="JobApplicantsOverview">REJECT</a>
+													break;
+											case ApplicationStatus.UndergoingJobOffer:
+											<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview">CONFIRM</a>
+											<a class="decline-btn" asp-controller="HR" asp-action="JobApplicantsOverview">DECLINE</a>
+													break;
+											case ApplicationStatus.Onboarding:
+											<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview" style="justify-content: flex-start !important;">DEPLOY </a>
+												break;
+											default:
+												break;
+										}
+							</div>
+						</td>
+					</tr>
+				}
 			</tbody>
 		</table>
 	</div>
@@ -57,91 +120,10 @@
 <script>
 	// ...  demo-data
 	$(document).ready(function () {
-		const applicants = [
-			// 1st page
-			{ Name: "John Doe", Position: "Software Developers", Status: "SHORTLISTED" },
-			{ Name: "Jane Smith", Position: "HR Staff", Status: "FOR REVIEW" },
-			{ Name: "Michael Johnson", Position: "Software Developers", Status: "FOR SCREENING" },
-			{ Name: "Emily Davis", Position: "HR Staff", Status: "ONBOARDING" },
-			{ Name: "Robert Williams", Position: "Software Developers", Status: "FOR REVIEW" },
-			{ Name: "Jane Doe", Position: "Software Developers", Status: "INVITE TO INTERVIEW" },
-			{ Name: "Adam Smith", Position: "HR Staff", Status: "UNDERGOING JOB OFFER" },
-			{ Name: "Mikaela Johnson", Position: "Software Developers", Status: "SHORTLISTED" },
-			{ Name: "John Davis", Position: "HR Staff", Status: "ONBOARDING" },
-			{ Name: "Albert Williams", Position: "Software Developers", Status: "DEPLOYED" },
-			// 2nd page
-			{ Name: "Jack Doe", Position: "Software Developers", Status: "FOR REVIEW" },
-			{ Name: "Ellie Smith", Position: "HR Staff", Status: "INVITE TO INTERVIEW" },
-			{ Name: "Miko Johnson", Position: "Software Developers", Status: "SHORTLISTED" },
-			{ Name: "Ella Davis", Position: "HR Staff", Status: "ONBOARDING" },
-			{ Name: "Ray Williams", Position: "Software Developers", Status: "FOR REVIEW" },
-			{ Name: "Jill Doe", Position: "Software Developers", Status: "FOR REVIEW" },
-			{ Name: "Jackson Smith", Position: "HR Staff", Status: "UNDERGOING JOB OFFER" },
-			{ Name: "Michelle Johnson", Position: "Software Developers", Status: "SHORTLISTED" },
-			{ Name: "Erina Davis", Position: "HR Staff", Status: "ONBOARDING" },
-			{ Name: "Roberta Williams", Position: "Software Developers", Status: "DEPLOYED" },
-			// 3rd page
-			{ Name: "Jasper Doe", Position: "Software Developers", Status: "FOR REVIEW" },
-			{ Name: "Joselle Smith", Position: "HR Staff", Status: "INVITE TO INTERVIEW" },
-			{ Name: "Mira Johnson", Position: "Software Developers", Status: "SHORTLISTED" },
-			{ Name: "Evonne Davis", Position: "HR Staff", Status: "ONBOARDING" },
-			{ Name: "Roselle Williams", Position: "Software Developers", Status: "FOR REVIEW" },
-			{ Name: "John Doe", Position: "Software Developers", Status: "FOR REVIEW" },
-			{ Name: "Jane Smith", Position: "HR Staff", Status: "UNDERGOING JOB OFFER" },
-			{ Name: "Michael Johnson", Position: "Software Developers", Status: "SHORTLISTED" },
-			{ Name: "Emily Davis", Position: "HR Staff", Status: "ONBOARDING" },
-			{ Name: "Robert Williams", Position: "Software Developers", Status: "DEPLOYED" },
-			// 4th page
-			{ Name: "Jane Doe", Position: "Software Developers", Status: "FOR REVIEW" },
-			{ Name: "Adam Smith", Position: "HR Staff", Status: "INVITE TO INTERVIEW" },
-			{ Name: "Mikaela Johnson", Position: "Software Developers", Status: "SHORTLISTED" },
-			{ Name: "John Davis", Position: "HR Staff", Status: "ONBOARDING" },
-			{ Name: "Albert Williams", Position: "Software Developers", Status: "FOR REVIEW" },
-			{ Name: "Jack Doe", Position: "Software Developers", Status: "FOR REVIEW" },
-			{ Name: "Ellie Smith", Position: "HR Staff", Status: "UNDERGOING JOB OFFER" },
-			{ Name: "Miko Johnson", Position: "Software Developers", Status: "SHORTLISTED" },
-			{ Name: "Ella Davis", Position: "HR Staff", Status: "ONBOARDING" },
-			{ Name: "Ray Williams", Position: "Software Developers", Status: "DEPLOYED" },
-			// 5th page
-			{ Name: "Jill Doe", Position: "Software Developers", Status: "FOR REVIEW" },
-			{ Name: "Jackson Smith", Position: "HR Staff", Status: "INVITE TO INTERVIEW" },
-			{ Name: "Michelle Johnson", Position: "Software Developers", Status: "SHORTLISTED" },
-			{ Name: "Erina Davis", Position: "HR Staff", Status: "ONBOARDING" },
-			{ Name: "Roberta Williams", Position: "Software Developers", Status: "FOR REVIEW" },
-			{ Name: "Jack Doe", Position: "Software Developers", Status: "FOR REVIEW" },
-			{ Name: "Joselle Smith", Position: "HR Staff", Status: "UNDERGOING JOB OFFER" },
-			{ Name: "Mira Johnson", Position: "Software Developers", Status: "SHORTLISTED" },
-			{ Name: "Evonne Davis", Position: "HR Staff", Status: "ONBOARDING" },
-			{ Name: "Roselle Williams", Position: "Software Developers", Status: "REJECTED" },
-		];
 
 		const itemsPerPage = 10; // Number of items to display per page
 		let currentPage = 1;
 		let filteredApplicants = applicants.slice();
-
-		function getStatusButtons(status) {
-			switch (status) {
-				case "FOR REVIEW":
-					return '<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview">SHORTLIST</a>' +
-						'<a class="reject-btn" asp-controller="HR" asp-action="JobApplicantsOverview">REJECT</a>';
-				case "SHORTLISTED":
-					return '<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview">FOR SCREENING</a>' +
-						'<a class="reject-btn" asp-controller="HR" asp-action="JobApplicantsOverview">REJECT</a>';
-				case "FOR SCREENING":
-					return '<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview">INVITE TO INTERVIEW</a>' +
-						'<a class="reject-btn" asp-controller="HR" asp-action="JobApplicantsOverview">REJECT</a>';
-				case "INVITE TO INTERVIEW":
-					return '<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview">SEND JOB OFFER</a>' +
-						'<a class="reject-btn" asp-controller="HR" asp-action="JobApplicantsOverview">REJECT</a>';
-				case "UNDERGOING JOB OFFER":
-					return '<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview">CONFIRM</a>' +
-						'<a class="decline-btn" asp-controller="HR" asp-action="JobApplicantsOverview">DECLINE</a>';
-				case "ONBOARDING":
-					return '<a class="status-btn" asp-controller="HR" asp-action="JobApplicantsOverview" style="justify-content: flex-start !important;"">DEPLOY</a>';
-				default:
-					return '';
-			}
-		}
 
 		function redirectToApplicantDetail(applicantIndex) {
 			const applicant = applicants[applicantIndex];

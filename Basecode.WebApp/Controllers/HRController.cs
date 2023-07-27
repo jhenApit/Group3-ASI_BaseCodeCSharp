@@ -12,14 +12,16 @@ namespace Basecode.WebApp.Controllers
     {
         private readonly IHrEmployeeService _service;
         private readonly IJobPostingsService _jobPostingsService;
+        private readonly IApplicantService _applicantService;
         private readonly IErrorHandling _errorHandling; 
         private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public HRController(IHrEmployeeService service, IJobPostingsService jobPostingsService, IErrorHandling errorHandling, UserManager<IdentityUser> userManager)
+        public HRController(IApplicantService applicantService, IHrEmployeeService service, IJobPostingsService jobPostingsService, IErrorHandling errorHandling, UserManager<IdentityUser> userManager)
         {
             _service = service;
             _jobPostingsService = jobPostingsService;
+            _applicantService = applicantService;
             _errorHandling = errorHandling;
             _userManager = userManager;
         }
@@ -215,8 +217,9 @@ namespace Basecode.WebApp.Controllers
         /// <returns>Redirect to Job Applicant Overview Page</returns>
         public IActionResult JobApplicantsOverview()
         {
-            return View();
-        }
+			var data = _applicantService.RetrieveAll();
+			return View(data);
+		}
 
         /// <summary>
         /// Allows HR to view job applicants in a specific job post with different status

@@ -12,12 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Basecode.Data.Migrations
 {
     [DbContext(typeof(BasecodeContext))]
-<<<<<<<< HEAD:Basecode.Data/Migrations/20230727041455_Basecode.Data.Designer.cs
-    [Migration("20230727041455_Basecode.Data")]
-========
-    [Migration("20230727034824_Basecode.Data")]
->>>>>>>> 8d4283928fa342101972709c6108080eefbebe97:Basecode.Data/Migrations/20230727034824_Basecode.Data.Designer.cs
-    partial class BasecodeData
+    [Migration("20230727052922_BasecodeDataMigrations")]
+    partial class BasecodeDataMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -98,8 +94,8 @@ namespace Basecode.Data.Migrations
                     b.Property<string>("MiddleName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("Photo")
                         .HasColumnType("varbinary(max)");

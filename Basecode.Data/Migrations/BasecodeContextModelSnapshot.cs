@@ -91,8 +91,8 @@ namespace Basecode.Data.Migrations
                     b.Property<string>("MiddleName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("Photo")
                         .HasColumnType("varbinary(max)");

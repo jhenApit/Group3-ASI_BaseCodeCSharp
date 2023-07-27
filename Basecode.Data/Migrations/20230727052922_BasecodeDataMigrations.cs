@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Basecode.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class BasecodeData : Migration
+    public partial class BasecodeDataMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -461,7 +461,7 @@ namespace Basecode.Data.Migrations
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Resume = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     Photo = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    PhoneNumber = table.Column<int>(type: "int", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AdditionalInfo = table.Column<int>(type: "int", nullable: false),
                     ApplicationStatus = table.Column<int>(type: "int", nullable: false),
@@ -776,9 +776,9 @@ namespace Basecode.Data.Migrations
            },
            values: new object[,]
            {
-                { 
-                   "1", 
-                   "Default Admin Account", 
+                {
+                   "1",
+                   "Default Admin Account",
                    "admin@asi-dev2.com",
                    "AQAAAAIAAYagAAAAEH5a85Bn0MNwV4GKhUKR6sN7LmTb9awIvOp+KcXboZjUyUN3q9JS+l8nMtCZGNa0xA==",
                    "Default",

@@ -26,6 +26,7 @@ namespace Basecode.Data.Dtos.HrEmployee
         [MinLength(6, ErrorMessage = "Password must be at least 6 characters long")]
         [MaxLength(30, ErrorMessage = "Password cannot be longer than 30 characters")]
         public string Password { get; set; } = string.Empty;
+        public string? ModifiedBy { get; set; }
         public bool IsAdmin { get; set; }
     }
 }

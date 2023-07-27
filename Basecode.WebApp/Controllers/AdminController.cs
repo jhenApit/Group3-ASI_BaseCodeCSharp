@@ -98,6 +98,7 @@ namespace Basecode.WebApp.Controllers
             // Retrieve the HR employee from the database using the ID
             var hrEmployee = _service.GetById(id);
             var hrRole = await _userManager.GetRolesAsync(hrEmployee.User);
+            var loggedUser = await _userManager.GetUserAsync(User);
             var role = hrRole.FirstOrDefault();
             if (hrEmployee != null)
             {
@@ -112,6 +113,7 @@ namespace Basecode.WebApp.Controllers
                     Password = hrEmployee.Password,
                     UserName = userName,
                     UserId = hrEmployee.User.Id,
+                    ModifiedBy = loggedUser.UserName,
                     Id = hrEmployee.Id
                 };
                 if (role == "admin")
@@ -153,6 +155,7 @@ namespace Basecode.WebApp.Controllers
                 //get hremployee data
                 var hr = _service.GetById(hrEmployee.Id);
                 //get aspnetuser data
+                var user = await _userManager.GetUserAsync(User);
                 //update username
                 await _userManager.SetUserNameAsync(hr.User, hrEmployee.UserName);
                 await _userManager.GenerateChangeEmailTokenAsync(hr.User, hrEmployee.Email);
@@ -176,7 +179,7 @@ namespace Basecode.WebApp.Controllers
         /// <returns>Redirects to the HrList page</returns>
         public IActionResult DeleteHrAccount(int id)
         {
-            _service.SemiDelete(id);
+            _service.Delete(id);
             return RedirectToAction("HrList");
         }
 
@@ -202,28 +205,6 @@ namespace Basecode.WebApp.Controllers
             _service.Add(hrEmployee);
             return RedirectToAction("HrList");
         }
-
-        public IActionResult CreateRole()
-        {
-            return View();
-        }
-
-        //[HttpPost]
-        //public async Task<IActionResult> CreateRole(CreateRoleDto createRoleDto)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-
-        //        IdentityResult result = await _admin_service.CreateRole(createRoleDto.RoleName);
-
-        //        if (result.Succeeded)
-        //        {
-        //            return RedirectToAction("AdminDashboard", "Admin");
-        //        }
-        //    }
-
-        //    return View();
-        //}
     }
 }
 

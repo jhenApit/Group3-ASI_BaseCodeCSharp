@@ -38,9 +38,9 @@ namespace Basecode.Services.Services
             var JobPostingsModel = _mapper.Map<JobPostings>(jobPostingsDto);
             JobPostingsModel.CreatedTime = DateTime.Now;
             JobPostingsModel.IsDeleted = false;
-            JobPostingsModel.CreatedById = 1; //temporary id
+            JobPostingsModel.CreatedBy = jobPostingsDto.CreatedBy;
             JobPostingsModel.UpdatedTime = null;
-            JobPostingsModel.UpdatedById = null;
+            JobPostingsModel.UpdatedBy = null;
 
             _repository.Add(JobPostingsModel);
         }
@@ -63,7 +63,7 @@ namespace Basecode.Services.Services
         {
             var JobPostingsModel = _mapper.Map<JobPostings>(JobPostings);
             JobPostingsModel.UpdatedTime = DateTime.Now;
-            JobPostingsModel.UpdatedById = 2; //temporary id
+            JobPostingsModel.UpdatedBy = JobPostings.UpdatedBy;
 
             _repository.Update(JobPostingsModel);
         }
@@ -138,20 +138,23 @@ namespace Basecode.Services.Services
                         _logContent.Result = false;
                         _logContent.ErrorCode = "400. Edit Failed!";
                         _logContent.Message = "Position Name already exists.";
-                        return _logContent;
+                        //return _logContent;
                     }
+                    _logContent.Result = true;
+                    //return _logContent;
                 }
                 //if job exists and job name entered is the same as the current name
                 _logContent.Result = true;
-                return _logContent;
+                //return _logContent;
             }
             else
             {
                 _logContent.Result = false;
                 _logContent.ErrorCode = "400. Edit Failed!";
                 _logContent.Message = "Job with ID doesn't exist.";
-                return _logContent;
+                //return _logContent;
             }
+            return _logContent;
         }
 
     }

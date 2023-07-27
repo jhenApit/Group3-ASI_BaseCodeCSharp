@@ -13,8 +13,8 @@
 }
 
 <body>
-    <div class="dashboard">
-        <div class="top-header shadow-sm">
+    <div id="container" class="dashboard">
+        <div id="header" class="top-header shadow-sm">
             <div class="ps-5">
                 <h1 class="m-0 ps-2">@ViewData["Title"]</h1>
             </div>
@@ -25,6 +25,7 @@
             </div>
         </div>
 
+        <div class="pt-5"></div><div class="pt-4"></div> <!-- a buffer to push content down so that header won't cover it' -->
         <div class="container">
             <!--Upper Cards-->
             <div class="row justify-content-around mt-3">
@@ -140,3 +141,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="~/js/applicant-chart.js" asp-append-version="true"></script>
 </body>
+
+<script>
+    //A band-aid solution for adjusting the header width
+    setInterval(function () { 
+        var width = document.getElementById("container").offsetWidth;
+        document.getElementById('header').style.width = width + "px";
+    }, 100);
+</script>

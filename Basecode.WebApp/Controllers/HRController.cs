@@ -48,7 +48,7 @@ namespace Basecode.WebApp.Controllers
             {
                 User = _service.GetByUserId(user),
                 JobCount = _jobPostingsService.RetrieveAll().Count(),
-                CandidateCount = _applicantService.RetrieveAll().Count(),
+                Candidates = _applicantService.RetrieveAll(),
                 EmployeeCount = _currentHiresService.RetrieveAll().Count(),
                 Schedules = _interviewsService.RetrieveAll()
             };

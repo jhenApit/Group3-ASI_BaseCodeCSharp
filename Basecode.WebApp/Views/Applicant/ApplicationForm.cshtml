@@ -6,226 +6,238 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 }
 
-<div class="application-form-container">
-    <div class="row">
-        <h1 class="text-center">@Model?.JobPosting?.Name</h1>
-    </div>
-    <div class="row mt-5 px-5">
-        <div class="col d-flex form-header mb-3">
-            <a asp-controller="Applicant" asp-action="JobDescription">
-                <p class="text-bold text-black mb-1 align-self-center me-3">Job Details</p>
+<body class="applicantForm_body">
+    <div class="application-form-container">
+        <div class="row mt-3 px-5">
+            <a asp-route-id="@Model?.JobPosting?.Id" asp-controller="Job" asp-action="JobDescription">
+                <p class="text-bold text-black mb-1 align-self-center me-3">
+                    <img src="/images/icons/back-icon.png" class="back-icon mb-1" alt="" /> Back to Job Details
+                </p>
             </a>
-            <p class="text-bold mb-1 ms-5 align-self-center text-red">Application</p>
+            <div class="row mt-5 mt-sm-3">
+                <h1 class="text-center">@Model?.JobPosting?.Name</h1>
+            </div>
+            <div class="row mt-3 px-5">
+                <div class="col form-header">
+                    <p class="align-self-center text-red text-bold text-center">Application Form</p>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="form">
-        <form method="post" asp-controller="Applicant" asp-action="ApplicationFormProcess" enctype="multipart/form-data" id="application_form" novalidate>
-            @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
-            {
-                <div class="alert alert-danger text-center m-0" role="alert">
-                    @Html.Raw(ViewBag.ErrorMessage)
-                </div>
-            }
-            <!--Hidden input field for the jobid-->
-            <input type="hidden" asp-for="Applicant.JobId" value="@Model?.JobPosting?.Id" />
-            <!--Resume-->
-            <div class="row text-header text-bold ps-2">Resume</div>
-            <div class="row form-row form-group file-drop my-3 mx-1 py-4">
-                <div>
-                    <img src="/images/icons/resume-upload.png" />
-                </div>
-                <input asp-for="Applicant.Resume" type="file" id="resumeFile" name="resumeFile" class="form-control" accept=".pdf, .doc, .docx" onchange="displayFileName()" />
-                <label for="resumeFile" class="file-label">
-                    <span id="fileText" class="file-text text-bold">Choose a file or Drag it here</span>
-                </label>
+        <div class="form">
+            <form method="post" asp-controller="Applicant" asp-action="ApplicationFormProcess" enctype="multipart/form-data" id="application_form" novalidate>
+                @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                {
+                    <div class="alert alert-danger text-center m-0" role="alert">
+                        @Html.Raw(ViewBag.ErrorMessage)
+                    </div>
+                }
+                <!--Hidden input field for the jobid-->
+                <input type="hidden" asp-for="Applicant.JobId" value="@Model?.JobPosting?.Id" />
+                <!--Resume-->
+                <div class="row text-header text-bold ps-2">Resume</div>
+                <div class="row form-row form-group file-drop my-3 mx-1 py-4">
+                    <div>
+                        <img src="/images/icons/resume-upload.png" />
+                    </div>
+                    <input asp-for="Applicant.Resume" type="file" id="resumeFile" name="resumeFile" class="form-control file-input" accept=".pdf, .doc, .docx" onchange="displayFileName()" />
+                    <label for="resumeFile" class="file-label">
+                        <span id="fileText" class="file-text text-bold">Choose a file or Drag it here</span>
+                    </label>
 
-                <script>
-                    function displayFileName() {
-                        var fileInput = document.getElementById("resumeFile");
-                        var fileName = fileInput.files[0].name;
-                        var fileText = document.querySelector(".file-label .file-text");
-                        fileText.textContent = fileName;
-                    }
-                </script>
-            </div>
-            <!--Personal Information-->
-            <div class="row text-header text-bold ps-2 mt-4">Personal Information</div>
-            <div class="row form-row mt-3">
-                <label>Name: </label>
-                <div class="col-sm-6 col-md-4 form-group mt-2">
-                    <input asp-for ="Applicant.FirstName" class="form-control" type="text" placeholder="First Name" required />
-                    <span asp-validation-for="Applicant.FirstName" class="text-danger w-100"></span>
-                </div> 
-                <div class="col-sm-6 col-md-4 form-group mt-2">
-                    <input asp-for="Applicant.MiddleName" class="form-control" type="text" placeholder="Middle Name" required />
-                    <span asp-validation-for="Applicant.MiddleName" class="text-danger w-100"></span>
-                </div>
-                <div class="col-sm-6 col-md-4 form-group mt-2">
-                    <input asp-for="Applicant.LastName" class="form-control" type="text" placeholder="Last Name" required />
-                    <span asp-validation-for="Applicant.LastName" class="text-danger w-100"></span>
-                </div>
-            </div>
-            <div class="row form-row mt-3">
-                <div class="col-12 form-group mt-1">
-                    <label for="birthday">Birthday:</label>
-                    <input asp-for="Applicant.BirthDate" class="form-control" type="date" name="birthday" required />
-                    <span asp-validation-for="Applicant.BirthDate" class="text-danger w-100"></span>
-                </div>
-            </div>
-            <div class="row form-row mt-3">
-                <label>Photo (Optional):</label>
-            </div>
-            <div class="col-sm-6 col-md-3 form-group file-drop mt-1 mx-1 py-4">
-                <div>
-                    <img src="/images/icons/upload-image.png"/>
-                </div>
-                <input asp-for="Applicant.Photo" type="file" id="photo" name="photo" class="file-input" onchange="displayImageName('photo', 'photoText')" />
-                <label for="photo" class="file-label">
-                    <span id="photoText" class="file-text">Choose a file<br />or<br />Drag it here</span>
-                </label>
-
-                <script>
-                    function displayImageName(photoInputId, photoTextId) {
-                        var photoInput = document.getElementById(photoInputId);
-                        if (photoInput.files.length > 0) {
-                            var photoFileName = photoInput.files[0].name;
-                            var photoText = document.getElementById(photoTextId);
-                            photoText.textContent = photoFileName;
-                        } 
-                        else {
-                            // If no file selected, show the default text
-                            var photoText = document.getElementById(photoTextId);
-                            photoText.textContent = "Choose a file\nor\nDrag it here";
+                    <script>
+                        function displayFileName() {
+                            var fileInput = document.getElementById("resumeFile");
+                            var fileName = fileInput.files[0].name;
+                            var fileText = document.querySelector(".file-label .file-text");
+                            fileText.textContent = fileName;
                         }
-                    }
-                </script>
-            </div>
-            <!--Contact Information-->
-            <div class="row text-header text-bold ps-2 mt-4">Contact Information</div>
-            <div class="row form-row mt-3">
-                <label>Address: </label>
-                <div class="col-12 form-group mt-2">
-                    <input asp-for="Address.Street" class="form-control" id="street" type="text" placeholder="Street" required/>
-                    <span asp-validation-for="Address.Street" class="text-danger w-100"></span>
+                    </script>
                 </div>
-                <div class="col-sm-6 col-md-4 form-group mt-2">
-                    <input asp-for="Address.City" class="form-control" id="city" type="text" placeholder="City" required />
-                    <span asp-validation-for="Address.City" class="text-danger w-100"></span>
+                <!--Personal Information-->
+                <div class="row text-header text-bold ps-2 mt-4">Personal Information</div>
+                <div class="row form-row mt-3">
+                    <div class="col-12 col-md-3">
+                        <div class="row form-row text-center">
+                            <label>Photo (Optional):</label>
+                        </div>
+                        <div class="col form-group file-drop mt-1 p-3">
+                            <div>
+                                <img src="/images/icons/upload-image.png" />
+                            </div>
+                            <input asp-for="Applicant.Photo" type="file" id="photo" name="photo" class="file-input" accept="image/png, image/gif, image/jpeg" onchange="displayImageName('photo', 'photoText')" />
+                            <label for="photo" class="file-label">
+                                <span id="photoText" class="file-text">Choose a file<br />or<br />Drag it here</span>
+                            </label>
+
+                            <script>
+                                function displayImageName(photoInputId, photoTextId) {
+                                    var photoInput = document.getElementById(photoInputId);
+                                    if (photoInput.files.length > 0) {
+                                        var photoFileName = photoInput.files[0].name;
+                                        var photoText = document.getElementById(photoTextId);
+                                        photoText.textContent = photoFileName;
+                                    }
+                                    else {
+                                        // If no file selected, show the default text
+                                        var photoText = document.getElementById(photoTextId);
+                                        photoText.textContent = "Choose a file\nor\nDrag it here";
+                                    }
+                                }
+                            </script>
+                        </div>
+                    </div> 
+                    <div class="col-12 col-md-9 mt-3 mt-md-0">
+                        <label>Name: </label>
+                        <div class="row">
+                            <div class="col-12 col-sm-6 col-md-4 form-group mt-2">
+                                <input asp-for="Applicant.FirstName" class="form-control" type="text" placeholder="First Name" required />
+                                <span asp-validation-for="Applicant.FirstName" class="text-danger w-100"></span>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-4 form-group mt-2">
+                                <input asp-for="Applicant.MiddleName" class="form-control" type="text" placeholder="Middle Name" required />
+                                <span asp-validation-for="Applicant.MiddleName" class="text-danger w-100"></span>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-4 form-group mt-2">
+                                <input asp-for="Applicant.LastName" class="form-control" type="text" placeholder="Last Name" required />
+                                <span asp-validation-for="Applicant.LastName" class="text-danger w-100"></span>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12 form-group mt-1">
+                                <label for="birthday">Birthday:</label>
+                                <input asp-for="Applicant.BirthDate" class="form-control" type="date" name="birthday" required />
+                                <span asp-validation-for="Applicant.BirthDate" class="text-danger w-100"></span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-sm-6 col-md-4 form-group mt-2">
-                    <input asp-for="Address.Province" class="form-control" id="province" type="text" placeholder="Province / State" required/>
-                    <span asp-validation-for="Address.Province" class="text-danger w-100"></span>
-                </div>
-                <div class="col-sm-6 col-md-4 form-group mt-2">
-                    <input asp-for="Address.ZipCode" class="form-control" id="zipcode" type="number" placeholder="Postal / Zipcode" required />
-                    <span asp-validation-for="Address.ZipCode" class="text-danger w-100"></span>
-                </div>
-            </div>
-            <div class="row form-row mt-3">
-                <div class="col-sm-6 form-group mt-1">
-                    <label for="number">Phone Number:</label>
-                    <input asp-for="Applicant.PhoneNumber" class="form-control" id="number" type="number" required />
-                    <span asp-validation-for="Applicant.PhoneNumber" class="text-danger w-100"></span>
-                </div>
-                <div class="col-sm-6 form-group mt-1">
-                    <label for="email">Email Address:</label>
-                    <input asp-for="Applicant.Email" class="form-control" id="email" type="text" required />
-                    <span asp-validation-for="Applicant.Email" class="text-danger w-100"></span>
-                </div>
-            </div>
-            <!--References-->
-            <div class="row text-header text-bold ps-2 mt-4">References</div>
-            <div class="row form-row mt-3">
-                <label class="text-bold text-center">Please list two (2) references (who are not family or relatives) that are familiar with your work life.</label>
-            </div>
-            <div class="row form-row mt-3">
-                <label class="text-bold">Reference 1</label>
-                <div class="row form-row">
-                    <div class="col-sm-6 col-md-4 form-group mt-2">
-                        <label for="name">Full Name: </label>
-                        <input asp-for="CharacterReferences1.Name" class="form-control" id="name" type="text" required />
-                        <span asp-validation-for="CharacterReferences1.Name" class="text-danger w-100"></span>
+                <!--Contact Information-->
+                <div class="row text-header text-bold ps-2 mt-4">Contact Information</div>
+                <div class="row form-row mt-3">
+                    <label>Address: </label>
+                    <div class="col-12 form-group mt-2">
+                        <input asp-for="Address.Street" class="form-control" id="street" type="text" placeholder="Street" required/>
+                        <span asp-validation-for="Address.Street" class="text-danger w-100"></span>
                     </div>
                     <div class="col-sm-6 col-md-4 form-group mt-2">
-                        <label for="relationship">Relationship:</label>
-                        <input asp-for="CharacterReferences1.Relationship" class="form-control" id="relationship" type="text" required />
-                        <span asp-validation-for="CharacterReferences1.Relationship" class="text-danger w-100"></span>
+                        <input asp-for="Address.City" class="form-control" id="city" type="text" placeholder="City" required />
+                        <span asp-validation-for="Address.City" class="text-danger w-100"></span>
                     </div>
                     <div class="col-sm-6 col-md-4 form-group mt-2">
-                        <label for="email">Email Address:</label>
-                        <input asp-for="CharacterReferences1.Email" class="form-control" id="email" type="text" required/>
-                        <span asp-validation-for="CharacterReferences1.Email" class="text-danger w-100"></span>
+                        <input asp-for="Address.Province" class="form-control" id="province" type="text" placeholder="Province / State" required/>
+                        <span asp-validation-for="Address.Province" class="text-danger w-100"></span>
                     </div>
                     <div class="col-sm-6 col-md-4 form-group mt-2">
+                        <input asp-for="Address.ZipCode" class="form-control" id="zipcode" type="number" placeholder="Postal / Zipcode" required />
+                        <span asp-validation-for="Address.ZipCode" class="text-danger w-100"></span>
+                    </div>
+                </div>
+                <div class="row form-row mt-3">
+                    <div class="col-sm-6 form-group mt-1">
                         <label for="number">Phone Number:</label>
-                        <input asp-for="CharacterReferences1.MobileNumber" class="form-control" id="number" type="number" required />
-                        <span asp-validation-for="CharacterReferences1.MobileNumber" class="text-danger w-100"></span>
+                        <input asp-for="Applicant.PhoneNumber" class="form-control" id="number" type="number" required />
+                        <span asp-validation-for="Applicant.PhoneNumber" class="text-danger w-100"></span>
                     </div>
-                </div>
-            </div>
-            <div class="row form-row mt-3">
-                <label class="text-bold">Reference 2</label>
-                <div class="row form-row">
-                    <div class="col-sm-6 col-md-4 form-group mt-2">
-                        <label for="name">Full Name: </label>
-                        <input asp-for="CharacterReferences2.Name" class="form-control" id="name2" type="text" required/>
-                        <span asp-validation-for="CharacterReferences2.Name" class="text-danger w-100"></span>
-                    </div>
-                    <div class="col-sm-6 col-md-4 form-group mt-2">
-                        <label for="relationship">Relationship:</label>
-                        <input asp-for="CharacterReferences2.Relationship" class="form-control" id="relationship2" type="text" required />
-                        <span asp-validation-for="CharacterReferences2.Relationship" class="text-danger w-100"></span>
-                    </div>
-                    <div class="col-sm-6 col-md-4 form-group mt-2">
+                    <div class="col-sm-6 form-group mt-1">
                         <label for="email">Email Address:</label>
-                        <input asp-for="CharacterReferences2.Email" class="form-control" id="email2" type="text" required/>
-                        <span asp-validation-for="CharacterReferences2.Email" class="text-danger w-100"></span>
-                    </div>
-                    <div class="col-sm-6 col-md-4 form-group mt-2">
-                        <label for="number">Phone Number:</label>
-                        <input asp-for="CharacterReferences2.MobileNumber" class="form-control" id="number2" type="number" required />
-                        <span asp-validation-for="CharacterReferences2.MobileNumber" class="text-danger w-100"></span>
+                        <input asp-for="Applicant.Email" class="form-control" id="email" type="text" required />
+                        <span asp-validation-for="Applicant.Email" class="text-danger w-100"></span>
                     </div>
                 </div>
-            </div>
-            <!--Additional Information-->
-            <div class="row text-header text-bold ps-2 mt-4">Additional Information</div>
-            <div class="row form-row mt-3">
-                <div class="col-12 form-group mt-1">
-                    <label for="additional">How did you hear about us?</label>
-                    <select asp-for="Applicant.AdditionalInfo" class="form-select mt-3" id="additional" required>
-                        <option selected disabled value="">Choose...</option>
-                        <option value="@AdditionalInfo.LinkedInJobPost">LinkedIn Job Post</option>
-                        <option value="@AdditionalInfo.RecruitmentTeam">Recruitment Team</option>
-                        <option value="@AdditionalInfo.PeersFriends">Peers & Friends</option>
-                        <option value="@AdditionalInfo.SocialMediaPlatforms">Social Media Platforms</option>
-                        <option value="@AdditionalInfo.CareerPage">Career Page</option>
-                        <option value="@AdditionalInfo.Others">Others</option>
-                    </select>
+                <!--References-->
+                <div class="row text-header text-bold ps-2 mt-4">References</div>
+                <div class="row form-row mt-3">
+                    <label class="text-bold text-center">Please list two (2) references (who are not family or relatives) that are familiar with your work life.</label>
                 </div>
-            </div>
-            <div class="row form-row mt-3">
-                <div class="text-center mt-3">
-                    <input type="checkbox" id="agreeCheckbox" name="agreeCheckbox" required />
-                    <label for="agreeCheckbox" class="checkmark"></label>
-                    <span class="terms-link">I agree to the <a asp-controller="Applicant" asp-action="TermsAndConditions"><span class="text-red">terms and conditions</span></a></span>
-                    <div class="invalid-feedback">
-                        &#8593; You must agree before submitting.
+                <div class="row form-row mt-3">
+                    <label class="text-bold">Reference 1</label>
+                    <div class="row form-row">
+                        <div class="col-sm-6 col-md-4 form-group mt-2">
+                            <label for="name">Full Name: </label>
+                            <input asp-for="CharacterReferences1.Name" class="form-control" id="name" type="text" required />
+                            <span asp-validation-for="CharacterReferences1.Name" class="text-danger w-100"></span>
+                        </div>
+                        <div class="col-sm-6 col-md-4 form-group mt-2">
+                            <label for="relationship">Relationship:</label>
+                            <input asp-for="CharacterReferences1.Relationship" class="form-control" id="relationship" type="text" required />
+                            <span asp-validation-for="CharacterReferences1.Relationship" class="text-danger w-100"></span>
+                        </div>
+                        <div class="col-sm-6 col-md-4 form-group mt-2">
+                            <label for="email">Email Address:</label>
+                            <input asp-for="CharacterReferences1.Email" class="form-control" id="email" type="text" required/>
+                            <span asp-validation-for="CharacterReferences1.Email" class="text-danger w-100"></span>
+                        </div>
+                        <div class="col-sm-6 col-md-4 form-group mt-2">
+                            <label for="number">Phone Number:</label>
+                            <input asp-for="CharacterReferences1.MobileNumber" class="form-control" id="number" type="number" required />
+                            <span asp-validation-for="CharacterReferences1.MobileNumber" class="text-danger w-100"></span>
+                        </div>
                     </div>
                 </div>
-                <div class="col d-flex justify-content-center">
-                    <button class="btn btn-primary mt-2 py-2 px-5" type="submit" onclick="checkValidity()">Submit</button>
+                <div class="row form-row mt-3">
+                    <label class="text-bold">Reference 2</label>
+                    <div class="row form-row">
+                        <div class="col-sm-6 col-md-4 form-group mt-2">
+                            <label for="name">Full Name: </label>
+                            <input asp-for="CharacterReferences2.Name" class="form-control" id="name2" type="text" required/>
+                            <span asp-validation-for="CharacterReferences2.Name" class="text-danger w-100"></span>
+                        </div>
+                        <div class="col-sm-6 col-md-4 form-group mt-2">
+                            <label for="relationship">Relationship:</label>
+                            <input asp-for="CharacterReferences2.Relationship" class="form-control" id="relationship2" type="text" required />
+                            <span asp-validation-for="CharacterReferences2.Relationship" class="text-danger w-100"></span>
+                        </div>
+                        <div class="col-sm-6 col-md-4 form-group mt-2">
+                            <label for="email">Email Address:</label>
+                            <input asp-for="CharacterReferences2.Email" class="form-control" id="email2" type="text" required/>
+                            <span asp-validation-for="CharacterReferences2.Email" class="text-danger w-100"></span>
+                        </div>
+                        <div class="col-sm-6 col-md-4 form-group mt-2">
+                            <label for="number">Phone Number:</label>
+                            <input asp-for="CharacterReferences2.MobileNumber" class="form-control" id="number2" type="number" required />
+                            <span asp-validation-for="CharacterReferences2.MobileNumber" class="text-danger w-100"></span>
+                        </div>
+                    </div>
                 </div>
+                <!--Additional Information-->
+                <div class="row text-header text-bold ps-2 mt-4">Additional Information</div>
+                <div class="row form-row mt-3">
+                    <div class="col-12 form-group mt-1">
+                        <label for="additional">How did you hear about us?</label>
+                        <select asp-for="Applicant.AdditionalInfo" class="form-select mt-3" id="additional" required>
+                            <option selected disabled value="">Choose...</option>
+                            <option value="@AdditionalInfo.LinkedInJobPost">LinkedIn Job Post</option>
+                            <option value="@AdditionalInfo.RecruitmentTeam">Recruitment Team</option>
+                            <option value="@AdditionalInfo.PeersFriends">Peers & Friends</option>
+                            <option value="@AdditionalInfo.SocialMediaPlatforms">Social Media Platforms</option>
+                            <option value="@AdditionalInfo.CareerPage">Career Page</option>
+                            <option value="@AdditionalInfo.Others">Others</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row form-row mt-3">
+                    <div class="text-center mt-3">
+                        <input type="checkbox" id="agreeCheckbox" name="agreeCheckbox" required />
+                        <label for="agreeCheckbox" class="checkmark"></label>
+                        <span class="terms-link">I agree to the <a asp-controller="Applicant" asp-action="TermsAndConditions"><span class="text-red">terms and conditions</span></a></span>
+                        <div class="invalid-feedback">
+                            &#8593; You must agree before submitting.
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-center">
+                        <button class="btn btn-primary mt-2 py-2 px-5" type="submit" onclick="checkValidity()">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="text-center mt-5">
+            <div class="text-footer">© 2019 Alliance Software Incorporated. All Rights Reserved</div>
+            <div class="mt-2">
+                <img src="~/images/asi-logo-invert.png" alt="Footer Image">
             </div>
-        </form>
-    </div>
-    <div class="text-center mt-5">
-        <div class="text-footer">© 2019 Alliance Software Incorporated. All Rights Reserved</div>
-        <div class="mt-2">
-            <img src="~/images/asi-logo-invert.png" alt="Footer Image">
         </div>
     </div>
-</div>
+</body>
 
 <!-- Fill All Required Fields Modal -->
  <div class="modal fade" id="FillAllRequiredFields" tabindex="-1" role="dialog" aria-labelledby="FillAllRequiredFieldsLabel" aria-hidden="true">

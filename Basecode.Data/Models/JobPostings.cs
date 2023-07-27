@@ -19,9 +19,9 @@ namespace Basecode.Data.Models
         public JobStatus JobStatus { get; set; }
         public EmploymentType EmploymentType { get; set; }
         public DateTime CreatedTime { get; set; }
-        public int CreatedById { get; set; }
+        public string? CreatedBy { get; set; }
         public DateTime? UpdatedTime { get; set; }
-        public int? UpdatedById { get; set; }
+        public string? UpdatedBy { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

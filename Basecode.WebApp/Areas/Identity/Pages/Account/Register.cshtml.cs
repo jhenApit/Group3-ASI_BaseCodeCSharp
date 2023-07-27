@@ -157,15 +157,19 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
                     return Page();
                 }
 
+                var loggedUser = await _userManager.GetUserAsync(User);
 
                 var user = CreateUser();
+
                 //create a employee entity
                 var hrEmployee = new HREmployeeCreationDto
                 {
                     Name = string.IsNullOrEmpty(Input.MiddleName)
                         ? $"{Input.FirstName} {Input.LastName}"
                         : $"{Input.FirstName} {Input.MiddleName} {Input.LastName}",
-                    Email = Input.Email
+                    Email = Input.Email,
+                    CreatedBy = loggedUser.UserName,
+                    CreatedDate = DateTime.Now
                 };
 
                 await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);

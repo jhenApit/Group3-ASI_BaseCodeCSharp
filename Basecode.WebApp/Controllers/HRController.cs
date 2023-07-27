@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Basecode.Services.Interfaces;
 using NLog;
 using Basecode.Data.Dtos.JobPostings;
+using Microsoft.AspNetCore.Identity;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -12,21 +13,16 @@ namespace Basecode.WebApp.Controllers
         private readonly IHrEmployeeService _service;
         private readonly IJobPostingsService _jobPostingsService;
         private readonly IErrorHandling _errorHandling;
+        private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public HRController(IHrEmployeeService service, IJobPostingsService jobPostingsService, IErrorHandling errorHandling)
+        public HRController(IHrEmployeeService service, IJobPostingsService jobPostingsService, IErrorHandling errorHandling, UserManager<IdentityUser> userManager)
         {
             _service = service;
             _jobPostingsService = jobPostingsService;
             _errorHandling = errorHandling;
+            _userManager = userManager;
         }
-
-
-        /// <summary>
-        /// Displays the list of job posts.
-        /// </summary>
-        /// <returns>The view containing the job post list.</returns>
-
 
         public IActionResult AdminDashboard(string Email)
         {
@@ -34,6 +30,10 @@ namespace Basecode.WebApp.Controllers
             return View(hrEmployee);
         }
 
+        /// <summary>
+        /// Displays the list of job posts.
+        /// </summary>
+        /// <returns>The view containing the job post list.</returns>
         public IActionResult JobPostList()
         {
             var data = _jobPostingsService.RetrieveAll();
@@ -53,9 +53,10 @@ namespace Basecode.WebApp.Controllers
         /// Displays the form to edit an existing job post.
         /// </summary>
         /// <returns>The view containing the job post edit form.</returns>
-        public IActionResult EditJobPost(int id)
+        public async Task<IActionResult> EditJobPost(int id)
         {
             var jobPosting = _jobPostingsService.GetById(id);
+            var loggedUser = await _userManager.GetUserAsync(User);
 
             if (jobPosting == null)
             {
@@ -71,7 +72,8 @@ namespace Basecode.WebApp.Controllers
                 WorkSetup = jobPosting.WorkSetup,
                 JobStatus = jobPosting.JobStatus,
                 Hours = jobPosting.Hours,
-                EmploymentType = jobPosting.EmploymentType
+                EmploymentType = jobPosting.EmploymentType,
+                UpdatedBy = loggedUser.UserName
             };
             return View(jobPostingDto);
 
@@ -86,14 +88,21 @@ namespace Basecode.WebApp.Controllers
             var job = _jobPostingsService.GetById(id);
             return View(job);
         }
+
         [HttpPost]
-        public IActionResult Add(JobPostingsCreationDto jobPostingsCreationDto)
+        public async Task<IActionResult> Add(JobPostingsCreationDto jobPostingsCreationDto)
         {
             if (ModelState.IsValid)
             {
-				jobPostingsCreationDto.Qualifications = string.Join(", ", jobPostingsCreationDto.QualificationList);
+                //Get AspNetUser Data
+                var loggedUser = await _userManager.GetUserAsync(User);
+
+                jobPostingsCreationDto.CreatedBy = loggedUser.UserName;
+                jobPostingsCreationDto.Qualifications = string.Join(", ", jobPostingsCreationDto.QualificationList);
 				jobPostingsCreationDto.Responsibilities = string.Join(", ", jobPostingsCreationDto.ResponsibilityList);
-				var data = _jobPostingsService.CreateJobPosting(jobPostingsCreationDto);
+				
+                var data = _jobPostingsService.CreateJobPosting(jobPostingsCreationDto);
+                
                 if (!data.Result)
                 {
                     _logger.Error(_errorHandling.SetLog(data));
@@ -108,13 +117,19 @@ namespace Basecode.WebApp.Controllers
 		}
 
         [HttpPost]
-        public IActionResult Update(JobPostingsUpdationDto jobPostingsUpdationDto)
+        public async Task<IActionResult> Update(JobPostingsUpdationDto jobPostingsUpdationDto)
         {
             if (ModelState.IsValid)
             {
+                //Get AspNetUser Data
+                var loggedUser = await _userManager.GetUserAsync(User);
+                
+                jobPostingsUpdationDto.UpdatedBy = loggedUser.UserName;
                 jobPostingsUpdationDto.Qualifications = string.Join(", ", jobPostingsUpdationDto.QualificationList);
                 jobPostingsUpdationDto.Responsibilities = string.Join(", ", jobPostingsUpdationDto.ResponsibilityList);
+                
                 var data = _jobPostingsService.UpdateJobPosting(jobPostingsUpdationDto);
+                
                 if (!data.Result)
                 {
                     _logger.Error(_errorHandling.SetLog(data));
@@ -151,11 +166,10 @@ namespace Basecode.WebApp.Controllers
             if (ModelState.IsValid)
             {
                 // Retrieve the currently logged-in user
-                var loggedInUser = 1;//await _userManager.GetUserAsync(User);
+                var loggedInUser = await _userManager.GetUserAsync(User);
 
                 if (loggedInUser != null)
                 {
-                    model.UpdatedById = 1;
                     _jobPostingsService.Update(model);
                     return RedirectToAction("JobPostList");
                 }

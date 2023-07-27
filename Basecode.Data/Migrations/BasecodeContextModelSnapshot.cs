@@ -155,9 +155,6 @@ namespace Basecode.Data.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -202,8 +199,8 @@ namespace Basecode.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CreatedById")
-                        .HasColumnType("int");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("string");
 
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
@@ -232,8 +229,8 @@ namespace Basecode.Data.Migrations
                     b.Property<string>("Type")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UpdatedById")
-                        .HasColumnType("int");
+                    b.Property<int>("UpdatedBy")
+                        .HasColumnType("string");
 
                     b.Property<DateTime>("UpdatedTime")
                         .HasColumnType("datetime2");

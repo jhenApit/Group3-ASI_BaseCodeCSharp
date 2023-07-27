@@ -62,22 +62,31 @@
             @for (var i = 1; i <= 10; i++)
             {
                 <tr>
-                    <td>July 6, 2023, 10:00 - 11:00</td>
-                    <td>John Doe</td>
-                    <td>HR Interview</td>
-                    <td>
-                        <a asp-action="EditInterview" class="btn b-blue button-edit-cancel">
-                            <p class="select-text">
-                                EDIT
-                            </p>
-                        </a>
-                        <button class="btn b-red button-edit-cancel" data-toggle="modal" data-target="#cancelInterviewModal">
-                            <p class="select-text">
-                                CANCEL
-                            </p>
-                        </button>
-                    </td>
+                    <td class="text-muted lead" colspan="4"><em>No upcoming interviews</em></td>
                 </tr>
+            }
+            else
+            {
+                @foreach (var interviews in Model.InterviewsList)
+                {
+                    <tr>
+                        <td>@interviews.InterviewDate.ToString("MMMM dd, yyyy, HH:mm tt")</td>
+                        <td>@interviews.ApplicantId</td>
+                        <td>@EnumHelper.GetEnumDescription(interviews.InterviewType)</td>
+                        <td>
+                            <a asp-action="EditInterview" class="btn b-blue button-edit-cancel">
+                                <p class="select-text">
+                                    EDIT
+                                </p>
+                            </a>
+                            <button class="btn b-red button-edit-cancel" data-bs-toggle="modal" data-bs-target="#@("modal-" + interviews.Id)">
+                                <p class="select-text">
+                                    CANCEL
+                                </p>
+                            </button>
+                        </td>
+                    </tr>
+                }
             }
         </tbody>
     </table>

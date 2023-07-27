@@ -50,7 +50,7 @@ namespace Basecode.Data.Migrations
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("Basecode.Data.Models.Applicants", b =>
+            modelBuilder.Entity("Basecode.Data.Models.Applicant", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -58,17 +58,8 @@ namespace Basecode.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AdditionalInfo")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ApplicantId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("ApplicationDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("ApplicationStatus")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
@@ -76,16 +67,10 @@ namespace Basecode.Data.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("JobId")
                         .HasColumnType("int");
 
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MiddleName")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PhoneNumber")
@@ -94,12 +79,31 @@ namespace Basecode.Data.Migrations
                     b.Property<byte[]>("Photo")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<int>("Requirements")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Applicants");
+                });
+
+            modelBuilder.Entity("Basecode.Data.Models.ApplicationTracker", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ApplicantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TrackerId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApplicationTrackers");
                 });
 
             modelBuilder.Entity("Basecode.Data.Models.CharacterReferences", b =>
@@ -134,59 +138,6 @@ namespace Basecode.Data.Migrations
                     b.ToTable("CharacterReferences");
                 });
 
-            modelBuilder.Entity("Basecode.Data.Models.CurrentHires", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ApplicantId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("HireDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("HireStatus")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PositionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CurrentHires");
-                });
-
-            modelBuilder.Entity("Basecode.Data.Models.Exams", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ApplicantId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ExamDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ExamType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProctorId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Results")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Exams");
-                });
-
             modelBuilder.Entity("Basecode.Data.Models.HrEmployee", b =>
                 {
                     b.Property<int>("Id")
@@ -202,7 +153,6 @@ namespace Basecode.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ModifiedBy")
@@ -212,20 +162,12 @@ namespace Basecode.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("HrEmployees");
                 });
@@ -249,34 +191,6 @@ namespace Basecode.Data.Migrations
                     b.ToTable("Interviewers");
                 });
 
-            modelBuilder.Entity("Basecode.Data.Models.Interviews", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ApplicantId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("InterviewDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("InterviewType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("InterviewerId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Results")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Interviews");
-                });
-
             modelBuilder.Entity("Basecode.Data.Models.JobPostings", b =>
                 {
                     b.Property<int>("Id")
@@ -294,17 +208,14 @@ namespace Basecode.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("EmploymentType")
-                        .HasColumnType("int");
-
                     b.Property<int>("Hours")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
+                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<int>("JobStatus")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -321,11 +232,11 @@ namespace Basecode.Data.Migrations
                     b.Property<int>("UpdatedBy")
                         .HasColumnType("string");
 
-                    b.Property<DateTime?>("UpdatedTime")
+                    b.Property<DateTime>("UpdatedTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("WorkSetup")
-                        .HasColumnType("int");
+                    b.Property<string>("WorkSetup")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -648,17 +559,6 @@ namespace Basecode.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Basecode.Data.Models.HrEmployee", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

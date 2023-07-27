@@ -26,12 +26,13 @@ namespace Basecode.WebApp.Controllers
 
 
 
-        public IActionResult AdminDashboard(string Email)
+        public IActionResult AdminDashboard()
         {
             var user = _userManager.GetUserId(User);
             var hrEmployee = _service.GetByUserId(user);
             return View(hrEmployee);
         }
+
 
         /// <summary>
         /// Displays the list of job posts.

@@ -1,8 +1,11 @@
 ﻿@using Basecode.Data.Enums;
 @using Basecode.Data.Models
+@using System.Drawing;
 @model Applicants
 @{
     ViewData["Title"] = "Track Application";
+    Color statusColor = EnumHelper.GetColorForApplicationStatus(Model.ApplicationStatus);
+    string colorStyle = $"color: {ColorTranslator.ToHtml(statusColor)}";
 }
 <!---This is the view to see the results of application tracking-->
 
@@ -42,7 +45,7 @@
                                 <h4 class="">Current Status:</h4>
                             </div>
                             <div class="col-sm-6 d-inline-flex justify-content-center justify-content-sm-start">
-                                <h4 class="text-skyblue font-italic">@EnumHelper.GetEnumDescription(Model.ApplicationStatus)</h4>
+                                <h4 class="font-italic" style ="@colorStyle">@EnumHelper.GetEnumDescription(Model.ApplicationStatus)</h4>
                             </div>
                         </div>
                     </div>

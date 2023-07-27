@@ -41,6 +41,12 @@ h2 {
     margin-bottom: 0 !important;
 }
 
+li {
+    overflow-wrap: break-word !important;
+    word-wrap: break-word;
+    white-space: normal !important;
+}
+
 .border-top {
     border-top: 2px solid black !important;
 }

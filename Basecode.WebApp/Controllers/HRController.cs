@@ -24,6 +24,8 @@ namespace Basecode.WebApp.Controllers
             _userManager = userManager;
         }
 
+
+
         public IActionResult AdminDashboard(string Email)
         {
             var user = _userManager.GetUserId(User);

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Basecode.Data.Dtos;
 using Basecode.Data.Models;
+using Basecode.Services.Utils;
 
 namespace Basecode.Services.Interfaces
 {
@@ -12,8 +13,9 @@ namespace Basecode.Services.Interfaces
     {
         Applicants GetById(int id);
         List<Applicants> RetrieveAll();
-        Applicants GetByName(string name);
-        void Add(ApplicantCreationDto applicant);
+        Applicants GetByName(string fname, string mname, string lname);
+        int Add(ApplicantCreationDto applicant);
         Applicants GetByApplicantId(string trackerId);
+        public LogContent AddApplicantLogContent(ApplicantCreationDto applicant);
     }
 }

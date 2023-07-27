@@ -53,7 +53,10 @@ namespace Basecode.Data.Enums
             Onboarding,
 
             [Description("Deployed")]
-            Deployed
+            Deployed,
+
+            [Description("Application Received!")]
+            Received
         }
         public enum HireStatus
         {

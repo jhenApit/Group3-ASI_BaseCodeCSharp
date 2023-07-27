@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,8 @@ namespace Basecode.Data.Models
     {
         public int Id { get; set; }
         public int CharacterReferenceId { get; set; }
+        [ForeignKey("CharacterReferenceId")]
+        public CharacterReferences CharacterReference { get; set; }
         public DateTime AnsweredDate { get; set; }
         public string? Answer1 { get; set; }
         public string? Answer2 { get; set; }

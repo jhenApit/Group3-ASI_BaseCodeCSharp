@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.Data.Models
 {
@@ -13,14 +14,14 @@ namespace Basecode.Data.Models
         public string? Description { get; set; }
         public string? Responsibilities { get; set; }
         public string? Qualifications { get; set; }
-        public string? WorkSetup { get; set; }
-        public int Hours { get; set; }
-        public bool IsActive { get; set; }
-        public string? Type { get; set; }
+        public WorkSetup WorkSetup { get; set; }
+        public WorkingHours Hours { get; set; }
+        public JobStatus JobStatus { get; set; }
+        public EmploymentType EmploymentType { get; set; }
         public DateTime CreatedTime { get; set; }
-        public int CreatedById { get; set; }
-        public DateTime UpdatedTime { get; set; }
-        public int UpdatedById { get; set; }
+        public string? CreatedBy { get; set; }
+        public DateTime? UpdatedTime { get; set; }
+        public string? UpdatedBy { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

@@ -1,0 +1,164 @@
+﻿body, .main-content {
+    background: #F0F6F7;
+}
+
+.container-header {
+    background-color: white;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24.5px 15px;
+    overflow-x: hidden;
+    margin: 0;
+    position: fixed;
+    z-index: 2;
+}
+
+    .container-header h2 {
+        font-size: x-large;
+        font-weight: bold;
+    }
+
+.back-button {
+    margin-right: 0.5em;
+    text-decoration: none;
+}
+
+    .back-button:hover {
+        cursor: pointer;
+    }
+
+.interviewer {
+    padding: 1.5em 3em;
+    gap: 1em;
+}
+
+.select-interviewer {
+    background: #55729B;
+    padding: 1em;
+    border-radius: 0.7em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    gap: 1em;
+}
+
+.select-text {
+    margin: 0;
+    font-size: 16px;
+    color: white;
+    font-weight: 500;
+}
+
+.dropdown-button {
+    background: white;
+    border-radius: 0.5em;
+    border: none;
+    padding: 0.5em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+.dropdown-text {
+    font-style: italic;
+    color: #55729B;
+    margin: 0;
+    width: 100%;
+    text-align: left;
+}
+
+.add-interviewer {
+    padding: 1em 3em;
+    border-radius: 0.7em;
+    border: none;
+}
+
+.upcoming-interview {
+    padding: 1.5em 3em;
+}
+
+.upcoming-text {
+    font-size: 20px;
+    color: #55729B;
+    margin: auto;
+    font-weight: 700;
+    width: 100%;
+}
+
+.new-interview {
+    border: none;
+    border-radius: 0.5em;
+    padding: 0.5em 1em;
+}
+
+.line {
+    border-bottom: 1px solid #55729B;
+    margin-top: 0.5em;
+}
+
+.table-style {
+    padding: 0 3em;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .table thead th,
+    .table tbody td {
+        padding: 2em 1em;
+        text-align: center;
+        width: 25%;
+    }
+
+    .table thead th {
+        background: #55729B;
+        color: white;
+    }
+
+    .table tbody td {
+        background: white;
+    }
+
+.b-blue {
+    background: #55729B;
+    color: white;
+}
+
+    .b-blue:hover {
+        background: #445b7c;
+        color: white;
+        cursor: pointer;
+    }
+
+.b-red {
+    background: #FF0000;
+    color: white;
+}
+
+    .b-red:hover {
+        background: #cc0000;
+        color: white;
+        cursor: pointer;
+    }
+
+.b-cancel {
+    background: white;
+    color: #FF0000;
+    border: 1px solid #FF0000;
+}
+
+    .b-cancel:hover {
+        background: #e6e6e6;
+        color: #FF0000;
+    }
+
+.button-edit-cancel {
+    padding: 0 1.5em;
+    border-radius: 0.5em;
+}

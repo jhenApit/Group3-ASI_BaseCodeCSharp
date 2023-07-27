@@ -1,11 +1,28 @@
+body {
+    margin: 0;
+    font-family: "Montserrat", sans-serif;
+    background-color: #e4e9f7;
+    font-size: calc(.75rem + 0.2vw);
+}
+
 .top-header {
     height: 78px;
     background: #ffffff;
     display: flex;
-    justify-content: right;
+    justify-content: space-between;
+    align-items: center;
+    width: calc(100% + 520px);
+    position: fixed;
+    overflow-x: hidden;
 }
 
+    .top-header h1 {
+        font-size: x-large;
+        font-weight: bold;
+    }
+
 .top-header .tab-label{
+    align-items: center;
     font-size: 45px;
     font-weight: 900;
     padding: 0 10px;
@@ -31,118 +48,87 @@
     font-size: 20px;
     font-weight: bold;
 }
+
 .top-header .header-details i {
     font-size: 50px;
     padding: 0 10px 0 5px;
 }
-.tag {
-    font-size: 75px;
-    font-weight: 800;
-    color: #ff0000;
-    display: flex;
-    justify-content: center;
-    margin: 0;
-}
-.upper-cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    justify-content: center;
-}
-.upper-cards .card {
-    width: 30rem;
-    height: 15rem;
-    border-radius: 10px;
-    padding: 5px 10px;
+
+a {
+    text-decoration: none !important;
+    color: inherit;
 }
 
-.upper-cards .card h3,
-.bottom-cards .card h3 {
+    a:hover {
+        text-decoration: none !important;
+        color: inherit;
+    }
+
+.dashboard-cards {
+    border-radius: .5rem;
+    background-color: white;
+    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.15);
+    height: 100%;
+}
+
+.card-title {
     color: #ff0000;
-    font-size: 25px;
+    font-size: 1.5rem;
     font-weight: bold;
+    margin-bottom: 0;
 }
 
-.upper-cards .card .card-content {
-    justify-content: space-evenly;
+.card-content {
+    justify-content: center;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: .5rem;
+    align-items: center;
+    text-align: center;
 }
-.upper-cards .card p {
-    font-size: 45px;
+
+
+.card-icon {
+    font-size: calc(1.625rem + 6vw);
+}
+
+.card-value {
+    font-size: calc(1.625rem + 2vw);
     font-weight: bolder;
-    padding: 20px 0 15px 55px;
+    margin-bottom: 0;
 }
 
-.upper-cards .card i {
-    font-size: 110px;
-    padding: 10px 20px;
+.bottom-card {
+    height: 100%;
 }
 
-.bottom-cards {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
-    margin-top: 1.5rem;
-    justify-content: center;
-}
-
-.bottom-cards .left.card {
-    width: 30rem;
-    height: 29.5rem;
-    border-radius: 10px;
-    padding: 5px 10px;
-}
-
-.bottom-cards .left.card .chart-container {
-    width: 20rem;
-    height: 25.5rem;
-    padding: 0;
-    margin: auto;
-}
-
-.bottom-cards .right.card {
-    width: 62rem;
-    height: 29.5rem;
-    border-radius: 10px;
-    padding: 5px 10px;
-}
-
-.bottom-cards .right.card .label {
-    display: grid;
-    grid-template-columns: 1fr auto;
-}
-
-.bottom-cards .right.card .label .view-all {
-    justify-content: right;
+.view-all {
     align-items: center;
     text-decoration: none;
-    color: #000000;
+    color: black;
     opacity: 0.9;
 }
 
-.bottom-cards .right.card .label .view-all:hover {
-    color: #ff0000;  
+    .view-all:hover {
+        color: #EC2224;
+    }
+
+.table-header {
+    border-bottom: .2rem solid black;
+    text-align: center;
 }
 
-
-.bottom-cards .right.card table {
-    border-collapse: collapse;
-    width: 100%;
-    justify-content: center;
+td {
+    background-color: white;
+    vertical-align: middle !important;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
-.bottom-cards .right.card table th,
-.bottom-cards .right.card table td {
-    border: 1px solid #ddd;
-    padding: 8px;
+td {
+    padding: 1rem 0.5rem !important;
 }
 
-.bottom-cards .right.card table th {
-    background-color: #f2f2f2;
-}
-
-.bottom-cards .right.card table tr:nth-child(even) {
-    background-color: #f9f9f9;
+.table > tbody > tr:nth-of-type(even) {
+    --bs-table-accent-bg: var(--bs-table-striped-bg);
+    color: var(--bs-table-striped-color);
 }

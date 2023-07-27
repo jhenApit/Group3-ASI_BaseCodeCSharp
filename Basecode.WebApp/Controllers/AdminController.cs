@@ -1,41 +1,66 @@
 ﻿using Basecode.Data.Dtos;
+using Basecode.Data.Dtos.HrEmployee;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
+using Basecode.Services.Services;
 using Basecode.Services.Utils;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
+using static Basecode.Data.Constants;
 
 
 namespace Basecode.WebApp.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
         private readonly IHrEmployeeService _service;
+        private readonly IAdminService _adminService;
         private readonly IErrorHandling _errorHandling;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        public AdminController(IHrEmployeeService service, IErrorHandling errorHandling)
+        private readonly IEmailService _emailService;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public AdminController(
+            IHrEmployeeService service, 
+            IErrorHandling errorHandling, 
+            IAdminService adminService, 
+            IEmailService emailService, 
+            UserManager<IdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             _service = service;
             _errorHandling = errorHandling;
-        }
-        public IActionResult AdminDashboard(string Email)
-        {
-            var hrEmployee = _service.GetByEmail(Email);
-            return View(hrEmployee);
+            _adminService = adminService;
+            _emailService = emailService;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
-        public IActionResult HrList()
+
+        /// <summary>
+        /// Retrieves all HR employees and displays the HR list.
+        /// </summary>
+        /// <returns>The HR list view with all HR employee data</returns>
+        public async Task<IActionResult> HrList()
         {
             var data = _service.RetrieveAll();
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                data = data.Where(item => item.UserId != user.Id).ToList();
+            }
             return View(data);
         }
 
         /// <summary>
-        /// Creates account for the HR.
+        /// Creates an account for the HR employee.
         /// </summary>
-        /// <param name="hrEmployee">Details of the HR employee</param>
-        /// <returns>Redirect to the HrList page, displaying the updated list of accounts, including the newly created account.</returns>
-        public IActionResult CreateHrAccount(HREmployeeCreationDto hrEmployee)
+        /// <param name="hrEmployee">Details of the HR employee to be created</param>
+        /// <returns>Redirects to the HrList page, displaying the updated list of accounts, including the newly created account</returns>
+        public async Task<IActionResult> CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
             if (ModelState.IsValid)
             {
@@ -47,6 +72,16 @@ namespace Basecode.WebApp.Controllers
                     return View(hrEmployee);
                 }
                 _service.Add(hrEmployee);
+
+                var recipient = "jm.senening08@gmail.com";
+                var subject = "Alliance Human Resource Account";
+                var body = $"Dear Mr/Mrs {hrEmployee.Name}, <br/> <br/> This is your human resource account. <br/>" +
+                           $"<br/> Email: {hrEmployee.Email} <br/> Password: {hrEmployee.Password} <br/>" +
+                           "<br/> You can edit your profile once you've logged in.";
+
+
+                await _emailService.SendEmail(recipient, subject, body);
+
                 return RedirectToAction("HrList");
             }
             ModelState.Clear();
@@ -54,40 +89,60 @@ namespace Basecode.WebApp.Controllers
         }
 
         /// <summary>
-        /// Shows the account selected for editing
+        /// Displays the account selected for editing.
         /// </summary>
-        /// <param name="id">the id of the account selected</param>
-        /// <returns>view of the page with the details of the account</returns>
-        public IActionResult EditHrAccountView(int id)
+        /// <param name="id">The ID of the account selected</param>
+        /// <returns>View of the page with the details of the account</returns>
+        public async Task<IActionResult> EditHrAccountView(int id)
         {
             // Retrieve the HR employee from the database using the ID
             var hrEmployee = _service.GetById(id);
-
-            // Create an instance of HREmployeeUpdationDto and populate it with data
-            var hrEmployeeDto = new HREmployeeUpdationDto
+            var hrRole = await _userManager.GetRolesAsync(hrEmployee.User);
+            var loggedUser = await _userManager.GetUserAsync(User);
+            var role = hrRole.FirstOrDefault();
+            if (hrEmployee != null)
             {
-                Name = hrEmployee.Name,
-                Email = hrEmployee.Email,
-                Password = hrEmployee.Password,
-                Id = hrEmployee.Id
-            };
+                // Access user attributes
+                string userName = hrEmployee.User.UserName;
+                // Other user attributes you may want to access
+                // Create an instance of HREmployeeUpdationDto and populate it with data
+                var hrEmployeeDto = new HREmployeeUpdationDto
+                {
+                    Name = hrEmployee.Name,
+                    Email = hrEmployee.Email,
+                    Password = hrEmployee.Password,
+                    UserName = userName,
+                    UserId = hrEmployee.User.Id,
+                    ModifiedBy = loggedUser.UserName,
+                    Id = hrEmployee.Id
+                };
+                if (role == "admin")
+                {
+                    hrEmployeeDto.IsAdmin = true;
+                }
+                else
+                {
+                    hrEmployeeDto.IsAdmin = false;
+                }
+                // Pass the HREmployeeUpdationDto as the model to the view
+                return View(hrEmployeeDto);
+            }
+            return View(hrEmployee);
 
-            // Pass the HREmployeeUpdationDto as the model to the view
-            return View(hrEmployeeDto);
         }
 
         /// <summary>
-        /// checks for server side error
-        /// updates account
+        /// Checks for server-side errors and updates the HR account.
         /// </summary>
-        /// <param name="hrEmployee">the object passed to be updated</param>
+        /// <param name="hrEmployee">The HR employee object to be updated</param>
         /// <returns>
-        /// if there are errors page will return to edithraccountview
-        /// if no errors page will redirect to hrlist
+        /// If there are errors, returns to the EditHrAccountView with error message
+        /// If no errors, redirects to the HrList page
         /// </returns>
         [HttpPost]
-        public IActionResult EditHrAccount(HREmployeeUpdationDto hrEmployee)
+        public async Task<IActionResult> EditHrAccount(HREmployeeUpdationDto hrEmployee)
         {
+            hrEmployee.Name = hrEmployee.FirstName + ' ' + hrEmployee.MiddleName + ' ' + hrEmployee.LastName;
             var data = _service.EditHrAccount(hrEmployee);
             if (!data.Result)
             {
@@ -97,7 +152,19 @@ namespace Basecode.WebApp.Controllers
             }
             else if (ModelState.IsValid)
             {
-                // Perform account update logic
+                //get hremployee data
+                var hr = _service.GetById(hrEmployee.Id);
+                //get aspnetuser data
+                var user = await _userManager.GetUserAsync(User);
+                //update username
+                await _userManager.SetUserNameAsync(hr.User, hrEmployee.UserName);
+                await _userManager.GenerateChangeEmailTokenAsync(hr.User, hrEmployee.Email);
+                await _userManager.ChangePasswordAsync(hr.User, hr.Password, hrEmployee.Password);
+                if (hrEmployee.IsAdmin)
+                {
+                    await _userManager.AddToRoleAsync(hr.User, "admin");
+                    await _userManager.RemoveFromRoleAsync(hr.User, "hr");
+                }
                 _service.Update(hrEmployee);
                 return RedirectToAction("HrList");
             }
@@ -105,24 +172,39 @@ namespace Basecode.WebApp.Controllers
 
         }
 
+        /// <summary>
+        /// Deletes the HR account with the specified ID.
+        /// </summary>
+        /// <param name="id">The ID of the HR account to be deleted</param>
+        /// <returns>Redirects to the HrList page</returns>
         public IActionResult DeleteHrAccount(int id)
         {
-            _service.SemiDelete(id);
+            _service.Delete(id);
             return RedirectToAction("HrList");
         }
 
+        /// <summary>
+        /// Updates the HR employee's account.
+        /// </summary>
+        /// <param name="hrEmployee">The updated HR employee details</param>
+        /// <returns>Redirects to the HrList page</returns>
         public IActionResult Update(HREmployeeUpdationDto hrEmployee)
         {
             _service.Update(hrEmployee);
             return RedirectToAction("HrList");
         }
 
+        /// <summary>
+        /// Adds a new HR employee account.
+        /// </summary>
+        /// <param name="hrEmployee">The new HR employee details</param>
+        /// <returns>Redirects to the HrList page</returns>
         [HttpPost]
         public IActionResult Add(HREmployeeCreationDto hrEmployee)
         {
             _service.Add(hrEmployee);
             return RedirectToAction("HrList");
         }
-
     }
 }
+

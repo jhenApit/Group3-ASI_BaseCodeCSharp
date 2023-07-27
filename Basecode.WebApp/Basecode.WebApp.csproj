@@ -12,19 +12,26 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Views\HR\ApplicantsOverviewOrig.cshtml" />
     <Content Remove="wwwroot\css\application-form.cshtml" />
     <Content Remove="wwwroot\css\application-form.cshtml.cs" />
+    <Content Remove="wwwroot\css\DisqualifiedApplicants.css" />
+    <Content Remove="wwwroot\css\ViewApplicants.css" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.7" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.7">
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.9" />
+      <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="7.0.9" />
+      <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.9" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.9" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.9" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.9" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.8" />
     <PackageReference Include="NLog" Version="5.2.2" />
   </ItemGroup>
 
@@ -34,11 +41,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Admin\AdminDashboard.cshtml" />
+    <None Include="Views\Admin\CreateHrAccount.cshtml" />
+    <None Include="Views\Admin\EditHrAccountView.cshtml" />
+    <None Include="Views\Admin\HrList.cshtml" />
+    <None Include="Views\HR\ApplicantDetail.cshtml" />
+    <None Include="Views\HR\CreateInterview.cshtml" />
+    <None Include="Views\HR\CreateJobPost.cshtml" />
+    <None Include="Views\HR\EditInterview.cshtml" />
+    <None Include="Views\HR\EditJobPost.cshtml" />
+    <None Include="Views\HR\Interview.cshtml" />
+    <None Include="Views\HR\JobPostList.cshtml" />
+    <None Include="Views\HR\ViewJobPost.cshtml" />
     <None Include="wwwroot\images\building.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\images\icons\" />
   </ItemGroup>
 
 </Project>

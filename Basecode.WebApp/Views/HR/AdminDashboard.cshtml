@@ -1,0 +1,151 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<IdentityUser> UserManager
+
+@using Basecode.Data.Models
+@model HrEmployee
+
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_SideBarAdmin.cshtml";
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/admin-dashboard.css" />
+}
+
+<body>
+    <div id="container" class="dashboard">
+        <div id="header" class="top-header shadow-sm">
+            <div class="ps-5">
+                <h1 class="m-0 ps-2">@ViewData["Title"]</h1>
+            </div>
+            <div class="header-details d-flex">
+                <p class="welcome">WELCOME</p>
+                <p class="name"><a id="manage" class="nav-link text-dark text-capitalize" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@Model.Name</a></p>
+                <i class='bx bx-user-circle'></i>
+            </div>
+        </div>
+
+        <div class="pt-5"></div><div class="pt-4"></div> <!-- a buffer to push content down so that header won't cover it' -->
+        <div class="container">
+            <!--Upper Cards-->
+            <div class="row justify-content-around mt-3">
+                <div class="col-4">
+                    <a asp-controller="Hr" asp-action="JobPostList">
+                        <div class="dashboard-cards p-3">
+                            <h3 class="card-title">JOB POSTS</h3>
+                            <div class="card-content p-3">
+                                <i class='bx bxs-user-check card-icon'></i>
+                                <p class="card-value p-3">80</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-4">
+                    <a asp-controller="Hr" asp-action="JobApplicantsOverview">
+                        <div class="dashboard-cards p-3">
+                            <h3 class="card-title">CANDIDATE</h3>
+                            <div class="card-content p-3">
+                                <i class='bx bxs-briefcase-alt-2 card-icon'></i>
+                                <p class="card-value p-3">80</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-4">
+                    <div class="dashboard-cards p-3">
+                        <h3 class="card-title">NEW HIRES</h3>
+                        <div class="card-content p-3">
+                            <i class='bx bxs-user-rectangle card-icon'></i>
+                            <p class="card-value p-3">80</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Bottom Cards-->
+            <div class="row justify-content-around mt-3">
+                <div class="col-4 mb-3">
+                    <div class="dashboard-cards bottom-card p-3">
+                        <h3 class="card-title">APPLICATIONS</h3>
+                        <div class="chart-container mt-4">
+                            <canvas class="applicant-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-8 mb-3">
+                    <div class="dashboard-cards bottom-card p-3">
+                        <div class="d-flex justify-content-between">
+                            <h3 class="card-title">UPCOMING INTERVIEWS</h3>
+                            <a asp-controller="Hr" asp-action="Schedules">
+                                <p class="d-flex view-all m-0 ms-auto">
+                                        View All
+                                        <i class='bx bx-chevron-right fs-3'></i>
+                                </p>
+                            </a>
+                        </div>
+                        <!-- Only a maximum of 6 rows can be added ,pls -->
+                        <table class="table mt-3">
+                            <thead>
+                                <tr class="table-header text-center">
+                                    <th scope="col" class="col-3">Date and Time</th>
+                                    <th scope="col" class="col-3">Interviewer</th>
+                                    <th scope="col" class="col-3">Applicant</th>
+                                    <th scope="col" class="col-3">Interview Type</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                <tr>
+                                    <td>July 2, 2023 11AM - 12NN</td>
+                                    <td>Jane Marie Doe</td>
+                                    <td>Jovert Maharlika</td>
+                                    <td>HR Interview</td>
+                                </tr>
+                                <tr>
+                                    <td>July 3, 2023 11AM - 12NN</td>
+                                    <td>Jane Marie Doe</td>
+                                    <td>Kris P. Bacon</td>
+                                    <td>Technical Interview</td>
+                                </tr>
+                                <tr>
+                                    <td>July 4, 2023 1PM - 2PM</td>
+                                    <td>桐ヶ谷一人</td>
+                                    <td>遥桐谷</td>
+                                    <td>Final Interview</td>
+                                </tr>
+                                <tr>
+                                    <td>July 4, 2023 2PM - 3PM</td>
+                                    <td>桐ヶ谷一人</td>
+                                    <td>百合あゆみ</td>
+                                    <td>Final Interview</td>
+                                </tr>
+                                <tr>
+                                    <td>July 5, 2023 11AM - 12NN</td>
+                                    <td>Jane Marie Doe</td>
+                                    <td>Muhammad Ahlli</td>
+                                    <td>HR Interview</td>
+                                </tr>
+                                <tr>
+                                    <td>July 6, 2023 3PM - 4PM</td>
+                                    <td>桐ヶ谷一人</td>
+                                    <td>五条悟</td>
+                                    <td>Technical Interview</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="~/js/applicant-chart.js" asp-append-version="true"></script>
+</body>
+
+<script>
+    //A band-aid solution for adjusting the header width
+    setInterval(function () { 
+        var width = document.getElementById("container").offsetWidth;
+        document.getElementById('header').style.width = width + "px";
+    }, 100);
+</script>

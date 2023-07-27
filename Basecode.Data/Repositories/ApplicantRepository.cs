@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 using Basecode.Data.Interfaces;
@@ -17,25 +18,48 @@ namespace Basecode.Data.Repositories
             _context = context;
         }
 
-        public void Add(Applicant applicant)
+        /// <summary>
+        /// Adds a new applicant to the database.
+        /// </summary>
+        /// <param name="applicant">The applicant to be added.</param>
+        public void Add(Applicants applicant)
         {
             _context.Applicants.Add(applicant);
             _context.SaveChanges();
         }
 
-        public Applicant GetById(int id)
+        /// <summary>
+        /// Retrieves an applicant from the database by their ApplicantID.
+        /// </summary>
+        /// <param name="applicantId">The ID of the applicant to retrieve.</param>
+        /// <returns>The applicant with the specified ID, or null if not found.</returns>
+        public Applicants? GetByApplicantId(string applicantId)
+        {
+            return _context.Applicants.SingleOrDefault(e => e.ApplicantId == applicantId);
+        }
+        public Applicants? GetById(int id)
         {
             return _context.Applicants.Find(id);
         }
 
-        public Applicant GetByName(string name)
+        /// <summary>
+        /// Retrieves an applicant from the database by their name.
+        /// </summary>
+        /// <param name="name">The name of the applicant to retrieve.</param>
+        /// <returns>The applicant with the specified name, or null if not found.</returns>
+        public Applicants? GetByName(string fname, string mname, string lname)
         {
-            return _context.Applicants.FirstOrDefault(e => e.Name == name);
+            return _context.Applicants.FirstOrDefault(e => e.FirstName == fname && e.MiddleName == mname && e.LastName == lname);
         }
 
-        public IQueryable<Applicant> RetrieveAll()
+        /// <summary>
+        /// Retrieves all applicants from the database.
+        /// </summary>
+        /// <returns>An IQueryable collection of all applicants.</returns>
+        public IQueryable<Applicants> RetrieveAll()
         {
-            return this.GetDbSet<Applicant>();
+            return this.GetDbSet<Applicants>();
         }
+
     }
 }

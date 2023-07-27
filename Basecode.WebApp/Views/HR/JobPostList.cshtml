@@ -1,6 +1,10 @@
-﻿@{
+﻿@using Basecode.Data.Models
+@using static Basecode.Data.Enums.Enums;
+@model List<JobPostings> 
+@{
     ViewData["Title"] = "Job Posting";
     Layout = "_SideBarAdmin";
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/JobPostList.css" />
 }
 
@@ -27,31 +31,37 @@
                 </tr>
             </thead>
             <tbody>
-                @for (var i = 1; i <= 20; i++)
+                @if (Model == null)
                 {
-                    <tr>
-                        <td>@i</td>
-                        <td>Position @i</td>
-                        <td>Status @i</td>
-                        <td>
-                            <a asp-route-id="@i" title="View Full Details">
-                                <img src="~/images/icons/file-icon.png" alt="View" class="job-post-action-icon" />
-                            </a>
-                            <a asp-route-id="@i" title="Edit" asp-controller="HR" asp-action="EditJobPost">
-                                <img src="~/images/icons/edit.png" alt="Edit" class="job-post-action-icon" />
-                            </a>
-                            <!-- Button trigger modal -->
-                            <a title="Delete">
-                                <img src="~/images/icons/delete.png" alt="Delete" class="job-post-action-icon" />
-                            </a>
+                    <p>No Jobs Created.</p>
+                }
+                else
+                {
+                    @foreach (var jobPosting in Model)
+                    {
+                        <tr>
+                            <td>@jobPosting.Id</td>
+                            <td>@jobPosting.Name</td>
+                            <td>@((JobStatus)Enum.Parse(typeof(JobStatus), jobPosting.JobStatus.ToString()))</td>
+                            <td>
+                                <a asp-route-id="@jobPosting.Id" title="View Full Details" asp-controller="HR" asp-action="ViewJobPost">
+                                    <img src="~/images/icons/file-icon.png" alt="View" class="job-post-action-icon" />
+                                </a>
+                                <a asp-route-id="@jobPosting.Id" title="Edit" asp-controller="HR" asp-action="EditJobPost">
+                                    <img src="~/images/icons/edit.png" alt="Edit" class="job-post-action-icon" />
+                                </a>
+                         <!-- Button trigger modal -->
+                        <a asp-route-id="@jobPosting.Id" asp-controller="HR" asp-action="DeleteJob" title="Delete">
+                            <img src="~/images/icons/delete.png" alt="Delete" class="job-post-action-icon" />
+                        </a>
                         </td>
-                    </tr>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>
     </div>
 </div>
-
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -74,3 +84,58 @@
         });
     });
 </script>
+
+<!-- Main Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h5 class="modal-title" id="exampleModalLabel">Warning!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p class="delete-msg">
+                    This <strong>job post</strong> will be <strong>deleted.</strong>
+                    <br />
+                    <strong><span class="text-danger">WARNING!</span> This cannot be undone!</strong>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">CANCEL</button>
+                <button type="button" class="btn btn-danger" onclick="confirmDelete()">DELETE</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmDelete() {
+        // Hide the main modal
+        $('#deleteModal').modal('hide');
+
+        // Perform any front-end delete operation here
+        // You can show a success message or update the UI accordingly
+
+        // Show the success modal immediately after hiding the main modal
+        $('#successModal').modal('show');
+    }
+</script>
+
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Success</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p>
+                    <strong><span class="text-danger">Job post</span> deleted successfully.</strong>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>

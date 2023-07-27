@@ -1,0 +1,145 @@
+﻿@using Basecode.Data.Dtos;
+@model ReferenceFormsCreationDto
+@{
+    Layout = null;
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/References.css" />
+    <script src="https://kit.fontawesome.com/b68ff1da95.js" crossorigin="anonymous"></script>
+}
+
+<body>
+    <div>
+        <img src="~/images/references-bg.jpg" class="header-image" alt="alliance header">
+    </div>
+    <div class="heading">
+        <div>
+            <p class="m-0 fw-bold heading-text">Character Reference Form</p>
+        </div>
+    </div>
+    <form asp-action="page2">
+        <div>
+            <div class="section">
+                <p class="m-0 section-text">Applicant’s Information</p>
+                <div class="line"></div>
+            </div>
+            <div class="d-flex flex-row align-items-center gap-2 inside-section">
+                <label for="applicantName" class="col-auto">Applicant’s Full Name:</label>
+                <input type="text" readonly class="form-control-plaintext col-auto w-50 input-applicant" id="staticEmail" value="John Doe">
+            </div>
+        </div>
+        <div>
+            <div class="section">
+                <p class="m-0 section-text">Character Reference Questions</p>
+                <div class="line"></div>
+            </div>
+            <div asp-action="Submit" method="post" class="inside-section">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Answer1" value="@TempData["Answer1"]" />
+                <input type="hidden" asp-for="Answer2" value="@TempData["Answer2"]" />
+                <input type="hidden" asp-for="Answer3" value="@TempData["Answer3"]" />
+                <input type="hidden" asp-for="Answer4" value="@TempData["Answer4"]" />
+                <input type="hidden" asp-for="Answer5" value="@TempData["Answer5"]" />
+
+                <div class="form-group mb-3">
+                    <label for="answerSix">6. How well does the applicant handle stress or difficult situations? Please provide examples if possible.</label>
+                    <textarea asp-for="Answer6" class="form-control" id="answer6" rows="3" required></textarea>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="answerSeven">7. How would you describe the applicant's work ethic and commitment to their responsibilities?</label>
+                    <textarea asp-for="Answer7" class="form-control" id="answer7" rows="3" required></textarea>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="answerEight">8. Do you believe the applicant possesses the necessary qualities and character traits to be successful in their desired pursuit?</label>
+                    <textarea asp-for="Answer8" class="form-control" id="answer8" rows="3" required></textarea>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="answerNine">9. How does the applicant interact with others, such as colleagues, friends, or family members? Please provide examples of their interpersonal skills.</label>
+                    <textarea asp-for="Answer9" class="form-control" id="answer9" rows="3" required></textarea>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="answerTen">10. Has the applicant demonstrated leadership qualities or the ability to work well within a team? Please provide specific instances or examples.</label>
+                    <textarea asp-for="Answer10" class="form-control" id="answer10" rows="3" required></textarea>
+                </div>
+                <div class="d-grid d-md-flex justify-content-md-end my-4">
+                    <button type="button" class="btn b-red px-5" id="btnShowModal">SUBMIT</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div>
+        <p class="m-0 text-center inside-section">© 2019 Alliance Software Incorporated. All Rights Reserved</p>
+        <div class="line mt-1 mb-2"></div>
+        <div class="inside-section d-flex mb-3">
+            <img src="~/images/asi-logo-invert.png" alt="Alliance Logo">
+            <div class="d-flex gap-2 ms-auto align-items-center">
+                <a href="https://www.facebook.com/AllianceSoftwareInc/" target="_blank">
+                    <i class="fa-brands fa-facebook fa-2xl"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/alliance-software-7a180a49/" target="_blank">
+                    <i class="fa-brands fa-linkedin fa-2xl"></i>
+                </a>
+                <a href="https://twitter.com/AllianceSW" target="_blank">
+                    <i class="fa-brands fa-twitter fa-2xl"></i>
+                </a>
+                <a href="https://www.youtube.com/channel/UC5Rx6nPzFFdIsso8RjNLLqA" target="_blank">
+                    <i class="fa-brands fa-youtube fa-2xl"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+
+<div class="modal" id="submitModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation</h5>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to submit all your answers?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnCancelModal">Cancel</button>
+                <button type="button" class="btn b-red" id="btnSubmitForm">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Show the modal when the "SUBMIT" button is clicked
+        $("#btnShowModal").click(function () {
+            $("#submitModal").modal("show");
+        });
+
+        // Handle the form submission when the "Submit" button inside the modal is clicked
+        $("#btnSubmitForm").click(function () {
+            const answersData = new FormData($('form')[0]);
+            
+            fetch('Submit', {
+                method: 'POST',
+                body: answersData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Form submitted successfully!");
+                        // Redirect to the homepage after showing the success message
+                        window.location.href = '/';
+                    } else {
+                        alert("Form submission failed!");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+
+        $("#btnCancelModal").click(function () {
+            $("#submitModal").modal("hide");
+        });
+    });
+</script>

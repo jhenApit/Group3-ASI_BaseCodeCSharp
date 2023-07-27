@@ -1,0 +1,17 @@
+﻿.make-center {
+    display: flex;
+    max-width: 960px;
+    align-items: center;
+    justify-content: center;
+    margin: 25vh auto 0px auto;
+    text-align: center;
+}
+
+.btn-primary {
+    border: .2rem solid #FC1F22;
+    background: none !important;
+}
+
+    .btn-primary:hover {
+        background-color: #FC1F22 !important;
+    }

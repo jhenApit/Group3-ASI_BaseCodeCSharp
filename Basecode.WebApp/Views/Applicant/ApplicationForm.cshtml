@@ -12,7 +12,7 @@
     </div>
     <div class="row mt-5 px-5">
         <div class="col d-flex form-header mb-3">
-            <a asp-controller="Applicant" asp-action="JobDescription">
+            <a asp-route-id="@Model?.JobPosting?.Id" asp-controller="Job" asp-action="JobDescription">
                 <p class="text-bold text-black mb-1 align-self-center me-3">Job Details</p>
             </a>
             <p class="text-bold mb-1 ms-5 align-self-center text-red">Application</p>

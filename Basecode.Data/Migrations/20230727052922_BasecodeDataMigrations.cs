@@ -12,132 +12,6 @@ namespace Basecode.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "JobPostings",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Responsibilities = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Qualifications = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    WorkSetup = table.Column<int>(type: "int", nullable: false),
-                    Hours = table.Column<int>(type: "int", nullable: false),
-                    JobStatus = table.Column<int>(type: "int", nullable: false),
-                    EmploymentType = table.Column<int>(type: "int", nullable: false),
-                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UpdatedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_JobPostings", x => x.Id);
-                }
-            );
-
-            migrationBuilder.CreateTable(
-                name: "Applicants",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ApplicantId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    JobId = table.Column<int>(type: "int", nullable: true),
-                    ApplicationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MiddleName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Resume = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    Photo = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AdditionalInfo = table.Column<int>(type: "int", nullable: false),
-                    ApplicationStatus = table.Column<int>(type: "int", nullable: false),
-                    Requirements = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Applicants", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Applicants_JobPostings_JobId",
-                        column: x => x.JobId,
-                        principalTable: "JobPostings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Addresses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ApplicantId = table.Column<int>(type: "int", nullable: false),
-                    Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Province = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ZipCode = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Addresses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Addresses_Applicants_ApplicantId",
-                        column: x => x.ApplicantId,
-                        principalTable: "Applicants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CharacterReferences",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ApplicantId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Relationship = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MobileNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CharacterReferences", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CharacterReferences_Applicants_ApplicantId",
-                        column: x => x.ApplicantId,
-                        principalTable: "Applicants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ApplicationTrackers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ApplicantId = table.Column<int>(type: "int", nullable: false),
-                    TrackerId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApplicationTrackers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PK_ApplicationTrackers_Applicants",
-                        column: x => x.ApplicantId,
-                        principalTable: "Applicants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -177,32 +51,6 @@ namespace Basecode.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "HrEmployees",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_HrEmployees", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_HrEmployees_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Interviewers",
                 columns: table => new
                 {
@@ -217,66 +65,28 @@ namespace Basecode.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ReferenceForms",
+                name: "JobPostings",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CharacterReferenceId = table.Column<int>(type: "int", nullable: false),
-                    AnsweredDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Answer1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Answer2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Answer3 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Answer4 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Answer5 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Answer6 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Answer7 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Answer8 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Answer9 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Answer10 = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Responsibilities = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Qualifications = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WorkSetup = table.Column<int>(type: "int", nullable: false),
+                    Hours = table.Column<int>(type: "int", nullable: false),
+                    JobStatus = table.Column<int>(type: "int", nullable: false),
+                    EmploymentType = table.Column<int>(type: "int", nullable: false),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdatedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ReferenceForms", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ReferenceForms_CharacterReferences",
-                        column: x => x.CharacterReferenceId,
-                        principalTable: "CharacterReferences",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CurrentHires",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ApplicantId = table.Column<int>(type: "int", nullable: false),
-                    PositionId = table.Column<int>(type: "int", nullable: false),
-                    HireStatus = table.Column<int>(type: "int", nullable: false),
-                    HireDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CurrentHires", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Exams",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ApplicantId = table.Column<int>(type: "int", nullable: false),
-                    ProctorId = table.Column<int>(type: "int", nullable: false),
-                    ExamType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ExamDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Results = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Exams", x => x.Id);
+                    table.PrimaryKey("PK_JobPostings", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(

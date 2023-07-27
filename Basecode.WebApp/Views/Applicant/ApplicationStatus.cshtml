@@ -1,8 +1,11 @@
 ﻿@using Basecode.Data.Enums;
 @using Basecode.Data.Models
+@using System.Drawing;
 @model Applicants
 @{
     ViewData["Title"] = "Track Application";
+    Color statusColor = EnumHelper.GetColorForApplicationStatus(Model.ApplicationStatus);
+    string colorStyle = $"color: {ColorTranslator.ToHtml(statusColor)}";
 }
 <!---This is the view to see the results of application tracking-->
 
@@ -11,7 +14,7 @@
         <div class="container">
             <form method="get" asp-controller="Applicant" asp-action="TrackStatus">
                 <div class="search-container">
-                    <input asp-for="ApplicantId" type="text" class="form-control text-center search-bar" placeholder="Enter your application ID here...">
+                    <input asp-for="ApplicantId" type="text" class="form-control text-center search-bar" placeholder="@Model.ApplicantId">
                     <button type="submit" class="btn track-status-button">Track</button>
                 </div>
             </form>
@@ -20,15 +23,13 @@
                 <div class="header">
                     <h4 class="text-center title">Application Status</h4>
                 </div>
-                @if (Model != null)
-                {
                     <div class="body">
                         <div class="row mt-3 mt-sm-0">
                             <div class="col-sm-6 d-inline-flex justify-content-center justify-content-sm-end">
                                 <h4 class="">Application ID:</h4>
                             </div>
                             <div class="col-sm-6 d-inline-flex justify-content-center justify-content-sm-start">
-                                <h4 class="text-red font-italic">@Model.Id</h4>
+                                <h4 class="text-red font-italic">@Model.ApplicantId</h4>
                             </div>
                         </div>
                         <div class="row mt-3 mt-sm-0 ">
@@ -44,11 +45,10 @@
                                 <h4 class="">Current Status:</h4>
                             </div>
                             <div class="col-sm-6 d-inline-flex justify-content-center justify-content-sm-start">
-                                <h4 class="text-skyblue font-italic">@EnumHelper.GetEnumDescription(Model.ApplicationStatus)</h4>
+                                <h4 class="font-italic" style ="@colorStyle">@EnumHelper.GetEnumDescription(Model.ApplicationStatus)</h4>
                             </div>
                         </div>
                     </div>
-                }
             </div>
         </div>
     </div>

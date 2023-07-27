@@ -48,3 +48,9 @@ h2 {
     box-shadow: 0 2px 4px 2px rgba(0, 0, 0, 0.3);
     padding: 3rem;
 }
+
+li {
+    overflow-wrap: break-word !important;
+    word-wrap: break-word;
+    white-space: normal !important;
+}

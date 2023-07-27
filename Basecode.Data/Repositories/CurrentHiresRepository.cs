@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
+using static Basecode.Data.Enums.Enums;
 using static Basecode.Data.Models.CurrentHires;
 
 namespace Basecode.Data.Repositories
@@ -65,7 +66,7 @@ namespace Basecode.Data.Repositories
 
         public CurrentHires? GetByHireStatus(string status)
         {
-            if (Enum.TryParse(status, out HStatus hireStatus))
+            if (Enum.TryParse(status, out HireStatus hireStatus))
             {
                 return _context.CurrentHires.FirstOrDefault(e => e.HireStatus == hireStatus);
             }

@@ -25,6 +25,8 @@ namespace Basecode.Data.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime BirthDate { get; set; }
 
+        public byte[]? Resume { get; set; }
+
         public byte[]? Photo { get; set; } 
 
         [Phone(ErrorMessage = "MobileNo must be a valid phone number.")]

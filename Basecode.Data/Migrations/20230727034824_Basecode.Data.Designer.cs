@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Basecode.Data.Migrations
 {
     [DbContext(typeof(BasecodeContext))]
-    [Migration("20230727023004_Basecode.Data")]
+    [Migration("20230727034824_Basecode.Data")]
     partial class BasecodeData
     {
         /// <inheritdoc />
@@ -50,6 +50,8 @@ namespace Basecode.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicantId");
+
                     b.ToTable("Addresses");
                 });
 
@@ -83,6 +85,7 @@ namespace Basecode.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("JobId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("LastName")
@@ -100,7 +103,12 @@ namespace Basecode.Data.Migrations
                     b.Property<int>("Requirements")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("Resume")
+                        .HasColumnType("varbinary(max)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("JobId");
 
                     b.ToTable("Applicants");
                 });
@@ -134,6 +142,8 @@ namespace Basecode.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicantId");
+
                     b.ToTable("CharacterReferences");
                 });
 
@@ -158,6 +168,8 @@ namespace Basecode.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicantId");
 
                     b.ToTable("CurrentHires");
                 });
@@ -187,6 +199,8 @@ namespace Basecode.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicantId");
+
                     b.ToTable("Exams");
                 });
 
@@ -205,7 +219,6 @@ namespace Basecode.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ModifiedBy")
@@ -215,15 +228,12 @@ namespace Basecode.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -276,6 +286,10 @@ namespace Basecode.Data.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicantId");
+
+                    b.HasIndex("InterviewerId");
 
                     b.ToTable("Interviews");
                 });
@@ -377,6 +391,8 @@ namespace Basecode.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CharacterReferenceId");
 
                     b.ToTable("ReferenceForms");
                 });
@@ -650,15 +666,98 @@ namespace Basecode.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Basecode.Data.Models.Address", b =>
+                {
+                    b.HasOne("Basecode.Data.Models.Applicants", "Applicant")
+                        .WithMany()
+                        .HasForeignKey("ApplicantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Applicant");
+                });
+
+            modelBuilder.Entity("Basecode.Data.Models.Applicants", b =>
+                {
+                    b.HasOne("Basecode.Data.Models.JobPostings", "Job")
+                        .WithMany()
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Job");
+                });
+
+            modelBuilder.Entity("Basecode.Data.Models.CharacterReferences", b =>
+                {
+                    b.HasOne("Basecode.Data.Models.Applicants", "Applicant")
+                        .WithMany()
+                        .HasForeignKey("ApplicantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Applicant");
+                });
+
+            modelBuilder.Entity("Basecode.Data.Models.CurrentHires", b =>
+                {
+                    b.HasOne("Basecode.Data.Models.Applicants", "Applicant")
+                        .WithMany()
+                        .HasForeignKey("ApplicantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Applicant");
+                });
+
+            modelBuilder.Entity("Basecode.Data.Models.Exams", b =>
+                {
+                    b.HasOne("Basecode.Data.Models.Applicants", "Applicant")
+                        .WithMany()
+                        .HasForeignKey("ApplicantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Applicant");
+                });
+
             modelBuilder.Entity("Basecode.Data.Models.HrEmployee", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Basecode.Data.Models.Interviews", b =>
+                {
+                    b.HasOne("Basecode.Data.Models.Applicants", "Applicant")
+                        .WithMany()
+                        .HasForeignKey("ApplicantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.HasOne("Basecode.Data.Models.Interviewers", "Interviewer")
+                        .WithMany()
+                        .HasForeignKey("InterviewerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Applicant");
+
+                    b.Navigation("Interviewer");
+                });
+
+            modelBuilder.Entity("Basecode.Data.Models.ReferenceForms", b =>
+                {
+                    b.HasOne("Basecode.Data.Models.CharacterReferences", "CharacterReference")
+                        .WithMany()
+                        .HasForeignKey("CharacterReferenceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CharacterReference");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

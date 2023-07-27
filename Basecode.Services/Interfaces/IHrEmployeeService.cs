@@ -7,6 +7,7 @@ using Basecode.Data.Models;
 using static Basecode.Services.Utils.ErrorHandling;
 using Basecode.Services.Utils;
 using Basecode.Data.Dtos.HrEmployee;
+using Microsoft.AspNetCore.Identity;
 
 namespace Basecode.Services.Interfaces
 {
@@ -16,10 +17,11 @@ namespace Basecode.Services.Interfaces
         HrEmployee GetByEmail(string email);
         void Add(HREmployeeCreationDto hrEmployee);
         HrEmployee GetById(int id);
+        HrEmployee GetByUserId(string id);
         void Update(HREmployeeUpdationDto hrEmployee);
-        void SemiDelete(int id);
-        void PermaDelete(int id);
+        void Delete(int id);
         public LogContent CreateHrAccount(HREmployeeCreationDto hrEmployee);
         public LogContent EditHrAccount(HREmployeeUpdationDto hrEmployee);
+        public LogContent Login(string email, string password);
     }
 }

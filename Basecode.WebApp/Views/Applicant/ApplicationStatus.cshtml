@@ -1,15 +1,17 @@
-﻿@using Basecode.Data.Models
-@model Applicant
+﻿@using Basecode.Data.Enums;
+@using Basecode.Data.Models
+@model Applicants
 @{
     ViewData["Title"] = "Track Application";
 }
+<!---This is the view to see the results of application tracking-->
 
 <div class="make-center">
     <div class="col">
         <div class="container">
-            <form method="get" action="@Url.Action("TrackStatus", "Applicant")">
+            <form method="get" asp-controller="Applicant" asp-action="TrackStatus">
                 <div class="search-container">
-                    <input type="text" class="form-control text-center search-bar" id="trackingNumber" name="id" placeholder="Enter your application ID here...">
+                    <input asp-for="ApplicantId" type="text" class="form-control text-center search-bar" placeholder="@Model.ApplicantId">
                     <button type="submit" class="btn track-status-button">Track</button>
                 </div>
             </form>
@@ -18,15 +20,13 @@
                 <div class="header">
                     <h4 class="text-center title">Application Status</h4>
                 </div>
-                @if (Model != null)
-                {
                     <div class="body">
                         <div class="row mt-3 mt-sm-0">
                             <div class="col-sm-6 d-inline-flex justify-content-center justify-content-sm-end">
                                 <h4 class="">Application ID:</h4>
                             </div>
                             <div class="col-sm-6 d-inline-flex justify-content-center justify-content-sm-start">
-                                <h4 class="text-red font-italic">@Model.Id</h4>
+                                <h4 class="text-red font-italic">@Model.ApplicantId</h4>
                             </div>
                         </div>
                         <div class="row mt-3 mt-sm-0 ">
@@ -42,12 +42,12 @@
                                 <h4 class="">Current Status:</h4>
                             </div>
                             <div class="col-sm-6 d-inline-flex justify-content-center justify-content-sm-start">
-                                <h4 class="text-skyblue font-italic">@Model.JobId</h4>
+                                <h4 class="text-skyblue font-italic">@EnumHelper.GetEnumDescription(Model.ApplicationStatus)</h4>
                             </div>
                         </div>
                     </div>
-                }
             </div>
         </div>
     </div>
 </div>
+

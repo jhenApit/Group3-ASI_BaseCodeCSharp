@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Basecode.Data;
 using Basecode.Data.Dtos.HrEmployee;
+using Basecode.Data.Dtos.JobPostings;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Net.NetworkInformation;
+using static Basecode.Data.Constants;
 
 
 namespace Basecode.Services.Services
@@ -19,12 +21,15 @@ namespace Basecode.Services.Services
         private readonly IMapper _mapper;
         private readonly LogContent _logContent = new();
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public HrEmployeeService(IHrEmployeeRepository repository, IMapper mapper, SignInManager<IdentityUser> signInManager) 
+
+        public HrEmployeeService(IHrEmployeeRepository repository, IMapper mapper, SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
         {
             _repository = repository;
             _signInManager = signInManager;
             _mapper = mapper;
+            _userManager = userManager;
         }
         /// <summary>
         /// Retrieves all HR employees from the repository.
@@ -42,11 +47,6 @@ namespace Basecode.Services.Services
         public void Add(HREmployeeCreationDto hrEmployeeDto)
         {
             var hrEmployeeModel = _mapper.Map<HrEmployee>(hrEmployeeDto);
-            hrEmployeeModel.CreatedBy = System.Environment.UserName;
-            hrEmployeeModel.CreatedDate = DateTime.Now;
-            hrEmployeeModel.ModifiedBy = System.Environment.UserName;
-            hrEmployeeModel.ModifiedDate = DateTime.Now;
-            hrEmployeeModel.IsDeleted = false;
 
             _repository.Add(hrEmployeeModel);
         }
@@ -60,7 +60,10 @@ namespace Basecode.Services.Services
         {
             return _repository.GetById(id);
         }
-
+        public HrEmployee GetByUserId(string id)
+        {
+            return _repository.GetByUserId(id);
+        }
         /// <summary>
         /// Updates an existing HR employee in the repository.
         /// </summary>
@@ -73,32 +76,19 @@ namespace Basecode.Services.Services
             hrEmployeeModel.Name = hrEmployee.Name;
             hrEmployeeModel.Email = hrEmployee.Email;
             hrEmployeeModel.Password = hrEmployee.Password;
-            hrEmployeeModel.ModifiedBy = System.Environment.UserName;
+            hrEmployeeModel.ModifiedBy = hrEmployee.ModifiedBy;
             hrEmployeeModel.ModifiedDate = DateTime.Now;
 
             _repository.Update(hrEmployeeModel);
         }
 
         /// <summary>
-        /// Marks an HR employee as deleted in the repository.
-        /// </summary>
-        /// <param name="id">The ID of the HR employee to mark as deleted</param>
-        public void SemiDelete(int id)
-        {
-            var hr = _repository.GetById(id);
-            hr.IsDeleted = true;
-            hr.ModifiedBy = System.Environment.UserName;
-            hr.ModifiedDate = DateTime.Now;
-            _repository.SemiDelete(hr);
-        }
-
-        /// <summary>
         /// Permanently deletes an HR employee from the repository.
         /// </summary>
         /// <param name="id">The ID of the HR employee to permanently delete</param>
-        public void PermaDelete(int id)
+        public void Delete(int id)
         {
-            _repository.PermaDelete(id);
+            _repository.Delete(id);
         }
 
         /// <summary>
@@ -140,10 +130,10 @@ namespace Basecode.Services.Services
         /// <returns>The log content upon editing a HR account</returns>
         public LogContent EditHrAccount(HREmployeeUpdationDto hrEmployee)
         {
-            var hr = GetByEmail(hrEmployee.Email);
-            if (hr != null)
+            var hrEmail = GetByEmail(hrEmployee.Email);
+            if (hrEmail != null)
             {
-                if (hr.Id != hrEmployee.Id)
+                if (hrEmail.Id != hrEmployee.Id)
                 {
                     _logContent.Result = false;
                     _logContent.ErrorCode = "400. Edit Failed!";
@@ -159,8 +149,58 @@ namespace Basecode.Services.Services
                 _logContent.Result = true;
             }
 
+            var hrUsername = GetById(hrEmployee.Id);
+            if (hrUsername != null)
+            {
+                if (hrUsername.User.Id != hrEmployee.UserId)
+                {
+                    _logContent.Result = false;
+                    _logContent.ErrorCode = "400. Edit Failed!";
+                    _logContent.Message = "Username is not available";
+                }
+                else
+                {
+                    _logContent.Result = true;
+                }
+            }
+            else
+            {
+                _logContent.Result = true;
+            }
+
             return _logContent;
         }
+        /// <summary>
+        /// Handles the login and logging for the errors of the input
+        /// </summary>
+        /// <param name="email">the email input for log in</param>
+        /// <param name="password">the password input for log in</param>
+        /// <returns> the log content for the log in</returns>
+        public LogContent Login(string email, string password)
+        {
+            var hr = GetByEmail(email);
 
+            if (hr != null)
+            {
+                if (hr.Password != password)
+                {
+                    _logContent.Result = false;
+                    _logContent.ErrorCode = "401. Incorrect Password!";
+                    _logContent.Message = "Incorrect Password";
+                }
+                else
+                {
+                    _logContent.Result = true;
+                    _logContent.Message = "Login succesful for user " + email;
+                }
+            }
+            else
+            {
+                _logContent.Result = false;
+                _logContent.ErrorCode = "401. Incorrect Email!";
+                _logContent.Message = "Email doesn't exist";
+            }
+            return _logContent;
+        }
     }
 }

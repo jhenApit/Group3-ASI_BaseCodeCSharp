@@ -62,10 +62,10 @@ namespace Basecode.Data.Repositories
                 existingJobPostings.Qualifications = jobPostings.Qualifications;
                 existingJobPostings.WorkSetup = jobPostings.WorkSetup;
                 existingJobPostings.Hours = jobPostings.Hours;
-                existingJobPostings.IsActive = jobPostings.IsActive;
-                existingJobPostings.Type = jobPostings.Type;
+                existingJobPostings.JobStatus = jobPostings.JobStatus;
+                existingJobPostings.EmploymentType = jobPostings.EmploymentType;
                 existingJobPostings.UpdatedTime = jobPostings.UpdatedTime;
-                existingJobPostings.UpdatedById = jobPostings.UpdatedById;
+                existingJobPostings.UpdatedBy = jobPostings.UpdatedBy;
                 existingJobPostings.IsDeleted = jobPostings.IsDeleted;
 
                 // Save the changes

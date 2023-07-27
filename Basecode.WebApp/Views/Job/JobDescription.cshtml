@@ -1,10 +1,16 @@
-﻿@using Basecode.Data.Models
+﻿@using Basecode.Data.Enums
+@using Basecode.Data.Models
 @model JobPostings
 @{
     ViewData["Title"] = "Job Description";
 }
 <body class="findJobs_body">
     <div class="container top-0">
+        <a asp-controller="Job" asp-action="FindJobs">
+            <p class="text-bold text-black mb-1 align-self-center me-3">
+                <img src="/images/icons/back-icon.png" class="back-icon mb-1" alt="" /> Back to Open Job Positions
+            </p>
+        </a>
         <h2 class="my-5 text-black text-bold">@Model.Name</h2>
 
         <!---->
@@ -12,11 +18,11 @@
             <div class="col d-none d-md-flex">
                 <p class="text-bold mb-1 align-self-center me-2">Job Details</p>
                 <button class="btn btn-primary ms-4 py-0">
-                    <a class="nav-link p-0 mx-4 text-bold" asp-area="" asp-controller="Applicant" asp-action="ApplicationForm">APPLY</a>
+                    <a asp-route-id="@Model.Id" class="nav-link p-0 mx-4 text-bold" asp-area="" asp-controller="Applicant" asp-action="ApplicationForm">APPLY</a>
                 </button>
             </div>
         </div>
-        <div class="border-rounded bg-white px-3 pt-3 pb-2 mb-4">
+        <div class="job-container px-3 pt-3 pb-2 mb-4">
             <div class="row m-1">
                 <div class="col">
                     <div class="mb-4">
@@ -27,20 +33,29 @@
                             </li>
                         </ul>
                     </div>
+                    @{
+                        //Separating CSV values
+                        string qualification = @Model.Qualifications;
+                        string[] qualificationValues = qualification.Split(',');
+                        string responsibility = @Model.Responsibilities;
+                        string[] responsibilityValues = responsibility.Split(',');
+                    }
                     <div class="ms-3 mb-4">
                         <h5 class="">Job Qualifications</h5>
-                        <ul>
-                            <li>
-                                @Model.Qualifications
-                            </li>
+                        <ul class="ms-3">
+                            @foreach (var value in qualificationValues)
+                            {
+                                <li>@value.Trim()</li>
+                            }
                         </ul>
                     </div>
                     <div class="ms-3 mb-4">
                         <h5 class="">Job Responsibilities</h5>
-                        <ul>
-                            <li>
-                                @Model.Responsibilities
-                            </li>
+                        <ul class="ms-3">
+                            @foreach (var value in responsibilityValues)
+                            {
+                                <li>@value.Trim()</li>
+                            }
                         </ul>
                     </div>
                 </div>
@@ -48,28 +63,37 @@
                     <div class="border-top pt-2 mt-2">
                         <ul class="d-none d-md-block">
                             <li>
-                                @Model.Hours Hours per week
+                                @EnumHelper.GetEnumDescription(Model.Hours)
                             </li>
                             <li>
-                                @Model.Type
+                                @EnumHelper.GetEnumDescription(Model.EmploymentType)
                             </li>
                             <li>
-                                @Model.WorkSetup
+                                @EnumHelper.GetEnumDescription(Model.WorkSetup)
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div class="d-md-none mb-2 d-flex justify-content-center">
-                    <div class="d-inline border rounded mx-1 px-2 tags">@Model.Hours Hours per week</div>
-                    <div class="d-inline border rounded mx-1 px-2 tags">@Model.Type</div>
-                    <div class="d-inline border rounded mx-1 px-2 tags">@Model.WorkSetup</div>
+                    <div class="d-flex align-items-center border rounded mx-1 ps-1 pe-2 tags">
+                        <img src="/images/icons/star.png" class="star-icon me-1" alt="star" />
+                        @EnumHelper.GetEnumDescription(Model.Hours)
+                    </div>
+                    <div class="d-flex align-items-center border rounded mx-1 ps-1 pe-2 tags">
+                        <img src="/images/icons/star.png" class="star-icon me-1" alt="star" />
+                        @EnumHelper.GetEnumDescription(Model.EmploymentType)
+                    </div>
+                    <div class="d-flex align-items-center border rounded mx-1 ps-1 pe-2 tags">
+                        <img src="/images/icons/star.png" class="star-icon me-1" alt="star" />
+                        @EnumHelper.GetEnumDescription(Model.WorkSetup)
+                    </div>
                 </div>
             </div>
         </div>
         <div class="row d-md-none mx-3 mb-2">
             <div class="col d-flex justify-content-center">
                 <button class="btn btn-primary py-0 px-5 mobile-btn">
-                    <a class="nav-link p-0 mx-4 text-bold" asp-area="" asp-controller="Applicant" asp-action="ApplicationForm">APPLY</a>
+                    <a asp-route-id="@Model.Id" class="nav-link p-0 mx-4 text-bold" asp-area="" asp-controller="Applicant" asp-action="ApplicationForm">APPLY</a>
                 </button>
             </div>
         </div>

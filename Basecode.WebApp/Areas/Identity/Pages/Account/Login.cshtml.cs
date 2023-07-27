@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using Basecode.Data;
 
 namespace Basecode.WebApp.Areas.Identity.Pages.Account
 {
@@ -114,7 +115,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/Hr/AdminDashboard");
 
-            client.BaseAddress = new Uri("https://localhost:57123/");
+            client.BaseAddress = new Uri($"https://localhost:{Constants.URI.Address}/");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));

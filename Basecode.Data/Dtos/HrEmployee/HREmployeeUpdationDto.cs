@@ -1,15 +1,18 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Basecode.Data.Dtos.HrEmployee
 {
     public class HREmployeeUpdationDto
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "The 'Name' field is required")]
-        [JsonProperty(PropertyName = "name")]
-        [StringLength(150, MinimumLength = 2, ErrorMessage = "Name must be at least 2 characters.")]
-        [RegularExpression(@"^[\sa-zA-Z\s]+$", ErrorMessage = "Name must contain only letters")]
+        public string UserId { get; set; }
+        public string UserName { get; set; }
+        public string FirstName { get; set; }
+        public string? MiddleName { get; set; }
+        public string LastName { get; set; }
         public string Name { get; set; } = string.Empty;
         [Required(ErrorMessage = "The 'Email' field is required")]
         [Display(Name = "Email")]
@@ -23,5 +26,7 @@ namespace Basecode.Data.Dtos.HrEmployee
         [MinLength(6, ErrorMessage = "Password must be at least 6 characters long")]
         [MaxLength(30, ErrorMessage = "Password cannot be longer than 30 characters")]
         public string Password { get; set; } = string.Empty;
+        public string? ModifiedBy { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,11 +9,14 @@ namespace Basecode.Data.Dtos
 {
     public class CharacterReferencesCreationDto
     {
-        public int Id { get; set; }
         public int ApplicantId { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public string Relationship { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string MobileNumber { get; set; } = string.Empty;
+        [Required(ErrorMessage = "Please enter a name.")]
+        public string? Name { get; set; }
+        [Required(ErrorMessage = "This is a required field.")]
+        public string? Relationship { get; set; }
+        [Required(ErrorMessage = "This is a required field.")]
+        public string? Email { get; set; }
+        [Required(ErrorMessage = "This is a required field.")]
+        public string? MobileNumber { get; set; } 
     }
 }

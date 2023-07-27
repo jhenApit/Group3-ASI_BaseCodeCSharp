@@ -14,8 +14,8 @@ namespace Basecode.Data.Interfaces
         HrEmployee GetByEmail(string email);
         void Add(HrEmployee hrEmployee);
         HrEmployee GetById(int id);
+        HrEmployee GetByUserId(string id);
         void Update(HrEmployee hrEmployee);
-        void SemiDelete(HrEmployee hrEmployee);
-        void PermaDelete(int id);
+        void Delete(int id);
     }
 }

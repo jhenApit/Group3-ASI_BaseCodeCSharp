@@ -7,29 +7,41 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Basecode.Data.Dtos.HrEmployee;
+using Basecode.Services.Interfaces;
+using Basecode.Data.Models;
 
 namespace Basecode.WebApp.Areas.Identity.Pages.Account.Manage
 {
     public class IndexModel : PageModel
     {
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IHrEmployeeService _service;
         private readonly SignInManager<IdentityUser> _signInManager;
 
         public IndexModel(
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager,
+            IHrEmployeeService service)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _service = service;
         }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public string Username { get; set; }
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string UserName { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -55,21 +67,28 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account.Manage
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Phone]
-            [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
+            public string FirstName { get; set; }
+            public string MiddleName { get; set; }
+            public string LastName { get; set; }
+            public string Name { get; set; }
+            [Required]
+            [Display(Name = "Username")]
+            public string UserName { get; set; }
         }
 
         private async Task LoadAsync(IdentityUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-
-            Username = userName;
-
+            var email = await _userManager.GetEmailAsync(user);
+            var hr = _service.GetByUserId(user.Id);
+            var name = hr.Name;
+            Email = email;
+            UserName = userName;
+            Name = name;
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                UserName = userName,
+                Name = name
             };
         }
 
@@ -87,6 +106,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostAsync()
         {
+            Input.Name = Input.FirstName + ' ' + Input.MiddleName + ' ' + Input.LastName;
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -99,17 +119,34 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
+            var userName = await _userManager.GetUserNameAsync(user);
+            if (Input.UserName != userName)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
+                var existingUser = await _userManager.FindByNameAsync(Input.UserName);
+                if (existingUser != null)
                 {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
+                    // Email is already registered
+                    StatusMessage = "The username '" + Input.UserName + "' is not available";
+                    return RedirectToPage();
+                }
+                var result = await _userManager.SetUserNameAsync(user, Input.UserName);
+                if (!result.Succeeded)
+                {
+                    StatusMessage = "Unexpected error when trying to set username";
                     return RedirectToPage();
                 }
             }
-
+            var hr = _service.GetByUserId(user.Id);
+            var hrEmployeeDto = new HREmployeeUpdationDto
+            {
+                Name = Input.Name,
+                Email = user.Email,
+                Password = user.PasswordHash,
+                UserName = Input.UserName,
+                UserId = user.Id,
+                Id = hr.Id
+            };
+            _service.Update(hrEmployeeDto);
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();

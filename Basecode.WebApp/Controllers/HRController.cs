@@ -12,7 +12,7 @@ namespace Basecode.WebApp.Controllers
     {
         private readonly IHrEmployeeService _service;
         private readonly IJobPostingsService _jobPostingsService;
-        private readonly IErrorHandling _errorHandling;
+        private readonly IErrorHandling _errorHandling; 
         private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 

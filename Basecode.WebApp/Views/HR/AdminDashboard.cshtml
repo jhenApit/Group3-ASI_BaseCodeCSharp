@@ -19,8 +19,8 @@
                 <h1 class="m-0 ps-2">@ViewData["Title"]</h1>
             </div>
             <div class="header-details d-flex">
-                <p class="welcome py-0 my-0">WELCOME</p>
-                <p class="name py-0 my-0"><a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserName(User)!!!</a></p>
+                <p class="welcome">WELCOME</p>
+                <p class="name"><a id="manage" class="nav-link text-dark text-capitalize" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@Model.Name</a></p>
                 <i class='bx bx-user-circle'></i>
             </div>
         </div>

@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
-
+@using Basecode.Data.Enums;
 @inject UserManager<IdentityUser> UserManager
 
 @using Basecode.Data.ViewModels
@@ -43,10 +43,10 @@
                 <div class="col-4">
                     <a asp-controller="Hr" asp-action="JobApplicantsOverview">
                         <div class="dashboard-cards p-3">
-                            <h3 class="card-title">CANDIDATE</h3>
+                            <h3 class="card-title">CANDIDATES</h3>
                             <div class="card-content p-3">
                                 <i class='bx bxs-briefcase-alt-2 card-icon'></i>
-                                <p class="card-value p-3">@Model.CandidateCount</p>
+                                <p class="card-value p-3">@Model.Candidates.Count()</p>
                             </div>
                         </div>
                     </a>
@@ -66,10 +66,28 @@
             <div class="row justify-content-around mt-3">
                 <div class="col-4 mb-3">
                     <div class="dashboard-cards bottom-card p-3">
-                        <h3 class="card-title">APPLICATIONS</h3>
+                        <h3 class="card-title">STATUSES</h3>
                         <div class="chart-container mt-4">
                             <canvas class="applicant-chart"></canvas>
-                            <input type="hidden" id="dataCount" value=55 />
+                            @{
+                                var countByStatus = Model.Candidates
+                                .GroupBy(m => m.ApplicationStatus)
+                                .Select(g => new
+                                {
+                                    ApplicationStatus = g.Key,
+                                    Count = g.Count()
+                                })
+                                .ToList();
+                            }
+                            <script>
+                                var modelList = @Html.Raw(Json.Serialize(countByStatus));
+                            </script>
+                            @{
+                                foreach(var status in countByStatus)
+                                {
+                                    <input type="hidden" id="@status.ApplicationStatus" value= @status.Count/>
+                                }
+                            }
                         </div>
                     </div>
                 </div>

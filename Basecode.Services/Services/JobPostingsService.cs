@@ -38,9 +38,9 @@ namespace Basecode.Services.Services
             var JobPostingsModel = _mapper.Map<JobPostings>(jobPostingsDto);
             JobPostingsModel.CreatedTime = DateTime.Now;
             JobPostingsModel.IsDeleted = false;
-            JobPostingsModel.CreatedById = 1; //temporary id
+            JobPostingsModel.CreatedBy = jobPostingsDto.CreatedBy;
             JobPostingsModel.UpdatedTime = null;
-            JobPostingsModel.UpdatedById = null;
+            JobPostingsModel.UpdatedBy = null;
 
             _repository.Add(JobPostingsModel);
         }
@@ -63,7 +63,7 @@ namespace Basecode.Services.Services
         {
             var JobPostingsModel = _mapper.Map<JobPostings>(JobPostings);
             JobPostingsModel.UpdatedTime = DateTime.Now;
-            JobPostingsModel.UpdatedById = 2; //temporary id
+            JobPostingsModel.UpdatedBy = JobPostings.UpdatedBy;
 
             _repository.Update(JobPostingsModel);
         }

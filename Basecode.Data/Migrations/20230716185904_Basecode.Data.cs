@@ -145,8 +145,7 @@ namespace Basecode.Data.Migrations
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -188,9 +187,9 @@ namespace Basecode.Data.Migrations
                     JobStatus = table.Column<int>(type: "int", nullable: false),
                     EmploymentType = table.Column<int>(type: "int", nullable: false),
                     CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedById = table.Column<int>(type: "int", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UpdatedTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedById = table.Column<int>(type: "int", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
@@ -277,16 +276,6 @@ namespace Basecode.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Interviews", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Interviews_HrEmployees",
-                        column: x => x.InterviewerId,
-                        principalTable: "HrEmployees",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Interviews_Interviewers",
-                        column: x => x.InterviewerId,
-                        principalTable: "Interviewers",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(

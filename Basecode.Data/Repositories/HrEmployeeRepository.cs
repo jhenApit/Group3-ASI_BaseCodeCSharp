@@ -25,7 +25,7 @@ namespace Basecode.Data.Repositories
         /// <returns>An IQueryable of HrEmployee.</returns>
         public IQueryable<HrEmployee> RetrieveAll()
         {
-            return this.GetDbSet<HrEmployee>().Where(e => !e.IsDeleted).Include(e => e.User);
+            return this.GetDbSet<HrEmployee>().Include(e => e.User);
         }
 
         /// <summary>
@@ -65,6 +65,8 @@ namespace Basecode.Data.Repositories
                 existingHrEmployee.Name = hrEmployee.Name;
                 existingHrEmployee.Email = hrEmployee.Email;
                 existingHrEmployee.Password = hrEmployee.Password;
+                existingHrEmployee.ModifiedBy = hrEmployee.ModifiedBy;
+                existingHrEmployee.ModifiedDate = hrEmployee.ModifiedDate;
 
                 // Exclude certain properties from being modified
                 _context.Entry(existingHrEmployee).Property(x => x.CreatedBy).IsModified = false;
@@ -76,20 +78,10 @@ namespace Basecode.Data.Repositories
         }
 
         /// <summary>
-        /// Soft deletes an HrEmployee record in the database.
-        /// </summary>
-        /// <param name="hrEmployee">The HrEmployee object to soft delete.</param>
-        public void SemiDelete(HrEmployee hrEmployee)
-        {
-            _context.HrEmployees.Update(hrEmployee);
-            _context.SaveChanges();
-        }
-
-        /// <summary>
         /// Permanently deletes an HrEmployee record from the database by its ID.
         /// </summary>
         /// <param name="id">The ID of the HrEmployee to permanently delete.</param>
-        public void PermaDelete(int id)
+        public void Delete(int id)
         {
             var data = _context.HrEmployees.Find(id);
             if (data != null)

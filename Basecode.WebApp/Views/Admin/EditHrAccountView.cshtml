@@ -28,6 +28,7 @@
                     <form asp-action="EditHrAccount" method="POST">
                         <input type="hidden" asp-for="Id" />
                         <input type="hidden" asp-for="UserId" />
+                        <input type="hidden" asp-for="ModifiedBy" />
                         <div class="container-fluid text-black w-50">
                             @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
                             {

@@ -165,6 +165,11 @@ namespace Basecode.WebApp.Controllers
                     await _userManager.AddToRoleAsync(hr.User, "admin");
                     await _userManager.RemoveFromRoleAsync(hr.User, "hr");
                 }
+                else
+                {
+                    await _userManager.AddToRoleAsync(hr.User, "hr");
+                    await _userManager.RemoveFromRoleAsync(hr.User, "admin");
+                }
                 _service.Update(hrEmployee);
                 return RedirectToAction("HrList");
             }

@@ -64,7 +64,7 @@
                             <div>
                                 <img src="/images/icons/upload-image.png" />
                             </div>
-                            <input asp-for="Applicant.Photo" type="file" id="photo" name="photo" class="file-input" accept="image/png, image/gif, image/jpeg" onchange="displayImageName('photo', 'photoText')" />
+                            <input type="file" id="photo" name="photo" class="file-input" accept="image/png, image/jpeg" onchange="displayImageName('photo', 'photoText')" />
                             <label for="photo" class="file-label">
                                 <span id="photoText" class="file-text">Choose a file<br />or<br />Drag it here</span>
                             </label>

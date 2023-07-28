@@ -107,7 +107,7 @@ namespace Basecode.WebApp.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult ApplicationFormProcess( ApplicationFormViewModel model, IFormFile resumeFile, IFormFile photo)
+        public IActionResult ApplicationFormProcess( ApplicationFormViewModel model, IFormFile resumeFile, IFormFile? photo)
         {
             if (resumeFile != null && resumeFile.Length > 0)
             {
@@ -129,6 +129,11 @@ namespace Basecode.WebApp.Controllers
                     model.Applicant.Photo = memoryStream.ToArray();
                 }
             }
+            else
+            {
+                model.Applicant.Photo = null;
+            }
+
             if (ModelState.IsValid)
             {
                 var data = _applicantService.AddApplicantLogContent(model.Applicant);
@@ -138,6 +143,7 @@ namespace Basecode.WebApp.Controllers
                     ViewBag.ErrorMessage = data.Message;
                     return View(model.Applicant);
                 }
+                
                 var applicantIsInserted = _applicantService.Add(model.Applicant);
                 var address = new AddressCreationDto
                 {

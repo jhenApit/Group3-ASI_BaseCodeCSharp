@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Basecode.Services.Interfaces;
 using NLog;
 using Basecode.Data.Dtos.JobPostings;
+using Basecode.Data.Dtos;
+using Basecode.Data.Models;
+using Basecode.Data.Dtos.Interviews;
 using Microsoft.AspNetCore.Identity;
 using Basecode.Data.ViewModels;
 
@@ -17,6 +20,9 @@ namespace Basecode.WebApp.Controllers
         private readonly ICurrentHiresService _currentHiresService;
         private readonly IInterviewsService _interviewsService;
         private readonly IErrorHandling _errorHandling; 
+        private readonly IInterviewersService _interviewersService;
+        private readonly IInterviewsService _interviewsService;
+        private readonly IErrorHandling _errorHandling;
         private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -32,6 +38,9 @@ namespace Basecode.WebApp.Controllers
         {
             _service = service;
             _jobPostingsService = jobPostingsService;
+            _interviewersService = interviewersService;
+            _interviewsService = interviewsService;
+            _applicantService = applicantService;
             _errorHandling = errorHandling;
             _userManager = userManager;
             _applicantService = applicantService;
@@ -206,24 +215,6 @@ namespace Basecode.WebApp.Controllers
         }
 
         /// <summary>
-        /// View List of Upcoming Interviews
-        /// </summary>
-        /// <returns>Redirect to Interview Page</returns>
-        public IActionResult Interview()
-        {
-            return View();
-        }
-
-        /// <summary>
-        /// Allows HR to create a new interview entry
-        /// </summary>
-        /// <returns>Redirect to Create Interview Page</returns>
-        public IActionResult CreateInterview()
-        {
-            return View();
-        }
-
-        /// <summary>
         /// Allows HR to edit an interview
         /// </summary>
         /// <returns>Redirect to Edit Interview Page</returns>
@@ -258,5 +249,88 @@ namespace Basecode.WebApp.Controllers
         {
             return View();
         }
-    }
+
+
+        #region Interview
+
+        /// <summary>
+        /// View List of Upcoming Interviews
+        /// </summary>
+        /// <returns>Redirect to Interview Page</returns>
+        public IActionResult Interview()
+        {
+            var interviewers = new Interviewers();
+
+            var viewModel = new InterviewsViewModel
+            {
+                Interviewers = interviewers,
+                InterviewersList = _interviewersService.RetrieveAll(),
+                InterviewsList = _interviewsService.RetrieveAll()
+            };
+
+            return View(viewModel);
+        }
+
+        /// <summary>
+        /// Allows HR to create a new interview entry
+        /// </summary>
+        /// <returns>Redirect to Create Interview Page</returns>
+        public IActionResult CreateInterview()
+        {
+            var interviewersCreationDto = new InterviewsCreationDto();
+
+            var viewModel = new InterviewFormViewModel
+            {
+                InterviewsCreationDto = interviewersCreationDto,
+                ApplicantsList = _applicantService.RetrieveAll()
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult AddInterview(InterviewsCreationDto interviewsCreationDto)
+        {
+            interviewsCreationDto.ApplicantId = 1;
+            interviewsCreationDto.InterviewerId = 1;
+            interviewsCreationDto.Results = false;
+            _interviewsService.Add(interviewsCreationDto);
+            return RedirectToAction("Interview");
+        }
+
+        public IActionResult DeleteInterview(int id)
+        {
+            _interviewsService.Delete(id);
+            return RedirectToAction("Interview");
+        }
+
+        #endregion
+
+        #region Interviewer
+
+        [HttpPost]
+        public IActionResult AddInterviewer(Interviewers interviewers)
+        {
+            _interviewersService.Add(interviewers);
+            return RedirectToAction("Interview");
+            /*if (ModelState.IsValid)
+            {
+                jobPostingsCreationDto.Qualifications = string.Join(", ", jobPostingsCreationDto.QualificationList);
+                jobPostingsCreationDto.Responsibilities = string.Join(", ", jobPostingsCreationDto.ResponsibilityList);
+                var data = _jobPostingsService.CreateJobPosting(jobPostingsCreationDto);
+                if (!data.Result)
+                {
+                    _logger.Error(_errorHandling.SetLog(data));
+                    ViewBag.ErrorMessage = data.Message;
+                    return View(jobPostingsCreationDto);
+                }
+                _jobPostingsService.Add(jobPostingsCreationDto);
+                return RedirectToAction("JobPostList");
+            }
+            ModelState.Clear();
+            return View("JobPostList", jobPostingsCreationDto);*/
+        }
+
+    #endregion
+}
 }

@@ -20,16 +20,27 @@ namespace Basecode.Data.Dtos
         [Required(ErrorMessage = "Please enter your last name.")]
         public string? LastName { get; set; }
         public string? Name => $"{FirstName} {MiddleName} {LastName}";
-        [Required(ErrorMessage = "Please enter your birsthday.")]
+        [Required(ErrorMessage = "Please enter your birthday.")]
         public DateTime BirthDate { get; set; }
         public byte[]? Resume { get; set; }
+        /// <summary>
+        /// this is optional so it's nullable
+        /// </summary>
         public byte[]? Photo { get; set; }
         [Required(ErrorMessage = "Please enter your phone number.")]
-
-        public string? PhoneNumber { get; set; }
+		[RegularExpression(@"((^(\+)(\d){12}$)|(^\d{11}$))", ErrorMessage = "Please enter a phone number email.")]
+		public string? PhoneNumber { get; set; }
         [Required(ErrorMessage = "Please enter your email address.")]
-        public string? Email { get; set; }
-        public AdditionalInfo AdditionalInfo { get; set; }
+		[MaxLength(50, ErrorMessage = "Email cannot be longer than 50 characters")]
+		[RegularExpression(@"^[a-zA-Z0-9+_.-]+@[a-z]+\.[a-z]{2,3}", ErrorMessage = "Please enter a valid email.")]
+		public string? Email { get; set; }
+		/// <summary>
+        /// nullable
+        /// </summary>
+		public AdditionalInfo AdditionalInfo { get; set; }
+        /// <summary>
+        /// this field is automatically set in service
+        /// </summary>
 
         public ApplicationStatus ApplicationStatus { get; set; }
 

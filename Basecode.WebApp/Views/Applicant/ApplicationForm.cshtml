@@ -275,7 +275,7 @@
                 <h4 class="text-center">Application has been <b>submitted</b> successfully!<br />Check your email.</h4>
             </div>
             <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                <button asp-controller="Home" asp-action="Index" type="button" class="btn btn-primary" data-bs-dismiss="modal">
                     <h5 class="pb-0 m-0">Close</h5>
                 </button>
             </div>
@@ -320,4 +320,10 @@
         });
     });
 </script>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
 

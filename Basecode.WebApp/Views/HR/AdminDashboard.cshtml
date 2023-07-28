@@ -1,9 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Identity
-
+@using Basecode.Data.Enums;
 @inject UserManager<IdentityUser> UserManager
 
-@using Basecode.Data.Models
-@model HrEmployee
+@using Basecode.Data.ViewModels
+@model DashboardView
 
 @{
     ViewData["Title"] = "Dashboard";
@@ -20,7 +20,7 @@
             </div>
             <div class="header-details d-flex">
                 <p class="welcome">WELCOME</p>
-                <p class="name"><a id="manage" class="nav-link text-dark text-capitalize" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@Model.Name</a></p>
+                <p class="name"><a id="manage" class="nav-link text-dark text-capitalize" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@Model.User.Name</a></p>
                 <i class='bx bx-user-circle'></i>
             </div>
         </div>
@@ -35,7 +35,7 @@
                             <h3 class="card-title">JOB POSTS</h3>
                             <div class="card-content p-3">
                                 <i class='bx bxs-user-check card-icon'></i>
-                                <p class="card-value p-3">80</p>
+                                <p class="card-value p-3">@Model.JobCount</p>
                             </div>
                         </div>
                     </a>
@@ -46,7 +46,7 @@
                             <h3 class="card-title">CANDIDATES</h3>
                             <div class="card-content p-3">
                                 <i class='bx bxs-briefcase-alt-2 card-icon'></i>
-                                <p class="card-value p-3">80</p>
+                                <p class="card-value p-3">@Model.Candidates.Count()</p>
                             </div>
                         </div>
                     </a>
@@ -56,7 +56,7 @@
                         <h3 class="card-title">NEW HIRES</h3>
                         <div class="card-content p-3">
                             <i class='bx bxs-user-rectangle card-icon'></i>
-                            <p class="card-value p-3">80</p>
+                            <p class="card-value p-3">@Model.EmployeeCount</p>
                         </div>
                     </div>
                 </div>
@@ -69,6 +69,25 @@
                         <h3 class="card-title">STATUSES</h3>
                         <div class="chart-container mt-4">
                             <canvas class="applicant-chart"></canvas>
+                            @{
+                                var countByStatus = Model.Candidates
+                                .GroupBy(m => m.ApplicationStatus)
+                                .Select(g => new
+                                {
+                                    ApplicationStatus = g.Key,
+                                    Count = g.Count()
+                                })
+                                .ToList();
+                            }
+                            <script>
+                                var modelList = @Html.Raw(Json.Serialize(countByStatus));
+                            </script>
+                            @{
+                                foreach(var status in countByStatus)
+                                {
+                                    <input type="hidden" id="@status.ApplicationStatus" value= @status.Count/>
+                                }
+                            }
                         </div>
                     </div>
                 </div>
@@ -76,12 +95,15 @@
                     <div class="dashboard-cards bottom-card p-3">
                         <div class="d-flex justify-content-between">
                             <h3 class="card-title">UPCOMING INTERVIEWS</h3>
-                            <a asp-controller="Hr" asp-action="Schedules">
-                                <p class="d-flex view-all m-0 ms-auto">
+                            @if (Model.Schedules.Count() > 0)
+                            {
+                                <a asp-controller="Hr" asp-action="Schedules">
+                                    <p class="d-flex view-all m-0 ms-auto">
                                         View All
                                         <i class='bx bx-chevron-right fs-3'></i>
-                                </p>
-                            </a>
+                                    </p>
+                                </a>
+                            }
                         </div>
                         <!-- Only a maximum of 6 rows can be added ,pls -->
                         <table class="table mt-3">
@@ -94,42 +116,26 @@
                                 </tr>
                             </thead>
                             <tbody class="text-center">
-                                <tr>
-                                    <td>July 2, 2023 11AM - 12NN</td>
-                                    <td>Jane Marie Doe</td>
-                                    <td>Jovert Maharlika</td>
-                                    <td>HR Interview</td>
-                                </tr>
-                                <tr>
-                                    <td>July 3, 2023 11AM - 12NN</td>
-                                    <td>Jane Marie Doe</td>
-                                    <td>Kris P. Bacon</td>
-                                    <td>Technical Interview</td>
-                                </tr>
-                                <tr>
-                                    <td>July 4, 2023 1PM - 2PM</td>
-                                    <td>桐ヶ谷一人</td>
-                                    <td>遥桐谷</td>
-                                    <td>Final Interview</td>
-                                </tr>
-                                <tr>
-                                    <td>July 4, 2023 2PM - 3PM</td>
-                                    <td>桐ヶ谷一人</td>
-                                    <td>百合あゆみ</td>
-                                    <td>Final Interview</td>
-                                </tr>
-                                <tr>
-                                    <td>July 5, 2023 11AM - 12NN</td>
-                                    <td>Jane Marie Doe</td>
-                                    <td>Muhammad Ahlli</td>
-                                    <td>HR Interview</td>
-                                </tr>
-                                <tr>
-                                    <td>July 6, 2023 3PM - 4PM</td>
-                                    <td>桐ヶ谷一人</td>
-                                    <td>五条悟</td>
-                                    <td>Technical Interview</td>
-                                </tr>
+                                @if(Model.Schedules.Count() == 0)
+                                {
+                                    <tr>
+                                        <td colspan="6">NO INTERVIEWS</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    @foreach (var interview in Model.Schedules)
+                                    {
+                                        <tr>
+                                            <td>@interview.InterviewDate</td>
+                                            <td>@interview.TimeStart</td>
+                                            <td>@interview.TimeEnd</td>
+                                            <td>@interview.Interviewer</td>
+                                            <td>@interview.Applicant</td>
+                                            <td>@interview.InterviewType</td>
+                                        </tr>
+                                    }
+                                }
                             </tbody>
                         </table>
                     </div>

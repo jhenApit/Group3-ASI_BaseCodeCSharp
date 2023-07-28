@@ -165,6 +165,11 @@ namespace Basecode.WebApp.Controllers
                     await _userManager.AddToRoleAsync(hr.User, "admin");
                     await _userManager.RemoveFromRoleAsync(hr.User, "hr");
                 }
+                else
+                {
+                    await _userManager.AddToRoleAsync(hr.User, "hr");
+                    await _userManager.RemoveFromRoleAsync(hr.User, "admin");
+                }
                 _service.Update(hrEmployee);
                 return RedirectToAction("HrList");
             }
@@ -177,9 +182,10 @@ namespace Basecode.WebApp.Controllers
         /// </summary>
         /// <param name="id">The ID of the HR account to be deleted</param>
         /// <returns>Redirects to the HrList page</returns>
-        public IActionResult DeleteHrAccount(int id)
+        public async Task<IActionResult> DeleteHrAccount(int id)
         {
-            _service.Delete(id);
+            var hr = _service.GetById(id);
+            await _userManager.DeleteAsync(hr.User);
             return RedirectToAction("HrList");
         }
 

@@ -99,7 +99,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             [EmailAddress]
-            [RegularExpression(@"^[a-zA-Z0-9_.+-]+@asi-dev2\.com$", ErrorMessage = "Email is not Alliance Email")]
+            [RegularExpression(@"^[a-zA-Z0-9_.+-]+@gmail\.com$", ErrorMessage = "Email is not Alliance Email")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 

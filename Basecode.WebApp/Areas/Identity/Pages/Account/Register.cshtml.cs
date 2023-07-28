@@ -195,13 +195,15 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     hrEmployee.UserId = user.Id;
-                    //save user to employees table
+
                     hrEmployee.Password = user.PasswordHash;
+                    
+                    //save user to employees table
                     _hrService.Add(hrEmployee);
 
                     var hr = _hrService.GetByUserId(hrEmployee.UserId);
 
-                    _sendEmailService.SendHrDetailsEmail(hr);
+                    _sendEmailService.SendHrDetailsEmail(hr, Input.Password);
 
                     return LocalRedirect(returnUrl);
                 }

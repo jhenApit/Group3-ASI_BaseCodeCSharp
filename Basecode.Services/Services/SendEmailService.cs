@@ -10,7 +10,7 @@ namespace Basecode.Services.Services
 {
     public class SendEmailService : ISendEmailService
     {
-        public void SendHrDetailsEmail(HrEmployee hrEmployee)
+        public void SendHrDetailsEmail(HrEmployee hrEmployee, string password)
         {
             var email = new MimeMessage();
             email.From.Add(new MailboxAddress("Alliance Job Hiring", "alliance.jobhiring@gmail.com"));
@@ -33,7 +33,7 @@ namespace Basecode.Services.Services
 
             emailBody.Text = emailBody.Text.Replace("{Name}", hrEmployee.Name);
             emailBody.Text = emailBody.Text.Replace("{Username}", hrEmployee.User.UserName);
-            emailBody.Text = emailBody.Text.Replace("{Password}", hrEmployee.User.PasswordHash);
+            emailBody.Text = emailBody.Text.Replace("{Password}", password);
 
             email.Body = emailBody;
 

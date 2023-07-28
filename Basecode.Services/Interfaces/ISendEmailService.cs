@@ -10,7 +10,7 @@ namespace Basecode.Services.Interfaces
 {
     public interface ISendEmailService
     {
-        void SendHrDetailsEmail(HrEmployee hrEmployee);
+        void SendHrDetailsEmail(HrEmployee hrEmployee, string password);
         void SendRegretEmail(string recipientEmail, string subject, string body);
         void SendApprovalEmail(string recipientEmail, string subject, string body);
     }

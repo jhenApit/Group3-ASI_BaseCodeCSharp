@@ -29,7 +29,7 @@ namespace Basecode.Services.Services
         /// Retrieves all addresses from the repository.
         /// </summary>
         /// <returns>A list of Address objects.</returns>
-        public List<Address> RetrieveAll()
+        public List<Addresses> RetrieveAll()
         {
             return _repository.RetrieveAll().ToList();
         }
@@ -40,7 +40,7 @@ namespace Basecode.Services.Services
         /// <param name="AddressDto">The AddressCreationDto object representing the address to be added.</param>
         public void Add(AddressCreationDto AddressDto)
         {
-            var AddressModel = _mapper.Map<Address>(AddressDto);
+            var AddressModel = _mapper.Map<Addresses>(AddressDto);
             _repository.Add(AddressModel);
         }
 
@@ -49,7 +49,7 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="id">The unique identifier of the address.</param>
         /// <returns>The Address object matching the specified identifier, or null if not found.</returns>
-        public Address GetById(int id)
+        public Addresses GetById(int id)
         {
             return _repository.GetById(id);
         }
@@ -59,7 +59,7 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="city">The name of the city.</param>
         /// <returns>The Address object matching the specified city name, or null if not found.</returns>
-        public Address GetByCity(string city)
+        public Addresses GetByCity(string city)
         {
             return _repository.GetByCity(city);
         }

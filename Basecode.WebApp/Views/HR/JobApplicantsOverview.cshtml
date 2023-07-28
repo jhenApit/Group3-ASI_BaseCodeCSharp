@@ -3,8 +3,7 @@
 @using static Basecode.Data.Enums.Enums;
 @using Basecode.Services.Interfaces
 @using System.Drawing;
-@inject IJobPostingsService jobPostingService
-@model List<Applicants>
+@model JobApplicantOverviewModel
 @{
 	ViewData["Title"] = "Job Applicants Overview";
 	Layout = "_SideBarAdmin";
@@ -12,7 +11,6 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 	<link rel="stylesheet" href="~/css/JobApplicantsOverview.css" />
 }
-
 
 <div class="container">
 	<h1>@ViewData["Title"]</h1>
@@ -22,9 +20,8 @@
 		<label for="position">Position:</label>
 		<select id="position" name="position">
 			<option value="ALL">ALL</option>
-			@foreach (var applicant in Model)
-			{
-				var jobPosting = jobPostingService.GetById(applicant.JobId);
+			@foreach (var jobPosting in Model.jobPostings)
+			{		
 				<option value="@jobPosting.Name">@jobPosting.Name</option>
 			}
 		</select>
@@ -49,12 +46,11 @@
 			</thead>
 			<tbody>
 				<!-- Data rows displayed here -->
-				@foreach (var applicant in Model)
+				@foreach (var applicant in Model.applicants)
 				{
 					Color statusColor = EnumHelper.GetColorForApplicationStatus(applicant.ApplicationStatus);
 					string colorStyle = $"color: {ColorTranslator.ToHtml(statusColor)}";
-					var jobPosting = jobPostingService.GetById(applicant.JobId);
-					var positionName = jobPosting != null ? jobPosting.Name : "Position Not Found";
+					var positionName = Model.jobPostings.Name;
 					<tr>
 						<td>@applicant.Name</td>
 						<td>@positionName</td>

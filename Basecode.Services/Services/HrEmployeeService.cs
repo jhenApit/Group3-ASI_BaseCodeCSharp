@@ -162,10 +162,6 @@ namespace Basecode.Services.Services
                 {
                     _logContent.Result = true;
                 }
-                else
-                {
-                    _logContent.Result = true;
-                }
             }
             else
             {

@@ -5,6 +5,7 @@ using NLog;
 using Basecode.Data.Dtos.JobPostings;
 using Microsoft.AspNetCore.Identity;
 using Basecode.Data.ViewModels;
+using Basecode.Data.Models;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -239,8 +240,16 @@ namespace Basecode.WebApp.Controllers
         /// <returns>Redirect to Job Applicant Overview Page</returns>
         public IActionResult JobApplicantsOverview()
         {
-			var data = _applicantService.RetrieveAll();
-			return View(data);
+			var applicants = _applicantService.RetrieveAll();
+            var jobPostings = _jobPostingsService.RetrieveAll();
+
+			var jobApplicantsOverviewModel = new JobApplicantOverviewModel
+			{
+				applicants = applicants,
+				jobPostings = jobPostings
+			};
+
+			return View(jobApplicantsOverviewModel);
 		}
 
         /// <summary>

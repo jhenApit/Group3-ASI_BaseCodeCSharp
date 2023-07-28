@@ -22,20 +22,19 @@
 		<label for="position">Position:</label>
 		<select id="position" name="position">
 			<option value="ALL">ALL</option>
-			<option value="Software Developers">Software Developers</option>
-			<option value="HR Staff">HR Staff</option>
+			@foreach (var applicant in Model)
+			{
+				var jobPosting = jobPostingService.GetById(applicant.JobId);
+				<option value="@jobPosting.Name">@jobPosting.Name</option>
+			}
 		</select>
 		<label for="status" style="margin-left: 20px;">Status:</label>
 		<select id="status" name="status">
 			<option value="ALL">ALL</option>
-			<option value="DEPLOYED">DEPLOYED</option>
-			<option value="FOR REVIEW">FOR REVIEW</option>
-			<option value="FOR SCREENING">FOR SCREENING</option>
-			<option value="INVITE TO INTERVIEW">INVITE TO INTERVIEW</option>
-			<option value="ONBOARDING">ONBOARDING</option>
-			<option value="SHORTLISTED">SHORTLISTED</option>
-			<option value="UNDERGOING JOB OFFER">UNDERGOING JOB OFFER</option>
-			<option value="REJECTED">REJECTED</option>
+			@foreach (ApplicationStatus status in Enum.GetValues(typeof(ApplicationStatus)))
+			{
+				<option value="@status.ToString()">@EnumHelper.GetEnumDescription(status)</option>
+			}
 		</select>
 	</div>
 	<div class="table-responsive">

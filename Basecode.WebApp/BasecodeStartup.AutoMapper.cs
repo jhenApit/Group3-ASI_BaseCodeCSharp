@@ -19,7 +19,6 @@ namespace Basecode.WebApp
                 cfg.CreateMap<JobPostingsCreationDto, JobPostings>();
                 cfg.CreateMap<JobPostingsUpdationDto, JobPostings>();
                 cfg.CreateMap<ApplicantCreationDto, Applicants>();
-				cfg.CreateMap<ApplicantUpdationDto, Applicants>();
 				cfg.CreateMap<AddressCreationDto, Address>();
                 cfg.CreateMap<CharacterReferencesCreationDto, CharacterReferences>();
                 cfg.CreateMap<ReferenceFormsCreationDto, ReferenceForms>();

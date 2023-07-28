@@ -1,4 +1,7 @@
-﻿@{
+﻿@using Basecode.Data.Enums;
+@using Basecode.Data.Models;
+@model Applicants
+@{
     ViewData ["Title"] = "Application Detail";
     Layout = "_SideBarAdmin";
 }
@@ -17,7 +20,7 @@
     <div class="row">
         <div class="col-auto me-auto">
             <div class="status px-3 py-1">
-                FOR REVIEW
+                @EnumHelper.GetEnumDescription(Model.ApplicationStatus)
             </div>
         </div>
     </div>
@@ -52,10 +55,10 @@
             <div class="d-flex col-auto align-items-center mt-2">
                 <div class="photo-container">
                     <!--Insert src of applicant photo here-->
-                    <img class="h-100 w-100 rounded-3" src="~/applicants/photo/sample-photo.png" />
+                    <img class="h-100 w-100 rounded-3" src="@ViewBag.ImageData" />
                     <!--
                         If photo does not exist this, this line of code will run instead
-                        <img src="~/images/Photo-Placeholder.png"/>
+                        <img src="~/images/Photo-Placeholder.png"/> 
                     -->
                 </div>
             </div>
@@ -342,7 +345,7 @@
             <div class="modal-body p-2">
                 <div class="resumeFile">
                     <!--Insert src of applicant resume here-->
-                    <iframe class="w-100" style="height: 80vh;" src="~/applicants/resume/sample-resume.pdf"></iframe>
+                    <iframe class="w-100" style="height: 80vh;" src="@ViewBag.Resume"></iframe>
                 </div>
             </div>
         </div>

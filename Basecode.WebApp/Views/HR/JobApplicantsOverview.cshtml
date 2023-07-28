@@ -53,7 +53,7 @@
 					string colorStyle = $"color: {ColorTranslator.ToHtml(statusColor)}";
 					var jobPost = jobPostingService.GetById(applicant.JobId);
 					var positionName = jobPost.Name;
-					<tr>
+					<tr> <a asp-route-id ="@applicant.Id" asp-controller="HR" asp-action="ApplicantDetail"></a>
 						<td>@applicant.Name</td>
 						<td>@positionName</td>
 						<td style ="@colorStyle">@EnumHelper.GetEnumDescription(((ApplicationStatus)Enum.Parse(typeof(ApplicationStatus), applicant.ApplicationStatus.ToString())))</td>

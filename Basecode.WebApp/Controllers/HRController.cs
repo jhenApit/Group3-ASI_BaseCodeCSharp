@@ -184,9 +184,17 @@ namespace Basecode.WebApp.Controllers
         /// Displays the details of a applicant's application.
         /// </summary>
         /// <returns>The view containing the application details.</returns>
-        public IActionResult ApplicantDetail()
+        public IActionResult ApplicantDetail(int id)
         {
-            return View();
+            var data = _applicantService.GetById(id);
+            string imreBase64Data = Convert.ToBase64String(data.Photo);
+            string imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+            string resumeBase64Data = Convert.ToBase64String(data.Resume);
+            string resumeDataURL = string.Format("data:docx/pdf;base64,{0}", resumeBase64Data);
+            //Passing image data in viewbag to view
+            ViewBag.ImageData = imgDataURL;
+            ViewBag.Resume = resumeBase64Data;
+            return View(data);
         }
         
         [HttpPost]

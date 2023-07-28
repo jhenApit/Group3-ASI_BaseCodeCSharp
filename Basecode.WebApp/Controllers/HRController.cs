@@ -4,8 +4,7 @@ using Basecode.Services.Interfaces;
 using NLog;
 using Basecode.Data.Dtos.JobPostings;
 using Microsoft.AspNetCore.Identity;
-using static Basecode.Data.Enums.Enums;
-using Basecode.Data.Dtos;
+using Basecode.Data.ViewModels;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -15,27 +14,48 @@ namespace Basecode.WebApp.Controllers
         private readonly IHrEmployeeService _service;
         private readonly IJobPostingsService _jobPostingsService;
         private readonly IApplicantService _applicantService;
+        private readonly ICurrentHiresService _currentHiresService;
+        private readonly IInterviewsService _interviewsService;
         private readonly IErrorHandling _errorHandling; 
         private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public HRController(IApplicantService applicantService, IHrEmployeeService service, IJobPostingsService jobPostingsService, IErrorHandling errorHandling, UserManager<IdentityUser> userManager)
+        public HRController(
+            IHrEmployeeService service, 
+            IJobPostingsService jobPostingsService, 
+            IErrorHandling errorHandling, 
+            UserManager<IdentityUser> userManager, 
+            IApplicantService applicantService,
+            ICurrentHiresService currentHiresService,
+            IInterviewsService interviewersService
+            )
         {
             _service = service;
             _jobPostingsService = jobPostingsService;
             _applicantService = applicantService;
             _errorHandling = errorHandling;
             _userManager = userManager;
+            _applicantService = applicantService;
+            _currentHiresService = currentHiresService;
+            _interviewsService = interviewersService;
         }
 
 
 
-        public IActionResult AdminDashboard(string Email)
+        public IActionResult AdminDashboard()
         {
             var user = _userManager.GetUserId(User);
-            var hrEmployee = _service.GetByUserId(user);
-            return View(hrEmployee);
+            var model = new DashboardView
+            {
+                User = _service.GetByUserId(user),
+                JobCount = _jobPostingsService.RetrieveAll().Count(),
+                Candidates = _applicantService.RetrieveAll(),
+                EmployeeCount = _currentHiresService.RetrieveAll().Count(),
+                Schedules = _interviewsService.RetrieveAll()
+            };
+            return View(model);
         }
+
 
         /// <summary>
         /// Displays the list of job posts.

@@ -1,7 +1,7 @@
 ﻿@using Basecode.Data.Models
 @model List<HrEmployee>
 @{
-    <title>LIST OF HRs</title>
+    ViewData["Title"] = "Users";
     Layout = "_SideBarAdmin";
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -23,9 +23,6 @@
                         </div>
                         <div class="hr-list-container">
                             <div class="hr-list-data">
-                                <a asp-area="Identity" asp-page="/Account/Register" class="create-account-button">
-                                    Create Account
-                                </a>
                                 <div class="search-bar">
                                     <input type="text" id="searchInput" placeholder="Search..." />
                                     <a asp-area="Identity" asp-page="/Account/Register" class="create-account-button">

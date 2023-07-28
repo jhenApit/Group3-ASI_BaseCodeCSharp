@@ -1,35 +1,49 @@
-﻿using Basecode.Services.Interfaces;
+﻿using Basecode.Data.Dtos.HrEmployee;
+using Basecode.Data.Models;
+using Basecode.Services.Interfaces;
 using MailKit.Net.Smtp;
+using MailKit;
 using MimeKit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MailKit.Security;
 
 namespace Basecode.Services.Services
 {
     public class SendEmailService : ISendEmailService
     {
-        private async Task SendEmailAsync(string recipientEmail, string subject, string body)
+        public void SendHrDetailsEmail(HrEmployee hrEmployee)
         {
             var email = new MimeMessage();
             email.From.Add(new MailboxAddress("Alliance Job Hiring", "alliance.jobhiring@gmail.com"));
-            email.To.Add(new MailboxAddress("", recipientEmail));
-            email.Subject = subject;
+            email.To.Add(new MailboxAddress("", hrEmployee.Email));
+            email.Subject = "HR Account Details";
 
-            var bodyBuilder = new BodyBuilder
+            var emailBody = new TextPart("plain")
             {
-                HtmlBody = body
+                Text = @"Good Day {Name},
+
+                   This is your Alliance HR Account Details
+
+                    Username : {Username}
+                    Password : {Password}
+
+                    You may edit you details once you have logged in. Welcome to the team.
+                   
+                    -- Alliance Software Inc."
             };
-            email.Body = bodyBuilder.ToMessageBody();
+
+            emailBody.Text = emailBody.Text.Replace("{Name}", hrEmployee.Name);
+            emailBody.Text = emailBody.Text.Replace("{Username}", hrEmployee.User.UserName);
+            emailBody.Text = emailBody.Text.Replace("{Password}", hrEmployee.User.PasswordHash);
+
+            email.Body = emailBody;
 
             using (var client = new SmtpClient())
             {
-                await client.ConnectAsync("smtp.gmail.com", 578 , true);
-                await client.AuthenticateAsync("alliance.jobhiring@gmail.com", "alliance.jobhiring2023");
-                await client.SendAsync(email);
-                await client.DisconnectAsync(true);
+                client.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+
+                client.Authenticate("alliance.jobhiring@gmail.com", "zepzkrqsybiahgmf");
+                client.Send(email);
+                client.Disconnect(true);
             }
         }
 

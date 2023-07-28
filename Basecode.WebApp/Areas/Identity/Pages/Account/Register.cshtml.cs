@@ -31,27 +31,27 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
         private readonly IUserStore<IdentityUser> _userStore;
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IHrEmployeeService _hr_service;
+        private readonly IHrEmployeeService _hrService;
+        private readonly ISendEmailService _sendEmailService;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender,
             RoleManager<IdentityRole> roleManager,
-            IHrEmployeeService hr_service)
+            IHrEmployeeService hrService,
+            ISendEmailService sendEmailService)
         {
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
             _roleManager = roleManager;
-            _hr_service = hr_service;
+            _hrService = hrService;
+            _sendEmailService = sendEmailService;
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
 
                 var user = CreateUser();
 
-                //create a employee entity
+                //Create Employee Entity
                 var hrEmployee = new HREmployeeCreationDto
                 {
                     Name = string.IsNullOrEmpty(Input.MiddleName)
@@ -197,7 +197,12 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
                     hrEmployee.UserId = user.Id;
                     //save user to employees table
                     hrEmployee.Password = user.PasswordHash;
-                    _hr_service.Add(hrEmployee);
+                    _hrService.Add(hrEmployee);
+
+                    var hr = _hrService.GetByUserId(hrEmployee.UserId);
+
+                    _sendEmailService.SendHrDetailsEmail(hr);
+
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)

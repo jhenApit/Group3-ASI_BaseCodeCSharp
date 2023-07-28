@@ -19,26 +19,20 @@ namespace Basecode.WebApp.Controllers
         private readonly IHrEmployeeService _service;
         private readonly IAdminService _adminService;
         private readonly IErrorHandling _errorHandling;
+        private readonly ISendEmailService _sendEmailService;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        private readonly IEmailService _emailService;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public AdminController(
-            IHrEmployeeService service, 
-            IErrorHandling errorHandling, 
-            IAdminService adminService, 
-            IEmailService emailService, 
-            UserManager<IdentityUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+
+        public AdminController(IHrEmployeeService service, IAdminService adminService, IErrorHandling errorHandling, ISendEmailService sendEmailService, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _service = service;
-            _errorHandling = errorHandling;
             _adminService = adminService;
-            _emailService = emailService;
+            _errorHandling = errorHandling;
+            _sendEmailService = sendEmailService;
             _userManager = userManager;
             _roleManager = roleManager;
         }
-
 
         /// <summary>
         /// Retrieves all HR employees and displays the HR list.
@@ -60,7 +54,7 @@ namespace Basecode.WebApp.Controllers
         /// </summary>
         /// <param name="hrEmployee">Details of the HR employee to be created</param>
         /// <returns>Redirects to the HrList page, displaying the updated list of accounts, including the newly created account</returns>
-        public async Task<IActionResult> CreateHrAccount(HREmployeeCreationDto hrEmployee)
+        /*public async Task<IActionResult> CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
             if (ModelState.IsValid)
             {
@@ -73,20 +67,13 @@ namespace Basecode.WebApp.Controllers
                 }
                 _service.Add(hrEmployee);
 
-                var recipient = "jm.senening08@gmail.com";
-                var subject = "Alliance Human Resource Account";
-                var body = $"Dear Mr/Mrs {hrEmployee.Name}, <br/> <br/> This is your human resource account. <br/>" +
-                           $"<br/> Email: {hrEmployee.Email} <br/> Password: {hrEmployee.Password} <br/>" +
-                           "<br/> You can edit your profile once you've logged in.";
-
-
-                await _emailService.SendEmail(recipient, subject, body);
+                await _sendEmailService.SendHrDetailsEmail(hrEmployee);
 
                 return RedirectToAction("HrList");
             }
             ModelState.Clear();
             return View(hrEmployee);
-        }
+        }*/
 
         /// <summary>
         /// Displays the account selected for editing.
@@ -205,12 +192,13 @@ namespace Basecode.WebApp.Controllers
         /// </summary>
         /// <param name="hrEmployee">The new HR employee details</param>
         /// <returns>Redirects to the HrList page</returns>
-        [HttpPost]
+        /*[HttpPost]
         public IActionResult Add(HREmployeeCreationDto hrEmployee)
         {
             _service.Add(hrEmployee);
+            _sendEmailService.SendHrDetailsEmail(hrEmployee);
             return RedirectToAction("HrList");
-        }
+        }*/
     }
 }
 

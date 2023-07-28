@@ -37,6 +37,8 @@ namespace Basecode.Services.Services
             applicantModel.ApplicantId = _idGenerator.GenerateRandomApplicantId();
             applicantModel.ApplicationDate = DateTime.Now;
             applicantModel.ApplicationStatus = Data.Enums.Enums.ApplicationStatus.Received;
+            //Row 41 on the function List. Set requirements to TBC upon applying
+            applicantModel.Requirements = Data.Enums.Enums.Requirements.TBC;
             _repository.Add(applicantModel);
             return applicantModel.Id;
         }

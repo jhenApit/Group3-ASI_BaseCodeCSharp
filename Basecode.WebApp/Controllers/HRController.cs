@@ -6,6 +6,7 @@ using Basecode.Data.Dtos.JobPostings;
 using Microsoft.AspNetCore.Identity;
 using Basecode.Data.ViewModels;
 using Basecode.Data.Models;
+using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.WebApp.Controllers
 {

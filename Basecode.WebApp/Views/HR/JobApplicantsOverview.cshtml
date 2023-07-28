@@ -2,6 +2,7 @@
 @using Basecode.Data.Models
 @using static Basecode.Data.Enums.Enums;
 @using Basecode.Services.Interfaces
+@inject IJobPostingsService jobPostingService;
 @using System.Drawing;
 @model JobApplicantOverviewModel
 @{
@@ -50,7 +51,8 @@
 				{
 					Color statusColor = EnumHelper.GetColorForApplicationStatus(applicant.ApplicationStatus);
 					string colorStyle = $"color: {ColorTranslator.ToHtml(statusColor)}";
-					var positionName = Model.jobPostings.Name;
+					var jobPost = jobPostingService.GetById(applicant.JobId);
+					var positionName = jobPost.Name;
 					<tr>
 						<td>@applicant.Name</td>
 						<td>@positionName</td>

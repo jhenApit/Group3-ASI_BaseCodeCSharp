@@ -20,7 +20,7 @@ namespace Basecode.Data.ViewModels
         public string Name { get; set; } = string.Empty;
         [Required(ErrorMessage = "The 'Email' field is required")]
         [Display(Name = "Email")]
-        [RegularExpression(@"^[a-zA-Z0-9_.+-]+@asi-dev2\.com$", ErrorMessage = "Email is not an Alliance email")]
+        [RegularExpression(@"^[a-zA-Z0-9_.+-]+@gmail\.com$", ErrorMessage = "Email is not a valid email")] //Email is not an Alliance email
         [JsonProperty(PropertyName = "email")]
         public string Email { get; set; } = string.Empty;
 

@@ -29,10 +29,10 @@ namespace G3HAS_Unit_Tests.Services
         public void RetrieveAll_ReturnAllAddresses()
         {
             // Arrange
-            var addresses = new List<Address>
+            var addresses = new List<Addresses>
             {
-                new Address { Id = 1, City = "City1" },
-                new Address { Id = 2, City = "City2" }
+                new Addresses { Id = 1, City = "City1" },
+                new Addresses { Id = 2, City = "City2" }
             };
             _repositoryMock.Setup(r => r.RetrieveAll()).Returns(addresses.AsQueryable());
 
@@ -49,8 +49,8 @@ namespace G3HAS_Unit_Tests.Services
         {
             // Arrange
             var addressDto = new AddressCreationDto { City = "New City" };
-            var addressModel = new Address { City = "New City" };
-            _mapperMock.Setup(m => m.Map<Address>(addressDto)).Returns(addressModel);
+            var addressModel = new Addresses { City = "New City" };
+            _mapperMock.Setup(m => m.Map<Addresses>(addressDto)).Returns(addressModel);
 
             // Act
             _service.Add(addressDto);
@@ -64,7 +64,7 @@ namespace G3HAS_Unit_Tests.Services
         {
             // Arrange
             int id = 1;
-            var address = new Address { Id = id, City = "City1" };
+            var address = new Addresses { Id = id, City = "City1" };
             _repositoryMock.Setup(r => r.GetById(id)).Returns(address);
 
             // Act
@@ -79,7 +79,7 @@ namespace G3HAS_Unit_Tests.Services
         {
             // Arrange
             int id = 999;
-            _repositoryMock.Setup(r => r.GetById(id)).Returns((Address)null!);
+            _repositoryMock.Setup(r => r.GetById(id)).Returns((Addresses)null!);
 
             // Act
             var result = _service.GetById(id);
@@ -93,7 +93,7 @@ namespace G3HAS_Unit_Tests.Services
         {
             // Arrange
             string city = "City1";
-            var address = new Address { Id = 1, City = city };
+            var address = new Addresses { Id = 1, City = city };
             _repositoryMock.Setup(r => r.GetByCity(city)).Returns(address);
 
             // Act
@@ -108,7 +108,7 @@ namespace G3HAS_Unit_Tests.Services
         {
             // Arrange
             string city = "NonExistingCity";
-            _repositoryMock.Setup(r => r.GetByCity(city)).Returns((Address)null!);
+            _repositoryMock.Setup(r => r.GetByCity(city)).Returns((Addresses)null!);
 
             // Act
             var result = _service.GetByCity(city);

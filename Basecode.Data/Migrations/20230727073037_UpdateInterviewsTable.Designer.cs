@@ -4,6 +4,7 @@ using Basecode.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Basecode.Data.Migrations
 {
     [DbContext(typeof(BasecodeContext))]
-    partial class BasecodeContextModelSnapshot : ModelSnapshot
+    [Migration("20230727073037_UpdateInterviewsTable")]
+    partial class UpdateInterviewsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,7 +84,8 @@ namespace Basecode.Data.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("JobId")
+                    b.Property<int?>("JobId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("LastName")
@@ -103,6 +107,8 @@ namespace Basecode.Data.Migrations
                         .HasColumnType("varbinary(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("JobId");
 
                     b.ToTable("Applicants");
                 });
@@ -228,7 +234,6 @@ namespace Basecode.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -678,6 +683,17 @@ namespace Basecode.Data.Migrations
                     b.Navigation("Applicant");
                 });
 
+            modelBuilder.Entity("Basecode.Data.Models.Applicants", b =>
+                {
+                    b.HasOne("Basecode.Data.Models.JobPostings", "Job")
+                        .WithMany()
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Job");
+                });
+
             modelBuilder.Entity("Basecode.Data.Models.CharacterReferences", b =>
                 {
                     b.HasOne("Basecode.Data.Models.Applicants", "Applicant")
@@ -715,9 +731,7 @@ namespace Basecode.Data.Migrations
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });

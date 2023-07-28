@@ -41,7 +41,11 @@
                     <span class="link_name">Dashboard</span>
                 </a>
                 <ul class="sub-menu blank">
-                    <li><p class="link_name">Dashboard</p></li>
+                    <li>
+                        <a asp-controller="HR" asp-action="AdminDashboard">
+                            <p class="link_name">Dashboard</p>
+                        </a>
+                    </li>
                 </ul>
             </li>
             @if (User.IsInRole("admin"))
@@ -52,7 +56,11 @@
                         <span class="link_name">Users</span>
                     </a>
                     <ul class="sub-menu blank">
-                        <li><p class="link_name">Users</p></li>
+                        <li>
+                            <a asp-controller="Admin" asp-action="HrList">
+                                <p class="link_name">Users</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
             }
@@ -90,7 +98,11 @@
                         <span class="link_name">Logout</span>
                     </button>
                     <ul class="sub-menu blank">
-                        <li><p class="link_name">Logout</p></li>
+                        <li>
+                            <button id="logout" type="submit" class="nav-link btn btn-link text-white border-0">
+                                <p class="link_name">Logout</p>
+                            </button>
+                        </li>
                     </ul>
                 </form> 
                 

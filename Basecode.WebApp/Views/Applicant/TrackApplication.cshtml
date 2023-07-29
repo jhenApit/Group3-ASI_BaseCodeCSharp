@@ -47,3 +47,36 @@
         </div>
     </div>
 </div>
+
+@if (ViewBag.IsFromApplication)
+{
+    <div class="modal fade" id="ApplicationSubmitted" tabindex="-1" role="dialog" aria-labelledby="ApplicationSubmittedLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center pb-4">
+                    <img class="notice-icon" src="~/images/icons/notice_icon.svg" />
+                    <button type="button" class="close d-none" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4 class="text-center">Application has been <b>submitted</b> successfully!<br />Check your email.</h4>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button asp-controller="Home" asp-action="Index" type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                        <h5 class="pb-0 m-0">Close</h5>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        // Show the modal on page load, only if redirected from the application page
+        if (@ViewBag.IsFromApplication) {
+            $('#myModal').modal('show');
+        }
+    });
+</script>

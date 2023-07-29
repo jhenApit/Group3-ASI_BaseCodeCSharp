@@ -22,8 +22,9 @@ namespace Basecode.Data.Dtos
         public string LastName { get; set; }
         public string? Name => $"{FirstName} {MiddleName} {LastName}";
         [Required(ErrorMessage = "Please enter your birthday.")]
+        [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
-        public byte[] Resume { get; set; }
+        public byte[]? Resume { get; set; }
         /// <summary>
         /// this is optional so it's nullable
         /// </summary>

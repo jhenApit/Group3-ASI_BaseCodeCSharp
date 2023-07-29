@@ -110,8 +110,6 @@ namespace Basecode.WebApp.Controllers
         [HttpPost]
         public IActionResult ApplicationFormProcess(ApplicationFormViewModel model, [Required] IFormFile resumeFile, IFormFile? photo)
         {
-            ModelState.Clear();
-            TryValidateModel(model);
             if (resumeFile != null && resumeFile.Length > 0)
             {
                 using (var memoryStream = new MemoryStream())
@@ -145,7 +143,15 @@ namespace Basecode.WebApp.Controllers
                 {
                     _logger.Error(_errorHandling.SetLog(data));
                     ViewBag.ErrorMessage = data.Message;
-                    return View(model.Applicant);
+                    //get current job applied
+                    var jobPosting = _jobPostingsService.GetById(model.Applicant.JobId);
+                    //pass job to view model
+                    model.JobPosting = new JobPostings
+                    {
+                        Name = jobPosting.Name,
+                        Id = jobPosting.Id
+                    };
+                    return View("ApplicationForm", model);
                 }
                 
                 var applicantIsInserted = _applicantService.Add(model.Applicant);
@@ -191,7 +197,7 @@ namespace Basecode.WebApp.Controllers
                     Console.WriteLine("Addition Failed for applicant");
                     return View("ViewJobPost");
                 }
-                return View("ApplicationForm");
+                return View("TrackApplication");
             }
             ModelState.Clear();
             return View("ApplicationForm");

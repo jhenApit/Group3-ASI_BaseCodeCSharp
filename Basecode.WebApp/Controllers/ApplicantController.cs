@@ -1,4 +1,5 @@
-﻿using Basecode.Data.Dtos;
+﻿using System.ComponentModel.DataAnnotations;
+using Basecode.Data.Dtos;
 using Basecode.Data.Dtos.JobPostings;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
@@ -84,7 +85,7 @@ namespace Basecode.WebApp.Controllers
             }
             else
             {
-                Console.WriteLine("Job doesn't exist! " +id);
+                Console.WriteLine("Job doesn't exist! " + id);
                 return View();
             }
         }
@@ -107,7 +108,7 @@ namespace Basecode.WebApp.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult ApplicationFormProcess( ApplicationFormViewModel model, IFormFile resumeFile, IFormFile? photo)
+        public IActionResult ApplicationFormProcess(ApplicationFormViewModel model, [Required] IFormFile resumeFile, IFormFile? photo)
         {
             if (resumeFile != null && resumeFile.Length > 0)
             {

@@ -39,11 +39,12 @@
                     <div>
                         <img src="/images/icons/resume-upload.png" />
                     </div>
-                    <input asp-for="Applicant.Resume" type="file" id="resumeFile" name="resumeFile" class="form-control file-input" accept=".pdf, .doc, .docx" onchange="displayFileName()" />
+                    <input asp-for="Applicant.Resume" type="file" id="resumeFile" name="resumeFile" class="form-control file-input" accept=".pdf,.doc,.docx" required onchange="displayFileName()" />
                     <label for="resumeFile" class="file-label">
                         <span id="fileText" class="file-text text-bold">Choose a file or Drag it here</span>
                     </label>
-
+                    <!--This shows the error for when no resume is uploaded-->
+                    <span id="resumeError" class="text-danger w-100"></span>
                     <script>
                         function displayFileName() {
                             var fileInput = document.getElementById("resumeFile");
@@ -53,6 +54,7 @@
                         }
                     </script>
                 </div>
+                
                 <!--Personal Information-->
                 <div class="row text-header text-bold ps-2 mt-4">Personal Information</div>
                 <div class="row form-row mt-3">
@@ -282,6 +284,33 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Function to handle the change event of the resume file input
+    function clearResumeError() {
+        $('#resumeError').text(""); // Clear the error message
+    }
+    // Handle the change event of the resume file input
+    $('#resumeFile').change(function () {
+        clearResumeError(); // Call the function to clear the error message
+    });
+    // Intercept form submission
+    $('#application_form').submit(function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        // Check if the resume file input is empty
+        var resumeFileInput = document.getElementById("resumeFile");
+        if (!resumeFileInput.files.length) {
+            // If empty, display the error message
+            $('#resumeError').text("Please upload your resume.");
+            return;
+        }
+
+        // Add the 'was-validated' class to show validation feedback
+        this.classList.add('was-validated');
+    });
+</script>
 
 <script>
     $(document).ready(function () {

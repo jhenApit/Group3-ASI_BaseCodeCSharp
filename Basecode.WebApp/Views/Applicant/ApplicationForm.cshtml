@@ -39,7 +39,7 @@
                     <div>
                         <img src="/images/icons/resume-upload.png" />
                     </div>
-                    <input asp-for="Applicant.Resume" type="file" id="resumeFile" name="resumeFile" class="form-control file-input" accept=".pdf,.doc,.docx" required onchange="displayFileName()" />
+                    <input type="file" id="resumeFile" name="resumeFile" class="form-control file-input" required onchange="displayFileName()" />
                     <label for="resumeFile" class="file-label">
                         <span id="fileText" class="file-text text-bold">Choose a file or Drag it here</span>
                     </label>
@@ -96,7 +96,7 @@
                                 <span asp-validation-for="Applicant.FirstName" class="text-danger w-100"></span>
                             </div>
                             <div class="col-12 col-sm-6 col-md-4 form-group mt-2">
-                                <input asp-for="Applicant.MiddleName" class="form-control" type="text" placeholder="Middle Name" required />
+                                <input asp-for="Applicant.MiddleName" class="form-control" type="text" placeholder="Middle Name" />
                                 <span asp-validation-for="Applicant.MiddleName" class="text-danger w-100"></span>
                             </div>
                             <div class="col-12 col-sm-6 col-md-4 form-group mt-2">
@@ -130,19 +130,19 @@
                         <span asp-validation-for="Address.Province" class="text-danger w-100"></span>
                     </div>
                     <div class="col-sm-6 col-md-4 form-group mt-2">
-                        <input asp-for="Address.ZipCode" class="form-control" id="zipcode" type="number" placeholder="Postal / Zipcode" required />
+                        <input asp-for="Address.ZipCode" class="form-control" id="zipcode" type="text" placeholder="Postal / Zipcode" required maxlength="4"/>
                         <span asp-validation-for="Address.ZipCode" class="text-danger w-100"></span>
                     </div>
                 </div>
                 <div class="row form-row mt-3">
                     <div class="col-sm-6 form-group mt-1">
                         <label for="number">Phone Number:</label>
-                        <input asp-for="Applicant.PhoneNumber" class="form-control" id="number" type="number" required />
+                        <input asp-for="Applicant.PhoneNumber" class="form-control" id="number" type="text" required minlength="11" maxlength="13"/>
                         <span asp-validation-for="Applicant.PhoneNumber" class="text-danger w-100"></span>
                     </div>
                     <div class="col-sm-6 form-group mt-1">
                         <label for="email">Email Address:</label>
-                        <input asp-for="Applicant.Email" class="form-control" id="email" type="text" required />
+                        <input asp-for="Applicant.Email" class="form-control" id="email" type="email" required />
                         <span asp-validation-for="Applicant.Email" class="text-danger w-100"></span>
                     </div>
                 </div>
@@ -166,12 +166,12 @@
                         </div>
                         <div class="col-sm-6 col-md-4 form-group mt-2">
                             <label for="email">Email Address:</label>
-                            <input asp-for="CharacterReferences1.Email" class="form-control" id="email" type="text" required/>
+                            <input asp-for="CharacterReferences1.Email" class="form-control" id="email" type="email" required/>
                             <span asp-validation-for="CharacterReferences1.Email" class="text-danger w-100"></span>
                         </div>
                         <div class="col-sm-6 col-md-4 form-group mt-2">
                             <label for="number">Phone Number:</label>
-                            <input asp-for="CharacterReferences1.MobileNumber" class="form-control" id="number" type="number" required />
+                            <input asp-for="CharacterReferences1.MobileNumber" class="form-control" id="number" type="text" required minlength="11" maxlength="13" />
                             <span asp-validation-for="CharacterReferences1.MobileNumber" class="text-danger w-100"></span>
                         </div>
                     </div>
@@ -191,12 +191,12 @@
                         </div>
                         <div class="col-sm-6 col-md-4 form-group mt-2">
                             <label for="email">Email Address:</label>
-                            <input asp-for="CharacterReferences2.Email" class="form-control" id="email2" type="text" required/>
+                            <input asp-for="CharacterReferences2.Email" class="form-control" id="email2" type="email" required/>
                             <span asp-validation-for="CharacterReferences2.Email" class="text-danger w-100"></span>
                         </div>
                         <div class="col-sm-6 col-md-4 form-group mt-2">
                             <label for="number">Phone Number:</label>
-                            <input asp-for="CharacterReferences2.MobileNumber" class="form-control" id="number2" type="number" required />
+                            <input asp-for="CharacterReferences2.MobileNumber" class="form-control" id="number2" type="text" required minlength="11" maxlength="13" />
                             <span asp-validation-for="CharacterReferences2.MobileNumber" class="text-danger w-100"></span>
                         </div>
                     </div>

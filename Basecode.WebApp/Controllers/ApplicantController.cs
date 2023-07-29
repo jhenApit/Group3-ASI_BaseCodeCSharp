@@ -110,6 +110,8 @@ namespace Basecode.WebApp.Controllers
         [HttpPost]
         public IActionResult ApplicationFormProcess(ApplicationFormViewModel model, [Required] IFormFile resumeFile, IFormFile? photo)
         {
+            ModelState.Clear();
+            TryValidateModel(model);
             if (resumeFile != null && resumeFile.Length > 0)
             {
                 using (var memoryStream = new MemoryStream())
@@ -134,7 +136,8 @@ namespace Basecode.WebApp.Controllers
             {
                 model.Applicant.Photo = null;
             }
-
+            ModelState.Clear();
+            TryValidateModel(model);
             if (ModelState.IsValid)
             {
                 var data = _applicantService.AddApplicantLogContent(model.Applicant);

@@ -14,11 +14,12 @@ namespace Basecode.Data.Dtos
         public string? ApplicantId { get; set; }
         public int JobId { get; set; } // Foreign Key
         [Required(ErrorMessage = "Please enter your first name.")]
-        public string? FirstName { get; set; }
-        [Required(ErrorMessage = "Please enter your middle name.")]
+        [RegularExpression(@"^[\sa-zA-z\s]+$", ErrorMessage = "Name must contain only letters")]
+        public string FirstName { get; set; }
         public string? MiddleName { get; set; }
         [Required(ErrorMessage = "Please enter your last name.")]
-        public string? LastName { get; set; }
+        [RegularExpression(@"^[\sa-zA-z\s]+$", ErrorMessage = "Name must contain only letters")]
+        public string LastName { get; set; }
         public string? Name => $"{FirstName} {MiddleName} {LastName}";
         [Required(ErrorMessage = "Please enter your birthday.")]
         public DateTime BirthDate { get; set; }
@@ -28,11 +29,9 @@ namespace Basecode.Data.Dtos
         /// </summary>
         public byte[]? Photo { get; set; }
         [Required(ErrorMessage = "Please enter your phone number.")]
-		[RegularExpression(@"((^(\+)(\d){12}$)|(^\d{11}$))", ErrorMessage = "Please enter a phone number email.")]
+		[RegularExpression(@"(^(09\d{9}|\+639\d{9})$)", ErrorMessage = "Please enter a valid phone number.")]
 		public string? PhoneNumber { get; set; }
         [Required(ErrorMessage = "Please enter your email address.")]
-		[MaxLength(50, ErrorMessage = "Email cannot be longer than 50 characters")]
-		[RegularExpression(@"^[a-zA-Z0-9+_.-]+@[a-z]+\.[a-z]{2,3}", ErrorMessage = "Please enter a valid email.")]
 		public string? Email { get; set; }
 		/// <summary>
         /// nullable

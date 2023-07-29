@@ -11,13 +11,13 @@ namespace Basecode.Data.Dtos
     {
         public int ApplicantId { get; set; }
         [Required(ErrorMessage = "This is a required field.")]
-        public string? Street { get; set; }
+        public string Street { get; set; }
         [Required(ErrorMessage = "This is a required field.")]
-        public string? City { get; set; }
+        public string City { get; set; }
         [Required(ErrorMessage = "This is a required field.")]
-        public string? Province { get; set; }
+        public string Province { get; set; }
         [Required(ErrorMessage = "This is a required field.")]
         [RegularExpression(@"\d{4}", ErrorMessage = "Please enter a valid zip code.")]
-        public string? ZipCode { get; set; } 
+        public string ZipCode { get; set; } 
     }
 }

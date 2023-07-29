@@ -11,15 +11,16 @@ namespace Basecode.Data.Dtos
     {
         public int ApplicantId { get; set; }
         [Required(ErrorMessage = "Please enter a name.")]
-        public string? Name { get; set; }
+        [RegularExpression(@"^[\sa-zA-z\s]+$", ErrorMessage = "Name must contain only letters")]
+        public string Name { get; set; }
         [Required(ErrorMessage = "This is a required field.")]
-        public string? Relationship { get; set; }
+        [RegularExpression(@"^[\sa-zA-z\s]+$", ErrorMessage = "This field must contain only letters")]
+        public string Relationship { get; set; }
         [Required(ErrorMessage = "Please enter your email address.")]
         [MaxLength(50, ErrorMessage = "Email cannot be longer than 50 characters")]
-        [RegularExpression(@"^[a-zA-Z0-9+_.-]+@[a-z]+\.[a-z]{2,3}", ErrorMessage = "Please enter a valid email.")]
-        public string? Email { get; set; }
+        public string Email { get; set; }
         [Required(ErrorMessage = "Please enter your phone number.")]
-        [RegularExpression(@"((^(\+)(\d){12}$)|(^\d{11}$))", ErrorMessage = "Please enter a phone number email.")]
-        public string? MobileNumber { get; set; } 
+        [RegularExpression(@"(^(09\d{9}|\+639\d{9})$)", ErrorMessage = "Please enter a valid phone number.")]
+        public string MobileNumber { get; set; } 
     }
 }

@@ -54,7 +54,7 @@
                         }
                     </script>
                 </div>
-                
+
                 <!--Personal Information-->
                 <div class="row text-header text-bold ps-2 mt-4">Personal Information</div>
                 <div class="row form-row mt-3">
@@ -87,7 +87,7 @@
                                 }
                             </script>
                         </div>
-                    </div> 
+                    </div>
                     <div class="col-12 col-md-9 mt-3 mt-md-0">
                         <label>Name: </label>
                         <div class="row">
@@ -118,7 +118,7 @@
                 <div class="row form-row mt-3">
                     <label>Address: </label>
                     <div class="col-12 form-group mt-2">
-                        <input asp-for="Address.Street" class="form-control" id="street" type="text" placeholder="Street" required/>
+                        <input asp-for="Address.Street" class="form-control" id="street" type="text" placeholder="Street" required />
                         <span asp-validation-for="Address.Street" class="text-danger w-100"></span>
                     </div>
                     <div class="col-sm-6 col-md-4 form-group mt-2">
@@ -126,18 +126,18 @@
                         <span asp-validation-for="Address.City" class="text-danger w-100"></span>
                     </div>
                     <div class="col-sm-6 col-md-4 form-group mt-2">
-                        <input asp-for="Address.Province" class="form-control" id="province" type="text" placeholder="Province / State" required/>
+                        <input asp-for="Address.Province" class="form-control" id="province" type="text" placeholder="Province / State" required />
                         <span asp-validation-for="Address.Province" class="text-danger w-100"></span>
                     </div>
                     <div class="col-sm-6 col-md-4 form-group mt-2">
-                        <input asp-for="Address.ZipCode" class="form-control" id="zipcode" type="text" placeholder="Postal / Zipcode" required maxlength="4"/>
+                        <input asp-for="Address.ZipCode" class="form-control" id="zipcode" type="text" placeholder="Postal / Zipcode" required maxlength="4" />
                         <span asp-validation-for="Address.ZipCode" class="text-danger w-100"></span>
                     </div>
                 </div>
                 <div class="row form-row mt-3">
                     <div class="col-sm-6 form-group mt-1">
                         <label for="number">Phone Number:</label>
-                        <input asp-for="Applicant.PhoneNumber" class="form-control" id="number" type="text" required minlength="11" maxlength="13"/>
+                        <input asp-for="Applicant.PhoneNumber" class="form-control" id="number" type="text" required minlength="11" maxlength="13" />
                         <span asp-validation-for="Applicant.PhoneNumber" class="text-danger w-100"></span>
                     </div>
                     <div class="col-sm-6 form-group mt-1">
@@ -166,7 +166,7 @@
                         </div>
                         <div class="col-sm-6 col-md-4 form-group mt-2">
                             <label for="email">Email Address:</label>
-                            <input asp-for="CharacterReferences1.Email" class="form-control" id="email" type="email" required/>
+                            <input asp-for="CharacterReferences1.Email" class="form-control" id="email" type="email" required />
                             <span asp-validation-for="CharacterReferences1.Email" class="text-danger w-100"></span>
                         </div>
                         <div class="col-sm-6 col-md-4 form-group mt-2">
@@ -181,7 +181,7 @@
                     <div class="row form-row">
                         <div class="col-sm-6 col-md-4 form-group mt-2">
                             <label for="name">Full Name: </label>
-                            <input asp-for="CharacterReferences2.Name" class="form-control" id="name2" type="text" required/>
+                            <input asp-for="CharacterReferences2.Name" class="form-control" id="name2" type="text" required />
                             <span asp-validation-for="CharacterReferences2.Name" class="text-danger w-100"></span>
                         </div>
                         <div class="col-sm-6 col-md-4 form-group mt-2">
@@ -191,7 +191,7 @@
                         </div>
                         <div class="col-sm-6 col-md-4 form-group mt-2">
                             <label for="email">Email Address:</label>
-                            <input asp-for="CharacterReferences2.Email" class="form-control" id="email2" type="email" required/>
+                            <input asp-for="CharacterReferences2.Email" class="form-control" id="email2" type="email" required />
                             <span asp-validation-for="CharacterReferences2.Email" class="text-danger w-100"></span>
                         </div>
                         <div class="col-sm-6 col-md-4 form-group mt-2">
@@ -242,7 +242,7 @@
 </body>
 
 <!-- Fill All Required Fields Modal -->
- <div class="modal fade" id="FillAllRequiredFields" tabindex="-1" role="dialog" aria-labelledby="FillAllRequiredFieldsLabel" aria-hidden="true">
+<div class="modal fade" id="FillAllRequiredFields" tabindex="-1" role="dialog" aria-labelledby="FillAllRequiredFieldsLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header justify-content-center pb-4">
@@ -261,7 +261,7 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
 
 <!-- Fill Application Submitted Modal -->
 <div class="modal fade" id="ApplicationSubmitted" tabindex="-1" role="dialog" aria-labelledby="ApplicationSubmittedLabel" aria-hidden="true">
@@ -277,84 +277,15 @@
                 <h4 class="text-center">Application has been <b>submitted</b> successfully!<br />Check your email.</h4>
             </div>
             <div class="modal-footer justify-content-center">
-                <button asp-controller="Home" asp-action="Index" type="button" class="btn btn-primary" data-bs-dismiss="modal">
-                    <h5 class="pb-0 m-0">Close</h5>
-                </button>
+                <form asp-controller="Applicant" asp-action="TrackApplication">
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
+                        <h5 class="pb-0 m-0">Close</h5>
+                    </button>
+                </form>
             </div>
         </div>
     </div>
 </div>
-@*
-<script>
-    // Function to handle the change event of the resume file input
-    function clearResumeError() {
-        $('#resumeError').text(""); // Clear the error message
-    }
-    // Handle the change event of the resume file input
-    $('#resumeFile').change(function () {
-        clearResumeError(); // Call the function to clear the error message
-    });
-    // Intercept form submission
-    $('#application_form').submit(function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        // Check if the resume file input is empty
-        var resumeFileInput = document.getElementById("resumeFile");
-        if (!resumeFileInput.files.length) {
-            // If empty, display the error message
-            $('#resumeError').text("Please upload your resume.");
-            return;
-        }
-
-        // Add the 'was-validated' class to show validation feedback
-        this.classList.add('was-validated');
-    });
-</script>*@
-@*
-<script>
-    $(document).ready(function () {
-        // Intercept form submission
-        $('#application_form').submit(function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-
-            if (this.checkValidity()) { // If all required fields are filled
-                // Serialize form data to prepare for AJAX submission
-                var formData = new FormData(this);
-
-                // Make an AJAX request to submit the form data to the server
-                $.ajax({
-                    url: $(this).attr('action'),
-                    type: $(this).attr('method'),
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function (data) {
-                        if (data.Errors && data.Errors.length > 0) {
-                            // Handle the errors here, e.g., show them in an alert or display them on the page
-                            var errorMessage = data.Errors.join('\n');
-                            alert(errorMessage);
-                        } else {
-                            // If there are no errors, show the "ApplicationSubmitted" modal
-                            $('#ApplicationSubmitted').modal('show');
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        // Handle the error if the form submission fails (optional)
-                        console.error('Form submission failed:', error);
-                    }
-                });
-            } else {
-                // If not all required fields are filled, show the 'Fill All Required Fields' modal
-                $('#FillAllRequiredFields').modal('show');
-            }
-
-            // Add the 'was-validated' class to show validation feedback
-            this.classList.add('was-validated');
-        });
-    });
-</script>*@
 
 @section Scripts{
     @{

@@ -49,8 +49,9 @@ namespace Basecode.WebApp.Controllers
         /// this displays the view for TrackApplication
         /// </summary>
         /// <returns>the view</returns>
-        public IActionResult TrackApplication()
+        public IActionResult TrackApplication(string from)
         {
+            ViewBag.IsFromApplication = (from == "application");
             return View();
         }
 
@@ -197,7 +198,7 @@ namespace Basecode.WebApp.Controllers
                     Console.WriteLine("Addition Failed for applicant");
                     return View("ViewJobPost");
                 }
-                return View("TrackApplication");
+                return RedirectToAction("TrackApplication", new { from = "application" });
             }
             ModelState.Clear();
             return View("ApplicationForm");

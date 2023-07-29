@@ -2,6 +2,11 @@
 @model Applicants
 @{
     ViewData["Title"] = "Track Application";
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Basecode.WebApp.styles.css" asp-append-version="true" />
 }
 <!-- This is the view when the user clicks track status in the header -->
 
@@ -22,7 +27,7 @@
 <!-- This button is just a test to see if the modal would pop-up -->
 <!-- Remind me to remove this when backend of this page is functional, TY -Arvin -->
 <!-- Button trigger modal -->
-@*<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#IDnotExistModal">
+@*<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ApplicationSubmitted">
     Test ID not exist modal
 </button>*@
 
@@ -47,10 +52,10 @@
         </div>
     </div>
 </div>
-
+<!-- show modal if it is from the application form page -->
 @if (ViewBag.IsFromApplication)
 {
-    <div class="modal fade" id="ApplicationSubmitted" tabindex="-1" role="dialog" aria-labelledby="ApplicationSubmittedLabel" aria-hidden="true">
+    <div class="modal fade" id="ApplicationSubmitted" tabindex="-1" role="dialog" aria-labelledby="ApplicationSubmittedLabel" aria-hidden="true" style="display:block;">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header justify-content-center pb-4">
@@ -60,7 +65,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <h4 class="text-center">Application has been <b>submitted</b> successfully!<br />Check your email.</h4>
+                    <h4 class="text-center">Application has been <b>submitted</b> successfully!<br />Check your email for your <span class="text-danger">Application ID</span> and track it here</h4>
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button asp-controller="Home" asp-action="Index" type="button" class="btn btn-primary" data-bs-dismiss="modal">
@@ -71,12 +76,3 @@
         </div>
     </div>
 }
-
-<script>
-    $(document).ready(function () {
-        // Show the modal on page load, only if redirected from the application page
-        if (@ViewBag.IsFromApplication) {
-            $('#myModal').modal('show');
-        }
-    });
-</script>

@@ -1,6 +1,8 @@
 ﻿@using Basecode.Data.Enums
 @using Basecode.Data.Models;
+@using Basecode.Services.Interfaces;
 @model InterviewsViewModel
+@inject IApplicantService ApplicantService
 @{
     ViewData["Title"] = "Interview";
     Layout = "_SideBarAdmin";
@@ -73,9 +75,10 @@
             {
                 @foreach (var interviews in Model.InterviewsList)
                 {
+                    var applicant = ApplicantService.GetById(interviews.ApplicantId);
                     <tr>
-                        <td>@interviews.InterviewDate.ToString("MMMM dd, yyyy, HH:mm tt")</td>
-                        <td>@interviews.ApplicantId</td>
+                        <td>@interviews.InterviewDate.ToString("MMMM dd, yyyy"), @interviews.TimeStart - @interviews.TimeEnd</td>
+                        <td>@applicant.FirstName @applicant.MiddleName @applicant.LastName</td>
                         <td>@EnumHelper.GetEnumDescription(interviews.InterviewType)</td>
                         <td>
                             <a asp-action="EditInterview" class="btn b-blue button-edit-cancel">

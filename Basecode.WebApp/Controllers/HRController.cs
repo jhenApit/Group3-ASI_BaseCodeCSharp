@@ -21,8 +21,6 @@ namespace Basecode.WebApp.Controllers
         private readonly IInterviewsService _interviewsService;
         private readonly IErrorHandling _errorHandling; 
         private readonly IInterviewersService _interviewersService;
-        private readonly IInterviewsService _interviewsService;
-        private readonly IErrorHandling _errorHandling;
         private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
@@ -33,7 +31,8 @@ namespace Basecode.WebApp.Controllers
             UserManager<IdentityUser> userManager, 
             IApplicantService applicantService,
             ICurrentHiresService currentHiresService,
-            IInterviewsService interviewersService
+            IInterviewersService interviewersService,
+            IInterviewsService interviewsService
             )
         {
             _service = service;
@@ -45,7 +44,6 @@ namespace Basecode.WebApp.Controllers
             _userManager = userManager;
             _applicantService = applicantService;
             _currentHiresService = currentHiresService;
-            _interviewsService = interviewersService;
         }
 
 
@@ -277,21 +275,13 @@ namespace Basecode.WebApp.Controllers
         /// <returns>Redirect to Create Interview Page</returns>
         public IActionResult CreateInterview()
         {
-            var interviewersCreationDto = new InterviewsCreationDto();
-
-            var viewModel = new InterviewFormViewModel
-            {
-                InterviewsCreationDto = interviewersCreationDto,
-                ApplicantsList = _applicantService.RetrieveAll()
-            };
-
-            return View(viewModel);
+            return View();
         }
 
         [HttpPost]
         public IActionResult AddInterview(InterviewsCreationDto interviewsCreationDto)
         {
-            interviewsCreationDto.ApplicantId = 1;
+            interviewsCreationDto.ApplicantId = 3;
             interviewsCreationDto.InterviewerId = 1;
             interviewsCreationDto.Results = false;
             _interviewsService.Add(interviewsCreationDto);

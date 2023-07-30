@@ -15,6 +15,8 @@ namespace Basecode.Data.Dtos.Interviews
         public int InterviewerId { get; set; }
         public InterviewType InterviewType { get; set; }
         public DateTime InterviewDate { get; set; }
+        public string? TimeStart { get; set; }
+        public string? TimeEnd { get; set; }
         public bool Results { get; set; }
     }
 }

@@ -90,17 +90,17 @@ namespace Basecode.WebApp.Controllers
             if (hrEmployee != null)
             {
                 // Access user attributes
-                string userName = hrEmployee.User.UserName;
+                string userName = hrEmployee.User.UserName!;
                 // Other user attributes you may want to access
                 // Create an instance of HREmployeeUpdationDto and populate it with data
                 var hrEmployeeDto = new HREmployeeUpdationDto
                 {
-                    Name = hrEmployee.Name,
-                    Email = hrEmployee.Email,
-                    Password = hrEmployee.Password,
-                    UserName = userName,
+                    Name = hrEmployee.Name!,
+                    Email = hrEmployee.Email!,
+                    Password = hrEmployee.Password!,
+                    UserName = userName!,
                     UserId = hrEmployee.User.Id,
-                    ModifiedBy = loggedUser.UserName,
+                    ModifiedBy = loggedUser!.UserName,
                     Id = hrEmployee.Id
                 };
                 if (role == "admin")
@@ -141,12 +141,11 @@ namespace Basecode.WebApp.Controllers
             {
                 //get hremployee data
                 var hr = _service.GetById(hrEmployee.Id);
-                //get aspnetuser data
-                var user = await _userManager.GetUserAsync(User);
                 //update username
                 await _userManager.SetUserNameAsync(hr.User, hrEmployee.UserName);
                 await _userManager.GenerateChangeEmailTokenAsync(hr.User, hrEmployee.Email);
-                await _userManager.ChangePasswordAsync(hr.User, hr.Password, hrEmployee.Password);
+                await _userManager.ChangePasswordAsync(hr.User, hr.Password!, hrEmployee.Password);
+
                 if (hrEmployee.IsAdmin)
                 {
                     await _userManager.AddToRoleAsync(hr.User, "admin");

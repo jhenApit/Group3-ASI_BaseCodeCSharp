@@ -18,8 +18,6 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
-using Basecode.Data.Dtos;
 using Basecode.Data.Dtos.HrEmployee;
 
 namespace Basecode.WebApp.Areas.Identity.Pages.Account
@@ -85,7 +83,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
             public string FirstName { get; set; }
             [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Name must contain only letters")]
             [Display(Name = "Middle Name")]
-            public string? MiddleName { get; set; }
+            public string MiddleName { get; set; }
             [Required]
             [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Name must contain only letters")]
             [Display(Name = "Last Name")]

@@ -1,4 +1,5 @@
-﻿using Basecode.Data.Dtos;
+﻿using System.ComponentModel.DataAnnotations;
+using Basecode.Data.Dtos;
 using Basecode.Data.Dtos.JobPostings;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
@@ -48,8 +49,9 @@ namespace Basecode.WebApp.Controllers
         /// this displays the view for TrackApplication
         /// </summary>
         /// <returns>the view</returns>
-        public IActionResult TrackApplication()
+        public IActionResult TrackApplication(string from)
         {
+            ViewBag.IsFromApplication = (from == "application");
             return View();
         }
 
@@ -84,7 +86,7 @@ namespace Basecode.WebApp.Controllers
             }
             else
             {
-                Console.WriteLine("Job doesn't exist! " +id);
+                Console.WriteLine("Job doesn't exist! " + id);
                 return View();
             }
         }
@@ -107,7 +109,7 @@ namespace Basecode.WebApp.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult ApplicationFormProcess( ApplicationFormViewModel model, IFormFile resumeFile, IFormFile photo)
+        public IActionResult ApplicationFormProcess(ApplicationFormViewModel model, [Required] IFormFile resumeFile, IFormFile? photo)
         {
             if (resumeFile != null && resumeFile.Length > 0)
             {
@@ -129,6 +131,12 @@ namespace Basecode.WebApp.Controllers
                     model.Applicant.Photo = memoryStream.ToArray();
                 }
             }
+            else
+            {
+                model.Applicant.Photo = null;
+            }
+            ModelState.Clear();
+            TryValidateModel(model);
             if (ModelState.IsValid)
             {
                 var data = _applicantService.AddApplicantLogContent(model.Applicant);
@@ -136,8 +144,17 @@ namespace Basecode.WebApp.Controllers
                 {
                     _logger.Error(_errorHandling.SetLog(data));
                     ViewBag.ErrorMessage = data.Message;
-                    return View(model.Applicant);
+                    //get current job applied
+                    var jobPosting = _jobPostingsService.GetById(model.Applicant.JobId);
+                    //pass job to view model
+                    model.JobPosting = new JobPostings
+                    {
+                        Name = jobPosting.Name,
+                        Id = jobPosting.Id
+                    };
+                    return View("ApplicationForm", model);
                 }
+                
                 var applicantIsInserted = _applicantService.Add(model.Applicant);
                 var address = new AddressCreationDto
                 {
@@ -181,7 +198,7 @@ namespace Basecode.WebApp.Controllers
                     Console.WriteLine("Addition Failed for applicant");
                     return View("ViewJobPost");
                 }
-                return View("ApplicationForm");
+                return RedirectToAction("TrackApplication", new { from = "application" });
             }
             ModelState.Clear();
             return View("ApplicationForm");

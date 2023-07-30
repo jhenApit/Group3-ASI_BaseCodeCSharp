@@ -18,8 +18,6 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
-using Basecode.Data.Dtos;
 using Basecode.Data.Dtos.HrEmployee;
 
 namespace Basecode.WebApp.Areas.Identity.Pages.Account
@@ -31,27 +29,27 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
         private readonly IUserStore<IdentityUser> _userStore;
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IHrEmployeeService _hr_service;
+        private readonly IHrEmployeeService _hrService;
+        private readonly ISendEmailService _sendEmailService;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender,
             RoleManager<IdentityRole> roleManager,
-            IHrEmployeeService hr_service)
+            IHrEmployeeService hrService,
+            ISendEmailService sendEmailService)
         {
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
             _roleManager = roleManager;
-            _hr_service = hr_service;
+            _hrService = hrService;
+            _sendEmailService = sendEmailService;
         }
 
         /// <summary>
@@ -85,7 +83,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
             public string FirstName { get; set; }
             [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Name must contain only letters")]
             [Display(Name = "Middle Name")]
-            public string? MiddleName { get; set; }
+            public string MiddleName { get; set; }
             [Required]
             [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Name must contain only letters")]
             [Display(Name = "Last Name")]
@@ -161,7 +159,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
 
                 var user = CreateUser();
 
-                //create a employee entity
+                //Create Employee Entity
                 var hrEmployee = new HREmployeeCreationDto
                 {
                     Name = string.IsNullOrEmpty(Input.MiddleName)
@@ -195,9 +193,16 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     hrEmployee.UserId = user.Id;
-                    //save user to employees table
+
                     hrEmployee.Password = user.PasswordHash;
-                    _hr_service.Add(hrEmployee);
+                    
+                    //save user to employees table
+                    _hrService.Add(hrEmployee);
+
+                    var hr = _hrService.GetByUserId(hrEmployee.UserId);
+
+                    _sendEmailService.SendHrDetailsEmail(hr, Input.Password);
+
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)

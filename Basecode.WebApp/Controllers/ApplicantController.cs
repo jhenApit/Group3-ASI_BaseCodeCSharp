@@ -12,7 +12,6 @@ namespace Basecode.WebApp.Controllers
 {
     public class ApplicantController : Controller
     {
-        private readonly IEmailService _emailService;
         private readonly IApplicantService _applicantService;
         private readonly IAddressService _addressService;
         private readonly ICharacterReferencesService _characterService;
@@ -20,15 +19,16 @@ namespace Basecode.WebApp.Controllers
         private readonly IErrorHandling _errorHandling;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public ApplicantController(IErrorHandling errorHandling, IJobPostingsService jobPostingsService, IEmailService emailService, IApplicantService applicantService, IAddressService addressService, ICharacterReferencesService characterService)
+        public ApplicantController(IApplicantService applicantService, IAddressService addressService, ICharacterReferencesService characterService, IJobPostingsService jobPostingsService, IErrorHandling errorHandling)
         {
-            _emailService = emailService;
             _applicantService = applicantService;
             _addressService = addressService;
             _characterService = characterService;
             _jobPostingsService = jobPostingsService;
             _errorHandling = errorHandling;
         }
+
+
 
         /// <summary>
         /// Retrieves the track status of an applicant based on the provided applicantID.
@@ -191,7 +191,7 @@ namespace Basecode.WebApp.Controllers
                     var subject = "Application Update";
                     var body = "Your application ID is " + model.Applicant.ApplicantId;
 
-                    _emailService.SendEmail(recipient, subject, body);
+                    //email
                 }
                 else
                 {

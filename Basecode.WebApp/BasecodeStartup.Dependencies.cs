@@ -17,13 +17,17 @@ namespace Basecode.WebApp
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ClaimsProvider, ClaimsProvider>();
 
+            //Utils
+            services.AddScoped<IErrorHandling, ErrorHandling>();
+            services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<ISendEmailService, SendEmailService>();
+
             // Services 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IHrEmployeeService, HrEmployeeService>();
             services.AddScoped<IJobPostingsService, JobPostingsService>();
             services.AddScoped<IApplicantService, ApplicantService>();
             services.AddScoped<IAdminService, AdminService>();
-            services.AddTransient<IEmailService, EmailService>();
             services.AddScoped<IAddressService, AddressService>();
             services.AddScoped<ICharacterReferencesService, CharacterReferencesService>();
             services.AddScoped<IReferenceFormsService, ReferenceFormsService>();

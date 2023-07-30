@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html" charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Welcome to the Team</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            background-color: #f0f0f0;
+            line-height: 20.8px;
+            font-size: 14px;
+        }
+        table {
+            border-spacing: 0;
+        }
+        td {
+            padding: 0;
+        }
+        img {
+            border: 0;
+        }
+        p {
+            margin-block-start: 1.2em;
+            margin-block-end: 1.2em;
+        }
+        button {
+            color: #fff;
+            background-color: #EC2224;
+            padding: .5rem 1rem;
+            border-radius: .5rem;
+            border: 3px solid #ffa4a4;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        hr {
+            margin-block-start: 0;
+            margin-block-end: 0;
+            margin-inline-start: 0;
+            margin-inline-end: 0;
+            overflow: hidden;
+            border-style: none;
+            border-width: 0;
+        }
+        h2 {
+            margin-block-start: 0.6em;
+            margin-block-end: 0.7em;
+        }
+        .wrapper {
+            width: 100%;
+            table-layout: auto;
+            padding-bottom: 60px;
+        }
+        .main {
+            background-color: #fff;
+            margin: 0 auto 20px auto;
+            width: 100%;
+            max-width: 600px;
+            border-spacing: 0;
+            font-family: "Montserrat", sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <center class="wrapper">
+        <table class="main" width="100%">
+            <tr>
+                <td style="background-color:black;">
+                    <center>
+                        <!-- ASI Logo -->
+                        <img src="images/asi-logo.svg" style="height: 50px; margin: 12px 0 8px 0" />
+                    </center>
+                    <hr style="color: #ff0000; height:5px; background-color: #ff0000" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <center>
+                        <!-- Email Title -->
+                        <h2 style="color: #000">Welcome to the Team</h2>
+                    </center>
+                    <hr style="height: 1px; background-color: #d5d5d5" />
+                </td>
+            </tr>
+            <tr>
+                <!-- Greetings -->
+                <td style="padding:10px 10px 0 10px;">
+                    Good Day <b>{Name}</b>,
+                </td>
+            </tr>
+            <tr>
+                <td style="padding:0 10px;">
+                    <!-- Main Content -->
+                    <p style="text-align:justify;">
+                        This is to inform you that your Alliance HR account has been created successfully. We are delighted to welcome you to the Alliance Software Inc. team.
+                    </p>
+                    <p>
+                        Below are your HR account details:
+                    </p>
+                    <ul>
+                        <li>Username: <b>{Username}</b></li>
+                        <li>Password: <b>{Password}</b></li>
+                    </ul>
+                    <p style="text-align:justify;">
+                        You can access your HR account by visiting our company website using this <a style="color: blue;" href="https://localhost:50140/Identity/Account/Login">link</a> and logging in using the provided credentials. Once logged in, you will have the opportunity to review and update your personal details.
+                    </p>
+                    <p>
+                        If you have any questions or encounter any issues during the login process, feel free to reach out to our HR department at <u style="color: #ff0000;">{Email}</u>
+                    </p>
+                    <p>
+                        Once again, welcome to the Alliance Software family! We believe that your skills and expertise will greatly contribute to our success as a company. We look forward to achieving great milestones together.
+                    </p>
+                </td>
+            </tr>
+        </table>
+        <!-- This email is generated, do not reply -->
+        <center style="width: 600px; line-height: 15.4px;">
+            <i style="color: gray; font-size: 12px;">This is an automated email. Please do not reply directly to this message.</i>
+            <hr style="height: 1px; width: 80%; background-color: #d5d5d5; margin: 3px 0" />
+            <i style="color: gray; font-size: 12px;">&copy; 2023 Alliance Software, Inc. All Rights Reserved.</i>
+        </center>
+    </center>
+</body>
+</html>

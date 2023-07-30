@@ -37,6 +37,8 @@ namespace Basecode.Services.Services
             applicantModel.ApplicantId = _idGenerator.GenerateRandomApplicantId();
             applicantModel.ApplicationDate = DateTime.Now;
             applicantModel.ApplicationStatus = Data.Enums.Enums.ApplicationStatus.Received;
+            //Row 41 on the function List. Set requirements to TBC upon applying
+            applicantModel.Requirements = Data.Enums.Enums.Requirements.TBC;
             _repository.Add(applicantModel);
             return applicantModel.Id;
         }
@@ -57,6 +59,11 @@ namespace Basecode.Services.Services
             return _repository.GetByName(fname, mname, lname);
         }
 
+        public Applicants GetByEmail(string email)
+        {
+            return _repository.GetByEmail(email);
+        }
+
         public List<Applicants> RetrieveAll()
         {
             return _repository.RetrieveAll().ToList();
@@ -64,12 +71,27 @@ namespace Basecode.Services.Services
 
         public LogContent AddApplicantLogContent(ApplicantCreationDto applicantCreationDto)
         {
-            Applicants applicant = GetByName(applicantCreationDto.FirstName, applicantCreationDto.MiddleName, applicantCreationDto.LastName);
+            Applicants applicant = GetByEmail(applicantCreationDto.Email);
+            List<string> errors = new List<string>();
+            if (applicantCreationDto.Resume ==  null) 
+            {
+                errors.Add("Resume is missing\n");
+            }
+
             if (applicant != null && applicant.JobId == applicantCreationDto.JobId)
             {
+                errors.Add($"{applicantCreationDto.Email} already applied for this job!");
+            }
+
+            if (errors.Count > 0)
+            {
+                // Combine the error messages into a single string with line breaks
+                string errorMessage = string.Join(Environment.NewLine, errors);
+
+                // Set the log content properties
                 _logContent.Result = false;
                 _logContent.ErrorCode = "400";
-                _logContent.Message = "Applicant already applied for this job!";
+                _logContent.Message = errorMessage;
             }
             else
             {

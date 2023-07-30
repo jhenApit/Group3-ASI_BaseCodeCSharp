@@ -1,6 +1,8 @@
 ﻿@using Basecode.Data.Dtos.Interviews;
 @using static Basecode.Data.Enums.Enums;
+@using Basecode.Services.Interfaces;
 @model InterviewsCreationDto
+@inject IApplicantService ApplicantService
 @{
     ViewData["Title"] = "New Interview";
     Layout = "_SideBarAdmin";
@@ -67,9 +69,12 @@
                 <label for="applicantName">Name:</label>
             </div>
             <div class="col">
-                <select class="form-select w-50" id="selectApplicant" name="selectApplicant" required>
+                <select asp-for="ApplicantId" class="form-select w-50" name="ApplicantId" required>
                     <option selected disabled value="">Select an Applicant...</option>
-                    <option value="">Seletest.</option>
+                    @foreach(var applicants in ApplicantService.RetrieveAll())
+                    {
+                        <option value="@applicants.Id">@applicants.FirstName @applicants.MiddleName @applicants.LastName</option>
+                    }
                 </select>
             </div>
         </div>

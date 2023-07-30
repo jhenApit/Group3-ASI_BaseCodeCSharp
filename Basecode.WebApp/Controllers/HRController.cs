@@ -281,7 +281,7 @@ namespace Basecode.WebApp.Controllers
         [HttpPost]
         public IActionResult AddInterview(InterviewsCreationDto interviewsCreationDto)
         {
-            interviewsCreationDto.ApplicantId = 3;
+            Console.WriteLine(interviewsCreationDto.ApplicantId);
             interviewsCreationDto.InterviewerId = 1;
             interviewsCreationDto.Results = false;
             _interviewsService.Add(interviewsCreationDto);

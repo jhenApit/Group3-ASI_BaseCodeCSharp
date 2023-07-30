@@ -55,7 +55,7 @@
 <!-- show modal if it is from the application form page -->
 @if (ViewBag.IsFromApplication)
 {
-    <div class="modal fade" id="ApplicationSubmitted" tabindex="-1" role="dialog" aria-labelledby="ApplicationSubmittedLabel" aria-hidden="true" style="display:block;">
+    <div class="modal fade" id="ApplicationSubmitted" tabindex="-1" role="dialog" aria-labelledby="ApplicationSubmittedLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header justify-content-center pb-4">
@@ -75,4 +75,10 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+            // Show the modal when the page is ready
+            $('#ApplicationSubmitted').modal('show');
+        });
+    </script>
 }

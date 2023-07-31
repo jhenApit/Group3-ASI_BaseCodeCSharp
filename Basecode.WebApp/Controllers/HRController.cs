@@ -208,7 +208,7 @@ namespace Basecode.WebApp.Controllers
             string imreBase64Data = Convert.ToBase64String(applicant.Photo);
             string imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
             string resumeBase64Data = Convert.ToBase64String(applicant.Resume);
-            string resumeDataURL = string.Format("data:docx/pdf;base64,{0}", resumeBase64Data);
+            string resumeDataURL = string.Format("data:application/pdf;base64,{0}", resumeBase64Data);
             //Passing image data in viewbag to view
             ViewBag.ImageData = imgDataURL;
             //not working

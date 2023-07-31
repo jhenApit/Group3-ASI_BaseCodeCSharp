@@ -301,7 +301,9 @@
             <div class="modal-body p-2">
                 <div class="resumeFile">
                     <!--Insert src of applicant resume here-->
-                    <iframe class="w-100" style="height: 80vh;" src="@ViewBag.Resume"></iframe>
+                    <iframe class="w-100" style="height: 80vh;" src="@Html.Raw(ViewBag.ResumeData)"></iframe>
+
+
                 </div>
             </div>
         </div>

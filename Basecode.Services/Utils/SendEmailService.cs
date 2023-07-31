@@ -61,7 +61,7 @@ namespace Basecode.Services.Utils
             email.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
             email.Subject = "HR Account Details";
 
-            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/HRNewAccount.html");
+            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ApplicationFormSubmitted.html");
 
             emailBodyTemplate = emailBodyTemplate.Replace("{Name}", applicant.Name);
             emailBodyTemplate = emailBodyTemplate.Replace("{JobTitle}", position);

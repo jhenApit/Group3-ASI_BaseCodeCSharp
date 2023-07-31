@@ -25,7 +25,18 @@
         // Display the dropped file name
         displayFileName();
     }
+    function handlePhotoDrop(e) {
+        e.preventDefault();
+        e.stopPropagation();
 
+        const photoFile = e.dataTransfer.files[0]; 
+        
+        const photoInput = document.getElementById('photo');
+        photoInput.files = e.dataTranfer.files;
+
+        displayImageName();
+        
+    }
 
     function setupDragAndDrop() {
         const fileDropArea = document.getElementById('resumeDropArea');
@@ -37,6 +48,15 @@
 
         // Handle the drop event
         fileDropArea.addEventListener('drop', handleResumeDrop, false);
+
+        const photoDropArea = document.getElementById('photoDropArea');
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            photoDropArea.addEventListener(eventName, allowDrag, false);
+        });
+
+        // Handle the drop event
+        photoDropArea.addEventListener('drop', handlePhotoDrop, false);
     }
 
     // Call the setup function when the document is ready
@@ -96,28 +116,32 @@
                             <div class="row form-row text-center">
                                 <label>Photo (Optional):</label>
                             </div>
-                        <label for="photo" class="file-label col-12">
-                            <div class="col form-group file-drop mt-1 p-3 ">
+                        <label for="photoFile" class="file-label col-12">
+                            <div class="col form-group file-drop mt-1 p-3" id="photoDropArea">
                                 <div>
                                     <img src="/images/icons/upload-image.png" />
                                 </div>
-                                <input type="file" id="photo" name="photo" class="file-input" accept="image/png, image/jpeg" onchange="displayImageName('photo', 'photoText')" />
+                                <input type="file" id="photoFile" name="photo" class="form-control file-input" onchange="displayImageName()" />
                                 
-                                <span id="photoText" class="file-text">Choose a file</span>
+                                <span id="photoText" class="file-text photo">Choose a file</span>
                                 
                                 <script>
-                                    function displayImageName(photoInputId, photoTextId) {
-                                        var photoInput = document.getElementById(photoInputId);
-                                        if (photoInput.files.length > 0) {
-                                            var photoFileName = photoInput.files[0].name;
-                                            var photoText = document.getElementById(photoTextId);
-                                            photoText.textContent = photoFileName;
-                                        }
-                                        else {
-                                            // If no file selected, show the default text
-                                            var photoText = document.getElementById(photoTextId);
-                                            photoText.textContent = "Choose a file\nor\nDrag it here";
-                                        }
+                                    function displayImageName() {
+                                        var photoInput = document.getElementById("photoFile");
+                                        var photoFileName = photoInput.files[0].name;
+                                        var photoFileText = document.querySelector("#photoText");
+                                        photoFileText.textContent = photoFileName;
+                                        //var photoInput = document.getElementById(photoInputId);
+                                        //if (photoInput.files.length > 0) {
+                                        //    var photoFileName = photoInput.files[0].name;
+                                        //    var text = document.getElementById(photoText);
+                                        //    text.textContent = photoFileName;
+                                        //}
+                                        //else {
+                                        //    // If no file selected, show the default text
+                                        //    var photoText = document.getElementById(photoTextId);
+                                        //    photoText.textContent = "Choose a file\nor\nDrag it here";
+                                        //}
                                     }
                                 </script>
                             </div>

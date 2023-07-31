@@ -51,6 +51,10 @@ namespace Basecode.Data.Repositories
         {
             return _context.Applicants.FirstOrDefault(e => e.FirstName == fname && e.MiddleName == mname && e.LastName == lname);
         }
+        public Applicants? GetByEmail(string email)
+        {
+            return _context.Applicants.FirstOrDefault(e => e.Email == email);
+        }
 
         /// <summary>
         /// Retrieves all applicants from the database.

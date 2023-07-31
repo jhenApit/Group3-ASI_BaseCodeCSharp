@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Basecode.Data.Models
 {
-    public class Address
+    public class Addresses
     {
         public int Id { get; set; }
         public int ApplicantId { get; set; }

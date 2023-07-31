@@ -116,9 +116,10 @@
                             <div class="row form-row text-center">
                                 <label>Photo (Optional):</label>
                             </div>
-                        <label for="photoFile" class="file-label col-12">
-                            <div class="col form-group file-drop mt-1 p-3" id="photoDropArea">
-                                <div>
+                        <label for="photoFile" class="photo-label col-12">
+                            <div class="col form-group file-drop mt-1 p-3 mx-auto mt-3 mt-md-2 align-items-center" id="photoDropArea">
+                                <img id="photoCanvas" height="100" width="100" class="d-none" />
+                                <div id="photoIcon">
                                     <img src="/images/icons/upload-image.png" />
                                 </div>
                                 <input type="file" id="photoFile" name="photo" class="form-control file-input" onchange="displayImageName()" />
@@ -128,9 +129,20 @@
                                 <script>
                                     function displayImageName() {
                                         var photoInput = document.getElementById("photoFile");
+                                        var photoIcon = document.getElementById("photoIcon");
+                                        var photoDropArea = document.getElementById("photoDropArea");
                                         var photoFileName = photoInput.files[0].name;
                                         var photoFileText = document.querySelector("#photoText");
+                                        var photoCanvas = document.getElementById("photoCanvas");
                                         photoFileText.textContent = photoFileName;
+
+                                        photoCanvas.src = URL.createObjectURL(photoInput.files[0]);
+
+                                        photoCanvas.classList.remove("d-none");
+                                        photoDropArea.classList.remove("p-3");
+                                        photoDropArea.classList.add("img-uploaded");
+                                        photoFileText.classList.add("d-none");
+                                        photoIcon.classList.add("d-none");
                                         //var photoInput = document.getElementById(photoInputId);
                                         //if (photoInput.files.length > 0) {
                                         //    var photoFileName = photoInput.files[0].name;

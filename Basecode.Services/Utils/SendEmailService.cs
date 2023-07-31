@@ -7,6 +7,7 @@ using MimeKit;
 using MailKit.Security;
 using System.Net.Http;
 using Microsoft.Extensions.Logging;
+using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.Services.Utils
 {
@@ -42,17 +43,6 @@ namespace Basecode.Services.Utils
             _emailService.SendEmail(email);
         }
 
-
-        public void SendApprovalEmail(string recipientEmail, string subject, string body)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SendRegretEmail(string recipientEmail, string subject, string body)
-        {
-            throw new NotImplementedException();
-        }
-
         public void SendNewApplicantEmail(Applicants applicant, string position)
         {
             var applicantEmail = new MimeMessage();
@@ -63,7 +53,7 @@ namespace Basecode.Services.Utils
 
             string applicantEmailBody = File.ReadAllText("wwwroot/emailTemplates/ApplicationFormSubmitted.html");
 
-            applicantEmailBody = applicantEmailBody.Replace("{Name}", applicant.Name);
+            applicantEmailBody = applicantEmailBody.Replace("{Name}", applicant.FirstName);
             applicantEmailBody = applicantEmailBody.Replace("{JobTitle}", position);
             applicantEmailBody = applicantEmailBody.Replace("{ApplicationID}", applicant.ApplicantId);
             applicantEmailBody = applicantEmailBody.Replace("{DateSubmitted}", applicant.ApplicationDate.ToString());
@@ -82,7 +72,7 @@ namespace Basecode.Services.Utils
 
             string hrEmailBody = File.ReadAllText("wwwroot/emailTemplates/HRNewApplicant.html");
 
-            hrEmailBody = hrEmailBody.Replace("{Name}", applicant.Name);
+            hrEmailBody = hrEmailBody.Replace("{Name}", applicant.FirstName);
             hrEmailBody = hrEmailBody.Replace("{JobTitle}", position);
             hrEmailBody = hrEmailBody.Replace("{DateSubmitted}", applicant.ApplicationDate.ToString());
             hrEmailBody = hrEmailBody.Replace("{Link}", "https://localhost:50140/Hr/JobApplicantsOverview");
@@ -95,6 +85,52 @@ namespace Basecode.Services.Utils
 
             _emailService.SendEmail(applicantEmail);
             _emailService.SendEmail(hrNotifEmail);
+        }
+
+        public void SendApplicantApplicationRegretEmail(Applicants applicant, string job)
+        {
+            var email = new MimeMessage();
+
+            email.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
+            email.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
+            email.Subject = "Apologies and Regrets for Recent Application";
+
+            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ApplicantRejected.html");
+
+            emailBodyTemplate = emailBodyTemplate.Replace("{Name}", applicant.FirstName);
+            emailBodyTemplate = emailBodyTemplate.Replace("{Job}", job);
+            emailBodyTemplate = emailBodyTemplate.Replace("{HR Team Email}", "alliance.humanresourceteam@gmail.com");
+
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = emailBodyTemplate
+            };
+
+            _emailService.SendEmail(email);
+        }
+
+        public void SendApplicantJobOfferEmail(Applicants applicant, string job, string workSetup, string hours)
+        {
+            var email = new MimeMessage();
+
+            email.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
+            email.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
+            email.Subject = "Job Offer";
+
+            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/JobOffer.html");
+
+            emailBodyTemplate = emailBodyTemplate.Replace("{Name}", applicant.FirstName);
+            emailBodyTemplate = emailBodyTemplate.Replace("{Job}", job);
+            emailBodyTemplate = emailBodyTemplate.Replace("{WorkSetup}", workSetup);
+            emailBodyTemplate = emailBodyTemplate.Replace("{Hours}", hours);
+            emailBodyTemplate = emailBodyTemplate.Replace("{HR Team Email}", "alliance.humanresourceteam@gmail.com");
+
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = emailBodyTemplate
+            };
+
+            _emailService.SendEmail(email);
         }
     }
 }

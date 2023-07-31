@@ -11,8 +11,8 @@ namespace Basecode.Services.Interfaces
     public interface ISendEmailService
     {
         void SendHrDetailsEmail(HrEmployee hrEmployee, string password);
+        void SendApplicantApplicationRegretEmail(Applicants applicant, string job);
         void SendNewApplicantEmail(Applicants applicant, string position);
-        void SendRegretEmail(string recipientEmail, string subject, string body);
-        void SendApprovalEmail(string recipientEmail, string subject, string body);
+        void SendApplicantJobOfferEmail(Applicants applicant, string job, string workSetup, string hours);
     }
 }

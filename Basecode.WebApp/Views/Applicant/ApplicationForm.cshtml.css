@@ -41,11 +41,27 @@
     justify-content: center;
     text-align: center;
     cursor: pointer;
+    transition: ease-in-out .2s;
 }
 
-.file-label, .photo-label {
+    .file-drop:hover, .file-drop[drop-active=true] {
+        background-color: rgba(255, 188, 188, 0.28);
+        transition: ease-in-out .2s;
+    }
+
+#photoDropArea {
+    display: flex !important;
+    flex-direction: column;
+    height: 110px;
+    width: 110px;
+}
+.file-label {
     color: red;
     margin-top: 1rem;
+}
+
+.photo-label {
+    color: red;
 }
 
 input ::placeholder {

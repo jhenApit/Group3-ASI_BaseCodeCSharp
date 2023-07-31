@@ -43,6 +43,11 @@ namespace Basecode.Services.Utils
             _emailService.SendEmail(email);
         }
 
+        /// <summary>
+        /// Send an email to Applicant and Hr when an applicant apply a job 
+        /// </summary>
+        /// <param name="applicant">Applicant</param>
+        /// <param name="position">Job position</param>
         public void SendNewApplicantEmail(Applicants applicant, string position)
         {
             var applicantEmail = new MimeMessage();
@@ -87,6 +92,11 @@ namespace Basecode.Services.Utils
             _emailService.SendEmail(hrNotifEmail);
         }
 
+        /// <summary>
+        /// Send email of regrets to Applicant if application was rejected
+        /// </summary>
+        /// <param name="applicant"></param>
+        /// <param name="job"></param>
         public void SendApplicantApplicationRegretEmail(Applicants applicant, string job)
         {
             var email = new MimeMessage();
@@ -109,6 +119,13 @@ namespace Basecode.Services.Utils
             _emailService.SendEmail(email);
         }
 
+        /// <summary>
+        /// Send a job offer email to the Applicant
+        /// </summary>
+        /// <param name="applicant">Applicant</param>
+        /// <param name="job">Job name</param>
+        /// <param name="workSetup">Work Setup</param>
+        /// <param name="hours">Work shift</param>
         public void SendApplicantJobOfferEmail(Applicants applicant, string job, string workSetup, string hours)
         {
             var email = new MimeMessage();
@@ -124,6 +141,28 @@ namespace Basecode.Services.Utils
             emailBodyTemplate = emailBodyTemplate.Replace("{WorkSetup}", workSetup);
             emailBodyTemplate = emailBodyTemplate.Replace("{Hours}", hours);
             emailBodyTemplate = emailBodyTemplate.Replace("{HR Team Email}", "alliance.humanresourceteam@gmail.com");
+
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = emailBodyTemplate
+            };
+
+            _emailService.SendEmail(email);
+        }
+
+        public void SendHrJobOfferConfirmationEmail(Applicants applicant, string jobTitle)
+        {
+            var email = new MimeMessage();
+
+            email.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
+            email.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
+            email.Subject = "Job Offer Confirmation ";
+
+            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/HRJobOfferAccepted.html");
+
+            emailBodyTemplate = emailBodyTemplate.Replace("{ApplicantName}", applicant.Name);
+            emailBodyTemplate = emailBodyTemplate.Replace("{JobTitle}", jobTitle);
+            emailBodyTemplate = emailBodyTemplate.Replace("{CompanyEmail}", "alliance.jobhiring@gmail.com");
 
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {

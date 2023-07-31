@@ -190,13 +190,14 @@ namespace Basecode.WebApp.Controllers
 
                 if (applicantIsInserted != 0)
                 {
+                    var jobPosting = _jobPostingsService.GetById(model.Applicant.JobId);
                     var applicant = _applicantService.GetById(applicantIsInserted);
                     _addressService.Add(address);
                     _characterService.Add(characRef1);
                     _characterService.Add(characRef2);
 
                     //email
-                    _sendEmailService.SendApplicantTrackerEmail(applicant, model.JobPosting!.Name!);
+                    _sendEmailService.SendApplicantTrackerEmail(applicant, jobPosting!.Name!);
                 }
                 else
                 {

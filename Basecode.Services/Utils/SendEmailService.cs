@@ -8,6 +8,7 @@ using MailKit.Security;
 using System.Net.Http;
 using Microsoft.Extensions.Logging;
 using static Basecode.Data.Enums.Enums;
+using Org.BouncyCastle.Crypto.Macs;
 
 namespace Basecode.Services.Utils
 {
@@ -173,6 +174,85 @@ namespace Basecode.Services.Utils
             emailBodyTemplate = emailBodyTemplate.Replace("{ApplicantName}", applicant.Name);
             emailBodyTemplate = emailBodyTemplate.Replace("{JobTitle}", jobTitle);
             emailBodyTemplate = emailBodyTemplate.Replace("{CompanyEmail}", "alliance.jobhiring@gmail.com");
+
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = emailBodyTemplate
+            };
+
+            _emailService.SendEmail(email);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="applicant"></param>
+        /// <param name="job">Job title</param>
+        /// <param name="status">Application status</param>
+        public void SendApplicationStatusEmail(Applicants applicant, string job, string status)
+        {
+            var applicantEmail = new MimeMessage();
+
+            applicantEmail.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
+            applicantEmail.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
+            applicantEmail.Subject = "Application Status Update";
+
+            string applicantEmailBody = File.ReadAllText("wwwroot/emailTemplates/ApplicantApplicationStatusNotif.html");
+
+            applicantEmailBody = applicantEmailBody.Replace("{Name}", applicant.FirstName);
+            applicantEmailBody = applicantEmailBody.Replace("{JobName}", job);
+            applicantEmailBody = applicantEmailBody.Replace("{Status}", status);
+            applicantEmailBody = applicantEmailBody.Replace("{Link}", "https://localhost:50140/Applicant/TrackApplication");
+            applicantEmailBody = applicantEmailBody.Replace("{Company Email}", "alliance.jobhiring@gmail.com");
+
+            applicantEmail.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = applicantEmailBody
+            };
+
+            var hrNotifEmail = new MimeMessage();
+
+            hrNotifEmail.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
+            hrNotifEmail.To.Add(new MailboxAddress("HR Department", "alliance.humanresourceteam@gmail.com"));
+            hrNotifEmail.Subject = "New Applicant";
+
+            string hrEmailBody = File.ReadAllText("wwwroot/emailTemplates/HRNewApplicant.html");
+
+            hrEmailBody = hrEmailBody.Replace("{Name}", applicant.Name);
+            hrEmailBody = hrEmailBody.Replace("{ApplicantID}", applicant.ApplicantId);
+            hrEmailBody = hrEmailBody.Replace("{JobTitle}", job);
+            hrEmailBody = hrEmailBody.Replace("{Status}", status);
+            hrEmailBody = hrEmailBody.Replace("{Date}", "ModifiedDate");
+            hrEmailBody = hrEmailBody.Replace("{Company Email}", "alliance.jobhiring@gmail.com");
+
+            hrNotifEmail.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = hrEmailBody
+            };
+
+            _emailService.SendEmail(applicantEmail);
+            _emailService.SendEmail(hrNotifEmail);
+        }
+
+        /// <summary>
+        /// Send notification email to HR to review Applicant's application
+        /// </summary>
+        /// <param name="applicant">Applicant</param>
+        /// <param name="jobTitle">Job title</param>
+        public void SendHrApplicationShortlistedEmail(Applicants applicant, string jobTitle)
+        {
+            var email = new MimeMessage();
+
+            email.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
+            email.To.Add(new MailboxAddress("HR Department", "alliance.humanresourceteam@gmail.com"));
+            email.Subject = "Shortlisted Applicants";
+
+            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/HRShortlistedApplicant.html");
+
+            emailBodyTemplate = emailBodyTemplate.Replace("{JobTitle}", jobTitle);
+            emailBodyTemplate = emailBodyTemplate.Replace("{ApplicantName}", applicant.Name);
+            emailBodyTemplate = emailBodyTemplate.Replace("{Link}", "alliance.jobhiring@gmail.com");
+            emailBodyTemplate = emailBodyTemplate.Replace("{Email}", "alliance.jobhiring@gmail.com");
 
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {

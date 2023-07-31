@@ -15,5 +15,7 @@ namespace Basecode.Services.Interfaces
         void SendNewApplicantEmail(Applicants applicant, string position);
         void SendApplicantJobOfferEmail(Applicants applicant, string job, string workSetup, string hours);
         void SendHrJobOfferConfirmationEmail(Applicants applicants, string jobTitle);
+        void SendApplicationStatusEmail(Applicants applicant, string job, string status);
+        void SendHrApplicationShortlistedEmail(Applicants applicant, string jobTitle);
     }
 }

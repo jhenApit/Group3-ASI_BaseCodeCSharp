@@ -194,6 +194,10 @@ namespace Basecode.WebApp.Controllers
         /// <returns>The view containing the application details.</returns>
         public IActionResult ApplicantDetail(int id)
         {
+            if(System.IO.File.Exists("wwwroot/applicants/resume/resume.pdf"))
+            {
+                System.IO.File.Delete("wwwroot/applicants/resume/resume.pdf");
+            }
             var applicant = _applicantService.GetById(id);
             var address = _addressService.GetByApplicantId(applicant.Id);
             var characterReferences = _characterReferencesService.GetByApplicantId(applicant.Id);
@@ -206,13 +210,21 @@ namespace Basecode.WebApp.Controllers
                 Interviews = interviews
             };
             string imreBase64Data = Convert.ToBase64String(applicant.Photo);
-            string imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+            string imgDataURL = string.Format($"data:image/png;base64,{imreBase64Data}");
             string resumeBase64Data = Convert.ToBase64String(applicant.Resume);
-            string resumeDataURL = string.Format("data:docx/pdf;base64,{0}", resumeBase64Data);
+            System.IO.FileStream stream =
+                new FileStream(@"wwwroot/applicants/resume/resume.pdf", FileMode.CreateNew);
+            System.IO.BinaryWriter writer =
+                new BinaryWriter(stream);
+            writer.Write(applicant.Resume, 0, applicant.Resume.Length);
+            writer.Close();
+            string resumeDataURL = string.Format($"data:application/pdf;base64,{resumeBase64Data}");
             //Passing image data in viewbag to view
             ViewBag.ImageData = imgDataURL;
             //not working
-            ViewBag.ResumeData = resumeDataURL;
+            ViewBag.ResumeData = File(@"C:\temp\file.pdf", "appliction/pdf");
+
+            
             return View(applicantDetailViewModel);
         }
         

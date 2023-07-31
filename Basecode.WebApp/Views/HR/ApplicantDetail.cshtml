@@ -301,9 +301,13 @@
             <div class="modal-body p-2">
                 <div class="resumeFile">
                     <!--Insert src of applicant resume here-->
-                    <iframe class="w-100" style="height: 80vh;" src="@ViewBag.Resume"></iframe>
+                    <iframe class="w-100" style="height: 80vh;" src="~/applicants/resume/resume.pdf"></iframe>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+                <script>
+                    Blob resume = @Model.Applicant.Resume;
+                </script>

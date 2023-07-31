@@ -59,7 +59,7 @@ namespace Basecode.Services.Utils
 
             email.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
             email.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
-            email.Subject = "HR Account Details";
+            email.Subject = "Application Form Submitted";
 
             string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ApplicationFormSubmitted.html");
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Basecode.Data.Dtos;
+using Basecode.Data.Dtos.Applicants;
 
 namespace Basecode.Data.Models
 {

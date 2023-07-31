@@ -17,9 +17,11 @@
         <div class="row mx-3 mb-2">
             <div class="col d-none d-md-flex">
                 <p class="text-bold mb-1 align-self-center me-2">Job Details</p>
-                <button class="btn btn-primary ms-4 py-0">
-                    <a asp-route-id="@Model.Id" class="nav-link p-0 mx-4 text-bold" asp-area="" asp-controller="Applicant" asp-action="ApplicationForm">APPLY</a>
-                </button>
+                <form asp-route-id="@Model.Id" asp-controller="Applicant" asp-action="ApplicationForm">
+                    <button type="submit" class="btn btn-primary ms-2 py-0">
+                        <p class="mb-0 text-bold">APPLY</p>
+                    </button>
+                </form>
             </div>
         </div>
         <div class="job-container px-3 pt-3 pb-2 mb-4">

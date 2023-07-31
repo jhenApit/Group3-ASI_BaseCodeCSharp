@@ -59,9 +59,9 @@ namespace Basecode.Services.Services
             return _repository.GetByName(fname, mname, lname);
         }
 
-        public Applicants GetByEmail(string email)
+        public List<Applicants> GetByEmail(string email)
         {
-            return _repository.GetByEmail(email);
+            return _repository.GetByEmail(email).ToList();
         }
 
         public List<Applicants> RetrieveAll()
@@ -71,18 +71,21 @@ namespace Basecode.Services.Services
 
         public LogContent AddApplicantLogContent(ApplicantCreationDto applicantCreationDto)
         {
-            Applicants applicant = GetByEmail(applicantCreationDto.Email);
+            
             List<string> errors = new List<string>();
             if (applicantCreationDto.Resume ==  null) 
             {
                 errors.Add("Resume is missing\n");
             }
-
-            if (applicant != null && applicant.JobId == applicantCreationDto.JobId)
+            var applications = GetByEmail(applicantCreationDto.Email);
+            foreach (var applicant in applications)
             {
-                errors.Add($"{applicantCreationDto.Email} already applied for this job!");
+                if (applicant.JobId == applicantCreationDto.JobId)
+                {
+                    errors.Add($"{applicantCreationDto.Email} already applied for this job!");
+                    break;
+                }
             }
-
             if (errors.Count > 0)
             {
                 // Combine the error messages into a single string with line breaks

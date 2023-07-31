@@ -91,6 +91,12 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            //if already logged in, user will be redirected to dashboard
+            if (User.Identity.IsAuthenticated)
+            {
+                Response.Redirect("/HR/AdminDashboard");
+                return;
+            }
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
@@ -102,6 +108,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            
 
             ReturnUrl = returnUrl;
         }

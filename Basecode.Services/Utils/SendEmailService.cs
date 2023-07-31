@@ -8,6 +8,7 @@ using MailKit.Security;
 using System.Net.Http;
 using Microsoft.Extensions.Logging;
 using static Basecode.Data.Enums.Enums;
+using Microsoft.AspNetCore.Identity;
 
 namespace Basecode.Services.Utils
 {
@@ -124,6 +125,28 @@ namespace Basecode.Services.Utils
             emailBodyTemplate = emailBodyTemplate.Replace("{WorkSetup}", workSetup);
             emailBodyTemplate = emailBodyTemplate.Replace("{Hours}", hours);
             emailBodyTemplate = emailBodyTemplate.Replace("{HR Team Email}", "alliance.humanresourceteam@gmail.com");
+
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = emailBodyTemplate
+            };
+
+            _emailService.SendEmail(email);
+        }
+
+        public void SendForgotPasswordLink(IdentityUser user, string url)
+        {
+            var email = new MimeMessage();
+
+            email.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
+            email.To.Add(new MailboxAddress(user.UserName, user.Email));
+            email.Subject = "Account Password Reset";
+
+            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/HRForgotPassword.html");
+
+            emailBodyTemplate = emailBodyTemplate.Replace("{Name}", user.UserName); 
+            emailBodyTemplate = emailBodyTemplate.Replace("{Email}", "alliance.jobhiring@gmail.com");
+            emailBodyTemplate = emailBodyTemplate.Replace("{ResetPasswordUrl}", url);
 
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {

@@ -1,5 +1,6 @@
 ﻿using Basecode.Data.Dtos.HrEmployee;
 using Basecode.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace Basecode.Services.Interfaces
         void SendApplicantApplicationRegretEmail(Applicants applicant, string job);
         void SendNewApplicantEmail(Applicants applicant, string position);
         void SendApplicantJobOfferEmail(Applicants applicant, string job, string workSetup, string hours);
+        void SendForgotPasswordLink(IdentityUser user, string url);
     }
 }

@@ -17,18 +17,18 @@ namespace Basecode.WebApp.Controllers
         private readonly ICharacterReferencesService _characterService;
         private readonly IJobPostingsService _jobPostingsService;
         private readonly IErrorHandling _errorHandling;
+        private readonly ISendEmailService _sendEmailService;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public ApplicantController(IApplicantService applicantService, IAddressService addressService, ICharacterReferencesService characterService, IJobPostingsService jobPostingsService, IErrorHandling errorHandling)
+        public ApplicantController(IApplicantService applicantService, IAddressService addressService, ICharacterReferencesService characterService, IJobPostingsService jobPostingsService, IErrorHandling errorHandling, ISendEmailService sendEmailService)
         {
             _applicantService = applicantService;
             _addressService = addressService;
             _characterService = characterService;
             _jobPostingsService = jobPostingsService;
             _errorHandling = errorHandling;
+            _sendEmailService = sendEmailService;
         }
-
-
 
         /// <summary>
         /// Retrieves the track status of an applicant based on the provided applicantID.
@@ -121,6 +121,7 @@ namespace Basecode.WebApp.Controllers
                     model.Applicant.Resume = memoryStream.ToArray();
                 }
             }
+
             if (photo != null && photo.Length > 0)
             {
                 using (var memoryStream = new MemoryStream())
@@ -131,12 +132,15 @@ namespace Basecode.WebApp.Controllers
                     model.Applicant.Photo = memoryStream.ToArray();
                 }
             }
+
             else
             {
                 model.Applicant.Photo = null;
             }
+
             ModelState.Clear();
             TryValidateModel(model);
+
             if (ModelState.IsValid)
             {
                 var data = _applicantService.AddApplicantLogContent(model.Applicant);
@@ -156,6 +160,7 @@ namespace Basecode.WebApp.Controllers
                 }
                 
                 var applicantIsInserted = _applicantService.Add(model.Applicant);
+                
                 var address = new AddressCreationDto
                 {
                     ApplicantId = applicantIsInserted,
@@ -182,16 +187,16 @@ namespace Basecode.WebApp.Controllers
                     Email = model.CharacterReferences2.Email,
                     MobileNumber = model.CharacterReferences2.MobileNumber
                 };
+
                 if (applicantIsInserted != 0)
                 {
+                    var applicant = _applicantService.GetById(applicantIsInserted);
                     _addressService.Add(address);
                     _characterService.Add(characRef1);
                     _characterService.Add(characRef2);
-                    var recipient = model.Applicant.Email;
-                    var subject = "Application Update";
-                    var body = "Your application ID is " + model.Applicant.ApplicantId;
 
                     //email
+                    _sendEmailService.SendApplicantTrackerEmail(applicant, model.JobPosting!.Name!);
                 }
                 else
                 {

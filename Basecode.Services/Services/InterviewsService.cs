@@ -52,9 +52,9 @@ namespace Basecode.Services.Services
             _repository.Delete(id);
         }
 
-        public Interviews? GetByApplicantId(int applicantId)
+        public List<Interviews> GetByApplicantId(int applicantId)
         {
-            return _repository.GetByApplicantId(applicantId);
+            return _repository.GetByApplicantId(applicantId).ToList();
         }
 
     }

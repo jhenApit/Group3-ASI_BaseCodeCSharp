@@ -197,11 +197,13 @@ namespace Basecode.WebApp.Controllers
             var applicant = _applicantService.GetById(id);
             var address = _addressService.GetByApplicantId(applicant.Id);
             var characterReferences = _characterReferencesService.GetByApplicantId(applicant.Id);
+            var interviews = _interviewsService.GetByApplicantId(applicant.Id);
             var applicantDetailViewModel = new ApplicantDetailViewModel
             {
                 Applicant = applicant,
                 Address = address,
-                CharacterReferences = characterReferences
+                CharacterReferences = characterReferences,
+                Interviews = interviews
             };
             string imreBase64Data = Convert.ToBase64String(applicant.Photo);
             string imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);

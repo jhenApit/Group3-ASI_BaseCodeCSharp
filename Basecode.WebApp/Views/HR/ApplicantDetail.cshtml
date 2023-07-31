@@ -1,10 +1,13 @@
 ﻿@using Basecode.Data.Enums;
 @using Basecode.Data.Models;
+@using Basecode.Services.Interfaces;
 @using static Basecode.Data.Enums.Enums;
 @model ApplicantDetailViewModel
+@inject IJobPostingsService _jobPostingService;
 @{
     ViewData ["Title"] = "Application Detail";
     Layout = "_SideBarAdmin";
+    var job = _jobPostingService.GetById(Model.Applicant.JobId);
 }
 
 <!-- Modals are at the bottom -->
@@ -142,29 +145,7 @@
                 </div>
             </div>
         }
-        <!--
-             <div class="row form-row mt-3">
-            <label class="text-bold">Reference 2</label>
-            <div class="row form-row">
-                <div class="col-4 form-group mt-2">
-                    <label for="name">Full Name </label>
-                    <input class="form-control" id="name" type="text" name="name" readonly />
-                </div>
-                <div class="col-4 form-group mt-2">
-                    <label for="relationship">Relationship</label>
-                    <input class="form-control" id="relationship" type="text" name="relationship" readonly />
-                </div>
-                <div class="col-4 form-group mt-2">
-                    <label for="email">Email Adress</label>
-                    <input class="form-control" id="email" type="text" name="email" readonly />
-                </div>
-                <div class="col-4 form-group mt-2">
-                    <label for="number">Phone Number</label>
-                    <input class="form-control" id="number" type="number" name="number" readonly />
-                </div>
-            </div>
-        </div>
-        -->
+
        
         <!-- ADDITIONAL INFORMATION -->
         <div class="row text-header text-bold ps-2 mt-3">ADDITIONAL INFORMATION</div>
@@ -211,7 +192,7 @@
                         <label class="d-inline">Full Name: </label>
                     </div>
                     <div class="col">
-                        <input class="form-control" id="fullname" type="text" name="fullname" placeholder="" readonly />
+                        <input class="form-control" id="fullname" type="text" name="fullname" value="@Model.Applicant.Name" readonly />
                     </div>
                 </div>
                 <div class="row form-group mt-3">
@@ -219,7 +200,7 @@
                         <label class="d-inline">Job Applied: </label>
                     </div>
                     <div class="col">
-                        <input class="form-control" id="jobapplied" type="text" name="jobapplied" placeholder="" readonly />
+                        <input class="form-control" id="jobapplied" type="text" name="jobapplied" value="@job?.Name" readonly />
                     </div>
                 </div>
                 <div class="row form-group mt-3">
@@ -227,7 +208,7 @@
                         <label class="d-inline">Date Applied: </label>
                     </div>
                     <div class="col">
-                        <input class="form-control" id="dateapplied" type="text" name="dateapplied" placeholder="" readonly />
+                        <input class="form-control" id="dateapplied" type="text" name="dateapplied" value="@Model.Applicant.ApplicationDate" readonly />
                     </div>
                 </div>
             </div>

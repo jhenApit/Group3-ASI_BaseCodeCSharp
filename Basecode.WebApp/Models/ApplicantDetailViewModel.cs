@@ -7,6 +7,7 @@ namespace Basecode.WebApp.Models
         public Applicants Applicant { get; set; }
         public Address Address { get; set; }
         public List<CharacterReferences> CharacterReferences { get; set; }
+        public List<Interviews> Interviews { get; set; }
 
     }
 }

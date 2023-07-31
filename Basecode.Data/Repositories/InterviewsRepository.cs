@@ -58,10 +58,14 @@ namespace Basecode.Data.Repositories
                 _context.SaveChanges();
             }
         }
-
-        public Interviews? GetByApplicantId(int applicantId)
+        /// <summary>
+        /// this gets the list of jobs the applicant applied for
+        /// </summary>
+        /// <param name="applicantId">the applicant id set to jobs</param>
+        /// <returns>returns the jobs of an applicant</returns>
+        public IQueryable<Interviews> GetByApplicantId(int applicantId)
         {
-            return _context.Interviews.FirstOrDefault(e => e.ApplicantId == applicantId);
+            return this.GetDbSet<Interviews>().Where(e => e.ApplicantId == applicantId);
         }
 
     }

@@ -10,7 +10,7 @@ namespace Basecode.Data.Interfaces
     public interface IInterviewsRepository
     {
         IQueryable<Interviews> RetrieveAll();
-        Interviews? GetByApplicantId(int applicantId);
+        IQueryable<Interviews> GetByApplicantId(int applicantId);
         void Add(Interviews Interviews);
         Interviews? GetById(int id);
         void Update(Interviews Interviews);

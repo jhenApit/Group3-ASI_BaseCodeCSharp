@@ -24,6 +24,7 @@ namespace Basecode.WebApp
                 cfg.CreateMap<CharacterReferencesCreationDto, CharacterReferences>();
                 cfg.CreateMap<ReferenceFormsCreationDto, ReferenceForms>();
                 cfg.CreateMap<InterviewsCreationDto, Interviews>();
+                cfg.CreateMap<InterviewsUpdationDto, Interviews>();
             });
 
             services.AddSingleton(Config.CreateMapper());

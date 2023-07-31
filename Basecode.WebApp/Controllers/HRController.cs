@@ -8,6 +8,7 @@ using Basecode.Data.Models;
 using Basecode.Data.Dtos.Interviews;
 using Microsoft.AspNetCore.Identity;
 using Basecode.Data.ViewModels;
+using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -213,15 +214,6 @@ namespace Basecode.WebApp.Controllers
         }
 
         /// <summary>
-        /// Allows HR to edit an interview
-        /// </summary>
-        /// <returns>Redirect to Edit Interview Page</returns>
-        public IActionResult EditInterview()
-        {
-            return View();
-        }
-
-        /// <summary>
         /// Allows HR to view job applicants
         /// </summary>
         /// <returns>Redirect to Job Applicant Overview Page</returns>
@@ -285,6 +277,34 @@ namespace Basecode.WebApp.Controllers
         {
             interviewsCreationDto.Results = false;
             _interviewsService.Add(interviewsCreationDto);
+            return RedirectToAction("Interview");
+        }
+
+        /// <summary>
+        /// Allows HR to edit an interview
+        /// </summary>
+        /// <returns>Redirect to Edit Interview Page</returns>
+        public async Task<IActionResult> EditInterview(int id)
+        {
+            Interviews interviews = _interviewsService.GetById(id);
+            var interviewsUpdationDto = new InterviewsUpdationDto
+            {
+                ApplicantId = interviews.ApplicantId,
+                InterviewerId = interviews.InterviewerId,
+                InterviewType = interviews.InterviewType,
+                InterviewDate = interviews.InterviewDate,
+                TimeStart = interviews.TimeStart,
+                TimeEnd = interviews.TimeEnd,
+                Results = interviews.Results
+            };
+            return View(interviewsUpdationDto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateInterview(InterviewsUpdationDto interviewsUpdationDto)
+        {
+            Console.WriteLine(interviewsUpdationDto.InterviewDate);
+            _interviewsService.Update(interviewsUpdationDto);
             return RedirectToAction("Interview");
         }
 

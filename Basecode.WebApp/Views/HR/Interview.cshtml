@@ -78,7 +78,7 @@
                         <td>@applicant.FirstName @applicant.MiddleName @applicant.LastName</td>
                         <td>@EnumHelper.GetEnumDescription(interviews.InterviewType)</td>
                         <td>
-                            <a asp-action="EditInterview" class="btn b-blue button-edit-cancel">
+                            <a asp-controller="HR" asp-action="EditInterview" asp-route-id="@interviews.Id" class="btn b-blue button-edit-cancel">
                                 <p class="select-text">
                                     EDIT
                                 </p>

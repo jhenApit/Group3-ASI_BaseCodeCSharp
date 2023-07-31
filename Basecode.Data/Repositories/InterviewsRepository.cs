@@ -43,11 +43,12 @@ namespace Basecode.Data.Repositories
                 existingInterviews.InterviewType = Interviews.InterviewType;
                 existingInterviews.Results = Interviews.Results;
                 existingInterviews.InterviewDate = Interviews.InterviewDate;
+                existingInterviews.TimeStart = Interviews.TimeStart;
+                existingInterviews.TimeEnd = Interviews.TimeEnd;
 
                 // Save the changes
                 _context.SaveChanges();
             }
-
         }
         public void Delete(int id)
         {

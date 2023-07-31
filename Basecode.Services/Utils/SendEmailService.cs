@@ -20,6 +20,11 @@ namespace Basecode.Services.Utils
             _emailService = emailService;
         }
 
+        /// <summary>
+        /// Send an email to new HR with their credentials upon creating an account 
+        /// </summary>
+        /// <param name="hrEmployee">HR Employee</param>
+        /// <param name="password">Account password</param>
         public void SendHrDetailsEmail(HrEmployee hrEmployee, string password)
         {
             var email = new MimeMessage();
@@ -150,6 +155,11 @@ namespace Basecode.Services.Utils
             _emailService.SendEmail(email);
         }
 
+        /// <summary>
+        /// Send a confirmation email to the HR if an Applicant accepted the job offer
+        /// </summary>
+        /// <param name="applicant">Applicant</param>
+        /// <param name="jobTitle">Job Title</param>
         public void SendHrJobOfferConfirmationEmail(Applicants applicant, string jobTitle)
         {
             var email = new MimeMessage();

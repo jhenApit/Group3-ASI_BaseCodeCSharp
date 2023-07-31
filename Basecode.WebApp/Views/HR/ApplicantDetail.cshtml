@@ -226,54 +226,22 @@
             </thead>
             <tbody class="text-center">
                 <tr>
-                    <td>HR Interview</td>
-                    <td>Jane Marie Doe</td>
-                    <td>July 1, 2023</td>
-                    <td>
-                        <span class="passed px-4 py-1">
-                            PASSED
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Technical Exam</td>
-                    <td>Jane Marie Doe</td>
-                    <td>July 2, 2023</td>
-                    <td>
-                        <span class="passed px-4 py-1">
-                            PASSED
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Technical Interview</td>
-                    <td>Jane Marie Doe</td>
-                    <td>July 3, 2023</td>
-                    <td>
-                        <span class="passed px-4 py-1">
-                            PASSED
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Background Check</td>
-                    <td>Jane Marie Doe</td>
-                    <td>July 4, 2023</td>
-                    <td>
-                        <span class="passed px-4 py-1">
-                            PASSED
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Final Interview</td>
-                    <td>Jane Marie Doe</td>
-                    <td>July 5, 2023</td>
-                    <td>
-                        <span class="passed px-4 py-1">
-                            PASSED
-                        </span>
-                    </td>
+                    @if(Model.Interviews == null || Model.Interviews.Count == 0)
+                    {
+                        <p> No upcoming Interviews </p>
+                    }
+                    @foreach(var interviews in Model.Interviews)
+                    {
+                        <td>@interviews.InterviewType</td>
+                        <td>@interviews.Interviewer</td>
+                        <td>@interviews.InterviewDate</td>
+                        <td>
+                            <span class="passed px-4 py-1">
+                                @interviews.Results
+                            </span>
+                        </td>
+                    }
+                    
                 </tr>
             </tbody>
         </table>

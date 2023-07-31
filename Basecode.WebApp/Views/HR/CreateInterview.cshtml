@@ -3,6 +3,7 @@
 @using Basecode.Services.Interfaces;
 @model InterviewsCreationDto
 @inject IApplicantService ApplicantService
+@inject IInterviewersService InterviewersService
 @{
     ViewData["Title"] = "New Interview";
     Layout = "_SideBarAdmin";
@@ -24,7 +25,7 @@
 <div class="buffer"></div>
 
 <form method="post" asp-controller="HR" asp-action="AddInterview" class="create-interview-form">
-    <input type="hidden" asp-for="Id" />
+    <input type="hidden" value="@Model.InterviewerId" asp-for="InterviewerId" />
     <div>
         <a asp-action="Interview" class="back d-flex gap-2 text-decoration-none align-items-center justify-content-start">
             <i class="fa-solid fa-arrow-left"></i>
@@ -44,13 +45,13 @@
             <div class="col">
                 <div class="form-group">
                     <label for="interviewerName">Name:</label>
-                    <input type="text" class="form-control" id="interviewerName" placeholder="Jane Marie Doe">
+                    <input type="text" class="form-control" id="interviewerName" placeholder="@InterviewersService.GetById(@Model.InterviewerId).Name" readonly>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
                     <label for="email">Email:</label>
-                    <input type="email" class="form-control" id="interviewerEmail" placeholder="JaneMarieDoe@gmail.com">
+                    <input type="email" class="form-control" id="interviewerEmail" placeholder="@InterviewersService.GetById(@Model.InterviewerId).Email" readonly>
                 </div>
             </div>
         </div>

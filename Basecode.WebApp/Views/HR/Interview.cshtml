@@ -19,20 +19,17 @@
     </div>
 </div>
 <div class="pt-4"></div> <!-- a buffer to push content down so that header won't cover it' -->
-<div class="interviewer d-flex flex-row mt-5">
+<div class="interviewer d-flex flex-row mt-5 pb-1">
     <div class="select-interviewer flex-grow-1">
         <p class="select-text">Select Interviewer:</p>
         <div class="dropdown flex-grow-1">
-            <button class="dropdown-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <p class="dropdown-text">Select an Interviewer... </p>
-                <i class="fas fa-angle-down"></i>
-            </button>
-            <div asp-controller="Hr" asp-action="YourAction" class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+            <select class="form-select w-100" name="ApplicantId" required>
+                <option selected disabled value="">Select an Interviewer... </option>
                 @foreach (var interviewer in Model.InterviewersList)
                 {
-                    <a class="dropdown-item" href="#">@interviewer.Name</a>
+                    <option value="@interviewer.Id">@interviewer.Name</option>
                 }
-            </div>
+            </select>
         </div>
     </div>
     <button class="add-interviewer b-red text-nowrap" data-toggle="modal" data-target="#addInterviewerModal">
@@ -46,7 +43,7 @@
         <p class="upcoming-text">
             UPCOMING INTERVIEWS
         </p>
-        <a asp-action="CreateInterview" class="new-interview b-blue text-nowrap text-decoration-none">
+        <a asp-controller="HR" asp-action="CreateInterview" asp-route-id="2" class="new-interview b-blue text-nowrap text-decoration-none">
             <p class="select-text">
                 NEW INTERVIEW
             </p>

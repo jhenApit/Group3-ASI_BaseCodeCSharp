@@ -273,16 +273,16 @@ namespace Basecode.WebApp.Controllers
         /// Allows HR to create a new interview entry
         /// </summary>
         /// <returns>Redirect to Create Interview Page</returns>
-        public IActionResult CreateInterview()
+        public async Task<IActionResult> CreateInterview(int id)
         {
-            return View();
+            InterviewsCreationDto interviewsCreationDto = new InterviewsCreationDto();
+            interviewsCreationDto.InterviewerId = id;
+            return View(interviewsCreationDto);
         }
 
         [HttpPost]
         public IActionResult AddInterview(InterviewsCreationDto interviewsCreationDto)
         {
-            Console.WriteLine(interviewsCreationDto.ApplicantId);
-            interviewsCreationDto.InterviewerId = 1;
             interviewsCreationDto.Results = false;
             _interviewsService.Add(interviewsCreationDto);
             return RedirectToAction("Interview");

@@ -52,5 +52,29 @@ namespace Basecode.Services.Utils
         {
             throw new NotImplementedException();
         }
+
+        public void SendApplicantTrackerEmail(Applicants applicant, string position)
+        {
+            var email = new MimeMessage();
+
+            email.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
+            email.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
+            email.Subject = "HR Account Details";
+
+            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/HRNewAccount.html");
+
+            emailBodyTemplate = emailBodyTemplate.Replace("{Name}", applicant.Name);
+            emailBodyTemplate = emailBodyTemplate.Replace("{JobTitle}", position);
+            emailBodyTemplate = emailBodyTemplate.Replace("{ApplicationID}", applicant.ApplicantId);
+            emailBodyTemplate = emailBodyTemplate.Replace("{DateSubmitted}", applicant.ApplicationDate.ToString());
+            emailBodyTemplate = emailBodyTemplate.Replace("{Company Email}", "alliance.jobhiring@gmail.com");
+
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = emailBodyTemplate
+            };
+
+            _emailService.SendEmail(email);
+        }
     }
 }

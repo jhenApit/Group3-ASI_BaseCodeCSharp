@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using Basecode.Data.Dtos;
 using Basecode.Data.Dtos.JobPostings;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
 using Basecode.Data.RandomIDGenerator;
+using Basecode.Data.Dtos.Applicants;
 
 namespace Basecode.Services.Services
 {
@@ -61,10 +61,14 @@ namespace Basecode.Services.Services
         {
             return _repository.RetrieveAll().ToList();
         }
-		public int Update(Applicants applicant)
+		public int Update(ApplicantsUpdationDto applicant)
 		{
-			_repository.Update(applicant);
-			return applicant.Id;
+            
+            var applicantModel = _mapper.Map<Applicants>(applicant);
+
+            
+            _repository.Update(applicantModel);
+			return applicantModel.Id;
 		}
 
 		public LogContent AddApplicantLogContent(ApplicantCreationDto applicantCreationDto)

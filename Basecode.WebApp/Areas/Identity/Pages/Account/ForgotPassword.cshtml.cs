@@ -73,7 +73,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
 
                 _emailSender.SendForgotPasswordLink(user, callbackUrl);
 
-                return RedirectToPage("./ForgotPasswordConfirmation");
+                return RedirectToPage("~/Index", new { from = "forgotPassword" });
             }
 
             return Page();

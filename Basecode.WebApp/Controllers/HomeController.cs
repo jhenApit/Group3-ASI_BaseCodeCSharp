@@ -17,8 +17,9 @@ namespace Basecode.WebApp.Controllers
         /// Returns the index view.
         /// </summary>
         /// <returns>The index view.</returns>
-        public IActionResult Index()
+        public IActionResult Index(string from)
         {
+            ViewBag.ForgotPasswordConfirmation = (from == "forgotPassword");
             return View();
         }
 

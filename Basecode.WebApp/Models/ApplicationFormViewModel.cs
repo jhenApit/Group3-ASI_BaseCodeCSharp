@@ -1,4 +1,5 @@
 ﻿using Basecode.Data.Dtos;
+using Basecode.Data.Dtos.Applicants;
 using Basecode.Data.Models;
 
 namespace Basecode.WebApp.Models

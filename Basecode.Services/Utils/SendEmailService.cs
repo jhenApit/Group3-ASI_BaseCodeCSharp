@@ -53,28 +53,48 @@ namespace Basecode.Services.Utils
             throw new NotImplementedException();
         }
 
-        public void SendApplicantTrackerEmail(Applicants applicant, string position)
+        public void SendNewApplicantEmail(Applicants applicant, string position)
         {
-            var email = new MimeMessage();
+            var applicantEmail = new MimeMessage();
 
-            email.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
-            email.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
-            email.Subject = "Application Form Submitted";
+            applicantEmail.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
+            applicantEmail.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
+            applicantEmail.Subject = "Application Form Submitted";
 
-            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ApplicationFormSubmitted.html");
+            string applicantEmailBody = File.ReadAllText("wwwroot/emailTemplates/ApplicationFormSubmitted.html");
 
-            emailBodyTemplate = emailBodyTemplate.Replace("{Name}", applicant.Name);
-            emailBodyTemplate = emailBodyTemplate.Replace("{JobTitle}", position);
-            emailBodyTemplate = emailBodyTemplate.Replace("{ApplicationID}", applicant.ApplicantId);
-            emailBodyTemplate = emailBodyTemplate.Replace("{DateSubmitted}", applicant.ApplicationDate.ToString());
-            emailBodyTemplate = emailBodyTemplate.Replace("{Company Email}", "alliance.jobhiring@gmail.com");
+            applicantEmailBody = applicantEmailBody.Replace("{Name}", applicant.Name);
+            applicantEmailBody = applicantEmailBody.Replace("{JobTitle}", position);
+            applicantEmailBody = applicantEmailBody.Replace("{ApplicationID}", applicant.ApplicantId);
+            applicantEmailBody = applicantEmailBody.Replace("{DateSubmitted}", applicant.ApplicationDate.ToString());
+            applicantEmailBody = applicantEmailBody.Replace("{Company Email}", "alliance.jobhiring@gmail.com");
 
-            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            applicantEmail.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
-                Text = emailBodyTemplate
+                Text = applicantEmailBody
             };
 
-            _emailService.SendEmail(email);
+            var hrNotifEmail = new MimeMessage();
+            
+            hrNotifEmail.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
+            hrNotifEmail.To.Add(new MailboxAddress("HR Department", "alliance.humanresourceteam@gmail.com"));
+            hrNotifEmail.Subject = "New Applicant";
+
+            string hrEmailBody = File.ReadAllText("wwwroot/emailTemplates/HRNewApplicant.html");
+
+            hrEmailBody = hrEmailBody.Replace("{Name}", applicant.Name);
+            hrEmailBody = hrEmailBody.Replace("{JobTitle}", position);
+            hrEmailBody = hrEmailBody.Replace("{DateSubmitted}", applicant.ApplicationDate.ToString());
+            hrEmailBody = hrEmailBody.Replace("{Link}", "https://localhost:50140/Hr/JobApplicantsOverview");
+            hrEmailBody = hrEmailBody.Replace("{Email}", "alliance.jobhiring@gmail.com");
+
+            hrNotifEmail.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = hrEmailBody
+            };
+
+            _emailService.SendEmail(applicantEmail);
+            _emailService.SendEmail(hrNotifEmail);
         }
     }
 }

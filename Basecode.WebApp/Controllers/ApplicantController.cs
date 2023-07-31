@@ -197,7 +197,7 @@ namespace Basecode.WebApp.Controllers
                     _characterService.Add(characRef2);
 
                     //email
-                    _sendEmailService.SendApplicantTrackerEmail(applicant, jobPosting!.Name!);
+                    _sendEmailService.SendNewApplicantEmail(applicant, jobPosting!.Name!);
                 }
                 else
                 {

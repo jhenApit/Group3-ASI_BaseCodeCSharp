@@ -13,5 +13,6 @@ namespace Basecode.Data.Interfaces
         CharacterReferences GetByName(string name);
         void Add(CharacterReferences characterReferences);
         CharacterReferences GetById(int id);
+        IQueryable<CharacterReferences> GetByApplicantId(int applicantId);
     }
 }

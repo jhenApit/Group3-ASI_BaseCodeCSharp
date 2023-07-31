@@ -54,6 +54,15 @@ namespace Basecode.Data.Repositories
         {
             return this.GetDbSet<Address>();
         }
+        /// <summary>
+        /// this gets the Address by Applicant ID
+        /// </summary>
+        /// <param name="applicantId">the applicant id set to an address</param>
+        /// <returns>returns the address of an applicant</returns>
+        public Address GetByApplicantId(int applicantId)
+        {
+            return _context.Addresses.FirstOrDefault(e => e.ApplicantId == applicantId)!;
+        }
 
     }
 }

@@ -14,5 +14,6 @@ namespace Basecode.Services.Interfaces
         CharacterReferences GetByName(string name);
         void Add(CharacterReferencesCreationDto characterReferences);
         CharacterReferences GetById(int id);
+        List<CharacterReferences> GetByApplicantId(int applicantId);
     }
 }

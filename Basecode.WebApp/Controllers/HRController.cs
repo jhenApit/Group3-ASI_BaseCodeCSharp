@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Basecode.Data.ViewModels;
 using Basecode.Data.Models;
 using static Basecode.Data.Enums.Enums;
+using Basecode.Services.Services;
+using Basecode.WebApp.Models;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -18,6 +20,8 @@ namespace Basecode.WebApp.Controllers
         private readonly IApplicantService _applicantService;
         private readonly ICurrentHiresService _currentHiresService;
         private readonly IInterviewsService _interviewsService;
+        private readonly IAddressService _addressService;
+        private readonly ICharacterReferencesService _characterReferencesService;
         private readonly IErrorHandling _errorHandling; 
         private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -29,9 +33,12 @@ namespace Basecode.WebApp.Controllers
             UserManager<IdentityUser> userManager, 
             IApplicantService applicantService,
             ICurrentHiresService currentHiresService,
-            IInterviewsService interviewersService
+            IInterviewsService interviewersService,
+            IAddressService addressService,
+            ICharacterReferencesService characterReferencesService
             )
         {
+            _addressService = addressService;
             _service = service;
             _jobPostingsService = jobPostingsService;
             _applicantService = applicantService;
@@ -40,6 +47,7 @@ namespace Basecode.WebApp.Controllers
             _applicantService = applicantService;
             _currentHiresService = currentHiresService;
             _interviewsService = interviewersService;
+            _characterReferencesService = characterReferencesService;
         }
 
 
@@ -186,15 +194,24 @@ namespace Basecode.WebApp.Controllers
         /// <returns>The view containing the application details.</returns>
         public IActionResult ApplicantDetail(int id)
         {
-            var data = _applicantService.GetById(id);
-            string imreBase64Data = Convert.ToBase64String(data.Photo);
+            var applicant = _applicantService.GetById(id);
+            var address = _addressService.GetByApplicantId(applicant.Id);
+            var characterReferences = _characterReferencesService.GetByApplicantId(applicant.Id);
+            var applicantDetailViewModel = new ApplicantDetailViewModel
+            {
+                Applicant = applicant,
+                Address = address,
+                CharacterReferences = characterReferences
+            };
+            string imreBase64Data = Convert.ToBase64String(applicant.Photo);
             string imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
-            string resumeBase64Data = Convert.ToBase64String(data.Resume);
+            string resumeBase64Data = Convert.ToBase64String(applicant.Resume);
             string resumeDataURL = string.Format("data:docx/pdf;base64,{0}", resumeBase64Data);
             //Passing image data in viewbag to view
             ViewBag.ImageData = imgDataURL;
-            ViewBag.Resume = resumeBase64Data;
-            return View(data);
+            //not working
+            ViewBag.ResumeData = resumeDataURL;
+            return View(applicantDetailViewModel);
         }
         
         [HttpPost]

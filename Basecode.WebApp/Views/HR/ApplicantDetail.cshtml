@@ -1,6 +1,7 @@
 ﻿@using Basecode.Data.Enums;
 @using Basecode.Data.Models;
-@model Applicants
+@using static Basecode.Data.Enums.Enums;
+@model ApplicantDetailViewModel
 @{
     ViewData ["Title"] = "Application Detail";
     Layout = "_SideBarAdmin";
@@ -20,7 +21,7 @@
     <div class="row">
         <div class="col-auto me-auto">
             <div class="status px-3 py-1">
-                @EnumHelper.GetEnumDescription(Model.ApplicationStatus)
+                @EnumHelper.GetEnumDescription(Model.Applicant.ApplicationStatus)
             </div>
         </div>
     </div>
@@ -66,21 +67,21 @@
                 <div class="row">
                     <div class="col col-md-4 form-group mt-2">
                         <label>First Name </label>
-                        <input class="form-control" type="text" name="firstname" readonly />
+                        <input class="form-control" type="text" name="firstname" value="@Model.Applicant.FirstName" readonly />
                     </div>
                     <div class="col col-md-4 form-group mt-2">
                         <label>Middle Name </label>
-                        <input class="form-control" type="text" name="middlename" readonly />
+                        <input class="form-control" type="text" name="middlename" value="@Model.Applicant.MiddleName"readonly />
                     </div>
                     <div class="col col-md-4 form-group mt-2">
                         <label>Last Name </label>
-                        <input class="form-control" type="text" name="lastname" readonly />
+                        <input class="form-control" type="text" name="lastname" value="@Model.Applicant.LastName"readonly />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 form-group mt-1">
                         <label for="birthday">Birthday</label>
-                        <input class="form-control" type="date" name="birthday" readonly />
+                        <input class="form-control" type="date" name="birthday" value="@Model.Applicant.BirthDate" readonly />
                     </div>
                 </div>
             </div>
@@ -90,55 +91,59 @@
         <div class="row form-row mt-3">
             <div class="col-12 form-group mt-2">
                 <label>Street </label>
-                <input class="form-control" id="street" type="text" name="street" readonly />
+                <input class="form-control" id="street" type="text" name="street" value="@Model.Address.Street" readonly />
             </div>
             <div class="col-4 form-group mt-2">
                 <label>City </label>
-                <input class="form-control" id="city" type="text" name="city" readonly />
+                <input class="form-control" id="city" type="text" name="city" value="@Model.Address.City" readonly />
             </div>
             <div class="col-4 form-group mt-2">
                 <label>Province </label>
-                <input class="form-control" id="province" type="text" name="province" readonly />
+                <input class="form-control" id="province" type="text" name="province" value="@Model.Address.Province" readonly />
             </div>
             <div class="col-4 form-group mt-2">
                 <label>Zipcode </label>
-                <input class="form-control" id="zipcode" type="number" name="zipcode" readonly />
+                <input class="form-control" id="zipcode" type="number" name="zipcode" value="@Model.Address.ZipCode" readonly />
             </div>
         </div>
         <div class="row form-row mt-3">
             <div class="col-6 form-group mt-1">
                 <label for="number">Phone Number</label>
-                <input class="form-control" id="number" type="number" name="number" readonly />
+                <input class="form-control" id="number" type="number" name="number" value="@Model.Applicant.PhoneNumber" readonly />
             </div>
             <div class="col-6 form-group mt-1">
                 <label for="email">Email Address</label>
-                <input class="form-control" id="email" type="text" name="email" readonly />
+                <input class="form-control" id="email" type="text" name="email" value="@Model.Applicant.Email" readonly />
             </div>
         </div>
         <!-- CHARACTER REFERENCE -->
         <div class="row text-header text-bold ps-2 mt-3">CHARACTER REFERENCE</div>
-        <div class="row form-row mt-3">
-            <label class="text-bold">Reference 1</label>
-            <div class="row form-row">
-                <div class="col-4 form-group mt-2">
-                    <label for="name">Full Name </label>
-                    <input class="form-control" id="name" type="text" name="name" readonly />
-                </div>
-                <div class="col-4 form-group mt-2">
-                    <label for="relationship">Relationship</label>
-                    <input class="form-control" id="relationship" type="text" name="relationship" readonly />
-                </div>
-                <div class="col-4 form-group mt-2">
-                    <label for="email">Email Adress</label>
-                    <input class="form-control" id="email" type="text" name="email" readonly />
-                </div>
-                <div class="col-4 form-group mt-2">
-                    <label for="number">Phone Number</label>
-                    <input class="form-control" id="number" type="number" name="number" readonly />
+        @foreach (var characterReferences in Model.CharacterReferences)
+        {
+            <div class="row form-row mt-3">
+                <label class="text-bold">Reference 1</label>
+                <div class="row form-row">
+                    <div class="col-4 form-group mt-2">
+                        <label for="name">Full Name </label>
+                        <input class="form-control" id="name" type="text" name="name" value="@characterReferences.Name" readonly />
+                    </div>
+                    <div class="col-4 form-group mt-2">
+                        <label for="relationship">Relationship</label>
+                        <input class="form-control" id="relationship" type="text" name="relationship" value="@characterReferences.Relationship" readonly />
+                    </div>
+                    <div class="col-4 form-group mt-2">
+                        <label for="email">Email Adress</label>
+                        <input class="form-control" id="email" type="text" name="email" value="@characterReferences.Email readonly />
+                    </div>
+                    <div class="col-4 form-group mt-2">
+                        <label for="number">Phone Number</label>
+                        <input class="form-control" id="number" type="number" name="number" value="@characterReferences.MobileNumber" readonly />
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row form-row mt-3">
+        }
+        <!--
+             <div class="row form-row mt-3">
             <label class="text-bold">Reference 2</label>
             <div class="row form-row">
                 <div class="col-4 form-group mt-2">
@@ -159,20 +164,22 @@
                 </div>
             </div>
         </div>
+        -->
+       
         <!-- ADDITIONAL INFORMATION -->
         <div class="row text-header text-bold ps-2 mt-3">ADDITIONAL INFORMATION</div>
         <div class="row mt-3">
             <div class="row form-row mt-3">
                 <div class="col-12 form-group">
                     <label for="additional">How did you hear about us?</label>
-                    <select class="form-select mt-2 reference" id="additional" name="additional" disabled>
-                        <option selected disabled value=""></option>
-                        <option value="LinkedIn Job Post">LinkedIn Job Post</option>
-                        <option value="Recruitment Team">Recruitment Team</option>
-                        <option value="Peers & Friends">Peers & Friends</option>
-                        <option value="Social Media Platforms">Social Media Platforms</option>
-                        <option value="Career Page">Career Page</option>
-                        <option value="Others">Others</option>
+                    <select class="form-select mt-2 reference" id="additional" name="additional" value="@Model.Applicant.AdditionalInfo" disabled>
+                        <option selected disabled value="">Choose...</option>
+                        <option value="@AdditionalInfo.LinkedInJobPost">LinkedIn Job Post</option>
+                        <option value="@AdditionalInfo.RecruitmentTeam">Recruitment Team</option>
+                        <option value="@AdditionalInfo.PeersFriends">Peers & Friends</option>
+                        <option value="@AdditionalInfo.SocialMediaPlatforms">Social Media Platforms</option>
+                        <option value="@AdditionalInfo.CareerPage">Career Page</option>
+                        <option value="@AdditionalInfo.Others">Others</option>
                     </select>
                 </div>
             </div>
@@ -180,13 +187,13 @@
         <!-- Buttons -->
         <div class="row mt-5 justify-content-center">
             <div class="col-auto">
-                <button class="btn shortlist px-5 py-2">
+                <button asp-controller="HR" asp-action="ShortListApplicant" class="btn shortlist px-5 py-2">
                     SHORTLIST
                 </button>
             </div>
             <div class="col-auto">
                 <!-- A confirmation modal will pop-up -->
-                <button id="RejectApplicant " class="btn reject px-5 py-2" data-bs-toggle="modal" data-bs-target="#RejectApplicantModal">
+                <button id="RejectApplicant " class="btn reject px-5 py-2" data-bs-toggle="modal" asp-controller="HR" asp-action="RejectApplicant" data-bs-target="#RejectApplicantModal">
                     REJECT
                 </button>
             </div>

@@ -63,6 +63,15 @@ namespace Basecode.Services.Services
         {
             return _repository.GetByCity(city);
         }
+        /// <summary>
+        /// this gets the address by applicantid
+        /// </summary>
+        /// <param name="applicantId">the applicant id set to an address</param>
+        /// <returns>returns the address model</returns>
+        public Address GetByApplicantId(int applicantId)
+        {
+            return _repository.GetByApplicantId(applicantId);
+        }
 
     }
 }

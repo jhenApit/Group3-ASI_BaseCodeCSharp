@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Basecode.Data;
+using Basecode.Data.Dtos;
 using Basecode.Data.Dtos.HrEmployee;
 using Basecode.Data.Dtos.JobPostings;
 using Basecode.Data.Interfaces;
@@ -8,6 +9,7 @@ using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net.NetworkInformation;
 using static Basecode.Data.Constants;
@@ -129,40 +131,35 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="hrEmployee">The DTO object containing the updated information of the HR employee</param>
         /// <returns>The log content upon editing a HR account</returns>
-        public LogContent EditHrAccount(HREmployeeUpdationDto hrEmployee)
+        public async Task<LogContent> EditHrAccount(HREmployeeUpdationDto hrEmployee)
         {
+            List<string> errors = new List<string>();
             var hrEmail = GetByEmail(hrEmployee.Email);
             if (hrEmail != null)
             {
                 if (hrEmail.Id != hrEmployee.Id)
                 {
-                    _logContent.Result = false;
-                    _logContent.ErrorCode = "400. Edit Failed!";
-                    _logContent.Message = "Email already exists";
+                    errors.Add($"{hrEmployee.Email} is already registered to another account\n");
                 }
-                else
-                {
-                    _logContent.Result = true;
-                }
-            }
-            else
-            {
-                _logContent.Result = true;
             }
 
-            var hrUsername = GetById(hrEmployee.Id);
-            if (hrUsername != null)
+            var existingUsername = await _userManager.FindByNameAsync(hrEmployee.UserName);
+            if (existingUsername != null)
             {
-                if (hrUsername.User.Id != hrEmployee.UserId)
+                if (existingUsername.Id != hrEmployee.UserId)
                 {
-                    _logContent.Result = false;
-                    _logContent.ErrorCode = "400. Edit Failed!";
-                    _logContent.Message = "Username is not available";
+                    errors.Add("Username is not available");
                 }
-                else
-                {
-                    _logContent.Result = true;
-                }
+            }
+            if (errors.Count > 0)
+            {
+                // Combine the error messages into a single string with line breaks
+                string errorMessage = string.Join(Environment.NewLine, errors);
+
+                // Set the log content properties
+                _logContent.Result = false;
+                _logContent.ErrorCode = "400. Edit Failed!";
+                _logContent.Message = errorMessage;
             }
             else
             {

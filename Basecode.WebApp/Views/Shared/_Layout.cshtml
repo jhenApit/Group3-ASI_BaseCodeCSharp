@@ -22,7 +22,11 @@
             <div class="container-fluid">
                 @if (User.IsInRole("admin") || User.IsInRole("hr"))
                 {
-                    <a class="navbar-brand text-white me-0 me-md-3" asp-area="" asp-controller="hr" asp-action="AdminDashboard"></a>
+                    <a class="navbar-brand Alliance-logo text-white me-0 me-md-3" asp-area="" asp-controller="hr" asp-action="AdminDashboard">
+                        <div class="overlay">
+                            <div class="text">&larr; HR Page</div>
+                        </div>
+                    </a>
                 }
                 else
                 {

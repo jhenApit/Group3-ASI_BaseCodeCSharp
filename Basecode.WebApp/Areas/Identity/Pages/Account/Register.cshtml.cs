@@ -140,7 +140,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
                 var existingUser = await _userManager.FindByEmailAsync(Input.Email);
                 if (existingUsername != null)
                 {
-                    // Email is already registered
+                    // User is already registered
                     ModelState.AddModelError(string.Empty, "The username " + @Input.Username + " is already taken");
                     if (existingUser != null)
                     {

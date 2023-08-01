@@ -34,7 +34,7 @@
                             @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
                             {
                                 <div class="alert alert-danger" role="alert">
-                                    @Html.Raw(ViewBag.ErrorMessage)
+                                    <pre>@ViewBag.ErrorMessage</pre>
                                 </div>
                             }
                             @{
@@ -90,9 +90,17 @@
                             </div>
                             <div class="form-floating mb-3">
                                 <input asp-for="Password" type="password" class="form-control" id="floatingInput"
-                                       placeholder="password">
-                                <label asp-for="Password" for="floatingInput" class="form-label">Password</label>
+                                       placeholder="password" autocomplete="off" oninput="handlePasswordInput(this)">
+                                <label asp-for="Password" for="floatingInput" class="form-label">New Password</label>
                                 <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <div id="confirmPasswordDiv" style="display: none;">
+                                <div class="form-floating mb-3">
+                                    <input asp-for="ConfirmPassword" type="password" class="form-control" id="floatingConfirmationInput"
+                                           placeholder="password" autocomplete="off" oninput="handlePasswordConfirmation(this)">
+                                    <label asp-for="ConfirmPassword" for="floatingConfirmationInput" class="form-label">Confirm Password</label>
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
                             </div>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="isAdmin" asp-for="IsAdmin">
@@ -110,7 +118,26 @@
     </div>
 </body>
 
+<script>
+    function handlePasswordInput(inputElement) {
+        const passwordValue = inputElement.value;
+        const confirmPasswordDiv = document.getElementById('confirmPasswordDiv');
 
+        if (!passwordValue) {
+            confirmPasswordDiv.style.display = 'none';
+        } else {
+            confirmPasswordDiv.style.display = 'block';
+        }
+    }
+
+    function handlePasswordConfirmation(inputElement) {
+        // You can add any password confirmation validation logic here if needed.
+    }
+
+    // Run the handlePasswordInput function when the page is loaded
+    // to handle the initial state of the confirmation password input.
+
+</script>
 @section Scripts{
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

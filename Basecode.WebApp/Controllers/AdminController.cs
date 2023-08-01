@@ -126,7 +126,10 @@ namespace Basecode.WebApp.Controllers
                 //update username
                 await _userManager.SetUserNameAsync(hr.User, hrEmployee.UserName);
                 await _userManager.GenerateChangeEmailTokenAsync(hr.User, hrEmployee.Email);
-                await _userManager.ChangePasswordAsync(hr.User, hr.Password, hrEmployee.Password);
+                if(hrEmployee.Password != null) 
+                {
+                    await _userManager.ChangePasswordAsync(hr.User, hr.Password, hrEmployee.Password);
+                }
                 if (hrEmployee.IsAdmin)
                 {
                     await _userManager.AddToRoleAsync(hr.User, "admin");

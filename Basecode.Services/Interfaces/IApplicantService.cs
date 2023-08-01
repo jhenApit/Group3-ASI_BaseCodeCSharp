@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Basecode.Data.Dtos;
 using Basecode.Data.Models;
 using Basecode.Services.Utils;
+using Microsoft.AspNetCore.Http;
 
 namespace Basecode.Services.Interfaces
 {
@@ -16,6 +17,7 @@ namespace Basecode.Services.Interfaces
         Applicants GetByName(string fname, string mname, string lname);
         List<Applicants> GetByEmail(string email);
         int Add(ApplicantCreationDto applicant);
+        Task<bool> AddApplicant(ApplicationFormViewModel model, IFormFile resumeFile, IFormFile photo);
         Applicants GetByApplicantId(string trackerId);
         public LogContent AddApplicantLogContent(ApplicantCreationDto applicant);
     }

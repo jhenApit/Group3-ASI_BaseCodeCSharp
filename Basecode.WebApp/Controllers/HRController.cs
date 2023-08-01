@@ -279,7 +279,7 @@ namespace Basecode.WebApp.Controllers
                     };
                     return View(viewModel);
                 }
-                return RedirectToAction("Interview");
+                return RedirectToAction("Interviews");
             }
             catch (Exception)
             {
@@ -335,7 +335,7 @@ namespace Basecode.WebApp.Controllers
                     };
                     return View(viewModel);
                 }
-                return RedirectToAction("Interview");
+                return RedirectToAction("Interviews");
             }
             catch (Exception)
             {
@@ -383,7 +383,7 @@ namespace Basecode.WebApp.Controllers
             try
             {
                 _interviewsService.Delete(id);
-                return RedirectToAction("Interview");
+                return RedirectToAction("Interviews");
             }
             catch
             {

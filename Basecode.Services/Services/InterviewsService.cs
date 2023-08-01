@@ -44,6 +44,7 @@ namespace Basecode.Services.Services
         public void Update(InterviewsUpdationDto Interviews)
         {
             var InterviewsModel = _mapper.Map<Interviews>(Interviews);
+            Console.WriteLine("Services" + InterviewsModel.InterviewDate);
             _repository.Update(InterviewsModel);
         }
 

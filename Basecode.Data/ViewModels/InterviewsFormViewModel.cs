@@ -13,6 +13,7 @@ namespace Basecode.Data.ViewModels
     {
         public Interviewers? Interviewer { get; set; }
         public List<Applicants>? ApplicantsList { get; set; }
+        public int Id { get; set; }
         public int ApplicantId { get; set; }
         public int InterviewerId { get; set; }
         public InterviewType InterviewType { get; set; }

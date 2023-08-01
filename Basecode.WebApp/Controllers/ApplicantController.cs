@@ -109,97 +109,29 @@ namespace Basecode.WebApp.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult ApplicationFormProcess(ApplicationFormViewModel model, [Required] IFormFile resumeFile, IFormFile? photo)
+        public async Task<IActionResult> ApplicationFormProcess(ApplicationFormViewModel model, [Required] IFormFile resumeFile, IFormFile? photo)
         {
-            if (resumeFile != null && resumeFile.Length > 0)
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    resumeFile.CopyTo(memoryStream);
-
-                    // Convert the file content to a byte array and store it in the model
-                    model.Applicant.Resume = memoryStream.ToArray();
-                }
-            }
-            if (photo != null && photo.Length > 0)
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    photo.CopyTo(memoryStream);
-
-                    // Convert the file content to a byte array and store it in the model
-                    model.Applicant.Photo = memoryStream.ToArray();
-                }
-            }
-            else
-            {
-                model.Applicant.Photo = null;
-            }
             ModelState.Clear();
             TryValidateModel(model);
+
             if (ModelState.IsValid)
             {
-                var data = _applicantService.AddApplicantLogContent(model.Applicant);
-                if (!data.Result)
-                {
-                    _logger.Error(_errorHandling.SetLog(data));
-                    ViewBag.ErrorMessage = data.Message;
-                    //get current job applied
-                    var jobPosting = _jobPostingsService.GetById(model.Applicant.JobId);
-                    //pass job to view model
-                    model.JobPosting = new JobPostings
-                    {
-                        Name = jobPosting.Name,
-                        Id = jobPosting.Id
-                    };
-                    return View("ApplicationForm", model);
-                }
-                
-                var applicantIsInserted = _applicantService.Add(model.Applicant);
-                var address = new AddressCreationDto
-                {
-                    ApplicantId = applicantIsInserted,
-                    Street = model.Address.Street,
-                    City = model.Address.City,
-                    Province = model.Address.Province,
-                    ZipCode = model.Address.ZipCode
-                };
+                // Use the service method to handle the logic
+                var isApplicantAdded = await _applicantService.AddApplicant(model, resumeFile, photo);
 
-                var characRef1 = new CharacterReferencesCreationDto
+                if (isApplicantAdded)
                 {
-                    ApplicantId = applicantIsInserted,
-                    Name = model.CharacterReferences1.Name,
-                    Relationship = model.CharacterReferences1.Relationship,
-                    Email = model.CharacterReferences1.Email,
-                    MobileNumber = model.CharacterReferences1.MobileNumber
-                };
-
-                var characRef2 = new CharacterReferencesCreationDto
-                {
-                    ApplicantId = applicantIsInserted,
-                    Name = model.CharacterReferences2.Name,
-                    Relationship = model.CharacterReferences2.Relationship,
-                    Email = model.CharacterReferences2.Email,
-                    MobileNumber = model.CharacterReferences2.MobileNumber
-                };
-                if (applicantIsInserted != 0)
-                {
-                    _addressService.Add(address);
-                    _characterService.Add(characRef1);
-                    _characterService.Add(characRef2);
-                    var recipient = model.Applicant.Email;
-                    var subject = "Application Update";
-                    var body = "Your application ID is " + model.Applicant.ApplicantId;
-
-                    _emailService.SendEmail(recipient, subject, body);
+                    // Applicant was successfully added
+                    return RedirectToAction("TrackApplication", new { from = "application" });
                 }
                 else
                 {
-                    Console.WriteLine("Addition Failed for applicant");
-                    return View("ViewJobPost");
+                    // Handle the error case here if needed
+                    ViewBag.ErrorMessage = "Failed to add the applicant.";
+                    return View("ApplicationForm", model);
                 }
-                return RedirectToAction("TrackApplication", new { from = "application" });
             }
+
             ModelState.Clear();
             return View("ApplicationForm");
         }

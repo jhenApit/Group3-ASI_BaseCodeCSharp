@@ -58,7 +58,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
                 if (user == null /*|| !(await _userManager.IsEmailConfirmedAsync(user))*/)
                 {
                     // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToPage("./ForgotPasswordConfirmation");
+                    return RedirectToPage("~/Index", new { from = "forgotPassword" });
                 }
 
                 // For more information on how to enable account confirmation and password reset please

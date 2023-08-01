@@ -1,5 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Alliance Software";
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Basecode.WebApp.styles.css" asp-append-version="true" />
 }
 
 <div class="make-center">
@@ -7,13 +12,13 @@
         <p class="display-3 text-white fw-bold">WE LOVE WHAT WE DO</p>
         <span class="fs-1 text-danger fw-bold">Alliance Software</span><span class="fs-2 text-white"> is expanding.</span>
         <p class="fs-3 text-white">We are creating career opportunities for people with great passion in Information Technology.</p>
-        <button type="button" class="btn btn-primary btn-lg me-2"><a class="nav-link text-white fw-bolder p-2 w-100" asp-area="" asp-controller="Job" asp-action="FindJobs">EXPLORE JOBS</a></button>
+        <button type="button" id="button" class="btn btn-primary btn-lg me-2"><a class="nav-link text-white fw-bolder p-2 w-100" asp-area="" asp-controller="Job" asp-action="FindJobs">EXPLORE JOBS</a></button>
     </div>
 </div>
 
 @if (ViewBag.ForgotPasswordConfirmation)
 {
-    <div class="modal fade" id="ApplicationSubmitted" tabindex="-1" role="dialog" aria-labelledby="ApplicationSubmittedLabel" aria-hidden="true">
+    <div class="modal fade" id="ForgotPassword" tabindex="-1" role="dialog" aria-labelledby="ForgotPasswordLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header justify-content-center pb-4">
@@ -23,7 +28,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <h4 class="text-center">Application has been <b>submitted</b> successfully!<br />Check your email for your <span class="text-danger">Application ID</span> and track it here</h4>
+                    <h4 class="text-center">Please check your email and click the <span class="text-danger">Reset Password</span> button to recover your account</h4>
                 </div>
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
@@ -36,7 +41,38 @@
     <script>
         $(document).ready(function () {
             // Show the modal when the page is ready
-            $('#ApplicationSubmitted').modal('show');
+            $('#ForgotPassword').modal('show');
+        });
+    </script>
+}
+
+
+@if (ViewBag.ResetPasswordConfirmation)
+{
+    <div class="modal fade" id="ResetPassword" tabindex="-1" role="dialog" aria-labelledby="ResetPasswordLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center pb-4">
+                    <img class="notice-icon" src="~/images/icons/notice_icon.svg" />
+                    <button type="button" class="close d-none" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4 class="text-center">Your <span class="text-danger">Password</span> has been reset successfully. <br /> You may now login</h4>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                        <h5 class="pb-0 m-0">Close</h5>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            // Show the modal when the page is ready
+            $('#ResetPassword').modal('show');
         });
     </script>
 }

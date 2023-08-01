@@ -89,8 +89,9 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
             public bool RememberMe { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task OnGetAsync(string returnUrl = null, string from = null)
         {
+            ViewData["ForgotPasswordConfirmation"] = (from == "forgotPassword");
             //if already logged in, user will be redirected to dashboard
             if (User.Identity.IsAuthenticated)
             {

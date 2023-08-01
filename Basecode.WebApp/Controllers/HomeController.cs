@@ -20,6 +20,7 @@ namespace Basecode.WebApp.Controllers
         public IActionResult Index(string from)
         {
             ViewBag.ForgotPasswordConfirmation = (from == "forgotPassword");
+            ViewBag.ResetPasswordConfirmation = (from == "resetPassword");
             return View();
         }
 

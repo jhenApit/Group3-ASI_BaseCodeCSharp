@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Basecode.Data.Dtos.Applicants;
 using Basecode.Data.Models;
+using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.Data.Interfaces
 {
@@ -12,10 +14,11 @@ namespace Basecode.Data.Interfaces
         Applicants? GetById(int id);
         IQueryable<Applicants> RetrieveAll();
         Applicants? GetByName(string fname, string mname, string lname);
-        Applicants GetByEmail(string email);
+        IQueryable<Applicants> GetByEmail(string email);
         void Add(Applicants applicant);
         Applicants? GetByApplicantId(string applicantId);
-        public void Update(Applicants applicant);
+        public bool Update(Applicants applicant);
 
-	}
+
+    }
 }

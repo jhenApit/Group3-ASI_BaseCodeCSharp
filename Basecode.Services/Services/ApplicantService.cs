@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using Basecode.Data.Dtos;
 using Basecode.Data.Dtos.JobPostings;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
 using Basecode.Data.RandomIDGenerator;
+using Basecode.Data.Dtos.Applicants;
+using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.Services.Services
 {
@@ -59,35 +60,66 @@ namespace Basecode.Services.Services
             return _repository.GetByName(fname, mname, lname);
         }
 
-        public Applicants GetByEmail(string email)
+        public List<Applicants> GetByEmail(string email)
         {
-            return _repository.GetByEmail(email);
+            return _repository.GetByEmail(email).ToList();
         }
 
         public List<Applicants> RetrieveAll()
         {
             return _repository.RetrieveAll().ToList();
         }
-		public int Update(Applicants applicant)
+
+        /// <summary>
+        /// display the status being passed.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+		public bool Update(int id, string status)
 		{
-			_repository.Update(applicant);
-			return applicant.Id;
+            var applicantModel = _repository.GetById(id);
+            if(applicantModel != null)
+            {
+                Console.WriteLine("applicant is in table.");
+				if (Enum.TryParse(status, out ApplicationStatus parsedStatus))
+				{
+					var applicant = new ApplicantsUpdationDto
+					{
+                        Id = applicantModel.Id,
+						ApplicationStatus = parsedStatus
+					};
+					Console.WriteLine("applicant is updated." +parsedStatus);
+					var applicantMapper = _mapper.Map<Applicants>(applicant);
+					return _repository.Update(applicantMapper);
+				}
+                return false;
+			}
+			
+			else
+			{
+				// Handle the case where the provided status is not a valid ApplicationStatus enum value
+				// You may throw an exception, log an error, or take any other appropriate action.
+				return false;
+			}
 		}
 
 		public LogContent AddApplicantLogContent(ApplicantCreationDto applicantCreationDto)
         {
-            Applicants applicant = GetByEmail(applicantCreationDto.Email);
+            
             List<string> errors = new List<string>();
             if (applicantCreationDto.Resume ==  null) 
             {
                 errors.Add("Resume is missing\n");
             }
-
-            if (applicant != null && applicant.JobId == applicantCreationDto.JobId)
+            var applications = GetByEmail(applicantCreationDto.Email);
+            foreach (var applicant in applications)
             {
-                errors.Add($"{applicantCreationDto.Email} already applied for this job!");
+                if (applicant.JobId == applicantCreationDto.JobId)
+                {
+                    errors.Add($"{applicantCreationDto.Email} already applied for this job!");
+                    break;
+                }
             }
-
             if (errors.Count > 0)
             {
                 // Combine the error messages into a single string with line breaks

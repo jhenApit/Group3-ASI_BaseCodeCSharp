@@ -62,6 +62,10 @@ namespace Basecode.Services.Services
         {
             return _repository.GetByName(name);
         }
+        public List<CharacterReferences> GetByApplicantId (int applicantId)
+        {
+            return _repository.GetByApplicantId(applicantId).ToList();
+        }
 
     }
 }

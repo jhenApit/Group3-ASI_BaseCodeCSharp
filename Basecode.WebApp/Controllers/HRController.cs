@@ -6,11 +6,11 @@ using Basecode.Data.Dtos.JobPostings;
 using Microsoft.AspNetCore.Identity;
 using Basecode.Data.ViewModels;
 using Basecode.Data.Models;
-using static Basecode.Data.Enums.Enums;
+using Basecode.WebApp.Models;
 
 namespace Basecode.WebApp.Controllers
 {
-    [Authorize(Roles = "hr,admin")]
+	[Authorize(Roles = "hr,admin")]
     public class HRController : Controller
     {
         private readonly IHrEmployeeService _service;
@@ -18,6 +18,8 @@ namespace Basecode.WebApp.Controllers
         private readonly IApplicantService _applicantService;
         private readonly ICurrentHiresService _currentHiresService;
         private readonly IInterviewsService _interviewsService;
+        private readonly IAddressService _addressService;
+        private readonly ICharacterReferencesService _characterReferencesService;
         private readonly IErrorHandling _errorHandling; 
         private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -29,9 +31,12 @@ namespace Basecode.WebApp.Controllers
             UserManager<IdentityUser> userManager, 
             IApplicantService applicantService,
             ICurrentHiresService currentHiresService,
-            IInterviewsService interviewersService
+            IInterviewsService interviewersService,
+            IAddressService addressService,
+            ICharacterReferencesService characterReferencesService
             )
         {
+            _addressService = addressService;
             _service = service;
             _jobPostingsService = jobPostingsService;
             _applicantService = applicantService;
@@ -40,6 +45,7 @@ namespace Basecode.WebApp.Controllers
             _applicantService = applicantService;
             _currentHiresService = currentHiresService;
             _interviewsService = interviewersService;
+            _characterReferencesService = characterReferencesService;
         }
 
 		/// <summary>
@@ -202,9 +208,39 @@ namespace Basecode.WebApp.Controllers
         /// Displays the details of a applicant's application.
         /// </summary>
         /// <returns>The view containing the application details.</returns>
-        public IActionResult ApplicantDetail()
+        public IActionResult ApplicantDetail(int id)
         {
-            return View();
+            if(System.IO.File.Exists("wwwroot/applicants/resume/resume.pdf"))
+            {
+                System.IO.File.Delete("wwwroot/applicants/resume/resume.pdf");
+            }
+            var applicant = _applicantService.GetById(id);
+            var address = _addressService.GetByApplicantId(applicant.Id);
+            var characterReferences = _characterReferencesService.GetByApplicantId(applicant.Id);
+            var interviews = _interviewsService.GetByApplicantId(applicant.Id);
+            var applicantDetailViewModel = new ApplicantDetailViewModel
+            {
+                Applicant = applicant,
+                Address = address,
+                CharacterReferences = characterReferences,
+                Interviews = interviews
+            };
+            string imreBase64Data = Convert.ToBase64String(applicant.Photo);
+            string imgDataURL = string.Format($"data:image/png;base64,{imreBase64Data}");
+            string resumeBase64Data = Convert.ToBase64String(applicant.Resume);
+            System.IO.FileStream stream =
+                new FileStream(@"wwwroot/applicants/resume/resume.pdf", FileMode.CreateNew);
+            System.IO.BinaryWriter writer =
+                new BinaryWriter(stream);
+            writer.Write(applicant.Resume, 0, applicant.Resume.Length);
+            writer.Close();
+            //Passing image data in viewbag to view
+            ViewBag.ImageData = imgDataURL;
+            //puts the resume file to the viewbag 
+            ViewBag.ResumeData = File(@"C:\temp\file.pdf", "appliction/pdf");
+
+            
+            return View(applicantDetailViewModel);
         }
 
 		/// <summary>
@@ -294,221 +330,34 @@ namespace Basecode.WebApp.Controllers
             return View(newHiresModel);
         }
 
-		/// <summary>
-		/// Allows HR to shortlist an applicant
-		/// </summary>
-		/// <param name="id">Applicant id</param>
-		/// <returns>Applicant status update</returns>
-		public IActionResult ShortListApplicant(int id)
+        /// <summary>
+        /// Allows HR to view disqualified job applicants in a specific job post
+        /// </summary>
+        /// <returns>Redirect to View Disqualified Applicants Page</returns>
+        public IActionResult DisqualifiedApplicants()
         {
-            var applicant = _applicantService.GetById(id);
-            if(applicant != null)
-            {
-                applicant.ApplicationStatus = ApplicationStatus.Shortlisted;
-                _applicantService.Update(applicant);
-                return RedirectToAction("JobApplicantsOverview");
-            }
-            Console.WriteLine("Applicant not found!");
-			return RedirectToAction("JobApplicantsOverview");
-		}
-
-		/// <summary>
-		/// Allows HR to change applicant status to For Screening
-		/// </summary>
-		/// <param name="id">Applicant id</param>
-		/// <returns>Applicant status update</returns>
-		public IActionResult ForScreeningApplicant(int id)
-		{
-			var applicant = _applicantService.GetById(id);
-			if (applicant != null)
-			{
-				applicant.ApplicationStatus = ApplicationStatus.ForScreening;
-				_applicantService.Update(applicant);
-				return RedirectToAction("JobApplicantsOverview");
-			}
-			Console.WriteLine("Applicant not found!");
-			return RedirectToAction("JobApplicantsOverview");
-		}
-
-		/// <summary>
-		/// Allows HR to invite applicant to HR Interview
-		/// </summary>
-		/// <param name="id">Applicant id</param>
-		/// <returns>Applicant status update</returns>
-		public IActionResult InviteToHRInterview(int id)
-		{
-			var applicant = _applicantService.GetById(id);
-			if (applicant != null)
-			{
-				applicant.ApplicationStatus = ApplicationStatus.ForHRInterview;
-				_applicantService.Update(applicant);
-				return RedirectToAction("JobApplicantsOverview");
-			}
-			Console.WriteLine("Applicant not found!");
-			return RedirectToAction("JobApplicantsOverview");
-		}
-
-		/// <summary>
-		/// Allows HR to invite applicant to Technical Interview
-		/// </summary>
-		/// <param name="id">Applicant id</param>
-		/// <returns>Applicant status update</returns>
-		public IActionResult InviteToTechnicalInterview(int id)
-		{
-			var applicant = _applicantService.GetById(id);
-			if (applicant != null)
-			{
-				applicant.ApplicationStatus = ApplicationStatus.ForTechnicalInterview;
-				_applicantService.Update(applicant);
-				return RedirectToAction("JobApplicantsOverview");
-			}
-			Console.WriteLine("Applicant not found!");
-			return RedirectToAction("JobApplicantsOverview");
-		}
-
-		/// <summary>
-		/// Allows HR to invite applicant to Technical Exam
-		/// </summary>
-		/// <param name="id">Applicant id</param>
-		/// <returns>Applicant status update</returns>
-		public IActionResult InviteToTechnicalExam(int id)
-		{
-			var applicant = _applicantService.GetById(id);
-			if (applicant != null)
-			{
-				applicant.ApplicationStatus = ApplicationStatus.ForTechnicalExam;
-				_applicantService.Update(applicant);
-				return RedirectToAction("JobApplicantsOverview");
-			}
-			Console.WriteLine("Applicant not found!");
-			return RedirectToAction("JobApplicantsOverview");
-		}
-
-		/// <summary>
-		/// Allows HR to invite applicant to Final Interview
-		/// </summary>
-		/// <param name="id">Applicant id</param>
-		/// <returns>Applicant status update</returns>
-		public IActionResult InviteToFinalInterview(int id)
-		{
-			var applicant = _applicantService.GetById(id);
-			if (applicant != null)
-			{
-				applicant.ApplicationStatus = ApplicationStatus.ForFinalInterview;
-				_applicantService.Update(applicant);
-				return RedirectToAction("JobApplicantsOverview");
-			}
-			Console.WriteLine("Applicant not found!");
-			return RedirectToAction("JobApplicantsOverview");
-		}
-
-		/// <summary>
-		/// Allows HR to send job offer to an applicant
-		/// </summary>
-		/// <param name="id">Applicant id</param>
-		/// <returns>Applicant status update</returns>
-		public IActionResult SendJobOffer(int id)
-		{
-			var applicant = _applicantService.GetById(id);
-			if (applicant != null)
-			{
-				applicant.ApplicationStatus = ApplicationStatus.UndergoingJobOffer;
-				_applicantService.Update(applicant);
-				return RedirectToAction("JobApplicantsOverview");
-			}
-			Console.WriteLine("Applicant not found!");
-			return RedirectToAction("JobApplicantsOverview");
-		}
-
+            return View();
+        }
         /// <summary>
-        /// When the confirm button is clicked meaning the applicant accepted the job offer
-        /// so the next status is the onboarding of the applicant
+        /// this will update the applicants status
         /// </summary>
-        /// <param name="id">Applicant id</param>
-        /// <returns>Applicant status update</returns>
-		public IActionResult ConfirmApplicant(int id)
-		{
+        /// <param name="id">the id of the applicant to be updated</param>
+        /// <param name="status">and the status it wants to uupdate to</param>
+        /// <returns>returns the jobapplicant overview view if succesful</returns>
+        [HttpPost]
+        public IActionResult UpdateApplicantStatus(int id, string status)
+        {
 			var applicant = _applicantService.GetById(id);
 			if (applicant != null)
 			{
-				applicant.ApplicationStatus = ApplicationStatus.Onboarding;
-				_applicantService.Update(applicant);
+				_applicantService.Update(id, status);
 				return RedirectToAction("JobApplicantsOverview");
 			}
-			Console.WriteLine("Applicant not found!");
-			return RedirectToAction("JobApplicantsOverview");
-		}
+			else
+			{
+                return RedirectToAction("Index");
+			}
 
-		/// <summary>
-		/// Allows HR to deploy applicant
-		/// </summary>
-		/// <param name="id">Applicant id</param>
-		/// <returns>Applicant status update</returns>
-		public IActionResult DeployApplicant(int id)
-		{
-			var applicant = _applicantService.GetById(id);
-			if (applicant != null)
-			{
-				applicant.ApplicationStatus = ApplicationStatus.Deployed;
-				_applicantService.Update(applicant);
-				return RedirectToAction("JobApplicantsOverview");
-			}
-			Console.WriteLine("Applicant not found!");
-			return RedirectToAction("JobApplicantsOverview");
-		}
-
-		/// <summary>
-		/// When applicant does not accept the job offer
-		/// </summary>
-		/// <param name="id">Applicant id</param>
-		/// <returns>Applicant status update</returns>
-		public IActionResult DeclineApplicant(int id)
-		{
-			var applicant = _applicantService.GetById(id);
-			if (applicant != null)
-			{
-				applicant.ApplicationStatus = ApplicationStatus.NotConfirmed;
-				_applicantService.Update(applicant);
-				return RedirectToAction("JobApplicantsOverview");
-			}
-			Console.WriteLine("Applicant not found!");
-			return RedirectToAction("JobApplicantsOverview");
-		}
-
-		/// <summary>
-		/// Allows HR to reject applicant
-		/// </summary>
-		/// <param name="id">Applicant id</param>
-		/// <returns>Applicant status update</returns>
-		public IActionResult RejectApplicant(int id)
-		{
-			var applicant = _applicantService.GetById(id);
-			if (applicant != null)
-			{
-				applicant.ApplicationStatus = ApplicationStatus.Rejected;
-				_applicantService.Update(applicant);
-				return RedirectToAction("JobApplicantsOverview");
-			}
-			Console.WriteLine("Applicant not found!");
-			return RedirectToAction("JobApplicantsOverview");
-		}
-
-        /// <summary>
-        /// Allows HR to check applicant background
-        /// </summary>
-        /// <param name="id">Applicant id</param>
-        /// <returns></returns>
-		public IActionResult CheckBackground(int id)
-		{
-			var applicant = _applicantService.GetById(id);
-			if (applicant != null)
-			{
-				applicant.ApplicationStatus = ApplicationStatus.UndergoingBackgroundCheck;
-				_applicantService.Update(applicant);
-				return RedirectToAction("JobApplicantsOverview");
-			}
-			Console.WriteLine("Applicant not found!");
-			return RedirectToAction("JobApplicantsOverview");
 		}
 	}
 }

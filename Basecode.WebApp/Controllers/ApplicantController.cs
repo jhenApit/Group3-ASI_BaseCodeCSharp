@@ -1,10 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Basecode.Data.Dtos;
+using Basecode.Data.Dtos.Applicants;
 using Basecode.Data.Dtos.JobPostings;
 using Basecode.Data.Models;
+using Basecode.WebApp.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Services;
 using Basecode.Services.Utils;
+using Basecode.WebApp.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 
@@ -142,7 +146,7 @@ namespace Basecode.WebApp.Controllers
                 var data = _applicantService.AddApplicantLogContent(model.Applicant);
                 if (!data.Result)
                 {
-                    _logger.Error(_errorHandling.SetLog(data));
+                    //_logger.Error(_errorHandling.SetLog(data));
                     ViewBag.ErrorMessage = data.Message;
                     //get current job applied
                     var jobPosting = _jobPostingsService.GetById(model.Applicant.JobId);
@@ -204,5 +208,19 @@ namespace Basecode.WebApp.Controllers
             return View("ApplicationForm");
         }
 
+
+        /*public async Task<IActionResult> UpdateApplicationStatus(ApplicantsUpdationDto applicantsUpdationDto)
+        {
+            if (ModelState.IsValid)
+            {
+
+                //Get AspNetUser Data
+                //var loggedUser = await _userManager.GetUserAsync(User)
+                 _applicantService.Update(applicantsUpdationDto);
+
+                return RedirectToAction("JobPostList");
+            }
+            return View("EditJobPost", applicantsUpdationDto);
+        }*/
     }
 }

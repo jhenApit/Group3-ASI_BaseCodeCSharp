@@ -13,5 +13,6 @@ namespace Basecode.Data.Interfaces
         Addresses GetByCity(string city);
         void Add(Addresses address);
         Addresses GetById(int id);
+        Addresses GetByApplicantId(int applicantId);
     }
 }

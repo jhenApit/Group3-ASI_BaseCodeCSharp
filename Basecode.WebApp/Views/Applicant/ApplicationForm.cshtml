@@ -1,10 +1,67 @@
-﻿@using Basecode.Data.Models
+﻿@using Basecode.WebApp.Models
 @using static Basecode.Data.Enums.Enums;
 @model ApplicationFormViewModel
 @{
     ViewData["Title"] = "Application Form";
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 }
+<script>
+    function allowDrag(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    function handleResumeDrop(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Get the file from the dropped event
+        const file = e.dataTransfer.files[0];
+
+        // Update the file input's files property with the dropped file
+        const fileInput = document.getElementById('resumeFile');
+        fileInput.files = e.dataTransfer.files;
+
+        // Display the dropped file name
+        displayFileName();
+    }
+    function handlePhotoDrop(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const photoFile = e.dataTransfer.files[0]; 
+        
+        const photoInput = document.getElementById('photo');
+        photoInput.files = e.dataTranfer.files;
+
+        displayImageName();
+        
+    }
+
+    function setupDragAndDrop() {
+        const fileDropArea = document.getElementById('resumeDropArea');
+
+        // Prevent the default drag events
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            fileDropArea.addEventListener(eventName, allowDrag, false);
+        });
+
+        // Handle the drop event
+        fileDropArea.addEventListener('drop', handleResumeDrop, false);
+
+        const photoDropArea = document.getElementById('photoDropArea');
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            photoDropArea.addEventListener(eventName, allowDrag, false);
+        });
+
+        // Handle the drop event
+        photoDropArea.addEventListener('drop', handlePhotoDrop, false);
+    }
+
+    // Call the setup function when the document is ready
+    document.addEventListener('DOMContentLoaded', setupDragAndDrop);
+</script>
 
 <body class="applicantForm_body">
     <div class="application-form-container">
@@ -35,59 +92,73 @@
                 <input type="hidden" asp-for="Applicant.JobId" value="@Model?.JobPosting?.Id" />
                 <!--Resume-->
                 <div class="row text-header text-bold ps-2">Resume</div>
-                <div class="row form-row form-group file-drop my-3 mx-1 py-4">
-                    <div>
-                        <img src="/images/icons/resume-upload.png" />
-                    </div>
-                    <input asp-for="Applicant.Resume" type="file" id="resumeFile" name="resumeFile" class="form-control file-input" required onchange="displayFileName()" />
-                    <label for="resumeFile" class="file-label">
+                <div id="resumeDropArea">
+                    <label for="resumeFile" class="file-label row form-row form-group file-drop my-3 mx-1 py-4">
+                        <div>
+                            <img src="/images/icons/resume-upload.png" />
+                        </div>
+                        <input asp-for="Applicant.Resume" type="file" id="resumeFile" name="resumeFile" class="form-control file-input" required onchange="displayFileName()" />
                         <span id="fileText" class="file-text text-bold">Choose a file or Drag it here</span>
                     </label>
-                    <!--This shows the error for when no resume is uploaded-->
-                    <span id="resumeError" class="text-danger w-100"></span>
-                    <script>
-                        function displayFileName() {
-                            var fileInput = document.getElementById("resumeFile");
-                            var fileName = fileInput.files[0].name;
-                            var fileText = document.querySelector(".file-label .file-text");
-                            fileText.textContent = fileName;
-                        }
-                    </script>
                 </div>
-
+                <script>
+                    function displayFileName() {
+                        var fileInput = document.getElementById("resumeFile");
+                        var fileName = fileInput.files[0].name;
+                        var fileText = document.querySelector(".file-label .file-text");
+                        fileText.textContent = fileName;
+                    }
+                </script>
                 <!--Personal Information-->
                 <div class="row text-header text-bold ps-2 mt-4">Personal Information</div>
                 <div class="row form-row mt-3">
-                    <div class="col-12 col-md-3">
-                        <div class="row form-row text-center">
-                            <label>Photo (Optional):</label>
-                        </div>
-                        <div class="col form-group file-drop mt-1 p-3">
-                            <div>
-                                <img src="/images/icons/upload-image.png" />
+                        <div class=" col-md-3">
+                            <div class="row form-row text-center">
+                                <label>Photo (Optional):</label>
                             </div>
-                            <input type="file" id="photo" name="photo" class="file-input" accept="image/png, image/jpeg" onchange="displayImageName('photo', 'photoText')" />
-                            <label for="photo" class="file-label">
-                                <span id="photoText" class="file-text">Choose a file<br />or<br />Drag it here</span>
-                            </label>
-
-                            <script>
-                                function displayImageName(photoInputId, photoTextId) {
-                                    var photoInput = document.getElementById(photoInputId);
-                                    if (photoInput.files.length > 0) {
+                        <label for="photoFile" class="photo-label col-12">
+                            <div class="col form-group file-drop mt-1 p-3 mx-auto mt-3 mt-md-2 align-items-center" id="photoDropArea">
+                                <img id="photoCanvas" height="100" width="100" class="d-none" />
+                                <div id="photoIcon">
+                                    <img src="/images/icons/upload-image.png" />
+                                </div>
+                                <input type="file" id="photoFile" name="photo" class="form-control file-input" onchange="displayImageName()" />
+                                
+                                <span id="photoText" class="file-text photo">Choose a file</span>
+                                
+                                <script>
+                                    function displayImageName() {
+                                        var photoInput = document.getElementById("photoFile");
+                                        var photoIcon = document.getElementById("photoIcon");
+                                        var photoDropArea = document.getElementById("photoDropArea");
                                         var photoFileName = photoInput.files[0].name;
-                                        var photoText = document.getElementById(photoTextId);
-                                        photoText.textContent = photoFileName;
+                                        var photoFileText = document.querySelector("#photoText");
+                                        var photoCanvas = document.getElementById("photoCanvas");
+                                        photoFileText.textContent = photoFileName;
+
+                                        photoCanvas.src = URL.createObjectURL(photoInput.files[0]);
+
+                                        photoCanvas.classList.remove("d-none");
+                                        photoDropArea.classList.remove("p-3");
+                                        photoDropArea.classList.add("img-uploaded");
+                                        photoFileText.classList.add("d-none");
+                                        photoIcon.classList.add("d-none");
+                                        //var photoInput = document.getElementById(photoInputId);
+                                        //if (photoInput.files.length > 0) {
+                                        //    var photoFileName = photoInput.files[0].name;
+                                        //    var text = document.getElementById(photoText);
+                                        //    text.textContent = photoFileName;
+                                        //}
+                                        //else {
+                                        //    // If no file selected, show the default text
+                                        //    var photoText = document.getElementById(photoTextId);
+                                        //    photoText.textContent = "Choose a file\nor\nDrag it here";
+                                        //}
                                     }
-                                    else {
-                                        // If no file selected, show the default text
-                                        var photoText = document.getElementById(photoTextId);
-                                        photoText.textContent = "Choose a file\nor\nDrag it here";
-                                    }
-                                }
-                            </script>
+                                </script>
+                            </div>
+                        </label>
                         </div>
-                    </div>
                     <div class="col-12 col-md-9 mt-3 mt-md-0">
                         <label>Name: </label>
                         <div class="row">

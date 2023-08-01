@@ -12,7 +12,7 @@ namespace Basecode.Services.Interfaces
     public interface IInterviewsService
     {
         List<Interviews> RetrieveAll();
-        Interviews? GetByApplicantId(int applicantId);
+        List<Interviews> GetByApplicantId(int applicantId);
         void Add(InterviewsCreationDto Interviews);
         Interviews? GetById(int id);
         void Update(InterviewsUpdationDto Interviews);

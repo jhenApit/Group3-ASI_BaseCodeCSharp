@@ -1,6 +1,13 @@
-﻿@{
+﻿@using Basecode.Data.Enums;
+@using Basecode.Data.Models;
+@using Basecode.Services.Interfaces;
+@using static Basecode.Data.Enums.Enums;
+@model ApplicantDetailViewModel
+@inject IJobPostingsService _jobPostingService;
+@{
     ViewData ["Title"] = "Application Detail";
     Layout = "_SideBarAdmin";
+    var job = _jobPostingService.GetById(Model.Applicant.JobId);
 }
 
 <!-- Modals are at the bottom -->
@@ -17,7 +24,7 @@
     <div class="row">
         <div class="col-auto me-auto">
             <div class="status px-3 py-1">
-                FOR REVIEW
+                @EnumHelper.GetEnumDescription(Model.Applicant.ApplicationStatus)
             </div>
         </div>
     </div>
@@ -52,10 +59,10 @@
             <div class="d-flex col-auto align-items-center mt-2">
                 <div class="photo-container">
                     <!--Insert src of applicant photo here-->
-                    <img class="h-100 w-100 rounded-3" src="~/applicants/photo/sample-photo.png" />
+                    <img class="h-100 w-100 rounded-3" src="@ViewBag.ImageData" />
                     <!--
                         If photo does not exist this, this line of code will run instead
-                        <img src="~/images/Photo-Placeholder.png"/>
+                        <img src="~/images/Photo-Placeholder.png"/> 
                     -->
                 </div>
             </div>
@@ -63,21 +70,21 @@
                 <div class="row">
                     <div class="col col-md-4 form-group mt-2">
                         <label>First Name </label>
-                        <input class="form-control" type="text" name="firstname" readonly />
+                        <input class="form-control" type="text" name="firstname" value="@Model.Applicant.FirstName" disabled />
                     </div>
                     <div class="col col-md-4 form-group mt-2">
                         <label>Middle Name </label>
-                        <input class="form-control" type="text" name="middlename" readonly />
+                        <input class="form-control" type="text" name="middlename" value="@Model.Applicant.MiddleName" disabled />
                     </div>
                     <div class="col col-md-4 form-group mt-2">
                         <label>Last Name </label>
-                        <input class="form-control" type="text" name="lastname" readonly />
+                        <input class="form-control" type="text" name="lastname" value="@Model.Applicant.LastName" disabled />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 form-group mt-1">
                         <label for="birthday">Birthday</label>
-                        <input class="form-control" type="date" name="birthday" readonly />
+                        <input class="form-control" type="date" name="birthday" value="@Model.Applicant.BirthDate.ToString("yyyy-MM-dd")" disabled />
                     </div>
                 </div>
             </div>
@@ -87,103 +94,79 @@
         <div class="row form-row mt-3">
             <div class="col-12 form-group mt-2">
                 <label>Street </label>
-                <input class="form-control" id="street" type="text" name="street" readonly />
+                <input class="form-control" id="street" type="text" name="street" value="@Model.Address.Street" disabled />
             </div>
             <div class="col-4 form-group mt-2">
                 <label>City </label>
-                <input class="form-control" id="city" type="text" name="city" readonly />
+                <input class="form-control" id="city" type="text" name="city" value="@Model.Address.City" disabled />
             </div>
             <div class="col-4 form-group mt-2">
                 <label>Province </label>
-                <input class="form-control" id="province" type="text" name="province" readonly />
+                <input class="form-control" id="province" type="text" name="province" value="@Model.Address.Province" disabled />
             </div>
             <div class="col-4 form-group mt-2">
                 <label>Zipcode </label>
-                <input class="form-control" id="zipcode" type="number" name="zipcode" readonly />
+                <input class="form-control" id="zipcode" type="number" name="zipcode" value="@Model.Address.ZipCode" disabled />
             </div>
         </div>
         <div class="row form-row mt-3">
             <div class="col-6 form-group mt-1">
                 <label for="number">Phone Number</label>
-                <input class="form-control" id="number" type="number" name="number" readonly />
+                <input class="form-control" id="number" type="number" name="number" value="@Model.Applicant.PhoneNumber" disabled />
             </div>
             <div class="col-6 form-group mt-1">
                 <label for="email">Email Address</label>
-                <input class="form-control" id="email" type="text" name="email" readonly />
+                <input class="form-control" id="email" type="text" name="email" value="@Model.Applicant.Email" disabled />
             </div>
         </div>
         <!-- CHARACTER REFERENCE -->
         <div class="row text-header text-bold ps-2 mt-3">CHARACTER REFERENCE</div>
-        <div class="row form-row mt-3">
-            <label class="text-bold">Reference 1</label>
-            <div class="row form-row">
-                <div class="col-4 form-group mt-2">
-                    <label for="name">Full Name </label>
-                    <input class="form-control" id="name" type="text" name="name" readonly />
-                </div>
-                <div class="col-4 form-group mt-2">
-                    <label for="relationship">Relationship</label>
-                    <input class="form-control" id="relationship" type="text" name="relationship" readonly />
-                </div>
-                <div class="col-4 form-group mt-2">
-                    <label for="email">Email Adress</label>
-                    <input class="form-control" id="email" type="text" name="email" readonly />
-                </div>
-                <div class="col-4 form-group mt-2">
-                    <label for="number">Phone Number</label>
-                    <input class="form-control" id="number" type="number" name="number" readonly />
-                </div>
-            </div>
-        </div>
-        <div class="row form-row mt-3">
-            <label class="text-bold">Reference 2</label>
-            <div class="row form-row">
-                <div class="col-4 form-group mt-2">
-                    <label for="name">Full Name </label>
-                    <input class="form-control" id="name" type="text" name="name" readonly />
-                </div>
-                <div class="col-4 form-group mt-2">
-                    <label for="relationship">Relationship</label>
-                    <input class="form-control" id="relationship" type="text" name="relationship" readonly />
-                </div>
-                <div class="col-4 form-group mt-2">
-                    <label for="email">Email Adress</label>
-                    <input class="form-control" id="email" type="text" name="email" readonly />
-                </div>
-                <div class="col-4 form-group mt-2">
-                    <label for="number">Phone Number</label>
-                    <input class="form-control" id="number" type="number" name="number" readonly />
+        @foreach (var characterReferences in Model.CharacterReferences)
+        {
+            <div class="row form-row mt-3">
+                <label class="text-bold">Reference 1</label>
+                <div class="row form-row">
+                    <div class="col-4 form-group mt-2">
+                        <label for="name">Full Name </label>
+                        <input class="form-control" id="name" type="text" name="name" value="@characterReferences.Name" disabled />
+                    </div>
+                    <div class="col-4 form-group mt-2">
+                        <label for="relationship">Relationship</label>
+                        <input class="form-control" id="relationship" type="text" name="relationship" value="@characterReferences.Relationship" disabled />
+                    </div>
+                    <div class="col-4 form-group mt-2">
+                        <label for="email">Email Adress</label>
+                        <input class="form-control" id="email" type="text" name="email" value="@characterReferences.Email" disabled />
+                    </div>
+                    <div class="col-4 form-group mt-2">
+                        <label for="number">Phone Number</label>
+                        <input class="form-control" id="number" type="number" name="number" value="@characterReferences.MobileNumber" disabled />
+                    </div>
                 </div>
             </div>
-        </div>
+        }
+
+       
         <!-- ADDITIONAL INFORMATION -->
         <div class="row text-header text-bold ps-2 mt-3">ADDITIONAL INFORMATION</div>
         <div class="row mt-3">
             <div class="row form-row mt-3">
                 <div class="col-12 form-group">
                     <label for="additional">How did you hear about us?</label>
-                    <select class="form-select mt-2 reference" id="additional" name="additional" disabled>
-                        <option selected disabled value=""></option>
-                        <option value="LinkedIn Job Post">LinkedIn Job Post</option>
-                        <option value="Recruitment Team">Recruitment Team</option>
-                        <option value="Peers & Friends">Peers & Friends</option>
-                        <option value="Social Media Platforms">Social Media Platforms</option>
-                        <option value="Career Page">Career Page</option>
-                        <option value="Others">Others</option>
-                    </select>
+                    <input class="form-select mt-2 reference" id="additional" name="additional" value="@EnumHelper.GetEnumDescription(Model.Applicant.AdditionalInfo)" disabled />
                 </div>
             </div>
         </div> 
         <!-- Buttons -->
         <div class="row mt-5 justify-content-center">
             <div class="col-auto">
-                <button class="btn shortlist px-5 py-2">
+                <button asp-controller="HR" asp-action="ShortListApplicant" class="btn shortlist px-5 py-2">
                     SHORTLIST
                 </button>
             </div>
             <div class="col-auto">
                 <!-- A confirmation modal will pop-up -->
-                <button id="RejectApplicant " class="btn reject px-5 py-2" data-bs-toggle="modal" data-bs-target="#RejectApplicantModal">
+                <button id="RejectApplicant " class="btn reject px-5 py-2" data-bs-toggle="modal" asp-controller="HR" asp-action="RejectApplicant" data-bs-target="#RejectApplicantModal">
                     REJECT
                 </button>
             </div>
@@ -201,7 +184,7 @@
                         <label class="d-inline">Full Name: </label>
                     </div>
                     <div class="col">
-                        <input class="form-control" id="fullname" type="text" name="fullname" placeholder="" readonly />
+                        <input class="form-control" id="fullname" type="text" name="fullname" value="@Model.Applicant.Name" disabled />
                     </div>
                 </div>
                 <div class="row form-group mt-3">
@@ -209,7 +192,7 @@
                         <label class="d-inline">Job Applied: </label>
                     </div>
                     <div class="col">
-                        <input class="form-control" id="jobapplied" type="text" name="jobapplied" placeholder="" readonly />
+                        <input class="form-control" id="jobapplied" type="text" name="jobapplied" value="@job?.Name" disabled />
                     </div>
                 </div>
                 <div class="row form-group mt-3">
@@ -217,7 +200,7 @@
                         <label class="d-inline">Date Applied: </label>
                     </div>
                     <div class="col">
-                        <input class="form-control" id="dateapplied" type="text" name="dateapplied" placeholder="" readonly />
+                        <input class="form-control" id="dateapplied" type="text" name="dateapplied" value="@Model.Applicant.ApplicationDate" disabled />
                     </div>
                 </div>
             </div>
@@ -235,54 +218,22 @@
             </thead>
             <tbody class="text-center">
                 <tr>
-                    <td>HR Interview</td>
-                    <td>Jane Marie Doe</td>
-                    <td>July 1, 2023</td>
-                    <td>
-                        <span class="passed px-4 py-1">
-                            PASSED
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Technical Exam</td>
-                    <td>Jane Marie Doe</td>
-                    <td>July 2, 2023</td>
-                    <td>
-                        <span class="passed px-4 py-1">
-                            PASSED
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Technical Interview</td>
-                    <td>Jane Marie Doe</td>
-                    <td>July 3, 2023</td>
-                    <td>
-                        <span class="passed px-4 py-1">
-                            PASSED
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Background Check</td>
-                    <td>Jane Marie Doe</td>
-                    <td>July 4, 2023</td>
-                    <td>
-                        <span class="passed px-4 py-1">
-                            PASSED
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Final Interview</td>
-                    <td>Jane Marie Doe</td>
-                    <td>July 5, 2023</td>
-                    <td>
-                        <span class="passed px-4 py-1">
-                            PASSED
-                        </span>
-                    </td>
+                    @if(Model.Interviews == null || Model.Interviews.Count == 0)
+                    {
+                        <p> No upcoming Interviews </p>
+                    }
+                    @foreach(var interviews in Model.Interviews)
+                    {
+                        <td>@interviews.InterviewType</td>
+                        <td>@interviews.Interviewer</td>
+                        <td>@interviews.InterviewDate</td>
+                        <td>
+                            <span class="passed px-4 py-1">
+                                @interviews.Results
+                            </span>
+                        </td>
+                    }
+                    
                 </tr>
             </tbody>
         </table>
@@ -342,7 +293,7 @@
             <div class="modal-body p-2">
                 <div class="resumeFile">
                     <!--Insert src of applicant resume here-->
-                    <iframe class="w-100" style="height: 80vh;" src="~/applicants/resume/sample-resume.pdf"></iframe>
+                    <iframe class="w-100" style="height: 80vh;" src="~/applicants/resume/resume.pdf"></iframe>
                 </div>
             </div>
         </div>

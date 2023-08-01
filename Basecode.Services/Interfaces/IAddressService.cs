@@ -9,5 +9,6 @@ namespace Basecode.Services.Interfaces
         Addresses GetByCity(string city);
         void Add(AddressCreationDto address);
         Addresses GetById(int id);
+        Addresses GetByApplicantId(int applicantId);
     }
 }

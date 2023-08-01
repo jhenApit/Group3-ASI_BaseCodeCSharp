@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
+using Microsoft.EntityFrameworkCore;
+using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.Data.Repositories
 {
@@ -51,15 +53,14 @@ namespace Basecode.Data.Repositories
         {
             return _context.Applicants.FirstOrDefault(e => e.FirstName == fname && e.MiddleName == mname && e.LastName == lname);
         }
-        public Applicants? GetByEmail(string email)
+        public IQueryable<Applicants> GetByEmail(string email)
         {
-            return _context.Applicants.FirstOrDefault(e => e.Email == email);
+            return this.GetDbSet<Applicants>().Where(e => e.Email == email);
         }
-
         /// <summary>
         /// Retrieves all applicants from the database.
         /// </summary>
-        /// <returns>An IQueryable collection of all applicants.</returns>
+        /// <returns>An IQueryable collection of all applicants.</returns> 
         public IQueryable<Applicants> RetrieveAll()
         {
             return this.GetDbSet<Applicants>();
@@ -68,14 +69,16 @@ namespace Basecode.Data.Repositories
         /// This update the applicant form the database
         /// </summary>
         /// <param name="applicant"> the applicant model to update</param>
-		public void Update(Applicants applicant)
+		public bool Update(Applicants applicant)
 		{
             var existingApplicant = _context.Applicants.Find(applicant.Id);
             if(existingApplicant != null)
             {
                 existingApplicant.ApplicationStatus = applicant.ApplicationStatus;
 				_context.SaveChanges();
+                return true;
 			}
+            return false;
 		}
 
 	}

@@ -9,10 +9,10 @@ namespace Basecode.Data.Interfaces
 {
     public interface IAddressRepository
     {
-        IQueryable<Address> RetrieveAll();
-        Address GetByCity(string city);
-        void Add(Address address);
-        Address GetById(int id);
-        Address GetByApplicantId(int applicantId);
+        IQueryable<Addresses> RetrieveAll();
+        Addresses GetByCity(string city);
+        void Add(Addresses address);
+        Addresses GetById(int id);
+        Addresses GetByApplicantId(int applicantId);
     }
 }

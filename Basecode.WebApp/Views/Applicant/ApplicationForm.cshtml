@@ -5,6 +5,63 @@
     ViewData["Title"] = "Application Form";
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 }
+<script>
+    function allowDrag(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    function handleResumeDrop(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Get the file from the dropped event
+        const file = e.dataTransfer.files[0];
+
+        // Update the file input's files property with the dropped file
+        const fileInput = document.getElementById('resumeFile');
+        fileInput.files = e.dataTransfer.files;
+
+        // Display the dropped file name
+        displayFileName();
+    }
+    function handlePhotoDrop(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const photoFile = e.dataTransfer.files[0]; 
+        
+        const photoInput = document.getElementById('photo');
+        photoInput.files = e.dataTranfer.files;
+
+        displayImageName();
+        
+    }
+
+    function setupDragAndDrop() {
+        const fileDropArea = document.getElementById('resumeDropArea');
+
+        // Prevent the default drag events
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            fileDropArea.addEventListener(eventName, allowDrag, false);
+        });
+
+        // Handle the drop event
+        fileDropArea.addEventListener('drop', handleResumeDrop, false);
+
+        const photoDropArea = document.getElementById('photoDropArea');
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            photoDropArea.addEventListener(eventName, allowDrag, false);
+        });
+
+        // Handle the drop event
+        photoDropArea.addEventListener('drop', handlePhotoDrop, false);
+    }
+
+    // Call the setup function when the document is ready
+    document.addEventListener('DOMContentLoaded', setupDragAndDrop);
+</script>
 
 <body class="applicantForm_body">
     <div class="application-form-container">
@@ -28,64 +85,80 @@
                 @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
                 {
                     <div class="alert alert-danger text-center m-0" role="alert">
-                        @Html.Raw(ViewBag.ErrorMessage)
+                        <pre>@ViewBag.ErrorMessage</pre>
                     </div>
                 }
                 <!--Hidden input field for the jobid-->
                 <input type="hidden" asp-for="Applicant.JobId" value="@Model?.JobPosting?.Id" />
                 <!--Resume-->
                 <div class="row text-header text-bold ps-2">Resume</div>
-                <div class="row form-row form-group file-drop my-3 mx-1 py-4">
-                    <div>
-                        <img src="/images/icons/resume-upload.png" />
-                    </div>
-                    <input asp-for="Applicant.Resume" type="file" id="resumeFile" name="resumeFile" class="form-control file-input" accept=".pdf, .doc, .docx" onchange="displayFileName()" />
-                    <label for="resumeFile" class="file-label">
+                <div id="resumeDropArea">
+                    <label for="resumeFile" class="file-label row form-row form-group file-drop my-3 mx-1 py-4">
+                        <div>
+                            <img src="/images/icons/resume-upload.png" />
+                        </div>
+                        <input asp-for="Applicant.Resume" type="file" id="resumeFile" name="resumeFile" class="form-control file-input" required onchange="displayFileName()" />
                         <span id="fileText" class="file-text text-bold">Choose a file or Drag it here</span>
                     </label>
-
-                    <script>
-                        function displayFileName() {
-                            var fileInput = document.getElementById("resumeFile");
-                            var fileName = fileInput.files[0].name;
-                            var fileText = document.querySelector(".file-label .file-text");
-                            fileText.textContent = fileName;
-                        }
-                    </script>
                 </div>
+                <script>
+                    function displayFileName() {
+                        var fileInput = document.getElementById("resumeFile");
+                        var fileName = fileInput.files[0].name;
+                        var fileText = document.querySelector(".file-label .file-text");
+                        fileText.textContent = fileName;
+                    }
+                </script>
                 <!--Personal Information-->
                 <div class="row text-header text-bold ps-2 mt-4">Personal Information</div>
                 <div class="row form-row mt-3">
-                    <div class="col-12 col-md-3">
-                        <div class="row form-row text-center">
-                            <label>Photo (Optional):</label>
-                        </div>
-                        <div class="col form-group file-drop mt-1 p-3">
-                            <div>
-                                <img src="/images/icons/upload-image.png" />
+                        <div class=" col-md-3">
+                            <div class="row form-row text-center">
+                                <label>Photo (Optional):</label>
                             </div>
-                            <input asp-for="Applicant.Photo" type="file" id="photo" name="photo" class="file-input" accept="image/png, image/gif, image/jpeg" onchange="displayImageName('photo', 'photoText')" />
-                            <label for="photo" class="file-label">
-                                <span id="photoText" class="file-text">Choose a file<br />or<br />Drag it here</span>
-                            </label>
-
-                            <script>
-                                function displayImageName(photoInputId, photoTextId) {
-                                    var photoInput = document.getElementById(photoInputId);
-                                    if (photoInput.files.length > 0) {
+                        <label for="photoFile" class="photo-label col-12">
+                            <div class="col form-group file-drop mt-1 p-3 mx-auto mt-3 mt-md-2 align-items-center" id="photoDropArea">
+                                <img id="photoCanvas" height="100" width="100" class="d-none" />
+                                <div id="photoIcon">
+                                    <img src="/images/icons/upload-image.png" />
+                                </div>
+                                <input type="file" id="photoFile" name="photo" class="form-control file-input" onchange="displayImageName()" />
+                                
+                                <span id="photoText" class="file-text photo">Choose a file</span>
+                                
+                                <script>
+                                    function displayImageName() {
+                                        var photoInput = document.getElementById("photoFile");
+                                        var photoIcon = document.getElementById("photoIcon");
+                                        var photoDropArea = document.getElementById("photoDropArea");
                                         var photoFileName = photoInput.files[0].name;
-                                        var photoText = document.getElementById(photoTextId);
-                                        photoText.textContent = photoFileName;
+                                        var photoFileText = document.querySelector("#photoText");
+                                        var photoCanvas = document.getElementById("photoCanvas");
+                                        photoFileText.textContent = photoFileName;
+
+                                        photoCanvas.src = URL.createObjectURL(photoInput.files[0]);
+
+                                        photoCanvas.classList.remove("d-none");
+                                        photoDropArea.classList.remove("p-3");
+                                        photoDropArea.classList.add("img-uploaded");
+                                        photoFileText.classList.add("d-none");
+                                        photoIcon.classList.add("d-none");
+                                        //var photoInput = document.getElementById(photoInputId);
+                                        //if (photoInput.files.length > 0) {
+                                        //    var photoFileName = photoInput.files[0].name;
+                                        //    var text = document.getElementById(photoText);
+                                        //    text.textContent = photoFileName;
+                                        //}
+                                        //else {
+                                        //    // If no file selected, show the default text
+                                        //    var photoText = document.getElementById(photoTextId);
+                                        //    photoText.textContent = "Choose a file\nor\nDrag it here";
+                                        //}
                                     }
-                                    else {
-                                        // If no file selected, show the default text
-                                        var photoText = document.getElementById(photoTextId);
-                                        photoText.textContent = "Choose a file\nor\nDrag it here";
-                                    }
-                                }
-                            </script>
+                                </script>
+                            </div>
+                        </label>
                         </div>
-                    </div> 
                     <div class="col-12 col-md-9 mt-3 mt-md-0">
                         <label>Name: </label>
                         <div class="row">
@@ -94,7 +167,7 @@
                                 <span asp-validation-for="Applicant.FirstName" class="text-danger w-100"></span>
                             </div>
                             <div class="col-12 col-sm-6 col-md-4 form-group mt-2">
-                                <input asp-for="Applicant.MiddleName" class="form-control" type="text" placeholder="Middle Name" required />
+                                <input asp-for="Applicant.MiddleName" class="form-control" type="text" placeholder="Middle Name" />
                                 <span asp-validation-for="Applicant.MiddleName" class="text-danger w-100"></span>
                             </div>
                             <div class="col-12 col-sm-6 col-md-4 form-group mt-2">
@@ -105,7 +178,7 @@
                         <div class="row mt-3">
                             <div class="col-12 form-group mt-1">
                                 <label for="birthday">Birthday:</label>
-                                <input asp-for="Applicant.BirthDate" class="form-control" type="date" name="birthday" required />
+                                <input asp-for="Applicant.BirthDate" class="form-control" type="date" required />
                                 <span asp-validation-for="Applicant.BirthDate" class="text-danger w-100"></span>
                             </div>
                         </div>
@@ -116,7 +189,7 @@
                 <div class="row form-row mt-3">
                     <label>Address: </label>
                     <div class="col-12 form-group mt-2">
-                        <input asp-for="Address.Street" class="form-control" id="street" type="text" placeholder="Street" required/>
+                        <input asp-for="Address.Street" class="form-control" id="street" type="text" placeholder="Street" required />
                         <span asp-validation-for="Address.Street" class="text-danger w-100"></span>
                     </div>
                     <div class="col-sm-6 col-md-4 form-group mt-2">
@@ -124,23 +197,23 @@
                         <span asp-validation-for="Address.City" class="text-danger w-100"></span>
                     </div>
                     <div class="col-sm-6 col-md-4 form-group mt-2">
-                        <input asp-for="Address.Province" class="form-control" id="province" type="text" placeholder="Province / State" required/>
+                        <input asp-for="Address.Province" class="form-control" id="province" type="text" placeholder="Province / State" required />
                         <span asp-validation-for="Address.Province" class="text-danger w-100"></span>
                     </div>
                     <div class="col-sm-6 col-md-4 form-group mt-2">
-                        <input asp-for="Address.ZipCode" class="form-control" id="zipcode" type="number" placeholder="Postal / Zipcode" required />
+                        <input asp-for="Address.ZipCode" class="form-control" id="zipcode" type="text" placeholder="Postal / Zipcode" required maxlength="4" />
                         <span asp-validation-for="Address.ZipCode" class="text-danger w-100"></span>
                     </div>
                 </div>
                 <div class="row form-row mt-3">
                     <div class="col-sm-6 form-group mt-1">
                         <label for="number">Phone Number:</label>
-                        <input asp-for="Applicant.PhoneNumber" class="form-control" id="number" type="number" required />
+                        <input asp-for="Applicant.PhoneNumber" class="form-control" id="number" type="text" required minlength="11" maxlength="13" />
                         <span asp-validation-for="Applicant.PhoneNumber" class="text-danger w-100"></span>
                     </div>
                     <div class="col-sm-6 form-group mt-1">
                         <label for="email">Email Address:</label>
-                        <input asp-for="Applicant.Email" class="form-control" id="email" type="text" required />
+                        <input asp-for="Applicant.Email" class="form-control" id="email" type="email" required />
                         <span asp-validation-for="Applicant.Email" class="text-danger w-100"></span>
                     </div>
                 </div>
@@ -164,12 +237,12 @@
                         </div>
                         <div class="col-sm-6 col-md-4 form-group mt-2">
                             <label for="email">Email Address:</label>
-                            <input asp-for="CharacterReferences1.Email" class="form-control" id="email" type="text" required/>
+                            <input asp-for="CharacterReferences1.Email" class="form-control" id="email" type="email" required />
                             <span asp-validation-for="CharacterReferences1.Email" class="text-danger w-100"></span>
                         </div>
                         <div class="col-sm-6 col-md-4 form-group mt-2">
                             <label for="number">Phone Number:</label>
-                            <input asp-for="CharacterReferences1.MobileNumber" class="form-control" id="number" type="number" required />
+                            <input asp-for="CharacterReferences1.MobileNumber" class="form-control" id="number" type="text" required minlength="11" maxlength="13" />
                             <span asp-validation-for="CharacterReferences1.MobileNumber" class="text-danger w-100"></span>
                         </div>
                     </div>
@@ -179,7 +252,7 @@
                     <div class="row form-row">
                         <div class="col-sm-6 col-md-4 form-group mt-2">
                             <label for="name">Full Name: </label>
-                            <input asp-for="CharacterReferences2.Name" class="form-control" id="name2" type="text" required/>
+                            <input asp-for="CharacterReferences2.Name" class="form-control" id="name2" type="text" required />
                             <span asp-validation-for="CharacterReferences2.Name" class="text-danger w-100"></span>
                         </div>
                         <div class="col-sm-6 col-md-4 form-group mt-2">
@@ -189,12 +262,12 @@
                         </div>
                         <div class="col-sm-6 col-md-4 form-group mt-2">
                             <label for="email">Email Address:</label>
-                            <input asp-for="CharacterReferences2.Email" class="form-control" id="email2" type="text" required/>
+                            <input asp-for="CharacterReferences2.Email" class="form-control" id="email2" type="email" required />
                             <span asp-validation-for="CharacterReferences2.Email" class="text-danger w-100"></span>
                         </div>
                         <div class="col-sm-6 col-md-4 form-group mt-2">
                             <label for="number">Phone Number:</label>
-                            <input asp-for="CharacterReferences2.MobileNumber" class="form-control" id="number2" type="number" required />
+                            <input asp-for="CharacterReferences2.MobileNumber" class="form-control" id="number2" type="text" required minlength="11" maxlength="13" />
                             <span asp-validation-for="CharacterReferences2.MobileNumber" class="text-danger w-100"></span>
                         </div>
                     </div>
@@ -225,7 +298,7 @@
                         </div>
                     </div>
                     <div class="col d-flex justify-content-center">
-                        <button class="btn btn-primary mt-2 py-2 px-5" type="submit" onclick="checkValidity()">Submit</button>
+                        <button class="btn btn-primary mt-2 py-2 px-5" type="submit">Submit</button>
                     </div>
                 </div>
             </form>
@@ -240,7 +313,7 @@
 </body>
 
 <!-- Fill All Required Fields Modal -->
- <div class="modal fade" id="FillAllRequiredFields" tabindex="-1" role="dialog" aria-labelledby="FillAllRequiredFieldsLabel" aria-hidden="true">
+<div class="modal fade" id="FillAllRequiredFields" tabindex="-1" role="dialog" aria-labelledby="FillAllRequiredFieldsLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header justify-content-center pb-4">
@@ -259,7 +332,7 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
 
 <!-- Fill Application Submitted Modal -->
 <div class="modal fade" id="ApplicationSubmitted" tabindex="-1" role="dialog" aria-labelledby="ApplicationSubmittedLabel" aria-hidden="true">
@@ -275,49 +348,19 @@
                 <h4 class="text-center">Application has been <b>submitted</b> successfully!<br />Check your email.</h4>
             </div>
             <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-                    <h5 class="pb-0 m-0">Close</h5>
-                </button>
+                <form asp-controller="Applicant" asp-action="TrackApplication">
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
+                        <h5 class="pb-0 m-0">Close</h5>
+                    </button>
+                </form>
             </div>
         </div>
     </div>
 </div>
 
-<script>
-    $(document).ready(function () {
-        // Intercept form submission
-        $('#application_form').submit(function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-
-            if (this.checkValidity()) { // If all required fields are filled
-                // Serialize form data to prepare for AJAX submission
-                var formData = new FormData(this);
-
-                // Make an AJAX request to submit the form data to the server
-                $.ajax({
-                    url: $(this).attr('action'),
-                    type: $(this).attr('method'),
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function (data) {
-                        // If the form submission is successful, show the "ApplicationSubmitted" modal
-                        $('#ApplicationSubmitted').modal('show');
-                    },
-                    error: function (xhr, status, error) {
-                        // Handle the error if the form submission fails (optional)
-                        console.error('Form submission failed:', error);
-                    }
-                });
-            } else {
-                // If not all required fields are filled, show the 'Fill All Required Fields' modal
-                $('#FillAllRequiredFields').modal('show');
-            }
-
-            // Add the 'was-validated' class to show validation feedback
-            this.classList.add('was-validated');
-        });
-    });
-</script>
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
 

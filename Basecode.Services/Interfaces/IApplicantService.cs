@@ -15,6 +15,7 @@ namespace Basecode.Services.Interfaces
         Applicants GetById(int id);
         List<Applicants> RetrieveAll();
         Applicants GetByName(string fname, string mname, string lname);
+        List<Applicants> GetByEmail(string email);
         int Add(ApplicantCreationDto applicant);
         bool Update(int id, string status);
 		Applicants GetByApplicantId(string trackerId);

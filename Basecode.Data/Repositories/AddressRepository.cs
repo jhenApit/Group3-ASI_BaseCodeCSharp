@@ -20,7 +20,7 @@ namespace Basecode.Data.Repositories
         /// Adds an address to the context and saves changes.
         /// </summary>
         /// <param name="address">The address to add.</param>
-        public void Add(Address address)
+        public void Add(Addresses address)
         {
             _context.Addresses.Add(address);
             _context.SaveChanges();
@@ -31,7 +31,7 @@ namespace Basecode.Data.Repositories
         /// </summary>
         /// <param name="city">The city to search for.</param>
         /// <returns>The address matching the city, or null if not found.</returns>
-        public Address GetByCity(string city)
+        public Addresses GetByCity(string city)
         {
             return _context.Addresses.FirstOrDefault(e => e.City == city)!;
         }
@@ -41,7 +41,7 @@ namespace Basecode.Data.Repositories
         /// </summary>
         /// <param name="id">The ID of the address to retrieve.</param>
         /// <returns>The address matching the ID, or null if not found.</returns>
-        public Address GetById(int id)
+        public Addresses GetById(int id)
         {
             return _context.Addresses.FirstOrDefault(e => e.Id == id)!;
         }
@@ -50,9 +50,9 @@ namespace Basecode.Data.Repositories
         /// Retrieves all addresses.
         /// </summary>
         /// <returns>An IQueryable of all addresses.</returns>
-        public IQueryable<Address> RetrieveAll()
+        public IQueryable<Addresses> RetrieveAll()
         {
-            return this.GetDbSet<Address>();
+            return this.GetDbSet<Addresses>();
         }
         /// <summary>
         /// this gets the Address by Applicant ID

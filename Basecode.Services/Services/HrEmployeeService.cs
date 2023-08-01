@@ -35,20 +35,21 @@ namespace Basecode.Services.Services
         /// Retrieves all HR employees from the repository.
         /// </summary>
         /// <returns>List of HR employees</returns>
-        public List<HrEmployee> RetrieveAll()
+        public async Task<List<HrEmployee>> RetrieveAllAsync()
         {
-            return _repository.RetrieveAll().ToList();
+            var hr = await _repository.RetrieveAllAsync();
+            return hr.ToList();
         }
 
         /// <summary>
         /// Adds a new HR employee to the repository.
         /// </summary>
         /// <param name="hrEmployeeDto">The DTO object containing the information of the HR employee to be added</param>
-        public void Add(HREmployeeCreationDto hrEmployeeDto)
+        public async Task AddAsync(HREmployeeCreationDto hrEmployeeDto)
         {
             var hrEmployeeModel = _mapper.Map<HrEmployee>(hrEmployeeDto);
 
-            _repository.Add(hrEmployeeModel);
+            await _repository.AddAsync(hrEmployeeModel);
         }
 
         /// <summary>
@@ -56,19 +57,19 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="id">The ID of the HR employee to retrieve</param>
         /// <returns>The HR employee object</returns>
-        public HrEmployee GetById(int id)
+        public async Task<HrEmployee?> GetByIdAsync(int id)
         {
-            return _repository.GetById(id);
+            return await _repository.GetByIdAsync(id);
         }
-        public HrEmployee GetByUserId(string id)
+        public async Task<HrEmployee> GetByUserIdAsync(string id)
         {
-            return _repository.GetByUserId(id);
+            return await _repository.GetByUserIdAsync(id);
         }
         /// <summary>
         /// Updates an existing HR employee in the repository.
         /// </summary>
         /// <param name="hrEmployee">The DTO object containing the updated information of the HR employee</param>
-        public void Update(HREmployeeUpdationDto hrEmployee)
+        public async Task UpdateAsync(HREmployeeUpdationDto hrEmployee)
         {
             var hrEmployeeModel = _mapper.Map<HrEmployee>(hrEmployee);
 
@@ -79,16 +80,16 @@ namespace Basecode.Services.Services
             hrEmployeeModel.ModifiedBy = hrEmployee.ModifiedBy;
             hrEmployeeModel.ModifiedDate = DateTime.Now;
 
-            _repository.Update(hrEmployeeModel);
+            await _repository.UpdateAsync(hrEmployeeModel);
         }
 
         /// <summary>
         /// Permanently deletes an HR employee from the repository.
         /// </summary>
         /// <param name="id">The ID of the HR employee to permanently delete</param>
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            _repository.Delete(id);
+            await _repository.DeleteAsync(id);
         }
 
         /// <summary>
@@ -96,9 +97,9 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="email">The email of the HR employee to retrieve</param>
         /// <returns>The HR employee object</returns>
-        public HrEmployee GetByEmail(string email)
+        public async Task<HrEmployee> GetByEmailAsync(string email)
         {
-            return _repository.GetByEmail(email);
+            return await _repository.GetByEmailAsync(email);
         }
 
         /// <summary>
@@ -123,7 +124,7 @@ namespace Basecode.Services.Services
             return _logContent;
         }
 
-        /// <summary>
+        /*/// <summary>
         /// Edits an HR account and logs the error content if the edit fails.
         /// </summary>
         /// <param name="hrEmployee">The DTO object containing the updated information of the HR employee</param>
@@ -201,6 +202,6 @@ namespace Basecode.Services.Services
                 _logContent.Message = "Email doesn't exist";
             }
             return _logContent;
-        }
+        }*/
     }
 }

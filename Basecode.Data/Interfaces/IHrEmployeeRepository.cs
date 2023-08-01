@@ -10,12 +10,12 @@ namespace Basecode.Data.Interfaces
 {
     public interface IHrEmployeeRepository
     {
-        IQueryable<HrEmployee> RetrieveAll();
-        HrEmployee GetByEmail(string email);
-        void Add(HrEmployee hrEmployee);
-        HrEmployee GetById(int id);
-        HrEmployee GetByUserId(string id);
-        void Update(HrEmployee hrEmployee);
-        void Delete(int id);
+        Task<IQueryable<HrEmployee>> RetrieveAllAsync();
+        Task<HrEmployee> GetByEmailAsync(string email);
+        Task AddAsync(HrEmployee hrEmployee);
+        Task<HrEmployee> GetByIdAsync(int id);
+        Task<HrEmployee> GetByUserIdAsync(string id);
+        Task UpdateAsync(HrEmployee hrEmployee);
+        Task DeleteAsync(int id);
     }
 }

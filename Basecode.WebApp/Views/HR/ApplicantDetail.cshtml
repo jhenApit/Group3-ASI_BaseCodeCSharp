@@ -70,21 +70,21 @@
                 <div class="row">
                     <div class="col col-md-4 form-group mt-2">
                         <label>First Name </label>
-                        <input class="form-control" type="text" name="firstname" value="@Model.Applicant.FirstName" readonly />
+                        <input class="form-control" type="text" name="firstname" value="@Model.Applicant.FirstName" disabled />
                     </div>
                     <div class="col col-md-4 form-group mt-2">
                         <label>Middle Name </label>
-                        <input class="form-control" type="text" name="middlename" value="@Model.Applicant.MiddleName"readonly />
+                        <input class="form-control" type="text" name="middlename" value="@Model.Applicant.MiddleName" disabled />
                     </div>
                     <div class="col col-md-4 form-group mt-2">
                         <label>Last Name </label>
-                        <input class="form-control" type="text" name="lastname" value="@Model.Applicant.LastName"readonly />
+                        <input class="form-control" type="text" name="lastname" value="@Model.Applicant.LastName" disabled />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 form-group mt-1">
                         <label for="birthday">Birthday</label>
-                        <input class="form-control" type="date" name="birthday" value="@Model.Applicant.BirthDate" readonly />
+                        <input class="form-control" type="date" name="birthday" value="@Model.Applicant.BirthDate.ToString("yyyy-MM-dd")" disabled />
                     </div>
                 </div>
             </div>
@@ -94,29 +94,29 @@
         <div class="row form-row mt-3">
             <div class="col-12 form-group mt-2">
                 <label>Street </label>
-                <input class="form-control" id="street" type="text" name="street" value="@Model.Address.Street" readonly />
+                <input class="form-control" id="street" type="text" name="street" value="@Model.Address.Street" disabled />
             </div>
             <div class="col-4 form-group mt-2">
                 <label>City </label>
-                <input class="form-control" id="city" type="text" name="city" value="@Model.Address.City" readonly />
+                <input class="form-control" id="city" type="text" name="city" value="@Model.Address.City" disabled />
             </div>
             <div class="col-4 form-group mt-2">
                 <label>Province </label>
-                <input class="form-control" id="province" type="text" name="province" value="@Model.Address.Province" readonly />
+                <input class="form-control" id="province" type="text" name="province" value="@Model.Address.Province" disabled />
             </div>
             <div class="col-4 form-group mt-2">
                 <label>Zipcode </label>
-                <input class="form-control" id="zipcode" type="number" name="zipcode" value="@Model.Address.ZipCode" readonly />
+                <input class="form-control" id="zipcode" type="number" name="zipcode" value="@Model.Address.ZipCode" disabled />
             </div>
         </div>
         <div class="row form-row mt-3">
             <div class="col-6 form-group mt-1">
                 <label for="number">Phone Number</label>
-                <input class="form-control" id="number" type="number" name="number" value="@Model.Applicant.PhoneNumber" readonly />
+                <input class="form-control" id="number" type="number" name="number" value="@Model.Applicant.PhoneNumber" disabled />
             </div>
             <div class="col-6 form-group mt-1">
                 <label for="email">Email Address</label>
-                <input class="form-control" id="email" type="text" name="email" value="@Model.Applicant.Email" readonly />
+                <input class="form-control" id="email" type="text" name="email" value="@Model.Applicant.Email" disabled />
             </div>
         </div>
         <!-- CHARACTER REFERENCE -->
@@ -128,19 +128,19 @@
                 <div class="row form-row">
                     <div class="col-4 form-group mt-2">
                         <label for="name">Full Name </label>
-                        <input class="form-control" id="name" type="text" name="name" value="@characterReferences.Name" readonly />
+                        <input class="form-control" id="name" type="text" name="name" value="@characterReferences.Name" disabled />
                     </div>
                     <div class="col-4 form-group mt-2">
                         <label for="relationship">Relationship</label>
-                        <input class="form-control" id="relationship" type="text" name="relationship" value="@characterReferences.Relationship" readonly />
+                        <input class="form-control" id="relationship" type="text" name="relationship" value="@characterReferences.Relationship" disabled />
                     </div>
                     <div class="col-4 form-group mt-2">
                         <label for="email">Email Adress</label>
-                        <input class="form-control" id="email" type="text" name="email" value="@characterReferences.Email readonly />
+                        <input class="form-control" id="email" type="text" name="email" value="@characterReferences.Email" disabled />
                     </div>
                     <div class="col-4 form-group mt-2">
                         <label for="number">Phone Number</label>
-                        <input class="form-control" id="number" type="number" name="number" value="@characterReferences.MobileNumber" readonly />
+                        <input class="form-control" id="number" type="number" name="number" value="@characterReferences.MobileNumber" disabled />
                     </div>
                 </div>
             </div>
@@ -153,15 +153,7 @@
             <div class="row form-row mt-3">
                 <div class="col-12 form-group">
                     <label for="additional">How did you hear about us?</label>
-                    <select class="form-select mt-2 reference" id="additional" name="additional" value="@Model.Applicant.AdditionalInfo" disabled>
-                        <option selected disabled value="">Choose...</option>
-                        <option value="@AdditionalInfo.LinkedInJobPost">LinkedIn Job Post</option>
-                        <option value="@AdditionalInfo.RecruitmentTeam">Recruitment Team</option>
-                        <option value="@AdditionalInfo.PeersFriends">Peers & Friends</option>
-                        <option value="@AdditionalInfo.SocialMediaPlatforms">Social Media Platforms</option>
-                        <option value="@AdditionalInfo.CareerPage">Career Page</option>
-                        <option value="@AdditionalInfo.Others">Others</option>
-                    </select>
+                    <input class="form-select mt-2 reference" id="additional" name="additional" value="@EnumHelper.GetEnumDescription(Model.Applicant.AdditionalInfo)" disabled />
                 </div>
             </div>
         </div> 
@@ -192,7 +184,7 @@
                         <label class="d-inline">Full Name: </label>
                     </div>
                     <div class="col">
-                        <input class="form-control" id="fullname" type="text" name="fullname" value="@Model.Applicant.Name" readonly />
+                        <input class="form-control" id="fullname" type="text" name="fullname" value="@Model.Applicant.Name" disabled />
                     </div>
                 </div>
                 <div class="row form-group mt-3">
@@ -200,7 +192,7 @@
                         <label class="d-inline">Job Applied: </label>
                     </div>
                     <div class="col">
-                        <input class="form-control" id="jobapplied" type="text" name="jobapplied" value="@job?.Name" readonly />
+                        <input class="form-control" id="jobapplied" type="text" name="jobapplied" value="@job?.Name" disabled />
                     </div>
                 </div>
                 <div class="row form-group mt-3">
@@ -208,7 +200,7 @@
                         <label class="d-inline">Date Applied: </label>
                     </div>
                     <div class="col">
-                        <input class="form-control" id="dateapplied" type="text" name="dateapplied" value="@Model.Applicant.ApplicationDate" readonly />
+                        <input class="form-control" id="dateapplied" type="text" name="dateapplied" value="@Model.Applicant.ApplicationDate" disabled />
                     </div>
                 </div>
             </div>
@@ -301,9 +293,7 @@
             <div class="modal-body p-2">
                 <div class="resumeFile">
                     <!--Insert src of applicant resume here-->
-                    <iframe class="w-100" style="height: 80vh;" src="@Html.Raw(ViewBag.ResumeData)"></iframe>
-
-
+                    <iframe class="w-100" style="height: 80vh;" src="~/applicants/resume/resume.pdf"></iframe>
                 </div>
             </div>
         </div>

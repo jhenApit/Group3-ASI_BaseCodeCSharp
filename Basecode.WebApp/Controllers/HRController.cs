@@ -6,14 +6,11 @@ using Basecode.Data.Dtos.JobPostings;
 using Microsoft.AspNetCore.Identity;
 using Basecode.Data.ViewModels;
 using Basecode.Data.Models;
-using static Basecode.Data.Enums.Enums;
-using Basecode.Services.Services;
 using Basecode.WebApp.Models;
-using Basecode.Data.Dtos.Applicants;
 
 namespace Basecode.WebApp.Controllers
 {
-    [Authorize(Roles = "hr,admin")]
+	[Authorize(Roles = "hr,admin")]
     public class HRController : Controller
     {
         private readonly IHrEmployeeService _service;

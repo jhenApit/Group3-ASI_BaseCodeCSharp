@@ -56,7 +56,7 @@ namespace Basecode.WebApp.Controllers
                 JobCount = _jobPostingsService.RetrieveAll().Count(),
                 Candidates = _applicantService.RetrieveAll(),
                 EmployeeCount = _currentHiresService.RetrieveAll().Count(),
-                Schedules = _interviewsService.RetrieveAll()
+                Interviews = _interviewsService.RetrieveAll().OrderBy(x => x.InterviewDate).ToList()
             };
             return View(model);
         }

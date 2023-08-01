@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="~/css/JobApplicantsOverview.css" />
 }
 
-<div class="container container-header">
+<div class="container">
 	<h1>@ViewData["Title"]</h1>
 </div>
 <div class="container table-container">
@@ -40,14 +40,14 @@
 					<th scope="col" class="col-2" style="border-left: 10px solid #55729B; border-bottom: none;">Applicant Name</th>
 					<th scope="col" class="col-2">Position Name</th>
 					<th scope="col" class="col-2">Status</th>
-					<th scope="col" class="col-3" style="border-right: 10px solid #55729B; border-bottom: none;">Action</th>
+					<th scope="col" class="col-3" style="border-right: 10px solid #55729B !important; border-bottom: none;">Action</th>
 				</tr>
 			</thead>
 			<tbody>
 				@foreach (var applicant in Model.applicants.OrderBy(a => a.Name))
 				{
 					Color statusColor = EnumHelper.GetColorForApplicationStatus(applicant.ApplicationStatus);
-					string colorStyle = $"color: {ColorTranslator.ToHtml(statusColor)}; font-weight: 500;";
+					string colorStyle = $"color: {ColorTranslator.ToHtml(statusColor)}; font-weight: bolder;";
 					
 					// ******** To refactor **************
 					var jobPost = jobPostingService.GetById(applicant.JobId);
@@ -135,14 +135,6 @@
 										<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="InviteToHRInterview">INVITE TO HR INTERVIEW</a>
 										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
 										break;
-									case ApplicationStatus.ForHRInterview:
-										<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="InviteToTechnicalInterview">INVITE TO TECHNICAL INTERVIEW</a>
-										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
-										break;
-									case ApplicationStatus.ForTechnicalInterview:
-										<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="InviteToTechnicalExam">INVITE TO TECHNICAL EXAM</a>
-										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
-										break;
 									case ApplicationStatus.ForTechnicalExam:
 										<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
 											<input type="hidden" name="id" value="@applicant.Id" />
@@ -225,8 +217,6 @@
 										default:
 										<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="DeployApplicant" style="justify-content: flex-start !important;">DEPLOY </a>
 										break;
-									default:
-										break;
 								}
 							</div>
 						</td>
@@ -244,8 +234,6 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
 <script>
 	$(document).ready(function () {
 		const rowsPerPage = 10; // Number of rows to display per page

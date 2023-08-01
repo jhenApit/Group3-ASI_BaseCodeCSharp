@@ -142,7 +142,7 @@ namespace Basecode.WebApp.Controllers
                 var data = _applicantService.AddApplicantLogContent(model.Applicant);
                 if (!data.Result)
                 {
-                    _logger.Error(_errorHandling.SetLog(data));
+                    //_logger.Error(_errorHandling.SetLog(data));
                     ViewBag.ErrorMessage = data.Message;
                     //get current job applied
                     var jobPosting = _jobPostingsService.GetById(model.Applicant.JobId);

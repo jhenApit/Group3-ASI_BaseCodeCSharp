@@ -71,7 +71,7 @@
                 <label for="applicantName">Name:</label>
             </div>
             <div class="col">
-                <select asp-for="ApplicantId" class="form-select w-50" name="ApplicantId" required>
+                <select asp-for="ApplicantId" class="form-select w-50" name="ApplicantId">
                     <option selected disabled value="">Select an Applicant...</option>
                     @foreach (var applicants in ApplicantService.RetrieveAll())
                     {

@@ -23,7 +23,7 @@
     <div class="select-interviewer flex-grow-1">
         <p class="select-text">Select Interviewer:</p>
         <div class="dropdown flex-grow-1">
-            <select class="form-select w-100" name="ApplicantId" required>
+            <select class="form-select w-100" id="partialViewSelector" name="partialViewSelector" required>
                 <option selected disabled value="">Select an Interviewer... </option>
                 @foreach (var interviewer in Model.InterviewersList)
                 {
@@ -43,7 +43,7 @@
         <p class="upcoming-text">
             UPCOMING INTERVIEWS
         </p>
-        <a asp-controller="HR" asp-action="CreateInterview" asp-route-id="2" class="new-interview b-blue text-nowrap text-decoration-none">
+        <a id="New_Interview" class="new-interview b-blue text-nowrap text-decoration-none">
             <p class="select-text">
                 NEW INTERVIEW
             </p>
@@ -51,7 +51,12 @@
     </div>
     <div class="line"></div>
 </div>
-<div class="table-style pb-3">
+
+<div id="SelectInterviewer_View">
+    <p class="selectInterviewer"><em>Select an Interviewer...</em></p>
+</div>
+
+<div class="table-style pb-3" id="InterviewsList_View">
     <table class="table">
         <thead>
             <tr>
@@ -73,7 +78,8 @@
                 @foreach (var interviews in Model.InterviewsList)
                 {
                     var applicant = ApplicantService.GetById(interviews.ApplicantId);
-                    <tr>
+                    <tr class="interview-row interviewer-@interviews.InterviewerId">
+                        <!-- Add the class with interviewerId for filtering -->
                         <td>@interviews.InterviewDate.ToString("MMMM dd, yyyy"), @interviews.TimeStart - @interviews.TimeEnd</td>
                         <td>@applicant.FirstName @applicant.MiddleName @applicant.LastName</td>
                         <td>@EnumHelper.GetEnumDescription(interviews.InterviewType)</td>
@@ -95,10 +101,54 @@
         </tbody>
     </table>
 </div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
+<script>
+    var SelectInterviewer = $('#SelectInterviewer_View');
+    var InterviewList = $('#InterviewsList_View');
+
+    // Initially hide the interview list and show the "Select an Interviewer..." message
+    InterviewList.addClass("d-none");
+
+    // Function to filter the table rows based on the selected interviewer
+    function filterInterviewsByInterviewer(interviewerId) {
+        var rows = $('.interview-row');
+
+        if (interviewerId === 'all') {
+            // Show all rows if "Select an Interviewer..." is selected
+            rows.removeClass("d-none");
+        } else {
+            // Hide all rows initially
+            rows.addClass("d-none");
+
+            // Show the rows that match the selected interviewerId
+            $('.' + 'interviewer-' + interviewerId).removeClass("d-none");
+        }
+    }
+
+    function createNewInterview() {
+        var selectedInterviewerId = $("#partialViewSelector").val();
+        var url = '@Url.Action("CreateInterview", "HR")' + '?id=' + selectedInterviewerId;
+        window.location.href = url;
+    }
+
+    $(document).ready(function () {
+        $("#partialViewSelector").change(function () {
+            var selectedInterviewerId = $(this).val();
+            SelectInterviewer.addClass("d-none");
+            InterviewList.removeClass("d-none");
+            filterInterviewsByInterviewer(selectedInterviewerId);
+        });
+        $("#New_Interview").click(function () {
+            createNewInterview();
+        });
+    });
+</script>
 
 <!-- Add Interviewer Modal -->
 <div class="modal fade" id="addInterviewerModal" tabindex="-1" role="dialog" aria-labelledby="addInterviewerModalLabel" aria-hidden="true">

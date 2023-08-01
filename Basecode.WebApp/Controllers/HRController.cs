@@ -255,9 +255,8 @@ namespace Basecode.WebApp.Controllers
             {
                 Interviewers = interviewers,
                 InterviewersList = _interviewersService.RetrieveAll(),
-                InterviewsList = _interviewsService.RetrieveAll()
+                InterviewsList = _interviewsService.RetrieveAll().OrderBy(x => x.InterviewDate).ToList(),
             };
-
             return View(viewModel);
         }
 
@@ -303,7 +302,6 @@ namespace Basecode.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateInterview(InterviewsUpdationDto interviewsUpdationDto)
         {
-            Console.WriteLine(interviewsUpdationDto.InterviewDate);
             _interviewsService.Update(interviewsUpdationDto);
             return RedirectToAction("Interview");
         }
@@ -323,22 +321,6 @@ namespace Basecode.WebApp.Controllers
         {
             _interviewersService.Add(interviewers);
             return RedirectToAction("Interview");
-            /*if (ModelState.IsValid)
-            {
-                jobPostingsCreationDto.Qualifications = string.Join(", ", jobPostingsCreationDto.QualificationList);
-                jobPostingsCreationDto.Responsibilities = string.Join(", ", jobPostingsCreationDto.ResponsibilityList);
-                var data = _jobPostingsService.CreateJobPosting(jobPostingsCreationDto);
-                if (!data.Result)
-                {
-                    _logger.Error(_errorHandling.SetLog(data));
-                    ViewBag.ErrorMessage = data.Message;
-                    return View(jobPostingsCreationDto);
-                }
-                _jobPostingsService.Add(jobPostingsCreationDto);
-                return RedirectToAction("JobPostList");
-            }
-            ModelState.Clear();
-            return View("JobPostList", jobPostingsCreationDto);*/
         }
 
     #endregion

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Basecode.Data.Dtos.Applicants;
 using Basecode.Data.Models;
 using Basecode.Services.Utils;
+using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.Services.Interfaces
 {
@@ -15,7 +16,7 @@ namespace Basecode.Services.Interfaces
         List<Applicants> RetrieveAll();
         Applicants GetByName(string fname, string mname, string lname);
         int Add(ApplicantCreationDto applicant);
-        int Update(ApplicantsUpdationDto applicant);
+        bool Update(int id, string status);
 		Applicants GetByApplicantId(string trackerId);
         public LogContent AddApplicantLogContent(ApplicantCreationDto applicant);
     }

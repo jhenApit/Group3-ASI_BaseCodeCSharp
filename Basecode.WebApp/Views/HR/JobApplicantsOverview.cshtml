@@ -63,45 +63,133 @@
 								@switch (applicant.ApplicationStatus)
 								{
 									case ApplicationStatus.Received:
-									<a asp-route-id ="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="ShortListApplicant">SHORTLIST</a>
-									<a asp-route-id ="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
+										<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+											<input type="hidden" name="id" value="@applicant.Id" />
+											<input type="hidden" name="status" value="Shortlisted" />
+											<button type="submit" class="status-btn status-change-btn">SHORTLIST</button>
+										</form>
+										<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+											<input type="hidden" name="id" value="@applicant.Id" />
+											<input type="hidden" name="status" value="Rejected" />
+											<button type="submit" class="reject-btn">REJECT</button>
+										</form>
 											break;
 									case ApplicationStatus.Shortlisted:
-									<a asp-route-id ="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="ForScreeningApplicant">FOR SCREENING</a>
-									<a asp-route-id ="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
+										<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+											<input type="hidden" name="id" value="@applicant.Id" />
+											<input type="hidden" name="status" value="ForScreening" />
+											<button type="submit" class="status-btn status-change-btn">FOR SCREENING</button>
+										</form>
+										<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+											<input type="hidden" name="id" value="@applicant.Id" />
+											<input type="hidden" name="status" value="Rejected" />
+											<button type="submit" class="reject-btn">REJECT</button>
+										</form>
 											break;
 									case ApplicationStatus.ForScreening:
-									<a asp-route-id ="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="InviteToHRInterview">INVITE TO HR INTERVIEW</a>
-										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
+										<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+											<input type="hidden" name="id" value="@applicant.Id" />
+											<input type="hidden" name="status" value="ForHRInterview" />
+											<button type="submit" class="status-btn status-change-btn">INVITE TO HR INTERVIEW</button>
+											</form>
+										<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+											<input type="hidden" name="id" value="@applicant.Id" />
+											<input type="hidden" name="status" value="Rejected" />
+											<button type="submit" class="reject-btn">REJECT</button>
+										</form>
 											break;
-									case ApplicationStatus.ForHRInterview:
-									<a asp-route-id ="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="InviteToTechnicalInterview">INVITE TO TECHNICAL INTERVIEW</a>
-										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
+										case ApplicationStatus.ForHRInterview:
+										<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+											<input type="hidden" name="id" value="@applicant.Id" />
+											<input type="hidden" name="status" value="ForTechnicalInterview" />
+											<button type="submit" class="status-btn status-change-btn">INVITE TO TECHNICAL INTERVIEW</button>
+											</form>
+										<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+											<input type="hidden" name="id" value="@applicant.Id" />
+											<input type="hidden" name="status" value="Rejected" />
+											<button type="submit" class="reject-btn">REJECT</button>
+										</form>
 											break;
-									case ApplicationStatus.ForTechnicalInterview:
-									<a asp-route-id ="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="InviteToTechnicalExam">INVITE TO TECHNICAL EXAM</a>
-										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
+										case ApplicationStatus.ForTechnicalInterview:
+										<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+											<input type="hidden" name="id" value="@applicant.Id" />
+											<input type="hidden" name="status" value="ForTechnicalExam" />
+											<button type="submit" class="status-btn status-change-btn">INVITE TO TECHNICAL EXAM</button>
+										</form>
+										<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+											<input type="hidden" name="id" value="@applicant.Id" />
+											<input type="hidden" name="status" value="Rejected" />
+											<button type="submit" class="reject-btn">REJECT</button>
+										</form>
 											break;
 									case ApplicationStatus.ForTechnicalExam:
-									<a asp-route-id ="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="CheckBackground">CHECK BACKGROUND</a>
-										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
+										<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+											<input type="hidden" name="id" value="@applicant.Id" />
+											<input type="hidden" name="status" value="UndergoingBackgroundCheck" />
+											<button type="submit" class="status-btn status-change-btn">CHECK BACKGROUND</button>
+										</form>
+										<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+											<input type="hidden" name="id" value="@applicant.Id" />
+											<input type="hidden" name="status" value="Rejected" />
+											<button type="submit" class="reject-btn">REJECT</button>
+										</form>
 											break;
 									case ApplicationStatus.UndergoingBackgroundCheck:
-									<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="InviteToFinalInterview">INVITE TO FINAL INTERVIEW</a>
-										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
+										<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+											<input type="hidden" name="id" value="@applicant.Id" />
+											<input type="hidden" name="status" value="ForFinalInterview" />
+											<button type="submit" class="status-btn status-change-btn">INVITE TO FINAL INTERVIEW</button>
+										</form>
+										<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+											<input type="hidden" name="id" value="@applicant.Id" />
+											<input type="hidden" name="status" value="Rejected" />
+											<button type="submit" class="reject-btn">REJECT</button>
+										</form>
 											break;
 									case ApplicationStatus.ForFinalInterview:
-									<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="SendJobOffer">SEND JOB OFFER</a>
-										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
+										<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+											<input type="hidden" name="id" value="@applicant.Id" />
+											<input type="hidden" name="status" value="UndergoingJobOffer" />
+											<button type="submit" class="status-btn status-change-btn">SEND JOB OFFER</button>
+											</form>
+										<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+											<input type="hidden" name="id" value="@applicant.Id" />
+											<input type="hidden" name="status" value="Rejected" />
+											<button type="submit" class="reject-btn">REJECT</button>
+										</form>
 											break;
 									case ApplicationStatus.UndergoingJobOffer:
-									<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="ConfirmApplicant">CONFIRM</a>
-									<a asp-route-id="@applicant.Id" class="decline-btn" asp-controller="HR" asp-action="DeclineApplicant">DECLINE</a>
+										<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+											<input type="hidden" name="id" value="@applicant.Id" />
+											<input type="hidden" name="status" value="Confirmed" />
+											<button type="submit" class="status-btn status-change-btn">CONFIRM</button>
+										</form>
+										<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+											<input type="hidden" name="id" value="@applicant.Id" />
+											<input type="hidden" name="status" value="NotConfirmed" />
+											<button type="submit" class="reject-btn">DECLINE</button>
+										</form>
+											break;
+										case ApplicationStatus.Confirmed:
+										<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+											<input type="hidden" name="id" value="@applicant.Id" />
+											<input type="hidden" name="status" value="Onboarding" />
+											<button type="submit" class="status-btn status-change-btn">ONBOARD</button>
+										</form>
+										<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+											<input type="hidden" name="id" value="@applicant.Id" />
+											<input type="hidden" name="status" value="NotConfirmed" />
+											<button type="submit" class="reject-btn">DECLINE</button>
+										</form>
 											break;
 									case ApplicationStatus.Onboarding:
-									<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="DeployApplicant" style="justify-content: flex-start !important;">DEPLOY </a>
-										break;
-									default:
+										<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+											<input type="hidden" name="id" value="@applicant.Id" />
+											<input type="hidden" name="status" value="Deployed" />
+											<button type="submit" class="status-btn status-change-btn" style="justify-content: flex-start !important;">DEPLOY</button>
+											</form>
+											break;
+										default:
 										break;
 								}
 							</div>
@@ -120,6 +208,8 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
 <script>
 	// ...  demo-data
 	$(document).ready(function () {

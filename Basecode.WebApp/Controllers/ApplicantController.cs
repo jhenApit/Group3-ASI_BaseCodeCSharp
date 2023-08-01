@@ -190,7 +190,7 @@ namespace Basecode.WebApp.Controllers
         }
 
 
-        public async Task<IActionResult> UpdateApplicationStatus(ApplicantsUpdationDto applicantsUpdationDto)
+        /*public async Task<IActionResult> UpdateApplicationStatus(ApplicantsUpdationDto applicantsUpdationDto)
         {
             if (ModelState.IsValid)
             {
@@ -202,6 +202,6 @@ namespace Basecode.WebApp.Controllers
                 return RedirectToAction("JobPostList");
             }
             return View("EditJobPost", applicantsUpdationDto);
-        }
+        }*/
     }
 }

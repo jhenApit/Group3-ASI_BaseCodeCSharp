@@ -11,6 +11,7 @@ using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
 using Basecode.Data.RandomIDGenerator;
 using Basecode.Data.Dtos.Applicants;
+using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.Services.Services
 {
@@ -61,14 +62,38 @@ namespace Basecode.Services.Services
         {
             return _repository.RetrieveAll().ToList();
         }
-		public int Update(ApplicantsUpdationDto applicant)
-		{
-            
-            var applicantModel = _mapper.Map<Applicants>(applicant);
 
-            
-            _repository.Update(applicantModel);
-			return applicantModel.Id;
+        /// <summary>
+        /// display the status being passed.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+		public bool Update(int id, string status)
+		{
+            var applicantModel = _repository.GetById(id);
+            if(applicantModel != null)
+            {
+                Console.WriteLine("applicant is in table.");
+				if (Enum.TryParse(status, out ApplicationStatus parsedStatus))
+				{
+					var applicant = new ApplicantsUpdationDto
+					{
+                        Id = applicantModel.Id,
+						ApplicationStatus = parsedStatus
+					};
+					Console.WriteLine("applicant is updated." +parsedStatus);
+					var applicantMapper = _mapper.Map<Applicants>(applicant);
+					return _repository.Update(applicantMapper);
+				}
+                return false;
+			}
+			
+			else
+			{
+				// Handle the case where the provided status is not a valid ApplicationStatus enum value
+				// You may throw an exception, log an error, or take any other appropriate action.
+				return false;
+			}
 		}
 
 		public LogContent AddApplicantLogContent(ApplicantCreationDto applicantCreationDto)

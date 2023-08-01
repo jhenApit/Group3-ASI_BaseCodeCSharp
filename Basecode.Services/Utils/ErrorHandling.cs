@@ -9,9 +9,9 @@ namespace Basecode.Services.Utils
 {
     public class ErrorHandling : IErrorHandling
     {
-        public string SetLog(LogContent logContent, string location)
+        public string SetLog(LogContent logContent)
         {
-            return $"Location: {location} | ErrorCode: {logContent.ErrorCode}. Message: \"{logContent.Message}\"";
+            return $"ErrorCode: {logContent.ErrorCode}. Message: \"{logContent.Message}\"";
         }
     }
 }

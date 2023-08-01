@@ -143,7 +143,7 @@ namespace Basecode.WebApp.Controllers
         public async Task<IActionResult> EditHrAccount(HREmployeeUpdationDto hrEmployee)
         {
             hrEmployee.Name = hrEmployee.FirstName + ' ' + hrEmployee.MiddleName + ' ' + hrEmployee.LastName;
-            var data = _service.EditHrAccount(hrEmployee);
+            var data = await _service.EditHrAccount(hrEmployee);
             if (!data.Result)
             {
                 _logger.Error(_errorHandling.SetLog(data));
@@ -154,12 +154,13 @@ namespace Basecode.WebApp.Controllers
             {
                 //get hremployee data
                 var hr = _service.GetById(hrEmployee.Id);
-                //get aspnetuser data
-                var user = await _userManager.GetUserAsync(User);
                 //update username
                 await _userManager.SetUserNameAsync(hr.User, hrEmployee.UserName);
                 await _userManager.GenerateChangeEmailTokenAsync(hr.User, hrEmployee.Email);
-                await _userManager.ChangePasswordAsync(hr.User, hr.Password, hrEmployee.Password);
+                if(hrEmployee.Password != null) 
+                {
+                    await _userManager.ChangePasswordAsync(hr.User, hr.Password, hrEmployee.Password);
+                }
                 if (hrEmployee.IsAdmin)
                 {
                     await _userManager.AddToRoleAsync(hr.User, "admin");

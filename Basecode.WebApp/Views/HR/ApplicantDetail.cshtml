@@ -153,15 +153,7 @@
             <div class="row form-row mt-3">
                 <div class="col-12 form-group">
                     <label for="additional">How did you hear about us?</label>
-                    <select class="form-select mt-2 reference" id="additional" name="additional" value="@Model.Applicant.AdditionalInfo" disabled>
-                        <option selected disabled value="">Choose...</option>
-                        <option value="@AdditionalInfo.LinkedInJobPost">LinkedIn Job Post</option>
-                        <option value="@AdditionalInfo.RecruitmentTeam">Recruitment Team</option>
-                        <option value="@AdditionalInfo.PeersFriends">Peers & Friends</option>
-                        <option value="@AdditionalInfo.SocialMediaPlatforms">Social Media Platforms</option>
-                        <option value="@AdditionalInfo.CareerPage">Career Page</option>
-                        <option value="@AdditionalInfo.Others">Others</option>
-                    </select>
+                    <input class="form-select mt-2 reference" id="additional" name="additional" value="@EnumHelper.GetEnumDescription(Model.Applicant.AdditionalInfo)" disabled />
                 </div>
             </div>
         </div> 

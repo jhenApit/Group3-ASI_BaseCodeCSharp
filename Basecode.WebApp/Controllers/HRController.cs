@@ -5,6 +5,7 @@ using NLog;
 using Basecode.Data.Dtos.JobPostings;
 using Microsoft.AspNetCore.Identity;
 using Basecode.Data.ViewModels;
+using Basecode.Data.Models;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -16,6 +17,7 @@ namespace Basecode.WebApp.Controllers
         private readonly IApplicantService _applicantService;
         private readonly ICurrentHiresService _currentHiresService;
         private readonly IInterviewsService _interviewsService;
+        private readonly IInterviewersService _interviewersService;
         private readonly IErrorHandling _errorHandling; 
         private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -27,7 +29,8 @@ namespace Basecode.WebApp.Controllers
             UserManager<IdentityUser> userManager, 
             IApplicantService applicantService,
             ICurrentHiresService currentHiresService,
-            IInterviewsService interviewersService
+            IInterviewsService interviewsService,
+            IInterviewersService interviewersService
             )
         {
             _service = service;
@@ -36,7 +39,8 @@ namespace Basecode.WebApp.Controllers
             _userManager = userManager;
             _applicantService = applicantService;
             _currentHiresService = currentHiresService;
-            _interviewsService = interviewersService;
+            _interviewsService = interviewsService;
+            _interviewersService = interviewersService;
         }
 
 
@@ -240,7 +244,20 @@ namespace Basecode.WebApp.Controllers
         /// <returns>Redirect to Interview Page</returns>
         public IActionResult Interviews()
         {
-            return View();
+            try
+            {
+                var viewModel = new InterviewsViewModel
+                {
+                    Interviewers = new Interviewers(),
+                    InterviewersList = _interviewersService.RetrieveAll(),
+                    InterviewsList = _interviewsService.RetrieveAll().OrderBy(x => x.InterviewDate).ToList()
+                };
+                return View(viewModel);
+            } 
+            catch(Exception)
+            {
+                return BadRequest("An error occurred while retriving Interviews.");
+            }
         }
 
         /// <summary>
@@ -259,6 +276,29 @@ namespace Basecode.WebApp.Controllers
         public IActionResult EditInterview()
         {
             return View();
+        }
+
+        #endregion
+
+        #region Interviewers
+
+        /// <summary>
+        /// Adds interviewers to the database
+        /// </summary>
+        /// <param name="interviewers">Data</param>
+        /// <returns>Redirects to the Interviews Page</returns>
+        [HttpPost]
+        public IActionResult AddInterviewer(Interviewers interviewers)
+        {
+            try
+            {
+                _interviewersService.Add(interviewers);
+                return RedirectToAction("Interviews");
+            }
+            catch (Exception)
+            {
+                return BadRequest("An error happend while adding an interviewer.");
+            }
         }
 
         #endregion

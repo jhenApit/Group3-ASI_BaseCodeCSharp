@@ -15,9 +15,25 @@ namespace Basecode.Services.Interfaces
         void SendApplicantApplicationRegretEmail(Applicants applicant, string job);
         void SendNewApplicantEmail(Applicants applicant, string position);
         void SendApplicantJobOfferEmail(Applicants applicant, string job, string workSetup, string hours);
-        void SendHrJobOfferConfirmationEmail(Applicants applicants, string jobTitle);
+        void SendApplicantJobOfferConfirmationEmail(Applicants applicants, string jobTitle);
         void SendApplicationStatusEmail(Applicants applicant, string job, string status);
-        void SendHrApplicationShortlistedEmail(Applicants applicant, string jobTitle);
+        void SendHrApplicationApprovalEmail(Applicants applicant, string jobTitle);
         void SendForgotPasswordLink(IdentityUser user, string url);
+
+        //Start here!
+        void SendSetInterviewScheduleEmail(Applicants applicant, string schedule);
+        void SendInterviewReminderEmail(string applicant, Interviewers interviewer, string interviewType, string dateAndTime); // done
+        void SendHrApprovedScheduleEmail(Applicants applicants);
+        void SendHrInterviewApprovalEmail(Applicants applicants);
+        void SendApplicantInterviewRegretEmail(Applicants applicants);
+        void SendReferenceFormEmail(CharacterReferences characterReference, string applicant, string jobTitle); // done
+        void SendReferenceGratitudeEmail(CharacterReferences characterReference, string applicant);
+        void SendApplicantReferenceNotificationEmail(CharacterReferences characterReferences);
+        void SendHrAnsweredFormNotificationEmail(Applicants applicants, CharacterReferences characterReferences);
+        void SendHrReferenceApprovalEmail(Applicants applicants); // done
+        void SendHrJobOfferApprovalEmail(Applicants applicant, string jobTitle); // done
+        void SendDtRequirementNotificationEmail(Applicants applicant, string jobTitle); // done
+        void SendDtConfirmationEmail(Applicants applicants);
+
     }
 }

@@ -6,6 +6,8 @@ using Basecode.Data.Dtos.JobPostings;
 using Microsoft.AspNetCore.Identity;
 using Basecode.Data.ViewModels;
 using Basecode.Data.Models;
+using Basecode.Data.Dtos.Interviews;
+using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -264,9 +266,48 @@ namespace Basecode.WebApp.Controllers
         /// Allows HR to create a new interview entry
         /// </summary>
         /// <returns>Redirect to Create Interview Page</returns>
-        public IActionResult CreateInterview()
+        public IActionResult CreateInterview(int id)
         {
-            return View();
+            try
+            {
+                if(_interviewersService.GetById(id) != null)
+                {
+                    var viewModel = new InterviewsFormViewModel
+                    {
+                        Interviewer = _interviewersService.GetById(id),
+                        ApplicantsList = _applicantService.RetrieveAll(),
+                    };
+                    return View(viewModel);
+                }
+                return RedirectToAction("Interview");
+            }
+            catch (Exception)
+            {
+                return BadRequest("An error occurred while retriving this page.");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult AddInterview(InterviewsFormViewModel interview)
+        {
+            try
+            {
+                var createInterview = new InterviewsCreationDto
+                {
+                    ApplicantId = interview.ApplicantId,
+                    InterviewerId = interview.InterviewerId,
+                    InterviewType = interview.InterviewType,
+                    InterviewDate = interview.InterviewDate,
+                    TimeStart = interview.TimeStart,
+                    TimeEnd = interview.TimeEnd,
+                };
+                _interviewsService.Add(createInterview);
+                return RedirectToAction("Interviews");
+            }
+            catch(Exception)
+            {
+                return BadRequest("Error occurred while adding a new interview");
+            }
         }
 
         /// <summary>
@@ -276,6 +317,24 @@ namespace Basecode.WebApp.Controllers
         public IActionResult EditInterview()
         {
             return View();
+        }
+
+        /// <summary>
+        /// Delete an interview
+        /// </summary>
+        /// <param name="id">Interview Id</param>
+        /// <returns>Redirect to interview page</returns>
+        public IActionResult DeleteInterview(int id)
+        {
+            try
+            {
+                _interviewsService.Delete(id);
+                return RedirectToAction("Interview");
+            }
+            catch
+            {
+                return BadRequest("Delete Failed");
+            }
         }
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿@using Basecode.Data.Models
+@using Basecode.Data.Enums
 @model JobPostings
 @{
 	ViewData["Title"] = "View Job Post";
@@ -23,15 +24,15 @@
 			<div class="sub-header">
 				<div class="sub-container">
 					<img src="/images/icons/star.png" class="star-img" alt="star" />
-					<p>@Model.Hours</p>
+					<p>@EnumHelper.GetEnumDescription(Model.Hours)</p>
 				</div>
 				<div class="sub-container">
 					<img src="/images/icons/star.png" class="star-img" alt="star" />
-					<p>@Model.WorkSetup</p>
+					<p>@EnumHelper.GetEnumDescription(Model.WorkSetup)</p>
 				</div>
 				<div class="sub-container">
 					<img src="/images/icons/star.png" class="star-img" alt="star" />
-					<p>@Model.EmploymentType</p>
+					<p>@EnumHelper.GetEnumDescription(Model.EmploymentType)</p>
 				</div>
 			</div>
 			<div class="description-container">

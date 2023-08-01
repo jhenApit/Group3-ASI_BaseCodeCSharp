@@ -116,7 +116,7 @@ a {
     padding: 10px;
     border-radius: 5px;
     margin-right: 10px;
-    width: 150px;
+    width: 200px;
     text-align: center;
 }
 
@@ -135,7 +135,7 @@ a {
     background-color: red;
     padding: 10px;
     border-radius: 5px;
-    width: 150px;
+    width: 160px;
     text-align: center;
 }
 
@@ -154,7 +154,7 @@ a {
     background-color: red;
     padding: 10px;
     border-radius: 5px;
-    width: 150px;
+    width: 160px;
     text-align: center;
 }
 
@@ -192,10 +192,15 @@ a {
             outline: none !important;
         }
 
-    .pagination li.active a {
+    .pagination li a.active {
+        background-color: red;
         color: white;
-        background-color: red !important;
-        border: none !important;
+    }
+
+    .pagination li a.disabled {
+        pointer-events: none;
+        opacity: 0.6;
+        color: slategray;
     }
 
 .page-link {

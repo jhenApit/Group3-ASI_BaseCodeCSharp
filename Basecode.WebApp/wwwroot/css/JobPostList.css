@@ -104,3 +104,22 @@
 a {
     text-decoration: none;
 }
+
+.sort-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .sort-btn .sort-icon {
+        cursor: pointer;
+        font-size: 16px;
+        margin-left: 5px;
+        font-size: 8px;
+    }
+
+.sort-icons-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 6px;
+}

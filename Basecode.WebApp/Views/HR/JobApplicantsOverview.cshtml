@@ -8,8 +8,6 @@
 @{
 	ViewData["Title"] = "Job Applicants Overview";
 	Layout = "_SideBarAdmin";
-	<meta name="viewport" content="width=device-width" />
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 	<link rel="stylesheet" href="~/css/JobApplicantsOverview.css" />
 }
 
@@ -22,7 +20,7 @@
 		<select id="position" name="position">
 			<option value="ALL">ALL</option>
 			@foreach (var jobPosting in Model.jobPostings)
-			{		
+			{
 				<option value="@jobPosting.Name">@jobPosting.Name</option>
 			}
 		</select>
@@ -46,59 +44,60 @@
 				</tr>
 			</thead>
 			<tbody>
-				<!-- Data rows displayed here -->
-				@foreach (var applicant in Model.applicants)
+				@foreach (var applicant in Model.applicants.OrderBy(a => a.Name))
 				{
 					Color statusColor = EnumHelper.GetColorForApplicationStatus(applicant.ApplicationStatus);
-					string colorStyle = $"color: {ColorTranslator.ToHtml(statusColor)}";
+					string colorStyle = $"color: {ColorTranslator.ToHtml(statusColor)}; font-weight: 500;";
+					
+					// ******** To refactor **************
 					var jobPost = jobPostingService.GetById(applicant.JobId);
 					var positionName = jobPost.Name;
-					<tr>
-						<td>@applicant.Name</td>
-						<td>@positionName</td>
-						<td style ="@colorStyle">@EnumHelper.GetEnumDescription(((ApplicationStatus)Enum.Parse(typeof(ApplicationStatus), applicant.ApplicationStatus.ToString())))</td>
+					<tr class="clickable-row" data-href="/HR/ApplicantDetail?applicantId=@applicant.Id">
+						<td title="Click to View Applicant Details">@applicant.Name</td>
+						<td title="Click to View Applicant Details">@positionName</td>
+						<td title="Click to View Applicant Details" style="@colorStyle">@EnumHelper.GetEnumDescription(((ApplicationStatus)Enum.Parse(typeof(ApplicationStatus), applicant.ApplicationStatus.ToString())))</td>
 						<td>
 							<div class="applicant-container" data-title="@applicant.ApplicationStatus">
 								@switch (applicant.ApplicationStatus)
 								{
 									case ApplicationStatus.Received:
-									<a asp-route-id ="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="ShortListApplicant">SHORTLIST</a>
-									<a asp-route-id ="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
-											break;
+										<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="ShortListApplicant">SHORTLIST</a>
+										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
+										break;
 									case ApplicationStatus.Shortlisted:
-									<a asp-route-id ="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="ForScreeningApplicant">FOR SCREENING</a>
-									<a asp-route-id ="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
-											break;
+										<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="ForScreeningApplicant">FOR SCREENING</a>
+										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
+										break;
 									case ApplicationStatus.ForScreening:
-									<a asp-route-id ="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="InviteToHRInterview">INVITE TO HR INTERVIEW</a>
+										<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="InviteToHRInterview">INVITE TO HR INTERVIEW</a>
 										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
-											break;
+										break;
 									case ApplicationStatus.ForHRInterview:
-									<a asp-route-id ="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="InviteToTechnicalInterview">INVITE TO TECHNICAL INTERVIEW</a>
+										<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="InviteToTechnicalInterview">INVITE TO TECHNICAL INTERVIEW</a>
 										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
-											break;
+										break;
 									case ApplicationStatus.ForTechnicalInterview:
-									<a asp-route-id ="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="InviteToTechnicalExam">INVITE TO TECHNICAL EXAM</a>
+										<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="InviteToTechnicalExam">INVITE TO TECHNICAL EXAM</a>
 										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
-											break;
+										break;
 									case ApplicationStatus.ForTechnicalExam:
-									<a asp-route-id ="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="CheckBackground">CHECK BACKGROUND</a>
+										<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="CheckBackground">CHECK BACKGROUND</a>
 										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
-											break;
+										break;
 									case ApplicationStatus.UndergoingBackgroundCheck:
-									<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="InviteToFinalInterview">INVITE TO FINAL INTERVIEW</a>
+										<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="InviteToFinalInterview">INVITE TO FINAL INTERVIEW</a>
 										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
-											break;
+										break;
 									case ApplicationStatus.ForFinalInterview:
-									<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="SendJobOffer">SEND JOB OFFER</a>
+										<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="SendJobOffer">SEND JOB OFFER</a>
 										<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
-											break;
+										break;
 									case ApplicationStatus.UndergoingJobOffer:
-									<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="ConfirmApplicant">CONFIRM</a>
-									<a asp-route-id="@applicant.Id" class="decline-btn" asp-controller="HR" asp-action="DeclineApplicant">DECLINE</a>
-											break;
+										<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="ConfirmApplicant">CONFIRM</a>
+										<a asp-route-id="@applicant.Id" class="decline-btn" asp-controller="HR" asp-action="DeclineApplicant">DECLINE</a>
+										break;
 									case ApplicationStatus.Onboarding:
-									<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="DeployApplicant" style="justify-content: flex-start !important;">DEPLOY </a>
+										<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="DeployApplicant" style="justify-content: flex-start !important;">DEPLOY </a>
 										break;
 									default:
 										break;
@@ -119,209 +118,127 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-	// ...  demo-data
 	$(document).ready(function () {
-
-		const itemsPerPage = 10; // Number of items to display per page
+		const rowsPerPage = 10; // Number of rows to display per page
 		let currentPage = 1;
-		let filteredApplicants = applicants.slice();
 
-		function redirectToApplicantDetail(applicantIndex) {
-			const applicant = applicants[applicantIndex];
-			const detailUrl = '/HR/ApplicantDetail?name=' + encodeURIComponent(applicant.Name) + '&position=' + encodeURIComponent(applicant.Position) + '&status=' + encodeURIComponent(applicant.Status);
-			window.location.href = detailUrl;
-		}
-
-		function handleButtonClicks() {
-			// Add click event handler to each row
-			$(".table tbody tr").on("click", function () {
-				const applicantIndex = $(this).attr("data-applicant-index");
-				redirectToApplicantDetail(applicantIndex);
-			});
-
-			// Add click event handler for buttons
-			$(".table tbody tr .status-btn").on("click", function (event) {
-				event.stopPropagation();
-
-				const button = $(this);
-				const row = button.closest("tr");
-				const applicantIndex = row.attr("data-applicant-index");
-				const applicant = applicants[applicantIndex];
-
-				const buttonText = button.text().trim();
-				switch (buttonText) {
-					case "FOR REVIEW":
-						alert(`${applicant.Name}'s Application is now FOR REVIEW!`);
-						break;
-					case "SHORTLIST":
-						alert(`${applicant.Name}'s Application has been SHORTLISTED!`);
-						break;
-					case "FOR SCREENING":
-						alert(`${applicant.Name}'s Application is now FOR SCREENING!`);
-						break;
-					case "INVITE TO INTERVIEW":
-						alert(`${applicant.Name} has been INVITED TO INTERVIEW!`);
-						break;
-					case "UNDERGOING JOB OFFER":
-						alert(`${applicant.Name}'s is UNDERGOING JOB OFFER!`);
-						break;
-					case "ONBOARDING":
-						alert(`${applicant.Name}'s Application status is ONBOARDING!`);
-						break;
-					case "DEPLOY":
-						alert(`${applicant.Name} has been DEPLOYED!`);
-						break;
-					case "SEND JOB OFFER":
-						alert(`${applicant.Name} has been SENT A JOB OFFER!`);
-						break;
-					case "CONFIRM":
-						alert(`${applicant.Name}'s JOB OFFER has been CONFIRMED!`);
-						break;
-					default:
-						break;
-				}
-			});
-
-			// Add click event handler for the "REJECT" button
-			$(".table tbody tr .reject-btn").on("click", function (event) {
-				event.stopPropagation();
-				const button = $(this);
-				const row = button.closest("tr");
-				const applicantIndex = row.attr("data-applicant-index");
-				const applicant = applicants[applicantIndex];
-				alert(`${applicant.Name}'s Application has been REJECTED!`);
-			});
-
-			// Add click event handler for the "DECLINE" button
-			$(".table tbody tr .decline-btn").on("click", function (event) {
-				event.stopPropagation();
-				const button = $(this);
-				const row = button.closest("tr");
-				const applicantIndex = row.attr("data-applicant-index");
-				const applicant = applicants[applicantIndex];
-				alert(`${applicant.Name}'s Application has been DECLINED!`);
-			});
-		}
-
-		function displayData(currentPage) {
-			const startIndex = (currentPage - 1) * itemsPerPage;
-			const endIndex = startIndex + itemsPerPage;
-			const currentApplicants = filteredApplicants.slice(startIndex, endIndex);
-
-			const tbody = $(".table tbody");
-			tbody.empty();
-			$.each(currentApplicants, function (index, applicant) {
-				const row = $(`<tr>`);
-				const applicantIndex = applicants.indexOf(applicant);
-				row.attr("data-applicant-index", applicantIndex);
-				row.append(`<td title="Click to View Applicant Details">${applicant.Name}</td>`);
-				row.append(`<td title="Click to View Applicant Details">${applicant.Position}</td>`);
-				row.append(`<td title="Click to View Applicant Details">${applicant.Status}</td>`);
-				row.append(`
-				  <td>
-					<div class="applicant-container" data-title="${applicant.Status}">
-					  ${getStatusButtons(applicant.Status)}
-					</div>
-				  </td>
-			`);
-				tbody.append(row);
-			});
-
-			handleButtonClicks();
-		}
-
-		function displayPagination() {
-			const totalItems = filteredApplicants.length;
-			const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-			const paginationContainer = $(".pagination");
-			paginationContainer.empty();
-
-			// Previous button
-			const prevBtn = `<li class="page-item ${currentPage === 1 ? 'disabled' : ''}"><a class="page-link" href="#" data-page="${currentPage - 1}">Previous</a></li>`;
-			paginationContainer.append(prevBtn);
-
-			for (let i = 1; i <= totalPages; i++) {
-				const pageLink = `<li class="page-item ${currentPage === i ? 'active' : ''}"><a class="page-link" href="#" data-page="${i}">${i}</a></li>`;
-				paginationContainer.append(pageLink);
+		// Click event to each row
+		$('.clickable-row').on('click', function () {
+			const href = $(this).data('href');
+			if (href) {
+				window.location = href;
 			}
-
-			// Next button
-			const nextBtn = `<li class="page-item ${currentPage < totalPages ? '' : 'disabled'}"><a class="page-link" href="#" data-page="${currentPage + 1}">Next</a></li>`;
-			paginationContainer.append(nextBtn);
-
-			$(".pagination").on("click", ".page-link", function (event) {
-				event.preventDefault();
-				currentPage = parseInt($(this).data("page"));
-				displayData(currentPage);
-				displayPagination();
-			});
-		}
-
-		function applyFilters() {
-			const selectedPosition = $("#position").val();
-			const selectedStatus = $("#status").val();
-
-			filteredApplicants = applicants.filter(applicant => {
-				if (selectedPosition === "ALL" && selectedStatus === "ALL") {
-					return true;
-				}
-				if (selectedPosition === "ALL") {
-					return applicant.Status === selectedStatus;
-				}
-				if (selectedStatus === "ALL") {
-					return applicant.Position === selectedPosition;
-				}
-				return applicant.Position === selectedPosition && applicant.Status === selectedStatus;
-			});
-
-			displayData(1);
-			displayPagination();
-		}
-
-		// Apply filters when the status or position dropdown changes
-		$("#status, #position").on("change", function () {
-			applyFilters();
 		});
 
-		displayData(currentPage);
-		displayPagination();
-	});
+		// Function to display the table rows for the selected page and filter options
+		function showPage(pageNumber, positionFilter, statusFilter) {
+			const rows = $('.table tbody tr');
+			const filteredRows = filterRows(positionFilter, statusFilter);
 
-	document.addEventListener("DOMContentLoaded", function () {
-		const statusDropdown = document.getElementById('status');
-		const titleHeaders = document.querySelectorAll('.title-header');
-		const applicantContainers = document.querySelectorAll('.applicant-container');
+			rows.hide();
+			for (let i = (pageNumber - 1) * rowsPerPage; i < pageNumber * rowsPerPage && i < filteredRows.length; i++) {
+				$(filteredRows[i]).show();
+			}
 
-		// Display filtered data immediately after changing filters
-		function applyFilters() {
-			displayData(); 
-			displayPagination();
+			currentPage = pageNumber;
+			$('.pagination li a').removeClass('active');
+			$('.pagination li a[data-page="' + pageNumber + '"]').addClass('active');
+
+			$('.pagination .prev-btn').prop('disabled', pageNumber === 1);
+			$('.pagination .next-btn').prop('disabled', pageNumber === totalPages());
+
+			$('.pagination .prev-btn').toggleClass('disabled', pageNumber === 1);
+			$('.pagination .next-btn').toggleClass('disabled', pageNumber === totalPages());
 		}
 
-		statusDropdown.onchange = function () {
-			applyFilters();
+		// Helper function to get the description of an enum value
+		function getEnumDescriptionForStatus(statusText) {
+			const enumDescriptions = {
+				"Application Received!": "Received",
+				"Shortlisted": "Shortlisted",
+				"For Screening": "ForScreening",
+				"For HR Interview": "ForHRInterview",
+				"For Technical Interview": "ForTechnicalInterview",
+				"For Technical Exam": "ForTechnicalExam",
+				"Undergoing Background Check": "UndergoingBackgroundCheck",
+				"For Final Interview": "ForFinalInterview",
+				"Undergoing Job Offer": "UndergoingJobOffer",
+				"Confirmed": "Confirmed",
+				"Not Confirmed": "NotConfirmed",
+				"Onboarding": "Onboarding",
+				"Deployed": "Deployed",
+				"Rejected": "Rejected",
+			};
 
-			const selectedStatus = statusDropdown.value;
-			const selectedHeader = document.querySelector('.title-header[data-title="' + selectedStatus + '"]');
-			if (selectedHeader) {
-				selectedHeader.style.display = 'flex';
+			return enumDescriptions[statusText] || statusText;
+		}
+
+		// Function to filter rows based on the selected position and status
+		function filterRows(positionFilter, statusFilter) {
+			let rows = $('.table tbody tr');
+
+			if (positionFilter !== 'ALL') {
+				rows = rows.filter(function () {
+					const positionName = $(this).find('td:nth-child(2)').text().toLowerCase();
+					return positionName.includes(positionFilter.toLowerCase());
+				});
 			}
 
-			if (selectedStatus === 'ALL') {
-				applicantContainers.forEach(container => {
-					container.style.display = 'flex';
-				});
-			} else {
-				applicantContainers.forEach(container => {
-					container.style.display = 'none';
-				});
-
-				const selectedContainers = document.querySelectorAll('.applicant-container[data-title="' + selectedStatus + '"]');
-				selectedContainers.forEach(container => {
-					container.style.display = 'flex';
+			if (statusFilter !== 'ALL') {
+				rows = rows.filter(function () {
+					const statusName = $(this).find('td:nth-child(3)').text().trim();
+					const statusValue = getEnumDescriptionForStatus(statusName); 
+					return statusValue === statusFilter.trim();
 				});
 			}
-		};
+
+			return rows;
+		}
+
+		// Function to calculate the total number of pages based on the number of rows
+		function totalPages() {
+			const totalRows = filterRows($('#position').val(), $('#status').val()).length;
+			return Math.ceil(totalRows / rowsPerPage);
+		}
+
+		$('.pagination').on('click', '.prev-btn', function () {
+			if (currentPage > 1) {
+				showPage(currentPage - 1, $('#position').val(), $('#status').val());
+			}
+		});
+
+		$('.pagination').on('click', '.next-btn', function () {
+			if (currentPage < totalPages()) {
+				showPage(currentPage + 1, $('#position').val(), $('#status').val());
+			}
+		});
+
+		$('.pagination').on('click', 'li a[data-page]', function () {
+			const page = parseInt($(this).data('page'));
+			showPage(page, $('#position').val(), $('#status').val());
+		});
+
+		$('#position, #status').change(function () {
+			generatePaginationLinks();
+			showPage(1, $('#position').val(), $('#status').val());
+		});
+
+		// Function to generate pagination links
+		function generatePaginationLinks() {
+			const paginationContainer = $('.pagination');
+			paginationContainer.empty();
+
+			paginationContainer.append('<li><a href="#" class="prev-btn">Previous</a></li>');
+			for (let i = 1; i <= totalPages(); i++) {
+				paginationContainer.append(`<li><a href="#" data-page="${i}">${i}</a></li>`);
+			}
+
+			paginationContainer.append('<li><a href="#" class="next-btn">Next</a></li>');
+			$('.pagination li a[data-page="' + currentPage + '"]').addClass('active');
+			$('.pagination .prev-btn').prop('disabled', true);
+		}
+
+		generatePaginationLinks();
+		showPage(1, $('#position').val(), $('#status').val());
 	});
 </script>

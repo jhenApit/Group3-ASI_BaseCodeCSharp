@@ -24,9 +24,16 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Position Name</th>
-                    <th>Status</th>
+                    <th>
+                        <div class="sort-btn">
+                            <span>Position Name</span>
+                            <div class="sort-icons-container">
+                                <span class="sort-icon" data-sort="asc" title="Sort by ascending order">&#x25B2;</span>
+                                <span class="sort-icon" data-sort="desc" title="Sort by descending order">&#x25BC;</span> 
+                            </div>
+                        </div>
+                    </th>
+                    <th data-sort="status">Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -40,7 +47,6 @@
                     @foreach (var jobPosting in Model)
                     {
                         <tr>
-                            <td>@jobPosting.Id</td>
                             <td>@jobPosting.Name</td>
                             <td>@((JobStatus)Enum.Parse(typeof(JobStatus), jobPosting.JobStatus.ToString()))</td>
                             <td>
@@ -66,14 +72,46 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
+        var positionSortOrder = 'asc'; // Default sort order
+
+        // Function to sort the table rows based on the selected header
+        function sortTable(column, order) {
+            var tbody = $('tbody');
+            var rows = tbody.find('tr').get();
+
+            rows.sort(function (a, b) {
+                var aValue = $(a).find('td:nth-child(' + column + ')').text().toUpperCase();
+                var bValue = $(b).find('td:nth-child(' + column + ')').text().toUpperCase();
+
+                if (order === 'asc') {
+                    return aValue.localeCompare(bValue);
+                } else {
+                    return bValue.localeCompare(aValue);
+                }
+            });
+
+            $.each(rows, function (index, row) {
+                tbody.append(row);
+            });
+        }
+
+        // Set up click event handler for sort icons
+        $('.sort-icon').click(function () {
+            var sortOrder = $(this).data('sort');
+            positionSortOrder = sortOrder;
+            $('.sort-icon').removeClass('active');
+            $(this).addClass('active');
+            sortTable(1, positionSortOrder); // Sort by the 1st column (Position Name) based on selected order
+        });
+
         $('#searchInput').on('input', function () {
             var searchQuery = $(this).val().toLowerCase();
 
             $('tbody tr').each(function () {
                 var id = $(this).find('td:first-child').text().toLowerCase();
                 var position = $(this).find('td:nth-child(2)').text().toLowerCase();
-                var name = $(this).find('td:nth-child(3)').text().toLowerCase();
-                var status = $(this).find('td:nth-child(4)').text().toLowerCase();
+                var name = $(this).find('td:first-child').text().toLowerCase();
+                var status = $(this).find('td:nth-child(3)').text().toLowerCase();
 
                 if (id.includes(searchQuery) || position.includes(searchQuery) || name.includes(searchQuery) || status.includes(searchQuery)) {
                     $(this).show();

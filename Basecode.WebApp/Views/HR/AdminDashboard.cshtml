@@ -52,13 +52,15 @@
                     </a>
                 </div>
                 <div class="col-4">
-                    <div class="dashboard-cards p-3">
-                        <h3 class="card-title">NEW HIRES</h3>
-                        <div class="card-content p-3">
-                            <i class='bx bxs-user-rectangle card-icon'></i>
-                            <p class="card-value p-3">@Model.EmployeeCount</p>
+                    <a asp-controller="Hr" asp-action="NewHires">
+                        <div class="dashboard-cards p-3">
+                            <h3 class="card-title">NEW HIRES</h3>
+                            <div class="card-content p-3">
+                                <i class='bx bxs-user-rectangle card-icon'></i>
+                                <p class="card-value p-3">@Model.EmployeeCount</p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
 

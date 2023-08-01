@@ -42,9 +42,11 @@ namespace Basecode.WebApp.Controllers
             _interviewsService = interviewersService;
         }
 
-
-
-        public IActionResult AdminDashboard()
+		/// <summary>
+		/// Displays the admin dashboard
+		/// </summary>
+		/// <returns>The view containing the admin dashboard</returns>
+		public IActionResult AdminDashboard()
         {
             var user = _userManager.GetUserId(User);
             var model = new DashboardView
@@ -118,6 +120,11 @@ namespace Basecode.WebApp.Controllers
             return View(job);
         }
 
+        /// <summary>
+        /// Allows HR to create a Job Posting
+        /// </summary>
+        /// <param name="jobPostingsCreationDto">Job Posting details</param>
+        /// <returns>Created Job Post</returns>
         [HttpPost]
         public async Task<IActionResult> Add(JobPostingsCreationDto jobPostingsCreationDto)
         {
@@ -145,7 +152,12 @@ namespace Basecode.WebApp.Controllers
 			return View("JobPostList", jobPostingsCreationDto);
 		}
 
-        [HttpPost]
+		/// <summary>
+		/// Allows HR to update Job Posting details
+		/// </summary>
+		/// <param name="jobPostingsUpdationDto">Job Posting details</param>
+		/// <returns>The updated Job Posting details</returns>
+		[HttpPost]
         public async Task<IActionResult> Update(JobPostingsUpdationDto jobPostingsUpdationDto)
         {
             if (ModelState.IsValid)
@@ -171,6 +183,11 @@ namespace Basecode.WebApp.Controllers
             return View("EditJobPost", jobPostingsUpdationDto);
         }
 
+        /// <summary>
+        /// Deletes
+        /// </summary>
+        /// <param name="id">Job Id</param>
+        /// <returns></returns>
         public IActionResult DeleteJob(int id)
         {
             var job = _jobPostingsService.GetById(id);
@@ -180,6 +197,7 @@ namespace Basecode.WebApp.Controllers
             }
             return RedirectToAction("JobPostList");
         }
+
         /// <summary>
         /// Displays the details of a applicant's application.
         /// </summary>
@@ -188,8 +206,13 @@ namespace Basecode.WebApp.Controllers
         {
             return View();
         }
-        
-        [HttpPost]
+
+		/// <summary>
+		/// Allows HR to update Job Posting details
+		/// </summary>
+		/// <param name="model">Job Posting details</param>
+		/// <returns>Updated Job Post details</returns>
+		[HttpPost]
         public async Task<IActionResult> UpdateJobPosting(JobPostingsUpdationDto model)
         {
             if (ModelState.IsValid)
@@ -254,23 +277,29 @@ namespace Basecode.WebApp.Controllers
 		}
 
         /// <summary>
-        /// Allows HR to view job applicants in a specific job post with different status
+        /// Allows HR to view new hires
         /// </summary>
         /// <returns>Redirect to View Applicants Page</returns>
-        public IActionResult ViewApplicants()
+        public IActionResult NewHires()
         {
-            return View();
+            var applicants = _applicantService.RetrieveAll();
+            var jobPostings = _jobPostingsService.RetrieveAll();
+
+            var newHiresModel = new JobApplicantOverviewModel
+            {
+                applicants = applicants,
+                jobPostings = jobPostings
+            };
+
+            return View(newHiresModel);
         }
 
-        /// <summary>
-        /// Allows HR to view disqualified job applicants in a specific job post
-        /// </summary>
-        /// <returns>Redirect to View Disqualified Applicants Page</returns>
-        public IActionResult DisqualifiedApplicants()
-        {
-            return View();
-        }
-        public IActionResult ShortListApplicant(int id)
+		/// <summary>
+		/// Allows HR to shortlist an applicant
+		/// </summary>
+		/// <param name="id">Applicant id</param>
+		/// <returns>Applicant status update</returns>
+		public IActionResult ShortListApplicant(int id)
         {
             var applicant = _applicantService.GetById(id);
             if(applicant != null)
@@ -282,6 +311,12 @@ namespace Basecode.WebApp.Controllers
             Console.WriteLine("Applicant not found!");
 			return RedirectToAction("JobApplicantsOverview");
 		}
+
+		/// <summary>
+		/// Allows HR to change applicant status to For Screening
+		/// </summary>
+		/// <param name="id">Applicant id</param>
+		/// <returns>Applicant status update</returns>
 		public IActionResult ForScreeningApplicant(int id)
 		{
 			var applicant = _applicantService.GetById(id);
@@ -294,6 +329,12 @@ namespace Basecode.WebApp.Controllers
 			Console.WriteLine("Applicant not found!");
 			return RedirectToAction("JobApplicantsOverview");
 		}
+
+		/// <summary>
+		/// Allows HR to invite applicant to HR Interview
+		/// </summary>
+		/// <param name="id">Applicant id</param>
+		/// <returns>Applicant status update</returns>
 		public IActionResult InviteToHRInterview(int id)
 		{
 			var applicant = _applicantService.GetById(id);
@@ -306,6 +347,12 @@ namespace Basecode.WebApp.Controllers
 			Console.WriteLine("Applicant not found!");
 			return RedirectToAction("JobApplicantsOverview");
 		}
+
+		/// <summary>
+		/// Allows HR to invite applicant to Technical Interview
+		/// </summary>
+		/// <param name="id">Applicant id</param>
+		/// <returns>Applicant status update</returns>
 		public IActionResult InviteToTechnicalInterview(int id)
 		{
 			var applicant = _applicantService.GetById(id);
@@ -318,6 +365,12 @@ namespace Basecode.WebApp.Controllers
 			Console.WriteLine("Applicant not found!");
 			return RedirectToAction("JobApplicantsOverview");
 		}
+
+		/// <summary>
+		/// Allows HR to invite applicant to Technical Exam
+		/// </summary>
+		/// <param name="id">Applicant id</param>
+		/// <returns>Applicant status update</returns>
 		public IActionResult InviteToTechnicalExam(int id)
 		{
 			var applicant = _applicantService.GetById(id);
@@ -330,6 +383,12 @@ namespace Basecode.WebApp.Controllers
 			Console.WriteLine("Applicant not found!");
 			return RedirectToAction("JobApplicantsOverview");
 		}
+
+		/// <summary>
+		/// Allows HR to invite applicant to Final Interview
+		/// </summary>
+		/// <param name="id">Applicant id</param>
+		/// <returns>Applicant status update</returns>
 		public IActionResult InviteToFinalInterview(int id)
 		{
 			var applicant = _applicantService.GetById(id);
@@ -342,6 +401,12 @@ namespace Basecode.WebApp.Controllers
 			Console.WriteLine("Applicant not found!");
 			return RedirectToAction("JobApplicantsOverview");
 		}
+
+		/// <summary>
+		/// Allows HR to send job offer to an applicant
+		/// </summary>
+		/// <param name="id">Applicant id</param>
+		/// <returns>Applicant status update</returns>
 		public IActionResult SendJobOffer(int id)
 		{
 			var applicant = _applicantService.GetById(id);
@@ -356,11 +421,11 @@ namespace Basecode.WebApp.Controllers
 		}
 
         /// <summary>
-        /// when the confirm button is clicked meaning the applicant accepted the job offer
+        /// When the confirm button is clicked meaning the applicant accepted the job offer
         /// so the next status is the onboarding of the applicant
         /// </summary>
-        /// <param name="id">id of the applicant</param>
-        /// <returns>the view for the status update</returns>
+        /// <param name="id">Applicant id</param>
+        /// <returns>Applicant status update</returns>
 		public IActionResult ConfirmApplicant(int id)
 		{
 			var applicant = _applicantService.GetById(id);
@@ -373,6 +438,12 @@ namespace Basecode.WebApp.Controllers
 			Console.WriteLine("Applicant not found!");
 			return RedirectToAction("JobApplicantsOverview");
 		}
+
+		/// <summary>
+		/// Allows HR to deploy applicant
+		/// </summary>
+		/// <param name="id">Applicant id</param>
+		/// <returns>Applicant status update</returns>
 		public IActionResult DeployApplicant(int id)
 		{
 			var applicant = _applicantService.GetById(id);
@@ -385,11 +456,12 @@ namespace Basecode.WebApp.Controllers
 			Console.WriteLine("Applicant not found!");
 			return RedirectToAction("JobApplicantsOverview");
 		}
-        /// <summary>
-        /// when applicant does not accept the job offer
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+
+		/// <summary>
+		/// When applicant does not accept the job offer
+		/// </summary>
+		/// <param name="id">Applicant id</param>
+		/// <returns>Applicant status update</returns>
 		public IActionResult DeclineApplicant(int id)
 		{
 			var applicant = _applicantService.GetById(id);
@@ -402,6 +474,12 @@ namespace Basecode.WebApp.Controllers
 			Console.WriteLine("Applicant not found!");
 			return RedirectToAction("JobApplicantsOverview");
 		}
+
+		/// <summary>
+		/// Allows HR to reject applicant
+		/// </summary>
+		/// <param name="id">Applicant id</param>
+		/// <returns>Applicant status update</returns>
 		public IActionResult RejectApplicant(int id)
 		{
 			var applicant = _applicantService.GetById(id);
@@ -414,6 +492,12 @@ namespace Basecode.WebApp.Controllers
 			Console.WriteLine("Applicant not found!");
 			return RedirectToAction("JobApplicantsOverview");
 		}
+
+        /// <summary>
+        /// Allows HR to check applicant background
+        /// </summary>
+        /// <param name="id">Applicant id</param>
+        /// <returns></returns>
 		public IActionResult CheckBackground(int id)
 		{
 			var applicant = _applicantService.GetById(id);

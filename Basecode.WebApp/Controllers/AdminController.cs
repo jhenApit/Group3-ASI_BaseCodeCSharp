@@ -55,39 +55,6 @@ namespace Basecode.WebApp.Controllers
             return View(data);
         }
 
-        /*/// <summary>
-        /// Creates an account for the HR employee.
-        /// </summary>
-        /// <param name="hrEmployee">Details of the HR employee to be created</param>
-        /// <returns>Redirects to the HrList page, displaying the updated list of accounts, including the newly created account</returns>
-        public async Task<IActionResult> CreateHrAccount(HREmployeeCreationDto hrEmployee)
-        {
-            if (ModelState.IsValid)
-            {
-                var data = _service.CreateHrAccount(hrEmployee);
-                if (!data.Result)
-                {
-                    _logger.Error(_errorHandling.SetLog(data));
-                    ViewBag.ErrorMessage = data.Message;
-                    return View(hrEmployee);
-                }
-                _service.Add(hrEmployee);
-
-                var recipient = "jm.senening08@gmail.com";
-                var subject = "Alliance Human Resource Account";
-                var body = $"Dear Mr/Mrs {hrEmployee.Name}, <br/> <br/> This is your human resource account. <br/>" +
-                           $"<br/> Email: {hrEmployee.Email} <br/> Password: {hrEmployee.Password} <br/>" +
-                           "<br/> You can edit your profile once you've logged in.";
-
-
-                await _emailService.SendEmail(recipient, subject, body);
-
-                return RedirectToAction("HrList");
-            }
-            ModelState.Clear();
-            return View(hrEmployee);
-        }*/
-
         /// <summary>
         /// Displays the account selected for editing.
         /// </summary>
@@ -197,18 +164,6 @@ namespace Basecode.WebApp.Controllers
         public async Task<IActionResult> Update(HREmployeeUpdationDto hrEmployee)
         {
             await _service.UpdateAsync(hrEmployee);
-            return RedirectToAction("HrList");
-        }
-
-        /// <summary>
-        /// Adds a new HR employee account.
-        /// </summary>
-        /// <param name="hrEmployee">The new HR employee details</param>
-        /// <returns>Redirects to the HrList page</returns>
-        [HttpPost]
-        public async Task<IActionResult> Add(HREmployeeCreationDto hrEmployee)
-        {
-            await _service.AddAsync(hrEmployee);
             return RedirectToAction("HrList");
         }
     }

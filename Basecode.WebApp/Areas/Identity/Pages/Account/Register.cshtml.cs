@@ -197,7 +197,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
                     hrEmployee.UserId = user.Id;
                     //save user to employees table
                     hrEmployee.Password = user.PasswordHash;
-                    _hr_service.Add(hrEmployee);
+                    await _hr_service.AddAsync(hrEmployee);
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)

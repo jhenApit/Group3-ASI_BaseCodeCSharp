@@ -4,7 +4,7 @@
     <meta http-equiv="content-type" content="text/html" charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Offer Accepted</title>
+    <title>Application Status</title>
     <style type="text/css">
         body {
             margin: 0;
@@ -25,15 +25,6 @@
             margin-block-start: 1.2em;
             margin-block-end: 1.2em;
         }
-        button {
-            color: #fff;
-            background-color: #EC2224;
-            padding: .5rem 1rem;
-            border-radius: .5rem;
-            border: 3px solid #ffa4a4;
-            font-size: 16px;
-            font-weight: bold;
-        }
         hr {
             margin-block-start: 0;
             margin-block-end: 0;
@@ -49,7 +40,7 @@
         }
         .wrapper {
             width: 100%;
-            table-layout: auto;
+            table-layout: fixed;
             padding-bottom: 60px;
         }
         .main {
@@ -66,10 +57,10 @@
     <center class="wrapper">
         <table class="main" width="100%">
             <tr>
-                <td style="background-color:black;">
+                <td>
                     <center>
                         <!-- ASI Logo -->
-                        <img src="https://i.imgur.com/flCBacP.png" title="Logo" alt="Alliance Logo" style="height: 50px; margin: 12px 0 8px 0" />
+                        <img src="https://i.imgur.com/eysz5eh.png" title="Logo" alt="Alliance Logo" style="height: 50px; margin: 12px 0 8px 0;" />
                     </center>
                     <hr style="color: #ff0000; height:5px; background-color: #ff0000" />
                 </td>
@@ -78,7 +69,7 @@
                 <td>
                     <center>
                         <!-- Email Title -->
-                        <h2 style="color: #000">Job Offer Accepted</h2>
+                        <h2 style="color: #ff0000">Application Status Update</h2>
                     </center>
                     <hr style="height: 1px; background-color: #d5d5d5" />
                 </td>
@@ -86,33 +77,33 @@
             <tr>
                 <!-- Greetings -->
                 <td style="padding:10px 10px 0 10px;">
-                    Attention <b>HR Team</b>,
+                    Hi <b>{Name}</b>,
                 </td>
             </tr>
             <tr>
                 <td style="padding:0 10px;">
                     <!-- Main Content -->
                     <p style="text-align:justify;">
-                        The applicant <b>{ApplicantName}</b> has accepted the job offer and signed for the position of <b>{JobTitle}</b>.
+                        We are informing you of a recent update regarding your application for <b>{JobName}</b>. Your candidacy has progressed to the next stage of our selection process, and we wanted to share this exciting news with you.
+                    </p>
+                    <p style="margin-left: 20px;">
+                        Application Status: <b>{Status}</b>
+                    </p>
+                    <p style="text-align:justify;">
+                        Using your Application ID, you can track the progress of your application at any time at our site's application tracker <a href="" style="color: #ff0000">here</a>.
+                    </p>
+                    <p style="text-align:justify;">
+                        If you have any questions or need clarification about the current stage of the process, don't hesitate to contact us at <u style="color: #ff0000;">{Company Email}</u>.
                     </p>
                     <p>
-                        Kindly click the button below to confirm the acceptance and notify the Deployment Team of the new hire.
-                    </p>
-                    <center>
-                        <button style="margin-right: 20px;">Confirm!</button>
-                    </center>
-                    <p>
-                        If there has been mistakes or clarifications, please contact <u style="color: #ff0000;">{CompanyEmail}</u>
-                    </p>
-                    <p>
-                        Thank you for your attention to this matter.
+                        Once again, congratulations on this advancement in the selection process. We appreciate your dedication and effort in pursuing this opportunity.
                     </p>
                 </td>
             </tr>
         </table>
         <!-- This email is generated, do not reply -->
         <center style="width: 600px; line-height: 15.4px;">
-            <i style="color: gray; font-size: 12px;">This is an automated email. Please do not reply directly to this message.</i>
+            <i style="color: gray; font-size: 12px;">This is an automated email. Please do not reply directly to this message as the mailbox is not monitored. <br />For any inquiries or assistance, kindly reach out to our team at {Company Email}.</i>
             <hr style="height: 1px; width: 80%; background-color: #d5d5d5; margin: 3px 0" />
             <i style="color: gray; font-size: 12px;">© 2023 Alliance Software, Inc. All Rights Reserved.</i>
         </center>

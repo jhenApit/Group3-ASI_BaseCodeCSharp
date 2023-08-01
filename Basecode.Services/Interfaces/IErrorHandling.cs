@@ -9,6 +9,6 @@ namespace Basecode.Services.Interfaces
 {
     public interface IErrorHandling
     {
-        string SetLog(LogContent logContent);
+        string SetLog(LogContent logContent, string location);
     }
 }

@@ -1,4 +1,4 @@
-﻿body, .main-content {
+﻿﻿body, .main-content {
     background: #F0F6F7;
 }
 
@@ -161,4 +161,11 @@
 .button-edit-cancel {
     padding: 0 1.5em;
     border-radius: 0.5em;
+}
+
+.selectInterviewer {
+    font-size: 36px;
+    color: #55729B;
+    text-align: center;
+    margin: 5em 0;
 }

@@ -437,7 +437,7 @@ namespace Basecode.Services.Utils
             email.To.Add(new MailboxAddress("HR Department", "alliance.humanresourceteam@gmail.com"));
             email.Subject = "Job Offer Approval";
 
-            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ReferenceGratitude.html");
+            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/HRJobOfferAccepted.html");
 
             emailBodyTemplate = emailBodyTemplate.Replace("{Name}", applicant.Name);
             emailBodyTemplate = emailBodyTemplate.Replace("{JobTitle}", jobTitle);
@@ -459,7 +459,7 @@ namespace Basecode.Services.Utils
             email.To.Add(new MailboxAddress("Deployment Team", "alliance.humanresourceteam@gmail.com"));
             email.Subject = "Deployment Requirements";
 
-            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ReferenceGratitude.html");
+            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/DTRequirements.html");
 
             emailBodyTemplate = emailBodyTemplate.Replace("{Name}", applicant.Name);
             emailBodyTemplate = emailBodyTemplate.Replace("{JobTitle}", jobTitle);

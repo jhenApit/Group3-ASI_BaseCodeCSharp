@@ -140,7 +140,7 @@ namespace Basecode.WebApp.Controllers
                 
                 if (!data.Result)
                 {
-                    _logger.Error(_errorHandling.SetLog(data));
+                    //_logger.Error(_errorHandling.SetLog(data));
                     ViewBag.ErrorMessage = data.Message;
                     return View(jobPostingsCreationDto);
                 }
@@ -167,7 +167,7 @@ namespace Basecode.WebApp.Controllers
                 
                 if (!data.Result)
                 {
-                    _logger.Error(_errorHandling.SetLog(data));
+                    //_logger.Error(_errorHandling.SetLog(data));
                     ViewBag.ErrorMessage = data.Message;
                     return View(jobPostingsUpdationDto);
                 }

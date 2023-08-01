@@ -131,7 +131,7 @@ namespace Basecode.WebApp.Controllers
                 
                 if (!data.Result)
                 {
-                    _logger.Error(_errorHandling.SetLog(data));
+                    //_logger.Error(_errorHandling.SetLog(data));
                     ViewBag.ErrorMessage = data.Message;
                     return View(jobPostingsCreationDto);
                 }
@@ -158,7 +158,7 @@ namespace Basecode.WebApp.Controllers
                 
                 if (!data.Result)
                 {
-                    _logger.Error(_errorHandling.SetLog(data));
+                    //_logger.Error(_errorHandling.SetLog(data));
                     ViewBag.ErrorMessage = data.Message;
                     return View(jobPostingsUpdationDto);
                 }
@@ -206,33 +206,6 @@ namespace Basecode.WebApp.Controllers
         }
 
         /// <summary>
-        /// View List of Upcoming Interviews
-        /// </summary>
-        /// <returns>Redirect to Interview Page</returns>
-        public IActionResult Interview()
-        {
-            return View();
-        }
-
-        /// <summary>
-        /// Allows HR to create a new interview entry
-        /// </summary>
-        /// <returns>Redirect to Create Interview Page</returns>
-        public IActionResult CreateInterview()
-        {
-            return View();
-        }
-
-        /// <summary>
-        /// Allows HR to edit an interview
-        /// </summary>
-        /// <returns>Redirect to Edit Interview Page</returns>
-        public IActionResult EditInterview()
-        {
-            return View();
-        }
-
-        /// <summary>
         /// Allows HR to view job applicants
         /// </summary>
         /// <returns>Redirect to Job Applicant Overview Page</returns>
@@ -258,5 +231,36 @@ namespace Basecode.WebApp.Controllers
         {
             return View();
         }
+
+        #region Interviews
+
+        /// <summary>
+        /// View List of Upcoming Interviews
+        /// </summary>
+        /// <returns>Redirect to Interview Page</returns>
+        public IActionResult Interviews()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Allows HR to create a new interview entry
+        /// </summary>
+        /// <returns>Redirect to Create Interview Page</returns>
+        public IActionResult CreateInterview()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Allows HR to edit an interview
+        /// </summary>
+        /// <returns>Redirect to Edit Interview Page</returns>
+        public IActionResult EditInterview()
+        {
+            return View();
+        }
+
+        #endregion
     }
 }

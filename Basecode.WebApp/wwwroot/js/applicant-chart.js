@@ -51,14 +51,14 @@ const chartData = {
         Confirmed,
         NotConfirmed,
         UndergoingJobOffer,
-        //ForFinalInterview,
-        //UndergoingBackgroundCheck,
-        //ForTechnicalExam,
-        //ForTechnicalInterview,
-        //ForHRInterview,
-        //ForScreening,
-        //Shortlisted,
-        //Rejected
+        ForFinalInterview,
+        UndergoingBackgroundCheck,
+        ForTechnicalExam,
+        ForTechnicalInterview,
+        ForHRInterview,
+        ForScreening,
+        Shortlisted,
+        Rejected
     ]
 }
 
@@ -82,7 +82,7 @@ new Chart(applicantChart, {
         labels: chartData.labels,
         datasets: [
             {
-                label: "Status",
+                label: "Applicants",
                 data: chartData.data,
             }
         ],

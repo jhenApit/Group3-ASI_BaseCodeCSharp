@@ -97,13 +97,13 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
             if (user == null)
             {
                 // Don't reveal that the user does not exist
-                return RedirectToPage("~/Index", new { from = "resetPassword" });
+                return RedirectToPage("./Login", new { from = "resetPassword" });
             }
 
             var result = await _userManager.ResetPasswordAsync(user, Input.Code, Input.Password);
             if (result.Succeeded)
             {
-                return RedirectToPage("~/Index", new { from = "resetPassword" });
+                return RedirectToPage("./Login", new { from = "resetPassword" });
             }
 
             foreach (var error in result.Errors)

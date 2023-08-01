@@ -45,9 +45,6 @@
                         </div>
                         <div class="d-grid gap-2">
                             <button type="submit" value="Login" class="btn btn-danger">Sign In</button>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ForgotPassword">
-                                Test modal
-                            </button>
                         </div>
 
                         <div class="d-grid gap-2 mt-3">
@@ -59,34 +56,35 @@
         </div>
     </div>
 </body>
-
-<div class="modal fade" id="ForgotPassword" tabindex="-1" role="dialog" aria-labelledby="ForgotPasswordLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header justify-content-center pb-4">
-                <img class="notice-icon" src="~/images/icons/notice_icon.svg" />
-                <button type="button" class="close d-none" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <h4 class="text-center">Please check your email and click the <span class="text-danger">Reset Password</span> button to recover your account</h4>
-            </div>
-            <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-                    <h5 class="pb-0 m-0">Close</h5>
-                </button>
+@if (ViewData["resetPasswordConfirmation"] != null && (bool)ViewData["resetPasswordConfirmation"])
+{
+    <div class="modal fade" id="ForgotPassword" tabindex="-1" role="dialog" aria-labelledby="ForgotPasswordLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center pb-4">
+                    <img class="notice-icon" src="~/images/icons/notice_icon.svg" />
+                    <button type="button" class="close d-none" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4 class="text-center">Your <span class="text-danger">Password</span> has been reset successfully <br /> You can now login to your account</h4>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                        <h5 class="pb-0 m-0">Close</h5>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<script>
-    $(document).ready(function () {
+    <script>
+        $(document).ready(function () {
         // Show the modal when the page is ready
         $('#ForgotPassword').modal('show');
-    });
-</script>
-
+        });
+    </script>
+}
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

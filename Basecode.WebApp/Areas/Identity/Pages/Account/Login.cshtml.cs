@@ -91,7 +91,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null, string from = null)
         {
-            ViewData["ForgotPasswordConfirmation"] = (from == "forgotPassword");
+            ViewData["resetPasswordConfirmation"] = (from == "resetPassword");
             //if already logged in, user will be redirected to dashboard
             if (User.Identity.IsAuthenticated)
             {

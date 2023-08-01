@@ -314,9 +314,63 @@ namespace Basecode.WebApp.Controllers
         /// Allows HR to edit an interview
         /// </summary>
         /// <returns>Redirect to Edit Interview Page</returns>
-        public IActionResult EditInterview()
+        public IActionResult EditInterview(int id)
         {
-            return View();
+            Interviews interviews = _interviewsService.GetById(id);
+            try
+            {
+                Console.WriteLine(interviews);
+                if (interviews != null)
+                {
+                    var viewModel = new InterviewsFormViewModel
+                    {
+                        Interviewer = _interviewersService.GetById(interviews.InterviewerId),
+                        ApplicantsList = _applicantService.RetrieveAll(),
+                        ApplicantId = interviews.ApplicantId,
+                        InterviewerId = interviews.InterviewerId,
+                        InterviewType = interviews.InterviewType,
+                        InterviewDate = interviews.InterviewDate,
+                        TimeStart = interviews.TimeStart,
+                        TimeEnd = interviews.TimeEnd
+                    };
+                    return View(viewModel);
+                }
+                return RedirectToAction("Interview");
+            }
+            catch (Exception)
+            {
+                return BadRequest("An error occurred while retriving this page.");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult UpdateInterview(InterviewsFormViewModel interview)
+        {
+            Console.WriteLine(interview.ApplicantId);
+            Console.WriteLine(interview.InterviewerId);
+            Console.WriteLine(interview.InterviewType);
+            Console.WriteLine(interview.InterviewDate);
+            Console.WriteLine(interview.TimeStart);
+            Console.WriteLine(interview.TimeEnd);
+            try
+            {
+                var updateInterview = new InterviewsUpdationDto
+                {
+                    Id = interview.Id,
+                    ApplicantId = interview.ApplicantId,
+                    InterviewerId = interview.InterviewerId,
+                    InterviewType = interview.InterviewType,
+                    InterviewDate = interview.InterviewDate,
+                    TimeStart = interview.TimeStart,
+                    TimeEnd = interview.TimeEnd,
+                };
+                _interviewsService.Update(updateInterview);
+                return RedirectToAction("Interviews");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error occurred while adding a new interview");
+            }
         }
 
         /// <summary>

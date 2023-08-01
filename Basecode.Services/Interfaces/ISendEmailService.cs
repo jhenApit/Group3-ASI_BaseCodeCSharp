@@ -15,7 +15,7 @@ namespace Basecode.Services.Interfaces
         void SendApplicantApplicationRegretEmail(Applicants applicant, string job);
         void SendNewApplicantEmail(Applicants applicant, string position);
         void SendApplicantJobOfferEmail(Applicants applicant, string job, string workSetup, string hours);
-        void SendApplicantJobOfferConfirmationEmail(Applicants applicants, string jobTitle);
+        void SendHrJobOfferConfirmationEmail(Applicants applicants, string jobTitle);
         void SendApplicationStatusEmail(Applicants applicant, string job, string status);
         void SendHrApplicationApprovalEmail(Applicants applicant, string jobTitle);
         void SendForgotPasswordLink(IdentityUser user, string url);
@@ -23,17 +23,17 @@ namespace Basecode.Services.Interfaces
         //Start here!
         void SendSetInterviewScheduleEmail(Applicants applicant, string schedule);
         void SendInterviewReminderEmail(string applicant, Interviewers interviewer, string interviewType, string dateAndTime); // done
-        void SendHrApprovedScheduleEmail(Applicants applicants);
-        void SendHrInterviewApprovalEmail(Applicants applicants);
-        void SendApplicantInterviewRegretEmail(Applicants applicants);
+        void SendHrApprovedScheduleEmail(Applicants applicant);
+        void SendHrInterviewApprovalEmail(Applicants applicant, string interviewType); // done
+        void SendApplicantInterviewRegretEmail(Applicants applicant, string jobTitle, string interviewType); //done
         void SendReferenceFormEmail(CharacterReferences characterReference, string applicant, string jobTitle); // done
-        void SendReferenceGratitudeEmail(CharacterReferences characterReference, string applicant);
-        void SendApplicantReferenceNotificationEmail(CharacterReferences characterReferences);
+        void SendReferenceGratitudeEmail(CharacterReferences characterReference, string applicant); // done
+        void SendApplicantReferenceNotificationEmail(Applicants applicant, string jobTitle); // done
         void SendHrAnsweredFormNotificationEmail(Applicants applicants, CharacterReferences characterReferences);
         void SendHrReferenceApprovalEmail(Applicants applicants); // done
         void SendHrJobOfferApprovalEmail(Applicants applicant, string jobTitle); // done
         void SendDtRequirementNotificationEmail(Applicants applicant, string jobTitle); // done
-        void SendDtConfirmationEmail(Applicants applicants);
+        void SendDtConfirmationEmail(Applicants applicant); // done
 
     }
 }

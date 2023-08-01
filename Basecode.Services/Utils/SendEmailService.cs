@@ -111,7 +111,7 @@ namespace Basecode.Services.Utils
             email.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
             email.Subject = "Apologies and Regrets for Recent Application";
 
-            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ApplicantRejected.html");
+            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ApplicantApplicationRejected.html");
 
             emailBodyTemplate = emailBodyTemplate.Replace("{Name}", applicant.FirstName);
             emailBodyTemplate = emailBodyTemplate.Replace("{Job}", job);
@@ -161,7 +161,7 @@ namespace Basecode.Services.Utils
         /// </summary>
         /// <param name="applicant">Applicant</param>
         /// <param name="jobTitle">Job Title</param>
-        public void SendApplicantJobOfferConfirmationEmail(Applicants applicant, string jobTitle)
+        public void SendHrJobOfferConfirmationEmail(Applicants applicant, string jobTitle)
         {
             var email = new MimeMessage();
 
@@ -336,19 +336,55 @@ namespace Basecode.Services.Utils
             _emailService.SendEmail(hrNotifEmail);
         }
 
-        public void SendHrApprovedScheduleEmail(Applicants applicants)
+        public void SendHrApprovedScheduleEmail(Applicants applicant)
         {
             throw new NotImplementedException();
         }
 
-        public void SendHrInterviewApprovalEmail(Applicants applicants)
+        public void SendHrInterviewApprovalEmail(Applicants applicant, string interviewType)
         {
-            throw new NotImplementedException();
+            var hrNotifEmail = new MimeMessage();
+
+            hrNotifEmail.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
+            hrNotifEmail.To.Add(new MailboxAddress("HR Department", "alliance.humanresourceteam@gmail.com"));
+            hrNotifEmail.Subject = "Interview/Exam Status";
+
+            string hrEmailBody = File.ReadAllText("wwwroot/emailTemplates/HRInterviewStatusReview.html");
+
+            hrEmailBody = hrEmailBody.Replace("{Name}", applicant.Name);
+            hrEmailBody = hrEmailBody.Replace("{InterviewTypee}", interviewType);
+            hrEmailBody = hrEmailBody.Replace("{Email}", "alliance.jobhiring@gmail.com");
+
+            hrNotifEmail.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = hrEmailBody
+            };
+
+            _emailService.SendEmail(hrNotifEmail);
+           
         }
 
-        public void SendApplicantInterviewRegretEmail(Applicants applicants)
+        public void SendApplicantInterviewRegretEmail(Applicants applicant, string jobTitle, string interviewType)
         {
-            throw new NotImplementedException();
+            var email = new MimeMessage();
+
+            email.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
+            email.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
+            email.Subject = "Apologies and Regrets for Recent Application";
+
+            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ApplicantInterviewRejected.html");
+
+            emailBodyTemplate = emailBodyTemplate.Replace("{ApplicantName}", applicant.FirstName);
+            emailBodyTemplate = emailBodyTemplate.Replace("{JobTitle}", jobTitle);
+            emailBodyTemplate = emailBodyTemplate.Replace("{InterviewType}", jobTitle);
+            emailBodyTemplate = emailBodyTemplate.Replace("{HR Team Email}", "alliance.humanresourceteam@gmail.com");
+
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = emailBodyTemplate
+            };
+
+            _emailService.SendEmail(email);
         }
 
         public void SendReferenceFormEmail(CharacterReferences characterReference, string applicant, string jobTitle)
@@ -396,9 +432,25 @@ namespace Basecode.Services.Utils
             _emailService.SendEmail(email);
         }
 
-        public void SendApplicantReferenceNotificationEmail(CharacterReferences characterReferences)
+        public void SendApplicantReferenceNotificationEmail(Applicants applicant, string jobTitle)
         {
-            throw new NotImplementedException();
+            var email = new MimeMessage();
+
+            email.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
+            email.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
+            email.Subject = "Reference Request Follow-Up";
+
+            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ApplicantReferenceAbsent.html");
+
+            emailBodyTemplate = emailBodyTemplate.Replace("{Name}", applicant.Name);
+            emailBodyTemplate = emailBodyTemplate.Replace("{JobTitle}", jobTitle);
+
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = emailBodyTemplate
+            };
+
+            _emailService.SendEmail(email);
         }
 
         public void SendHrAnsweredFormNotificationEmail(Applicants applicants, CharacterReferences characterReferences)
@@ -474,9 +526,25 @@ namespace Basecode.Services.Utils
             _emailService.SendEmail(email);
         }
 
-        public void SendDtConfirmationEmail(Applicants applicants)
+        public void SendDtConfirmationEmail(Applicants applicant)
         {
-            throw new NotImplementedException();
+            var email = new MimeMessage();
+
+            email.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
+            email.To.Add(new MailboxAddress("Deployment Team", "alliance.humanresourceteam@gmail.com"));
+            email.Subject = "Onboarding Confirmation";
+
+            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/DTConfirmation.html");
+
+            emailBodyTemplate = emailBodyTemplate.Replace("{ApplicantName}", applicant.Name);
+            emailBodyTemplate = emailBodyTemplate.Replace("{CompanyEmail}", "alliance.jobhiring@gmail.com");
+
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = emailBodyTemplate
+            };
+
+            _emailService.SendEmail(email);
         }
     }
 }

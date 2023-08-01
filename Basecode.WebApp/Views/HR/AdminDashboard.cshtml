@@ -20,7 +20,15 @@
             </div>
             <div class="header-details d-flex">
                 <p class="welcome">WELCOME</p>
-                <p class="name"><a id="manage" class="nav-link text-dark text-capitalize" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@Model.User.Name</a></p>
+                @{
+                    string fullName = @Model.User.Name;
+                    string[] fullNameValues = fullName.Split(' ');
+                    string FirstName = fullNameValues[0].Trim();
+
+                }
+                <p class="name mr-3">
+                    <a id="manage" class="nav-link text-dark text-capitalize pr-3" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@FirstName</a>
+                </p>
             </div>
         </div>
 

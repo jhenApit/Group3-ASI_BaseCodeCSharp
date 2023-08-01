@@ -86,7 +86,7 @@
                     <tr class="interview-row interviewer-@interviews.InterviewerId">
                         <!-- Add the class with interviewerId for filtering -->
                         <td>@interviews.InterviewDate.ToString("MMMM dd, yyyy"), @interviews.TimeStart - @interviews.TimeEnd</td>
-                        <td>@interviews.ApplicantId</td>
+                        <td>@interviews.Applicant.Name</td>
                         <td>@EnumHelper.GetEnumDescription(interviews.InterviewType)</td>
                         <td>
                             <a asp-controller="HR" asp-action="EditInterview" asp-route-id="@interviews.Id" class="btn b-blue button-edit-cancel">

@@ -9,6 +9,7 @@ using System.Net.Http;
 using Microsoft.Extensions.Logging;
 using static Basecode.Data.Enums.Enums;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.VisualBasic;
 
 namespace Basecode.Services.Utils
 {
@@ -284,13 +285,56 @@ namespace Basecode.Services.Utils
             _emailService.SendEmail(email);
         }
 
-        public void SendSetInterviewScheduleEmail(Applicants applicant, string schedule)
+        public void SendSetInterviewScheduleEmail(Interviewers interviewer, Applicants applicant, string interviewType, string jobTitle, string date, string time)
         {
-            throw new NotImplementedException();
+            var interviewerEmail = new MimeMessage();
+
+            interviewerEmail.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
+            interviewerEmail.To.Add(new MailboxAddress(interviewer.Name, interviewer.Email));
+            interviewerEmail.Subject = "Interview Notice";
+
+            string interviewerEmailBody = File.ReadAllText("wwwroot/emailTemplates/InterviewerDateNotice.html");
+
+            interviewerEmailBody = interviewerEmailBody.Replace("{Interviwername}", interviewer.Name);
+            interviewerEmailBody = interviewerEmailBody.Replace("{InterviewType}", interviewType);
+            interviewerEmailBody = interviewerEmailBody.Replace("{JobTitle}", jobTitle);
+            interviewerEmailBody = interviewerEmailBody.Replace("{ApplicantName}", applicant.Name);
+            interviewerEmailBody = interviewerEmailBody.Replace("{Date}", date);
+            interviewerEmailBody = interviewerEmailBody.Replace("{Time}", time);
+            interviewerEmailBody = interviewerEmailBody.Replace("{Link}", "https://localhost:50140/Applicant/TrackApplication"); //add correct link
+            interviewerEmailBody = interviewerEmailBody.Replace("{Email}", "alliance.jobhiring@gmail.com");
+
+
+            interviewerEmail.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = interviewerEmailBody
+            };
+
+            var applicantEmail = new MimeMessage();
+
+            applicantEmail.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
+            applicantEmail.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
+            applicantEmail.Subject = "Interview Notice";
+
+            string applicantEmailBody = File.ReadAllText("wwwroot/emailTemplates/ApplicantDateNotice.html");
+
+            applicantEmailBody = applicantEmailBody.Replace("{ApplicantName}", applicant.FirstName);
+            applicantEmailBody = applicantEmailBody.Replace("{InterviewType}", interviewType);
+            applicantEmailBody = applicantEmailBody.Replace("{JobTitle}", jobTitle);
+            applicantEmailBody = applicantEmailBody.Replace("{Date}", date);
+            applicantEmailBody = applicantEmailBody.Replace("{Time}", time);
+            applicantEmailBody = applicantEmailBody.Replace("{Link}", "https://localhost:50140/Applicant/TrackApplication"); //add correct link
+            applicantEmailBody = applicantEmailBody.Replace("{Email}", "alliance.humanresourceteam@gmail.com");
+
+            applicantEmail.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = applicantEmailBody
+            };
+
+            _emailService.SendEmail(interviewerEmail);
+            _emailService.SendEmail(applicantEmail);
         }
 
-
-        //first
         public void SendInterviewReminderEmail(string applicant, Interviewers interviewer, string interviewType, string dateAndTime)
         {
             var interviewerEmail = new MimeMessage();
@@ -336,9 +380,28 @@ namespace Basecode.Services.Utils
             _emailService.SendEmail(hrNotifEmail);
         }
 
-        public void SendHrApprovedScheduleEmail(Applicants applicant)
+        public void SendHrApprovedScheduleEmail(Applicants applicant, string date, string time)
         {
-            throw new NotImplementedException();
+            var email = new MimeMessage();
+
+            email.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
+            email.To.Add(new MailboxAddress("HR Department", "alliance.humanresourceteam@gmail.com"));
+            email.Subject = "Interview/Examination Confirmation";
+
+            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ApplicantInterviewRejected.html");
+
+            emailBodyTemplate = emailBodyTemplate.Replace("{ApplicantName}", applicant.Name);
+            emailBodyTemplate = emailBodyTemplate.Replace("{Date}", date);
+            emailBodyTemplate = emailBodyTemplate.Replace("{Time}", time);
+            emailBodyTemplate = emailBodyTemplate.Replace("{Link}", "https://localhost:50140/Applicant/TrackApplication"); //add correct link
+            emailBodyTemplate = emailBodyTemplate.Replace("{Email}", "alliance.jobhiring@gmail.com");
+
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = emailBodyTemplate
+            };
+
+            _emailService.SendEmail(email);
         }
 
         public void SendHrInterviewApprovalEmail(Applicants applicant, string interviewType)
@@ -453,9 +516,25 @@ namespace Basecode.Services.Utils
             _emailService.SendEmail(email);
         }
 
-        public void SendHrAnsweredFormNotificationEmail(Applicants applicants, CharacterReferences characterReferences)
+        public void SendHrAnsweredFormNotificationEmail(Applicants applicant)
         {
-            throw new NotImplementedException();
+            var email = new MimeMessage();
+
+            email.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
+            email.To.Add(new MailboxAddress("HR Department", "alliance.humanresourceteam@gmail.com"));
+            email.Subject = "Completion of Reference Form for Applicant Evaluation";
+
+            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ApplicantReferenceAbsent.html");
+
+            emailBodyTemplate = emailBodyTemplate.Replace("{ApplicantName}", applicant.Name);
+            emailBodyTemplate = emailBodyTemplate.Replace("{Email}", "alliance.jobhiring@gmail.com");
+
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = emailBodyTemplate
+            };
+
+            _emailService.SendEmail(email);
         }
 
         public void SendHrReferenceApprovalEmail(Applicants applicants)

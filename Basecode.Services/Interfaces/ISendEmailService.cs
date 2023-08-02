@@ -21,15 +21,15 @@ namespace Basecode.Services.Interfaces
         void SendForgotPasswordLink(IdentityUser user, string url);
 
         //Start here!
-        void SendSetInterviewScheduleEmail(Applicants applicant, string schedule);
+        void SendSetInterviewScheduleEmail(Interviewers interviewer, Applicants applicant, string interviewType, string jobTitle, string date, string time); // done
         void SendInterviewReminderEmail(string applicant, Interviewers interviewer, string interviewType, string dateAndTime); // done
-        void SendHrApprovedScheduleEmail(Applicants applicant);
+        void SendHrApprovedScheduleEmail(Applicants applicant, string date, string time); //done
         void SendHrInterviewApprovalEmail(Applicants applicant, string interviewType); // done
         void SendApplicantInterviewRegretEmail(Applicants applicant, string jobTitle, string interviewType); //done
         void SendReferenceFormEmail(CharacterReferences characterReference, string applicant, string jobTitle); // done
         void SendReferenceGratitudeEmail(CharacterReferences characterReference, string applicant); // done
         void SendApplicantReferenceNotificationEmail(Applicants applicant, string jobTitle); // done
-        void SendHrAnsweredFormNotificationEmail(Applicants applicants, CharacterReferences characterReferences);
+        void SendHrAnsweredFormNotificationEmail(Applicants applicant); // done
         void SendHrReferenceApprovalEmail(Applicants applicants); // done
         void SendHrJobOfferApprovalEmail(Applicants applicant, string jobTitle); // done
         void SendDtRequirementNotificationEmail(Applicants applicant, string jobTitle); // done

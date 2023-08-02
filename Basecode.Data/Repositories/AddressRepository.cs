@@ -20,20 +20,10 @@ namespace Basecode.Data.Repositories
         /// Adds an address to the context and saves changes.
         /// </summary>
         /// <param name="address">The address to add.</param>
-        public void Add(Addresses address)
+        public async Task AddAsync(Addresses address)
         {
-            _context.Addresses.Add(address);
-            _context.SaveChanges();
-        }
-
-        /// <summary>
-        /// Retrieves an address by the specified city.
-        /// </summary>
-        /// <param name="city">The city to search for.</param>
-        /// <returns>The address matching the city, or null if not found.</returns>
-        public Addresses GetByCity(string city)
-        {
-            return _context.Addresses.FirstOrDefault(e => e.City == city)!;
+            await _context.Addresses.AddAsync(address);
+            await _context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -41,18 +31,18 @@ namespace Basecode.Data.Repositories
         /// </summary>
         /// <param name="id">The ID of the address to retrieve.</param>
         /// <returns>The address matching the ID, or null if not found.</returns>
-        public Addresses GetById(int id)
+        public async Task<Addresses?> GetByIdAsync(int id)
         {
-            return _context.Addresses.FirstOrDefault(e => e.Id == id)!;
+            return await _context.Addresses.FirstOrDefaultAsync(e => e.Id == id);
         }
 
         /// <summary>
         /// Retrieves all addresses.
         /// </summary>
         /// <returns>An IQueryable of all addresses.</returns>
-        public IQueryable<Addresses> RetrieveAll()
+        public async Task<IQueryable<Addresses>> RetrieveAllAsync()
         {
-            return this.GetDbSet<Addresses>();
+            return await Task.FromResult(this.GetDbSet<Addresses>());
         }
 
     }

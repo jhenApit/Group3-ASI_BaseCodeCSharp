@@ -150,10 +150,22 @@
 
 <script>
     $(document).ready(function () {
+        var today = new Date();
+        var month = today.getMonth() + 1;
+        var year = today.getFullYear();
+        var tdate = today.getDate();
+        if (month < 10) {
+            month = "0" + month;
+        }
+        if (tdate < 10) {
+            tdate = "0" + tdate;
+        }
+        var maxDate = year + "-" + month + "-" + tdate;
+        $("#date").attr("min", maxDate);
         $('input.timepicker').timepicker({
             timeFormat: 'h:mm p',
             interval: 30,
-            minTime: '0',
+            minTime: currentTime,
             maxTime: '11:30pm',
             dynamic: false,
             dropdown: true,

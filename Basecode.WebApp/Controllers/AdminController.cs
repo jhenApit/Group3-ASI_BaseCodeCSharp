@@ -113,7 +113,7 @@ namespace Basecode.WebApp.Controllers
             /*var data = _service.EditHrAccount(hrEmployee);
             if (!data.Result)
             {
-                _logger.Error(_errorHandling.SetLog(data));
+                //_logger.Error(_errorHandling.SetLog(data));
                 ViewBag.ErrorMessage = data.Message;
                 return View("EditHrAccountView", hrEmployee);
             }

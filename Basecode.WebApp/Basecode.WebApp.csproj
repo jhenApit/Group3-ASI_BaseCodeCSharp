@@ -50,7 +50,7 @@
     <None Include="Views\HR\CreateJobPost.cshtml" />
     <None Include="Views\HR\EditInterview.cshtml" />
     <None Include="Views\HR\EditJobPost.cshtml" />
-    <None Include="Views\HR\Interview.cshtml" />
+    <None Include="Views\HR\Interviews.cshtml" />
     <None Include="Views\HR\JobPostList.cshtml" />
     <None Include="Views\HR\ViewJobPost.cshtml" />
     <None Include="wwwroot\images\building.png" />

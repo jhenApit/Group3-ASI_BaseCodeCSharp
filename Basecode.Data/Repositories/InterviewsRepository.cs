@@ -67,25 +67,25 @@ namespace Basecode.Data.Repositories
             return await _context.Interviews.FirstOrDefaultAsync(e => e.ApplicantId == applicantId);
         }
 
-        public IEnumerable<Interviews> GetInterviewsByInterviewerAndDate(int interviewerId, DateTime interviewDate)
+        public async Task<IEnumerable<Interviews>> GetInterviewsByInterviewerAndDateAsync(int interviewerId, DateTime interviewDate)
         {
-            return _context.Interviews
+            return await _context.Interviews
             .Where(i => i.InterviewerId == interviewerId && i.InterviewDate == interviewDate)
-            .ToList();
+            .ToListAsync();
         }
 
-        public IEnumerable<Interviews> GetInterviewsByInterviewer(int interviewerId)
+        public async Task<IEnumerable<Interviews>> GetInterviewsByInterviewerAsync(int interviewerId)
         {
-            return _context.Interviews
+            return await _context.Interviews
                 .Where(i => i.InterviewerId == interviewerId)
-                .ToList();
+                .ToListAsync();
         }
 
-        public IEnumerable<Interviews> GetInterviewsByApplicant(int applicantId)
+        public async Task<IEnumerable<Interviews>> GetInterviewsByApplicantAsync(int applicantId)
         {
-            return _context.Interviews
+            return await _context.Interviews
                 .Where(i => i.ApplicantId == applicantId)
-                .ToList();
+                .ToListAsync();
         }
 
 

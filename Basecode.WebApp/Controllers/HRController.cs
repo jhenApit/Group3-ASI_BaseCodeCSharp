@@ -260,7 +260,9 @@ namespace Basecode.WebApp.Controllers
                 {
                     Interviewers = new Interviewers(),
                     InterviewersList = await _interviewersService.RetrieveAllAsync(),
-                    InterviewsList = interviews.OrderBy(x => x.InterviewDate).ToList()
+                    InterviewsList = (await _interviewsService.RetrieveAllAsync())
+                    .OrderBy(x => x.InterviewDate)
+                    .ToList()
                 };
                 return View(viewModel);
             } 
@@ -331,79 +333,6 @@ namespace Basecode.WebApp.Controllers
             }
         }
 
-        private bool IsTimeRangeOverlapping(InterviewsCreationDto newInterview)
-        {
-            var existingInterviews = _interviewsService.GetInterviewsByInterviewerAndDate(newInterview.InterviewerId, newInterview.InterviewDate);
-
-            var newStart = DateTime.ParseExact(newInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
-            var newEnd = DateTime.ParseExact(newInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
-
-            foreach (var existingInterview in existingInterviews)
-            {
-                var existingStart = DateTime.ParseExact(existingInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
-                var existingEnd = DateTime.ParseExact(existingInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
-
-                if (newInterview.InterviewDate == existingInterview.InterviewDate)
-                {
-                    // Check if there is a time overlap
-                    if ((newStart >= existingStart && newStart < existingEnd) || 
-                        (newEnd > existingStart && newEnd <= existingEnd) ||    
-                        (newStart <= existingStart && newEnd >= existingEnd))   
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            var otherInterviewsByInterviewer = _interviewsService.GetInterviewsByInterviewer(newInterview.InterviewerId);
-            foreach (var otherInterview in otherInterviewsByInterviewer)
-            {
-                if (otherInterview.Id != newInterview.Id)
-                {
-                    var otherStart = DateTime.ParseExact(otherInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
-                    var otherEnd = DateTime.ParseExact(otherInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
-
-                    // Check if there is a date overlap
-                    if (newInterview.InterviewDate == otherInterview.InterviewDate)
-                    {
-                        // Check if there is a time overlap
-                        if ((newStart >= otherStart && newStart < otherEnd) || 
-                            (newEnd > otherStart && newEnd <= otherEnd) ||   
-                            (newStart <= otherStart && newEnd >= otherEnd))    
-                        {
-                            Console.WriteLine(2);
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            var otherInterviewsByApplicant = _interviewsService.GetInterviewsByApplicant(newInterview.ApplicantId);
-            foreach (var otherInterview in otherInterviewsByApplicant)
-            {
-                if (otherInterview.Id != newInterview.Id) 
-                {
-                    var otherStart = DateTime.ParseExact(otherInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
-                    var otherEnd = DateTime.ParseExact(otherInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
-
-                    // Check if there is a date overlap
-                    if (newInterview.InterviewDate == otherInterview.InterviewDate)
-                    {
-                        // Check if there is a time overlap
-                        if ((newStart >= otherStart && newStart < otherEnd) || 
-                            (newEnd > otherStart && newEnd <= otherEnd) ||   
-                            (newStart <= otherStart && newEnd >= otherEnd))   
-                        {
-                            Console.WriteLine(3);
-                            return true; 
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-
         /// <summary>
         /// Edit an interview
         /// </summary>
@@ -412,7 +341,7 @@ namespace Basecode.WebApp.Controllers
         {
             try
             {
-                var interviews = await _interviewsService.GetByIdAsync(id);
+                Interviews interviews = await _interviewsService.GetByIdAsync(id);
                 Console.WriteLine(interviews);
                 if (interviews != null)
                 {

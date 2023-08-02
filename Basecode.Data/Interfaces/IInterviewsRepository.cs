@@ -15,5 +15,8 @@ namespace Basecode.Data.Interfaces
         Task<Interviews?> GetByIdAsync(int id);
         Task UpdateAsync(Interviews Interviews);
         Task DeleteAsync(int id);
+        IEnumerable<Interviews> GetInterviewsByInterviewerAndDate(int interviewerId, DateTime interviewDate);
+        IEnumerable<Interviews> GetInterviewsByInterviewer(int interviewerId);
+        IEnumerable<Interviews> GetInterviewsByApplicant(int applicantId);
     }
 }

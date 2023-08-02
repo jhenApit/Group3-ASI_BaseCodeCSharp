@@ -245,15 +245,17 @@ namespace Basecode.WebApp.Controllers
         /// View List of Upcoming Interviews
         /// </summary>
         /// <returns>Redirect to Interview Page</returns>
-        public IActionResult Interviews()
+        public async Task<IActionResult> Interviews()
         {
             try
             {
                 var viewModel = new InterviewsViewModel
                 {
                     Interviewers = new Interviewers(),
-                    InterviewersList = _interviewersService.RetrieveAll(),
-                    InterviewsList = _interviewsService.RetrieveAll().OrderBy(x => x.InterviewDate).ToList()
+                    InterviewersList = await _interviewersService.RetrieveAllAsync(),
+                    InterviewsList = (await _interviewsService.RetrieveAllAsync())
+                    .OrderBy(x => x.InterviewDate)
+                    .ToList()
                 };
                 return View(viewModel);
             } 
@@ -267,16 +269,16 @@ namespace Basecode.WebApp.Controllers
         /// Create a new interview
         /// </summary>
         /// <returns>Redirect to Create Interview Page</returns>
-        public IActionResult CreateInterview(int id)
+        public async Task<IActionResult> CreateInterview(int id)
         {
             try
             {
-                if(_interviewersService.GetById(id) != null)
+                if(_interviewersService.GetByIdAsync(id) != null)
                 {
                     var viewModel = new InterviewsFormViewModel
                     {
-                        Interviewer = _interviewersService.GetById(id),
-                        ApplicantsList = _applicantService.RetrieveAll(),
+                        Interviewer = await _interviewersService.GetByIdAsync(id),
+                        ApplicantsList = await _applicantService.RetrieveAllAsync(),
                     };
                     return View(viewModel);
                 }
@@ -294,7 +296,7 @@ namespace Basecode.WebApp.Controllers
         /// <param name="interview">Data</param>
         /// <returns>Redirect to the interviews page</returns>
         [HttpPost]
-        public IActionResult AddInterview(InterviewsFormViewModel interview)
+        public async Task<IActionResult> AddInterview(InterviewsFormViewModel interview)
         {
             try
             {
@@ -314,7 +316,7 @@ namespace Basecode.WebApp.Controllers
                     return RedirectToAction("CreateInterview", new { id = interview.InterviewerId });
                 }
 
-                _interviewsService.Add(createInterview);
+                await _interviewsService.AddAsync(createInterview);
                 return RedirectToAction("Interviews");
             }
             catch(Exception e)
@@ -323,95 +325,22 @@ namespace Basecode.WebApp.Controllers
             }
         }
 
-        private bool IsTimeRangeOverlapping(InterviewsCreationDto newInterview)
-        {
-            var existingInterviews = _interviewsService.GetInterviewsByInterviewerAndDate(newInterview.InterviewerId, newInterview.InterviewDate);
-
-            var newStart = DateTime.ParseExact(newInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
-            var newEnd = DateTime.ParseExact(newInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
-
-            foreach (var existingInterview in existingInterviews)
-            {
-                var existingStart = DateTime.ParseExact(existingInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
-                var existingEnd = DateTime.ParseExact(existingInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
-
-                if (newInterview.InterviewDate == existingInterview.InterviewDate)
-                {
-                    // Check if there is a time overlap
-                    if ((newStart >= existingStart && newStart < existingEnd) || 
-                        (newEnd > existingStart && newEnd <= existingEnd) ||    
-                        (newStart <= existingStart && newEnd >= existingEnd))   
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            var otherInterviewsByInterviewer = _interviewsService.GetInterviewsByInterviewer(newInterview.InterviewerId);
-            foreach (var otherInterview in otherInterviewsByInterviewer)
-            {
-                if (otherInterview.Id != newInterview.Id)
-                {
-                    var otherStart = DateTime.ParseExact(otherInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
-                    var otherEnd = DateTime.ParseExact(otherInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
-
-                    // Check if there is a date overlap
-                    if (newInterview.InterviewDate == otherInterview.InterviewDate)
-                    {
-                        // Check if there is a time overlap
-                        if ((newStart >= otherStart && newStart < otherEnd) || 
-                            (newEnd > otherStart && newEnd <= otherEnd) ||   
-                            (newStart <= otherStart && newEnd >= otherEnd))    
-                        {
-                            Console.WriteLine(2);
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            var otherInterviewsByApplicant = _interviewsService.GetInterviewsByApplicant(newInterview.ApplicantId);
-            foreach (var otherInterview in otherInterviewsByApplicant)
-            {
-                if (otherInterview.Id != newInterview.Id) 
-                {
-                    var otherStart = DateTime.ParseExact(otherInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
-                    var otherEnd = DateTime.ParseExact(otherInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
-
-                    // Check if there is a date overlap
-                    if (newInterview.InterviewDate == otherInterview.InterviewDate)
-                    {
-                        // Check if there is a time overlap
-                        if ((newStart >= otherStart && newStart < otherEnd) || 
-                            (newEnd > otherStart && newEnd <= otherEnd) ||   
-                            (newStart <= otherStart && newEnd >= otherEnd))   
-                        {
-                            Console.WriteLine(3);
-                            return true; 
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-
         /// <summary>
         /// Edit an interview
         /// </summary>
         /// <returns>Redirect to Edit Interview Page</returns>
-        public IActionResult EditInterview(int id)
+        public async Task<IActionResult> EditInterview(int id)
         {
             try
             {
-                Interviews interviews = _interviewsService.GetById(id);
+                Interviews interviews = await _interviewsService.GetByIdAsync(id);
                 Console.WriteLine(interviews);
                 if (interviews != null)
                 {
                     var viewModel = new InterviewsFormViewModel
                     {
-                        Interviewer = _interviewersService.GetById(interviews.InterviewerId),
-                        ApplicantsList = _applicantService.RetrieveAll(),
+                        Interviewer = await _interviewersService.GetByIdAsync(interviews.InterviewerId),
+                        ApplicantsList = await _applicantService.RetrieveAllAsync(),
                         ApplicantId = interviews.ApplicantId,
                         InterviewerId = interviews.InterviewerId,
                         InterviewType = interviews.InterviewType,
@@ -435,7 +364,7 @@ namespace Basecode.WebApp.Controllers
         /// <param name="interview">Updated Data</param>
         /// <returns>Redirect to interviews page</returns>
         [HttpPost]
-        public IActionResult UpdateInterview(InterviewsFormViewModel interview)
+        public async Task<IActionResult> UpdateInterview(InterviewsFormViewModel interview)
         {
             try
             {
@@ -449,7 +378,7 @@ namespace Basecode.WebApp.Controllers
                     TimeStart = interview.TimeStart,
                     TimeEnd = interview.TimeEnd,
                 };
-                _interviewsService.Update(updateInterview);
+                await _interviewsService.UpdateAsync(updateInterview);
                 return RedirectToAction("Interviews");
             }
             catch (Exception)
@@ -463,11 +392,11 @@ namespace Basecode.WebApp.Controllers
         /// </summary>
         /// <param name="id">Interview Id</param>
         /// <returns>Redirect to interviews page</returns>
-        public IActionResult DeleteInterview(int id)
+        public async Task<IActionResult> DeleteInterview(int id)
         {
             try
             {
-                _interviewsService.Delete(id);
+                await _interviewsService.DeleteAsync(id);
                 return RedirectToAction("Interviews");
             }
             catch

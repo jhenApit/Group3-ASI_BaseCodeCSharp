@@ -9,12 +9,12 @@ namespace Basecode.Data.Interfaces
 {
     public interface IJobPostingsRepository
     {
-        IQueryable<JobPostings> RetrieveAll();
-        JobPostings? GetByName(string name);
-        void Add(JobPostings jobPostings);
-        JobPostings? GetById(int id);
-        void Update(JobPostings jobPostings);
-        void SemiDelete(JobPostings jobPostings);
-        void PermaDelete(int id);
+        Task<IQueryable<JobPostings>> RetrieveAllAsync();
+        Task<JobPostings?> GetByNameAsync(string name);
+        Task AddAsync(JobPostings jobPostings);
+        Task<JobPostings?> GetByIdAsync(int id);
+        Task UpdateAsync(JobPostings jobPostings);
+        Task SemiDeleteAsync(JobPostings jobPostings);
+        Task PermaDeleteAsync(int id);
     }
 }

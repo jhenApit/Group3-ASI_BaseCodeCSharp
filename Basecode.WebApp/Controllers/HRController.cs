@@ -5,6 +5,9 @@ using NLog;
 using Basecode.Data.Dtos.JobPostings;
 using Microsoft.AspNetCore.Identity;
 using Basecode.Data.ViewModels;
+using Basecode.Data.Models;
+using Basecode.Data.Dtos.Interviews;
+using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -16,6 +19,7 @@ namespace Basecode.WebApp.Controllers
         private readonly IApplicantService _applicantService;
         private readonly ICurrentHiresService _currentHiresService;
         private readonly IInterviewsService _interviewsService;
+        private readonly IInterviewersService _interviewersService;
         private readonly IErrorHandling _errorHandling; 
         private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -27,7 +31,8 @@ namespace Basecode.WebApp.Controllers
             UserManager<IdentityUser> userManager, 
             IApplicantService applicantService,
             ICurrentHiresService currentHiresService,
-            IInterviewsService interviewersService
+            IInterviewsService interviewsService,
+            IInterviewersService interviewersService
             )
         {
             _service = service;
@@ -36,7 +41,8 @@ namespace Basecode.WebApp.Controllers
             _userManager = userManager;
             _applicantService = applicantService;
             _currentHiresService = currentHiresService;
-            _interviewsService = interviewersService;
+            _interviewsService = interviewsService;
+            _interviewersService = interviewersService;
         }
 
 
@@ -50,7 +56,7 @@ namespace Basecode.WebApp.Controllers
                 JobCount = _jobPostingsService.RetrieveAll().Count(),
                 Candidates = _applicantService.RetrieveAll(),
                 EmployeeCount = _currentHiresService.RetrieveAll().Count(),
-                Schedules = _interviewsService.RetrieveAll()
+                Interviews = _interviewsService.RetrieveAll().OrderBy(x => x.InterviewDate).Take(6).ToList()
             };
             return View(model);
         }
@@ -131,7 +137,7 @@ namespace Basecode.WebApp.Controllers
                 
                 if (!data.Result)
                 {
-                    _logger.Error(_errorHandling.SetLog(data));
+                    //_logger.Error(_errorHandling.SetLog(data));
                     ViewBag.ErrorMessage = data.Message;
                     return View(jobPostingsCreationDto);
                 }
@@ -158,7 +164,7 @@ namespace Basecode.WebApp.Controllers
                 
                 if (!data.Result)
                 {
-                    _logger.Error(_errorHandling.SetLog(data));
+                    //_logger.Error(_errorHandling.SetLog(data));
                     ViewBag.ErrorMessage = data.Message;
                     return View(jobPostingsUpdationDto);
                 }
@@ -206,33 +212,6 @@ namespace Basecode.WebApp.Controllers
         }
 
         /// <summary>
-        /// View List of Upcoming Interviews
-        /// </summary>
-        /// <returns>Redirect to Interview Page</returns>
-        public IActionResult Interview()
-        {
-            return View();
-        }
-
-        /// <summary>
-        /// Allows HR to create a new interview entry
-        /// </summary>
-        /// <returns>Redirect to Create Interview Page</returns>
-        public IActionResult CreateInterview()
-        {
-            return View();
-        }
-
-        /// <summary>
-        /// Allows HR to edit an interview
-        /// </summary>
-        /// <returns>Redirect to Edit Interview Page</returns>
-        public IActionResult EditInterview()
-        {
-            return View();
-        }
-
-        /// <summary>
         /// Allows HR to view job applicants
         /// </summary>
         /// <returns>Redirect to Job Applicant Overview Page</returns>
@@ -258,5 +237,187 @@ namespace Basecode.WebApp.Controllers
         {
             return View();
         }
+
+        #region Interviews
+
+        /// <summary>
+        /// View List of Upcoming Interviews
+        /// </summary>
+        /// <returns>Redirect to Interview Page</returns>
+        public IActionResult Interviews()
+        {
+            try
+            {
+                var viewModel = new InterviewsViewModel
+                {
+                    Interviewers = new Interviewers(),
+                    InterviewersList = _interviewersService.RetrieveAll(),
+                    InterviewsList = _interviewsService.RetrieveAll().OrderBy(x => x.InterviewDate).ToList()
+                };
+                return View(viewModel);
+            } 
+            catch(Exception)
+            {
+                return BadRequest("An error occurred while retriving Interviews.");
+            }
+        }
+
+        /// <summary>
+        /// Create a new interview
+        /// </summary>
+        /// <returns>Redirect to Create Interview Page</returns>
+        public IActionResult CreateInterview(int id)
+        {
+            try
+            {
+                if(_interviewersService.GetById(id) != null)
+                {
+                    var viewModel = new InterviewsFormViewModel
+                    {
+                        Interviewer = _interviewersService.GetById(id),
+                        ApplicantsList = _applicantService.RetrieveAll(),
+                    };
+                    return View(viewModel);
+                }
+                return RedirectToAction("Interviews");
+            }
+            catch (Exception)
+            {
+                return BadRequest("An error occurred while retriving this page.");
+            }
+        }
+
+        /// <summary>
+        /// Add new interview to the database
+        /// </summary>
+        /// <param name="interview">Data</param>
+        /// <returns>Redirect to the interviews page</returns>
+        [HttpPost]
+        public IActionResult AddInterview(InterviewsFormViewModel interview)
+        {
+            try
+            {
+                var createInterview = new InterviewsCreationDto
+                {
+                    ApplicantId = interview.ApplicantId,
+                    InterviewerId = interview.InterviewerId,
+                    InterviewType = interview.InterviewType,
+                    InterviewDate = interview.InterviewDate,
+                    TimeStart = interview.TimeStart,
+                    TimeEnd = interview.TimeEnd,
+                };
+                _interviewsService.Add(createInterview);
+                return RedirectToAction("Interviews");
+            }
+            catch(Exception)
+            {
+                return BadRequest("Error occurred while adding a new interview");
+            }
+        }
+
+        /// <summary>
+        /// Edit an interview
+        /// </summary>
+        /// <returns>Redirect to Edit Interview Page</returns>
+        public IActionResult EditInterview(int id)
+        {
+            try
+            {
+                Interviews interviews = _interviewsService.GetById(id);
+                Console.WriteLine(interviews);
+                if (interviews != null)
+                {
+                    var viewModel = new InterviewsFormViewModel
+                    {
+                        Interviewer = _interviewersService.GetById(interviews.InterviewerId),
+                        ApplicantsList = _applicantService.RetrieveAll(),
+                        ApplicantId = interviews.ApplicantId,
+                        InterviewerId = interviews.InterviewerId,
+                        InterviewType = interviews.InterviewType,
+                        InterviewDate = interviews.InterviewDate,
+                        TimeStart = interviews.TimeStart,
+                        TimeEnd = interviews.TimeEnd
+                    };
+                    return View(viewModel);
+                }
+                return RedirectToAction("Interviews");
+            }
+            catch (Exception)
+            {
+                return BadRequest("An error occurred while retriving this page.");
+            }
+        }
+
+        /// <summary>
+        /// Update an interview in the database
+        /// </summary>
+        /// <param name="interview">Updated Data</param>
+        /// <returns>Redirect to interviews page</returns>
+        [HttpPost]
+        public IActionResult UpdateInterview(InterviewsFormViewModel interview)
+        {
+            try
+            {
+                var updateInterview = new InterviewsUpdationDto
+                {
+                    Id = interview.Id,
+                    ApplicantId = interview.ApplicantId,
+                    InterviewerId = interview.InterviewerId,
+                    InterviewType = interview.InterviewType,
+                    InterviewDate = interview.InterviewDate,
+                    TimeStart = interview.TimeStart,
+                    TimeEnd = interview.TimeEnd,
+                };
+                _interviewsService.Update(updateInterview);
+                return RedirectToAction("Interviews");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error occurred while adding a new interview");
+            }
+        }
+
+        /// <summary>
+        /// Delete an interview
+        /// </summary>
+        /// <param name="id">Interview Id</param>
+        /// <returns>Redirect to interviews page</returns>
+        public IActionResult DeleteInterview(int id)
+        {
+            try
+            {
+                _interviewsService.Delete(id);
+                return RedirectToAction("Interviews");
+            }
+            catch
+            {
+                return BadRequest("Delete Failed");
+            }
+        }
+
+        #endregion
+
+        #region Interviewers
+
+        /// <summary>
+        /// Adds interviewers to the database
+        /// </summary>
+        /// <param name="interviewers">Data</param>
+        /// <returns>Redirects to the Interviews Page</returns>
+        [HttpPost]
+        public IActionResult AddInterviewer(Interviewers interviewers)
+        {
+            try
+            {
+                _interviewersService.Add(interviewers);
+                return RedirectToAction("Interviews");
+            }
+            catch (Exception)
+            {
+                return BadRequest("An error happend while adding an interviewer.");
+            }
+        }
+
+        #endregion
     }
 }

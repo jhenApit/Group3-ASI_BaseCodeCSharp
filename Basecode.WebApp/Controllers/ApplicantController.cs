@@ -35,9 +35,9 @@ namespace Basecode.WebApp.Controllers
         /// </summary>
         /// <param name="applicantId">The ID of the applicant.</param>
         /// <returns>The view displaying the status of employment of the applicant.</returns>
-        public IActionResult ApplicationStatus(string ApplicantId)
+        public async Task<IActionResult> ApplicationStatus(string ApplicantId)
         {
-            Applicants data = _applicantService.GetByApplicantId(ApplicantId);
+            Applicants data =  await _applicantService.GetByApplicantIdAsync(ApplicantId);
             Console.WriteLine("Applicant Id+" + ApplicantId);
             if (data != null)
             {
@@ -68,9 +68,9 @@ namespace Basecode.WebApp.Controllers
         /// Displays the application form page.
         /// </summary>
         /// <returns>The application form view.</returns>
-        public IActionResult ApplicationForm(int id)
+        public async Task<IActionResult> ApplicationForm(int id)
         {
-            var jobPosting = _jobPostingsService.GetById(id);
+            var jobPosting = _jobPostingsService.GetByIdAsync(id);
             if (jobPosting != null)
             {
                 var viewModel = new ApplicationFormViewModel

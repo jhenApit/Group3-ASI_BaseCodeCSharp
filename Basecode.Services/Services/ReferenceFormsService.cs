@@ -28,20 +28,21 @@ namespace Basecode.Services.Services
         /// Retrieves all reference forms.
         /// </summary>
         /// <returns>A list of ReferenceForms.</returns>
-        public List<ReferenceForms> RetrieveAll()
+        public async Task<List<ReferenceForms>> RetrieveAllAsync()
         {
-            return _repository.RetrieveAll().ToList();
+            var referenceForm = await _repository.RetrieveAllAsync();
+            return referenceForm.ToList();
         }
 
         /// <summary>
         /// Adds a new reference form.
         /// </summary>
         /// <param name="referenceFormsDto">The ReferenceFormsCreationDto object containing the data for the new reference form.</param>
-        public void Add(ReferenceFormsCreationDto referenceFormsDto)
+        public async Task AddAsync(ReferenceFormsCreationDto referenceFormsDto)
         {
             var referenceFormsModel = _mapper.Map<ReferenceForms>(referenceFormsDto);
             referenceFormsModel.AnsweredDate = DateTime.Now.Date;
-            _repository.Add(referenceFormsModel);
+            await _repository.AddAsync(referenceFormsModel);
         }
 
         /// <summary>
@@ -49,9 +50,9 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="id">The ID of the reference form to retrieve.</param>
         /// <returns>The ReferenceForms object with the specified ID, or null if not found.</returns>
-        public ReferenceForms? GetById(int id)
+        public async Task<ReferenceForms?> GetByIdAsync(int id)
         {
-            return _repository.GetById(id);
+            return await _repository.GetByIdAsync(id);
         }
 
         /// <summary>
@@ -59,9 +60,9 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="characterReferenceId">The ID of the character reference associated with the reference form.</param>
         /// <returns>The ReferenceForms object with the specified character reference ID, or null if not found.</returns>
-        public ReferenceForms? GetByCharacterReferenceId(int characterReferenceId)
+        public async Task<ReferenceForms?> GetByCharacterReferenceIdAsync(int characterReferenceId)
         {
-            return _repository.GetByCharacterReferenceId(characterReferenceId);
+            return await _repository.GetByCharacterReferenceIdAsync(characterReferenceId);
         }
 
     }

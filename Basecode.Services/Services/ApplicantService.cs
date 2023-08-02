@@ -46,45 +46,49 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="id">The ID of the applicant.</param>
         /// <returns>The applicant with the specified ID.</returns>
-        public int Add(ApplicantCreationDto applicant)
+        public async Task<int> AddAsync(ApplicantCreationDto applicant)
         {
             var applicantModel = _mapper.Map<Applicants>(applicant);
+
             applicantModel.ApplicantId = _idGenerator.GenerateRandomApplicantId();
             applicantModel.ApplicationDate = DateTime.Now;
             applicantModel.ApplicationStatus = Data.Enums.Enums.ApplicationStatus.Received;
             //Row 41 on the function List. Set requirements to TBC upon applying
             applicantModel.Requirements = Data.Enums.Enums.Requirements.TBC;
-            _repository.Add(applicantModel);
+            
+            await _repository.AddAsync(applicantModel);
             return applicantModel.Id;
         }
         
 
-        public Applicants GetByApplicantId(string applicantId)
+        public async Task<Applicants?> GetByApplicantIdAsync(string applicantId)
         {
-            return _repository.GetByApplicantId(applicantId);
+            return await _repository.GetByApplicantIdAsync(applicantId);
         }
 
-        public Applicants GetById(int id)
+        public async Task<List<Applicants>> GetByEmailAsync(string email)
         {
-            return _repository.GetById(id);
+            var applicantEmails = await _repository.GetByEmailAsync(email);
+            return applicantEmails.ToList();
         }
 
-        public Applicants GetByName(string fname, string mname, string lname)
+        public async Task<Applicants?> GetByIdAsync(int id)
         {
-            return _repository.GetByName(fname, mname, lname);
+            return await _repository.GetByIdAsync(id);
         }
 
-        public List<Applicants> GetByEmail(string email)
+        public async Task<Applicants?> GetByNameAsync(string fname, string mname, string lname)
         {
-            return _repository.GetByEmail(email).ToList();
+            return await _repository.GetByNameAsync(fname, mname, lname);
         }
 
-        public List<Applicants> RetrieveAll()
+        public async Task<List<Applicants>> RetrieveAllAsync()
         {
-            return _repository.RetrieveAll().ToList();
+            var applicants = await _repository.RetrieveAllAsync();
+            return applicants.ToList();
         }
 
-        public LogContent AddApplicantLogContent(ApplicantCreationDto applicantCreationDto)
+        public async Task<LogContent> AddApplicantLogContent(ApplicantCreationDto applicantCreationDto)
         {
             
             List<string> errors = new List<string>();
@@ -92,7 +96,7 @@ namespace Basecode.Services.Services
             {
                 errors.Add("Resume is missing\n");
             }
-            var applications = GetByEmail(applicantCreationDto.Email);
+            var applications = await GetByEmailAsync(applicantCreationDto.Email);
             foreach (var applicant in applications)
             {
                 if (applicant.JobId == applicantCreationDto.JobId)
@@ -147,13 +151,13 @@ namespace Basecode.Services.Services
                 model.Applicant.Photo = null;
             }
 
-            var data = AddApplicantLogContent(model.Applicant);
+            var data = await AddApplicantLogContent(model.Applicant);
             if (!data.Result)
             {
                 return false;
             }
 
-            var applicantIsInserted = Add(model.Applicant);
+            var applicantIsInserted = await AddAsync(model.Applicant);
             if (applicantIsInserted == 0)
             {
                 Console.WriteLine("Addition Failed for applicant");
@@ -168,7 +172,7 @@ namespace Basecode.Services.Services
                 Province = model.Address.Province,
                 ZipCode = model.Address.ZipCode
             };
-            _addressService.Add(address);
+            _addressService.AddAsync(address);
 
             var characRef1 = new CharacterReferencesCreationDto
             {
@@ -178,7 +182,7 @@ namespace Basecode.Services.Services
                 Email = model.CharacterReferences1.Email,
                 MobileNumber = model.CharacterReferences1.MobileNumber
             };
-            _characterService.Add(characRef1);
+            _characterService.AddAsync(characRef1);
 
             var characRef2 = new CharacterReferencesCreationDto
             {
@@ -188,7 +192,7 @@ namespace Basecode.Services.Services
                 Email = model.CharacterReferences2.Email,
                 MobileNumber = model.CharacterReferences2.MobileNumber
             };
-            _characterService.Add(characRef2);
+            _characterService.AddAsync(characRef2);
 
             var recipient = model.Applicant.Email;
             var subject = "Application Update";

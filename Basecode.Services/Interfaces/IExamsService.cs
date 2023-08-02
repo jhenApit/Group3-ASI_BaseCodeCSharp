@@ -10,11 +10,11 @@ namespace Basecode.Services.Interfaces
 {
     public interface IExamsService
     {
-        List<Exams> RetrieveAll();
-        Exams? GetByApplicantId(int applicantId);
-        void Add(ExamCreationDto Exams);
-        Exams? GetById(int id);
-        void Update(ExamUpdationDto Exams);
-        void Delete(int id);
+        Task<List<Exams>> RetrieveAllAsync();
+        Task<Exams?> GetByApplicantIdAsync(int applicantId);
+        Task AddAsync(ExamCreationDto Exams);
+        Task<Exams?> GetByIdAsync(int id);
+        Task UpdateAsync(ExamUpdationDto Exams);
+        Task DeleteAsync(int id);
     }
 }

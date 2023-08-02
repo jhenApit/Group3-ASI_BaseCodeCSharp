@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Basecode.Data.Repositories
 {
@@ -18,7 +19,9 @@ namespace Basecode.Data.Repositories
 
         public IQueryable<Interviews> RetrieveAll()
         {
-            return this.GetDbSet<Interviews>();
+            return this.GetDbSet<Interviews>()
+                .Include(e => e.Interviewer)
+                .Include(e => e.Applicant);
         }
 
         public void Add(Interviews Interviews)
@@ -43,6 +46,8 @@ namespace Basecode.Data.Repositories
                 existingInterviews.InterviewType = Interviews.InterviewType;
                 existingInterviews.Results = Interviews.Results;
                 existingInterviews.InterviewDate = Interviews.InterviewDate;
+                existingInterviews.TimeStart = Interviews.TimeStart;
+                existingInterviews.TimeEnd = Interviews.TimeEnd;
 
                 // Save the changes
                 _context.SaveChanges();

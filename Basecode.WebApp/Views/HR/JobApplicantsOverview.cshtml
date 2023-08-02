@@ -103,7 +103,7 @@
 												<button type="submit" class="btn reject-btn">REJECT</button>
 											</form>
 												break;
-											case ApplicationStatus.ForHRInterview:
+										case ApplicationStatus.ForHRInterview:
 											<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
 												<input type="hidden" name="id" value="@applicant.Id" />
 												<input type="hidden" name="status" value="ForTechnicalInterview" />
@@ -115,7 +115,7 @@
 												<button type="submit" class="btn reject-btn">REJECT</button>
 											</form>
 												break;
-											case ApplicationStatus.ForTechnicalInterview:
+										case ApplicationStatus.ForTechnicalInterview:
 											<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
 												<input type="hidden" name="id" value="@applicant.Id" />
 												<input type="hidden" name="status" value="ForTechnicalExam" />
@@ -187,7 +187,7 @@
 												<button type="submit" class="btn reject-btn">DECLINE</button>
 											</form>
 												break;
-											case ApplicationStatus.Confirmed:
+										case ApplicationStatus.Confirmed:
 											<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
 												<input type="hidden" name="id" value="@applicant.Id" />
 												<input type="hidden" name="status" value="Onboarding" />
@@ -209,7 +209,10 @@
 												<button type="submit" class="btn status-btn status-change-btn" style="justify-content: flex-start !important;">DEPLOY</button>
 												</form>
 												break;
-											default:
+										case ApplicationStatus.Rejected:
+												<input type="hidden" name="id" value="@applicant.Id" />
+												break;
+										default:
 											<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="DeployApplicant" style="justify-content: flex-start !important;">DEPLOY </a>
 											break;
 									}

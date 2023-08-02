@@ -215,7 +215,7 @@ namespace Basecode.WebApp.Controllers
                 System.IO.File.Delete("wwwroot/applicants/resume/resume.pdf");
             }
             var applicant = _applicantService.GetById(id);
-            var address = _addressService.GetByApplicantId(applicant.Id);
+            var address = _addressesService.GetByApplicantId(applicant.Id);
             var characterReferences = _characterReferencesService.GetByApplicantId(applicant.Id);
             var interviews = _interviewsService.GetByApplicantId(applicant.Id);
             var applicantDetailViewModel = new ApplicantDetailViewModel

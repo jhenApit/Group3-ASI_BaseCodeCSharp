@@ -227,3 +227,43 @@ a {
     box-shadow: none !important;
     outline: none !important;
 }
+
+.modal-content {
+    border-radius: 1rem;
+    border: none;
+}
+
+.modal-header {
+    background-color: #55729B;
+    border-radius: 1rem 1rem 0px 0px;
+    border: 1px solid rgba(0,0,0,.2);
+    color: white;
+}
+
+    .modal-header .close {
+        border: none;
+        background-color: #55729B;
+        color: white;
+        font-size: 1rem;
+    }
+
+    .modal-footer .btn {
+        width: auto;
+        height: auto;
+        margin: 0px 0.2rem;
+    }
+
+    .modal-footer .btn-secondary {
+        background-color: #55729B;
+    }
+
+        .modal-footer .btn-secondary:hover,
+        .modal-footer .btn-secondary:focus,
+        .modal-footer .btn-secondary:active:focus {
+            background-color: #55729B;
+            box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }

@@ -24,7 +24,12 @@
 <div class="body-container">
     <div class="pt-5"></div><div class="pt-2"></div> <!-- a buffer to push content down so that header won't cover it' -->
     <div class="row">
-        <div class="col-auto me-auto">
+        <div class="col d-flex align-items-center">
+            <div>
+                <a title="Back to previous page" asp-controller="HR" asp-action="JobApplicantsOverview">
+                    <img src="/images/icons/back-icon.png" class="back-icon" alt="Back Icon" />
+                </a>
+            </div>
             @{
                 Color statusColor = EnumHelper.GetColorForApplicationStatus(Model.Applicant.ApplicationStatus);
                 string colorStyle = $"background-color: {ColorTranslator.ToHtml(statusColor)};";
@@ -34,6 +39,7 @@
             }
         </div>
     </div>
+
     <div class="container row mt-3 mx-auto py-2 px-1 partial-view-selector">
         <div class="d-flex col-auto align-items-center pe-0">
             Select information to view:

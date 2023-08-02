@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Basecode.Data.Dtos;
 using Basecode.Data.Dtos.HrEmployee;
+using Basecode.Data.Models;
 
 namespace Basecode.WebApp.Areas.Identity.Pages.Account
 {
@@ -34,6 +35,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IHrEmployeeService _hr_service;
+        private readonly IInterviewersService _interviewers_service;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -42,7 +44,8 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             RoleManager<IdentityRole> roleManager,
-            IHrEmployeeService hr_service)
+            IHrEmployeeService hr_service,
+            IInterviewersService interviewers_service)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -52,6 +55,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
             _emailSender = emailSender;
             _roleManager = roleManager;
             _hr_service = hr_service;
+            _interviewers_service = interviewers_service;
         }
 
         /// <summary>
@@ -198,6 +202,16 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
                     //save user to employees table
                     hrEmployee.Password = user.PasswordHash;
                     _hr_service.Add(hrEmployee);
+
+                    var interviewerEntry = new Interviewers
+                    {
+                        Name = hrEmployee.Name,
+                        Email = hrEmployee.Email,
+                    };
+
+                    _interviewers_service.Add(interviewerEntry);
+
+                    await _hr_service.AddAsync(hrEmployee);
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)

@@ -11,11 +11,11 @@ namespace Basecode.Services.Interfaces
 {
     public interface IInterviewersService
     {
-        List<Interviewers> RetrieveAll();
-        Interviewers? GetByName(string name);
-        void Add(Interviewers Interviewers);
-        Interviewers? GetById(int id);
-        void Update(InterviewersUpdationDto Interviewers);
-        void Delete(int id);
+        Task<List<Interviewers>> RetrieveAllAsync();
+        Task<Interviewers?> GetByNameAsync(string name);
+        Task AddAsync(Interviewers Interviewers);
+        Task<Interviewers?> GetByIdAsync(int id);
+        Task UpdateAsync(InterviewersUpdationDto Interviewers);
+        Task DeleteAsync(int id);
     }
 }

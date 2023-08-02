@@ -1,133 +1,167 @@
-﻿@{
+﻿@using Basecode.Data.ViewModels;
+@using static Basecode.Data.Enums.Enums;
+@model InterviewsFormViewModel
+
+@{
+    ViewData["Title"] = "New Interview";
     Layout = "_SideBarAdmin";
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/CreateInterview.css" />
-    <script src="https://kit.fontawesome.com/b68ff1da95.js" crossorigin="anonymous"></script>
-}
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
 
-<body>
-    <div class="heading">
-        <div class="heading-text">
-            <p class="m-0 fw-bold">New Interview</p>
-        </div>
-    </div>
-    <form method="post" class="create-interview-form">
-        <div>
-            <a asp-action="Interview" class="back d-flex gap-2 text-decoration-none align-items-center justify-content-start">
-                <i class="fa-solid fa-arrow-left"></i>
-                <p class="m-0">Back</p>
-            </a>
-        </div>
-        <div class="section-interview">
-            <div class="d-flex flex-row align-items-center">
-                <p class="section-text">
-                    INTERVIEWER DETAILS
-                </p>
-            </div>
-            <div class="line"></div>
-        </div>
-        <div class="pb-2">
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <label for="interviewerName">Name:</label>
-                        <input type="text" class="form-control" id="interviewerName" placeholder="Jane Marie Doe">
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" class="form-control" id="interviewerEmail" placeholder="JaneMarieDoe@gmail.com">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="section-interview">
-            <div class="d-flex flex-row align-items-center">
-                <p class="section-text">
-                    APPLICANT
-                </p>
-            </div>
-            <div class="line"></div>
-        </div>
-        <div class="pb-2">
-            <div class="row align-items-center">
-                <div class="col-md-auto">
-                    <label for="applicantName">Name:</label>
-                </div>
-                <div class="col">
-                    <select class="form-select w-50" id="selectApplicant" name="selectApplicant" required>
-                        <option selected disabled value="">Select an Applicant...</option>
-                        <option value="applicant chosen">John Doe</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="section-interview">
-            <div class="d-flex flex-row align-items-center">
-                <p class="section-text">
-                    AVAILABILITY
-                </p>
-            </div>
-            <div class="line"></div>
-        </div>
-        <div class="pb-2">
-            <div class="row align-items-center">
-                <div class="col">
-                    <label for="date">Date:</label>
-                    <input class="form-control" id="date" type="date" name="date" required />
-                </div>
-                <div class="col d-flex flex-row gap-4">
-                    <div class="col w-25">
-                        <label for="startTime">Time Start:</label>
-                        <input class="form-control" id="startTime" type="time" name="startTime" required />
-                    </div>
-                    <div class="col w-25">
-                        <label for="endTime">Time End:</label>
-                        <input class="form-control" id="endTime" type="time" name="endTime" required />
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="section-interview">
-            <div class="d-flex flex-row align-items-center">
-                <p class="section-text">
-                    INTERVIEW
-                </p>
-            </div>
-            <div class="line"></div>
-        </div>
-        <div class="pb-2">
-            <div class="row form-row">
-                <div class="col-12 form-group">
-                    <label for="interviewType">Interview Type:</label>
-                    <select class="form-select w-50" id="interviewType" name="interviewType" required>
-                        <option selected disabled value=""><em>Select an interview type...</em></option>
-                        <option value="For HR Interview">For HR Interview</option>
-                        <option value="For Technical Interview">For Technical Interview</option>
-                        <option value="For Technical Exam">For Technical Exam</option>
-                        <option value="Undergoing Background Check">Undergoing Background Check</option>
-                        <option value="For Final Interview">For Final Interview</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row py-4">
-                <div class="form-group">
-                    <label for="notes">Notes/Remarks:</label>
-                    <textarea class="form-control" id="notes" rows="3"></textarea>
-                </div>
-            </div>
-        </div>
-        <div class="d-grid d-md-flex justify-content-md-end">
-            <button class="btn b-blue px-4" data-toggle="modal" data-target="#overlapModal">ADD SCHEDULE</button>
-        </div>
-    </form>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://kit.fontawesome.com/b68ff1da95.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-</body>
+}
 
-<!-- Overlap Modal -->
+<div class="container-header shadow-sm">
+    <div class="row">
+        <div class="col-auto d-flex align-items-lg-center ps-5">
+            <h2 class="m-0 ps-2">@ViewData["Title"]</h2>
+        </div>
+    </div>
+</div>
+<div class="buffer"></div>
+
+<form method="post" asp-controller="HR" asp-action="AddInterview" class="create-interview-form">
+    <input type="hidden" asp-for="InterviewerId" value="@Model.Interviewer.Id" />
+    <div>
+        <a asp-action="Interviews" class="back d-flex gap-2 text-decoration-none align-items-center justify-content-start">
+            <i class="fa-solid fa-arrow-left"></i>
+            <p class="m-0">Back</p>
+        </a>
+    </div>
+    <div class="section-interview">
+        <div class="d-flex flex-row align-items-center">
+            <p class="section-text">
+                INTERVIEWER DETAILS
+            </p>
+        </div>
+        <div class="line"></div>
+    </div>
+    <div class="pb-2">
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="interviewerName">Name:</label>
+                    <input type="text" class="form-control" id="interviewerName" placeholder="@Model.Interviewer.Name" readonly>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="interviewerEmail" placeholder="@Model.Interviewer.Email" readonly>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section-interview">
+        <div class="d-flex flex-row align-items-center">
+            <p class="section-text">
+                APPLICANT
+            </p>
+        </div>
+        <div class="line"></div>
+    </div>
+    <div class="pb-2">
+        <div class="row align-items-center">
+            <div class="col-md-auto">
+                <label for="applicantId">Name:</label>
+            </div>
+            <div class="col">
+                <select asp-for="ApplicantId" class="form-select w-50" id="applicantId" name="applicantId" required>
+                    <option selected disabled value="">Select an Applicant...</option>
+                    @foreach (var applicants in Model.ApplicantsList)
+                    {
+                        <option value="@applicants.Id">@applicants.FirstName @applicants.MiddleName @applicants.LastName</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="section-interview">
+        <div class="d-flex flex-row align-items-center">
+            <p class="section-text">
+                AVAILABILITY
+            </p>
+        </div>
+        <div class="line"></div>
+    </div>
+    <div class="pb-2">
+        <div class="row align-items-center">
+            <div class="col">
+                <label for="date">Date:</label>
+                <input class="form-control" id="date" type="date" name="date" required />
+            </div>
+            <div class="col d-flex flex-row gap-4">
+                <div class="col w-25">
+                    <label for="timeStart">Time Start:</label>
+                    <input class="form-control timepicker" id="timeStart" type="text" name="timeStart" required />
+                </div>
+                <div class="col w-25">
+                    <label for="timeEnd">Time End:</label>
+                    <input class="form-control timepicker" id="timeEnd" type="text" name="timeEnd" required />
+                </div>
+            </div>
+            <input type="hidden" id="interviewDate" name="InterviewDate" asp-for="InterviewDate" />
+            <input type="hidden" id="interviewTimeStart" name="TimeStart" asp-for="TimeStart" />
+            <input type="hidden" id="interviewTimeEnd" name="TimeEnd" asp-for="TimeEnd" />
+        </div>
+    </div>
+    <div class="section-interview">
+        <div class="d-flex flex-row align-items-center">
+            <p class="section-text">
+                INTERVIEW
+            </p>
+        </div>
+        <div class="line"></div>
+    </div>
+    <div class="pb-2">
+        <div class="row form-row">
+            <div class="col-12 form-group">
+                <label for="interviewType">Interview Type:</label>
+                <select asp-for="InterviewType" class="form-select w-50" id="interviewType" name="interviewType" required>
+                    <option selected disabled value="N/A"><em>Select an interview type...</em></option>
+                    <option value="@InterviewType.HRInterview">For HR Interview</option>
+                    <option value="@InterviewType.TechnicalInterview">For Technical Interview</option>
+                    <option value="@InterviewType.TechnicalExam">For Technical Exam</option>
+                    <option value="@InterviewType.UndergoingBackgroundCheck">Undergoing Background Check</option>
+                    <option value="@InterviewType.FinalInterview">For Final Interview</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="d-grid d-md-flex justify-content-md-end mt-3">
+        <button type="submit" id="addSchedule" class="btn b-blue px-4">ADD SCHEDULE</button>
+    </div>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('input.timepicker').timepicker({
+            timeFormat: 'h:mm p',
+            interval: 30,
+            minTime: '0',
+            maxTime: '11:30pm',
+            dynamic: false,
+            dropdown: true,
+            scrollbar: false
+        });
+        $('#addSchedule').click(function () {
+            const selectedDate = document.getElementById("date").value;
+            const selectedTimeStart = document.getElementById("timeStart").value;
+            const selectedTimeEnd = document.getElementById("timeEnd").value;
+
+            document.getElementById("interviewDate").value = selectedDate;
+            document.getElementById("interviewTimeStart").value = selectedTimeStart;
+            document.getElementById("interviewTimeEnd").value = selectedTimeEnd;
+        });
+    });
+</script>
+
 <div class="modal fade" id="overlapModal" tabindex="-1" role="dialog" aria-labelledby="overlapModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content px-3 py-4">

@@ -11,12 +11,12 @@ namespace Basecode.Services.Interfaces
 {
     public interface ICurrentHiresService
     {
-        List<CurrentHires> RetrieveAll();
-        CurrentHires? GetByPositionId(int positionId);
-        CurrentHires? GetByHireStatus(string status);
-        void Add(CurrentHiresCreationDto CurrentHires);
-        CurrentHires? GetById(int id);
-        void Update(CurrentHiresUpdationDto CurrentHires);
-        void Delete(int id);
+        Task<List<CurrentHires>> RetrieveAllAsync();
+        Task<CurrentHires?> GetByPositionIdAsync(int positionId);
+        Task<CurrentHires?> GetByHireStatusAsync(string status);
+        Task AddAsync(CurrentHiresCreationDto CurrentHires);
+        Task<CurrentHires?> GetByIdAsync(int id);
+        Task UpdateAsync(CurrentHiresUpdationDto CurrentHires);
+        Task DeleteAsync(int id);
     }
 }

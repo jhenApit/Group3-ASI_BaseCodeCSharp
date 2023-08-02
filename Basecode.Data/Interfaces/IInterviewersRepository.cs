@@ -9,11 +9,11 @@ namespace Basecode.Data.Interfaces
 {
     public interface IInterviewersRepository
     {
-        IQueryable<Interviewers> RetrieveAll();
-        Interviewers? GetByName(string name);
-        void Add(Interviewers Interviewers);
-        Interviewers? GetById(int id);
-        void Update(Interviewers Interviewers);
-        void Delete(int id);
+        Task<IQueryable<Interviewers>> RetrieveAllAsync();
+        Task<Interviewers?> GetByNameAsync(string name);
+        Task AddAsync(Interviewers Interviewers);
+        Task<Interviewers?> GetByIdAsync(int id);
+        Task UpdateAsync(Interviewers Interviewers);
+        Task DeleteAsync(int id);
     }
 }

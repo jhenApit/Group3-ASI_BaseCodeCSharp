@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Basecode.Data.Repositories
 {
@@ -16,25 +17,25 @@ namespace Basecode.Data.Repositories
             _context = context;
         }
 
-        public IQueryable<Exams> RetrieveAll()
+        public async Task<IQueryable<Exams>> RetrieveAllAsync()
         {
-            return this.GetDbSet<Exams>();
+            return await Task.FromResult(this.GetDbSet<Exams>());
         }
 
-        public void Add(Exams Exams)
+        public async Task AddAsync(Exams Exams)
         {
-            _context.Exams.Add(Exams);
-            _context.SaveChanges();
+            await _context.Exams.AddAsync(Exams);
+            await _context.SaveChangesAsync();
         }
 
-        public Exams? GetById(int id)
+        public async Task<Exams?> GetByIdAsync(int id)
         {
-            return _context.Exams.Find(id);
+            return await _context.Exams.FindAsync(id);
         }
 
-        public void Update(Exams Exams)
+        public async Task UpdateAsync(Exams Exams)
         {
-            var existingExams = _context.Exams.Find(Exams.Id);
+            var existingExams = await _context.Exams.FindAsync(Exams.Id);
             if (existingExams != null)
             {
                 // Update the properties of the existing entity
@@ -45,23 +46,23 @@ namespace Basecode.Data.Repositories
                 existingExams.ExamDate = Exams.ExamDate;
 
                 // Save the changes
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
 
         }
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var data = _context.Exams.Find(id);
+            var data = await _context.Exams.FindAsync(id);
             if (data != null)
             {
                 _context.Exams.Remove(data);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
 
-        public Exams? GetByApplicantId(int applicantId)
+        public async Task<Exams?> GetByApplicantIdAsync(int applicantId)
         {
-            return _context.Exams.FirstOrDefault(e => e.ApplicantId == applicantId);
+            return await _context.Exams.FirstOrDefaultAsync(e => e.ApplicantId == applicantId);
         }
 
     }

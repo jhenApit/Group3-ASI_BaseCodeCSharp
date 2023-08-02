@@ -14,7 +14,7 @@ namespace Basecode.Data.ViewModels
         public int JobCount { get; set; }
         public List<Applicants> Candidates { get; set; }
         public int EmployeeCount { get; set; }
-        public List<Interviews> Schedules { get; set; }
+        public List<Interviews> Interviews { get; set; }
 
     }
 }

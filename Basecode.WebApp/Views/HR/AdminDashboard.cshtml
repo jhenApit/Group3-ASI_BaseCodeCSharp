@@ -102,9 +102,9 @@
                     <div class="dashboard-cards bottom-card p-3">
                         <div class="d-flex justify-content-between">
                             <h3 class="card-title">UPCOMING INTERVIEWS</h3>
-                            @if (Model.Schedules.Count() > 0)
+                            @if (Model.Interviews.Count() > 0)
                             {
-                                <a asp-controller="Hr" asp-action="Interview">
+                                <a asp-controller="Hr" asp-action="Interviews">
                                     <p class="d-flex view-all m-0 ms-auto">
                                         View All
                                         <i class='bx bx-chevron-right fs-3'></i>
@@ -123,7 +123,7 @@
                                 </tr>
                             </thead>
                             <tbody class="text-center">
-                                @if(Model.Schedules.Count() == 0)
+                                @if(Model.Interviews.Count() == 0)
                                 {
                                     <tr>
                                         <td colspan="6">NO INTERVIEWS</td>
@@ -131,15 +131,13 @@
                                 }
                                 else
                                 {
-                                    @foreach (var interview in Model.Schedules)
+                                    @foreach (var interview in Model.Interviews)
                                     {
                                         <tr>
-                                            <td>@interview.InterviewDate</td>
-                                            <td>@interview.TimeStart</td>
-                                            <td>@interview.TimeEnd</td>
-                                            <td>@interview.Interviewer</td>
-                                            <td>@interview.Applicant</td>
-                                            <td>@interview.InterviewType</td>
+                                            <td>@interview.InterviewDate.ToString("MMMM dd, yyyy"), @interview.TimeStart - @interview.TimeEnd</td>
+                                            <td>@interview.Interviewer.Name</td>
+                                            <td>@interview.Applicant.Name</td>
+                                            <td>@EnumHelper.GetEnumDescription(interview.InterviewType)</td>
                                         </tr>
                                     }
                                 }

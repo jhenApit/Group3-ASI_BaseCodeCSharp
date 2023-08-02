@@ -1,6 +1,7 @@
 ﻿ @using Basecode.Data.Enums;
 @using Basecode.Data.Models;
 @using Basecode.Services.Interfaces;
+@using System.Drawing;
 @using static Basecode.Data.Enums.Enums;
 @model ApplicantDetailViewModel
 @inject IJobPostingsService _jobPostingService;
@@ -8,6 +9,7 @@
     ViewData ["Title"] = "Application Detail";
     Layout = "_SideBarAdmin";
     var job = _jobPostingService.GetById(Model.Applicant.JobId);
+    <link rel="stylesheet" href="~/css/ApplicantDetail.css" />
 }
 
 <!-- Modals are at the bottom -->
@@ -23,9 +25,13 @@
     <div class="pt-5"></div><div class="pt-2"></div> <!-- a buffer to push content down so that header won't cover it' -->
     <div class="row">
         <div class="col-auto me-auto">
-            <div class="status px-3 py-1">
-                @EnumHelper.GetEnumDescription(Model.Applicant.ApplicationStatus)
-            </div>
+            @{
+                Color statusColor = EnumHelper.GetColorForApplicationStatus(Model.Applicant.ApplicationStatus);
+                string colorStyle = $"background-color: {ColorTranslator.ToHtml(statusColor)};";
+                <div class="status px-3 py-1" style="@colorStyle">
+                    @EnumHelper.GetEnumDescription(Model.Applicant.ApplicationStatus)
+                </div>
+            }
         </div>
     </div>
     <div class="container row mt-3 mx-auto py-2 px-1 partial-view-selector">
@@ -240,15 +246,23 @@
                         </form>
                         break;
                     default:
-                        <a asp-route-id="@Model.Applicant.Id" class="status-btn" asp-controller="HR" asp-action="UpdateApplicantStatus" style="justify-content: flex-start !important;">DEPLOY </a>
+                        if (Model.Applicant.ApplicationStatus != ApplicationStatus.Rejected)
+                        {
+                            <a asp-route-id="@Model.Applicant.Id" class="btn status-btn status-change-btn" asp-controller="HR" asp-action="UpdateApplicantStatus" style="justify-content: flex-start !important;">DEPLOY </a>
+                        }
                         break;
                 }
             </div>
             <div class="col-auto">
                 <!-- A confirmation modal will pop-up -->
-                <button id="RejectApplicant " class="btn reject px-5 py-2" data-bs-toggle="modal" asp-controller="HR" asp-action="UpdateApplicantStatus" data-bs-target="#RejectApplicantModal">
-                    REJECT
-                </button>
+                @{
+                    if (Model.Applicant.ApplicationStatus != ApplicationStatus.Rejected)
+                    {
+                        <button id="RejectApplicant " class="btn reject px-5 py-2" data-bs-toggle="modal" asp-controller="HR" asp-action="UpdateApplicantStatus" data-bs-target="#RejectApplicantModal">
+                            REJECT
+                        </button>
+                    }
+                }
             </div>
         </div>
     </div>

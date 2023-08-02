@@ -321,9 +321,9 @@ namespace Basecode.WebApp.Controllers
         /// <returns>Redirect to Edit Interview Page</returns>
         public IActionResult EditInterview(int id)
         {
-            Interviews interviews = _interviewsService.GetById(id);
             try
             {
+                Interviews interviews = _interviewsService.GetById(id);
                 Console.WriteLine(interviews);
                 if (interviews != null)
                 {

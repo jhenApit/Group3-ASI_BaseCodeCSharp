@@ -31,45 +31,49 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="id">The ID of the applicant.</param>
         /// <returns>The applicant with the specified ID.</returns>
-        public int Add(ApplicantCreationDto applicant)
+        public async Task<int> AddAsync(ApplicantCreationDto applicant)
         {
             var applicantModel = _mapper.Map<Applicants>(applicant);
+
             applicantModel.ApplicantId = _idGenerator.GenerateRandomApplicantId();
             applicantModel.ApplicationDate = DateTime.Now;
             applicantModel.ApplicationStatus = Data.Enums.Enums.ApplicationStatus.Received;
             //Row 41 on the function List. Set requirements to TBC upon applying
             applicantModel.Requirements = Data.Enums.Enums.Requirements.TBC;
-            _repository.Add(applicantModel);
+            
+            await _repository.AddAsync(applicantModel);
             return applicantModel.Id;
         }
         
 
-        public Applicants GetByApplicantId(string applicantId)
+        public async Task<Applicants?> GetByApplicantIdAsync(string applicantId)
         {
-            return _repository.GetByApplicantId(applicantId);
+            return await _repository.GetByApplicantIdAsync(applicantId);
         }
 
-        public Applicants GetById(int id)
+        public async Task<List<Applicants>> GetByEmailAsync(string email)
         {
-            return _repository.GetById(id);
+            var applicantEmails = await _repository.GetByEmailAsync(email);
+            return applicantEmails.ToList();
         }
 
-        public Applicants GetByName(string fname, string mname, string lname)
+        public async Task<Applicants?> GetByIdAsync(int id)
         {
-            return _repository.GetByName(fname, mname, lname);
+            return await _repository.GetByIdAsync(id);
         }
 
-        public List<Applicants> GetByEmail(string email)
+        public async Task<Applicants?> GetByNameAsync(string fname, string mname, string lname)
         {
-            return _repository.GetByEmail(email).ToList();
+            return await _repository.GetByNameAsync(fname, mname, lname);
         }
 
-        public List<Applicants> RetrieveAll()
+        public async Task<List<Applicants>> RetrieveAllAsync()
         {
-            return _repository.RetrieveAll().ToList();
+            var applicants = await _repository.RetrieveAllAsync();
+            return applicants.ToList();
         }
 
-        public LogContent AddApplicantLogContent(ApplicantCreationDto applicantCreationDto)
+        /*public LogContent AddApplicantLogContent(ApplicantCreationDto applicantCreationDto)
         {
             
             List<string> errors = new List<string>();
@@ -102,6 +106,6 @@ namespace Basecode.Services.Services
             }
 
             return _logContent;
-        }
+        }*/
     }
 }

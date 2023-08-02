@@ -6,14 +6,12 @@ namespace Basecode.Services.Interfaces
 {
     public interface IJobPostingsService
     {
-        List<JobPostings> RetrieveAll();
-        JobPostings? GetByName(string name);
-        void Add(JobPostingsCreationDto jobPostings);
-        JobPostings? GetById(int id);
-        void Update(JobPostingsUpdationDto jobPostings);
-        void SemiDelete(int id);
-        void PermaDelete(int id);
-        public LogContent CreateJobPosting(JobPostingsCreationDto jobPostings);
-        public LogContent UpdateJobPosting(JobPostingsUpdationDto jobPostings);
+        Task<List<JobPostings>> RetrieveAllAsync();
+        Task<JobPostings?> GetByNameAsync(string name);
+        Task AddAsync(JobPostingsCreationDto jobPostings);
+        Task<JobPostings?> GetByIdAsync(int id);
+        Task UpdateAsync(JobPostingsUpdationDto jobPostings);
+        Task SemiDeleteAsync(int id);
+        Task PermaDeleteAsync(int id);
     }
 }

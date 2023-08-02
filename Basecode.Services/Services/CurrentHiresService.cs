@@ -25,40 +25,41 @@ namespace Basecode.Services.Services
             _repository = repository;
             _mapper = mapper;
         }
-        public List<CurrentHires> RetrieveAll()
+        public async Task<List<CurrentHires>> RetrieveAllAsync()
         {
-            return _repository.RetrieveAll().ToList();
+            var currentHires = await _repository.RetrieveAllAsync();
+            return currentHires.ToList();
         }
 
-        public void Add(CurrentHiresCreationDto CurrentHires)
+        public async Task AddAsync(CurrentHiresCreationDto CurrentHires)
         {
             var CurrentHiresModel = _mapper.Map<CurrentHires>(CurrentHires);
-            _repository.Add(CurrentHiresModel);
+            await _repository.AddAsync(CurrentHiresModel);
         }
 
-        public CurrentHires? GetById(int id)
+        public async Task<CurrentHires?> GetByIdAsync(int id)
         {
-            return _repository.GetById(id);
+            return await _repository.GetByIdAsync(id);
         }
 
-        public void Update(CurrentHiresUpdationDto CurrentHires)
+        public async Task UpdateAsync(CurrentHiresUpdationDto CurrentHires)
         {
             var CurrentHiresModel = _mapper.Map<CurrentHires>(CurrentHires);
-            _repository.Update(CurrentHiresModel);
+            await _repository.UpdateAsync(CurrentHiresModel);
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            _repository.Delete(id);
+            await _repository.DeleteAsync(id);
         }
 
-        public CurrentHires? GetByPositionId(int positionId)
+        public async Task<CurrentHires?> GetByPositionIdAsync(int positionId)
         {
-            return _repository.GetByPositionId(positionId);
+            return await _repository.GetByPositionIdAsync(positionId);
         }
-        public CurrentHires? GetByHireStatus(string status)
+        public async Task<CurrentHires?> GetByHireStatusAsync(string status)
         {
-            return _repository.GetByHireStatus(status);
+            return await _repository.GetByHireStatusAsync(status);
         }
 
     }

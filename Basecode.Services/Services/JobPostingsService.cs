@@ -24,16 +24,17 @@ namespace Basecode.Services.Services
         /// Retrieves all job postings.
         /// </summary>
         /// <returns>A list of job postings.</returns>
-        public List<JobPostings> RetrieveAll()
+        public async Task<List<JobPostings>> RetrieveAllAsync()
         {
-            return _repository.RetrieveAll().ToList();
+            var jobPost = await _repository.RetrieveAllAsync();
+            return jobPost.ToList();
         }
 
         /// <summary>
         /// Adds a new job posting.
         /// </summary>
         /// <param name="jobPostingsDto">The DTO object containing job posting details.</param>
-        public void Add(JobPostingsCreationDto jobPostingsDto)
+        public async Task AddAsync(JobPostingsCreationDto jobPostingsDto)
         {
             var JobPostingsModel = _mapper.Map<JobPostings>(jobPostingsDto);
             JobPostingsModel.CreatedTime = DateTime.Now;
@@ -42,7 +43,7 @@ namespace Basecode.Services.Services
             JobPostingsModel.UpdatedTime = null;
             JobPostingsModel.UpdatedBy = null;
 
-            _repository.Add(JobPostingsModel);
+            await _repository.AddAsync(JobPostingsModel);
         }
 
         /// <summary>
@@ -50,43 +51,43 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="id">The ID of the job posting.</param>
         /// <returns>The job posting with the specified ID, or null if not found.</returns>
-        public JobPostings? GetById(int id)
+        public async Task<JobPostings?> GetByIdAsync(int id)
         {
-            return _repository.GetById(id);
+            return await _repository.GetByIdAsync(id);
         }
 
         /// <summary>
         /// Updates a job posting.
         /// </summary>
         /// <param name="JobPostings">The DTO object containing updated job posting details.</param>
-        public void Update(JobPostingsUpdationDto JobPostings)
+        public async Task UpdateAsync(JobPostingsUpdationDto JobPostings)
         {
             var JobPostingsModel = _mapper.Map<JobPostings>(JobPostings);
             JobPostingsModel.UpdatedTime = DateTime.Now;
             JobPostingsModel.UpdatedBy = JobPostings.UpdatedBy;
 
-            _repository.Update(JobPostingsModel);
+            await _repository.UpdateAsync(JobPostingsModel);
         }
 
         /// <summary>
         /// Sets a job posting as deleted but retains it in the database.
         /// </summary>
         /// <param name="id">The ID of the job posting to semi-delete.</param>
-        public void SemiDelete(int id)
+        public async Task SemiDeleteAsync(int id)
         {
-            var job = _repository.GetById(id);
+            var job = await _repository.GetByIdAsync(id);
             job.IsDeleted = true;
             job.UpdatedTime = DateTime.Now;
-            _repository.SemiDelete(job);
+            await _repository.SemiDeleteAsync(job);
         }
 
         /// <summary>
         /// Permanently deletes a job posting from the database.
         /// </summary>
         /// <param name="id">The ID of the job posting to permanently delete.</param>
-        public void PermaDelete(int id)
+        public async Task PermaDeleteAsync(int id)
         {
-            _repository.PermaDelete(id);
+            await _repository.PermaDeleteAsync(id);
         }
 
         /// <summary>
@@ -94,9 +95,9 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="name">The name of the job posting.</param>
         /// <returns>The job posting with the specified name, or null if not found.</returns>
-        public JobPostings? GetByName(string name)
+        public async Task<JobPostings?> GetByNameAsync(string name)
         {
-            return _repository.GetByName(name);
+            return await _repository.GetByNameAsync(name);
         }
 
         /// <summary>
@@ -105,7 +106,7 @@ namespace Basecode.Services.Services
         /// <param name="jobPostingCreationDto"> the dto passed to create a job post</param>
         /// <returns>the log content containing the result, errorcode, message </returns>
 
-        public LogContent CreateJobPosting(JobPostingsCreationDto jobPostingCreationDto)
+        /*public LogContent CreateJobPosting(JobPostingsCreationDto jobPostingCreationDto)
         {
             JobPostings job = GetByName(jobPostingCreationDto.Name);
             if (job != null)
@@ -120,9 +121,9 @@ namespace Basecode.Services.Services
             }
 
             return _logContent;
-        }
+        }*/
 
-        public LogContent UpdateJobPosting(JobPostingsUpdationDto jobPostings)
+        /*public LogContent UpdateJobPosting(JobPostingsUpdationDto jobPostings)
         {
             var job = GetById(jobPostings.Id);
             if (job != null)
@@ -155,7 +156,7 @@ namespace Basecode.Services.Services
                 //return _logContent;
             }
             return _logContent;
-        }
+        }*/
 
     }
 }

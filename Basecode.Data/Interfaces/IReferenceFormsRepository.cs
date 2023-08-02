@@ -9,9 +9,9 @@ namespace Basecode.Data.Interfaces
 {
     public interface IReferenceFormsRepository
     {
-        IQueryable<ReferenceForms> RetrieveAll();
-        ReferenceForms? GetByCharacterReferenceId(int characterReferenceId);
-        void Add(ReferenceForms referenceForms);
-        ReferenceForms? GetById(int id);
+        Task<IQueryable<ReferenceForms>> RetrieveAllAsync();
+        Task<ReferenceForms?> GetByCharacterReferenceIdAsync(int characterReferenceId);
+        Task AddAsync(ReferenceForms referenceForms);
+        Task<ReferenceForms?> GetByIdAsync(int id);
     }
 }

@@ -29,19 +29,20 @@ namespace Basecode.Services.Services
         /// Retrieves all addresses from the repository.
         /// </summary>
         /// <returns>A list of Address objects.</returns>
-        public List<Addresses> RetrieveAll()
+        public async Task<List<Addresses>> RetrieveAllAsync()
         {
-            return _repository.RetrieveAll().ToList();
+            var addresses = await _repository.RetrieveAllAsync();
+            return addresses.ToList();
         }
 
         /// <summary>
         /// Adds a new address to the repository.
         /// </summary>
         /// <param name="AddressDto">The AddressCreationDto object representing the address to be added.</param>
-        public void Add(AddressCreationDto AddressDto)
+        public async Task AddAsync(AddressCreationDto AddressDto)
         {
             var AddressModel = _mapper.Map<Addresses>(AddressDto);
-            _repository.Add(AddressModel);
+            await _repository.AddAsync(AddressModel);
         }
 
         /// <summary>
@@ -49,20 +50,9 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="id">The unique identifier of the address.</param>
         /// <returns>The Address object matching the specified identifier, or null if not found.</returns>
-        public Addresses GetById(int id)
+        public async Task<Addresses?> GetByIdAsync(int id)
         {
-            return _repository.GetById(id);
+            return await _repository.GetByIdAsync(id);
         }
-
-        /// <summary>
-        /// Retrieves an address by its city name.
-        /// </summary>
-        /// <param name="city">The name of the city.</param>
-        /// <returns>The Address object matching the specified city name, or null if not found.</returns>
-        public Addresses GetByCity(string city)
-        {
-            return _repository.GetByCity(city);
-        }
-
     }
 }

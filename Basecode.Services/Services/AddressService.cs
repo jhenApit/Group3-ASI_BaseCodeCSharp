@@ -50,7 +50,7 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="id">The unique identifier of the address.</param>
         /// <returns>The Address object matching the specified identifier, or null if not found.</returns>
-        public async Task<Addresses> GetByIdAsync(int id)
+        public async Task<Addresses?> GetByIdAsync(int id)
         {
             return await _repository.GetByIdAsync(id);
         }

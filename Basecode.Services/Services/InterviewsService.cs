@@ -25,37 +25,38 @@ namespace Basecode.Services.Services
             _repository = repository;
             _mapper = mapper;
         }
-        public List<Interviews> RetrieveAll()
+        public async Task<List<Interviews>> RetrieveAllAsync()
         {
-            return _repository.RetrieveAll().ToList();
+            var interviews = await _repository.RetrieveAllAsync();
+            return interviews.ToList();
         }
 
-        public void Add(InterviewsCreationDto interviews)
+        public async Task AddAsync(InterviewsCreationDto interviews)
         {
             var InterviewsModel = _mapper.Map<Interviews>(interviews);
-            _repository.Add(InterviewsModel);
+            await _repository.AddAsync(InterviewsModel);
         }
 
-        public Interviews? GetById(int id)
+        public async Task<Interviews?> GetByIdAsync(int id)
         {
-            return _repository.GetById(id);
+            return await  _repository.GetByIdAsync(id);
         }
 
-        public void Update(InterviewsUpdationDto Interviews)
+        public async Task UpdateAsync(InterviewsUpdationDto Interviews)
         {
             var InterviewsModel = _mapper.Map<Interviews>(Interviews);
             Console.WriteLine("Services" + InterviewsModel.InterviewDate);
-            _repository.Update(InterviewsModel);
+            await _repository.UpdateAsync(InterviewsModel);
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            _repository.Delete(id);
+            await _repository.DeleteAsync(id);
         }
 
-        public Interviews? GetByApplicantId(int applicantId)
+        public async Task<Interviews?> GetByApplicantIdAsync(int applicantId)
         {
-            return _repository.GetByApplicantId(applicantId);
+            return await _repository.GetByApplicantIdAsync(applicantId);
         }
 
     }

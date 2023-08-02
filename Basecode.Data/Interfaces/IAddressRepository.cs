@@ -11,6 +11,6 @@ namespace Basecode.Data.Interfaces
     {
         Task<IQueryable<Addresses>> RetrieveAllAsync();
         Task AddAsync(Addresses address);
-        Task<Addresses> GetByIdAsync(int id);
+        Task<Addresses?> GetByIdAsync(int id);
     }
 }

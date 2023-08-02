@@ -9,11 +9,11 @@ namespace Basecode.Data.Interfaces
 {
     public interface IExamsRepository
     {
-        IQueryable<Exams> RetrieveAll();
-        Exams? GetByApplicantId(int applicantId);
-        void Add(Exams exams);
-        Exams? GetById(int id);
-        void Update(Exams exams);
-        void Delete(int id);
+        Task<IQueryable<Exams>> RetrieveAllAsync();
+        Task<Exams?> GetByApplicantIdAsync(int applicantId);
+        Task AddAsync(Exams exams);
+        Task<Exams?> GetByIdAsync(int id);
+        Task UpdateAsync(Exams exams);
+        Task DeleteAsync(int id);
     }
 }

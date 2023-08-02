@@ -99,7 +99,7 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="email">The email of the HR employee to retrieve</param>
         /// <returns>The HR employee object</returns>
-        public async Task<HrEmployee> GetByEmailAsync(string email)
+        public async Task<HrEmployee?> GetByEmailAsync(string email)
         {
             return await _repository.GetByEmailAsync(email);
         }
@@ -109,9 +109,9 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="hrEmployee">The DTO object containing the information of the HR employee to be created</param>
         /// <returns>The log content upon creating a HR account</returns>
-        public LogContent CreateHrAccount(HREmployeeCreationDto hrEmployee)
+        /*public LogContent CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
-            HrEmployee hr = GetByEmail(hrEmployee.Email);
+            HrEmployee hr = await GetByEmailAsync(hrEmployee.Email);
             if (hr != null)
             {
                 _logContent.Result = false;
@@ -124,7 +124,7 @@ namespace Basecode.Services.Services
             }
 
             return _logContent;
-        }
+        }*/
 
         /*/// <summary>
         /// Edits an HR account and logs the error content if the edit fails.

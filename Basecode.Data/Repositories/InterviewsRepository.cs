@@ -67,6 +67,28 @@ namespace Basecode.Data.Repositories
             return await _context.Interviews.FirstOrDefaultAsync(e => e.ApplicantId == applicantId);
         }
 
+        public IEnumerable<Interviews> GetInterviewsByInterviewerAndDate(int interviewerId, DateTime interviewDate)
+        {
+            return _context.Interviews
+            .Where(i => i.InterviewerId == interviewerId && i.InterviewDate == interviewDate)
+            .ToList();
+        }
+
+        public IEnumerable<Interviews> GetInterviewsByInterviewer(int interviewerId)
+        {
+            return _context.Interviews
+                .Where(i => i.InterviewerId == interviewerId)
+                .ToList();
+        }
+
+        public IEnumerable<Interviews> GetInterviewsByApplicant(int applicantId)
+        {
+            return _context.Interviews
+                .Where(i => i.ApplicantId == applicantId)
+                .ToList();
+        }
+
+
     }
 
 }

@@ -8,6 +8,7 @@ using Basecode.Data.ViewModels;
 using Basecode.Data.Models;
 using Basecode.Data.Dtos.Interviews;
 using static Basecode.Data.Enums.Enums;
+using System.Globalization;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -306,13 +307,93 @@ namespace Basecode.WebApp.Controllers
                     TimeStart = interview.TimeStart,
                     TimeEnd = interview.TimeEnd,
                 };
+
+                if (IsTimeRangeOverlapping(createInterview))
+                {
+                    TempData["IsOverlap"] = true;
+                    return RedirectToAction("CreateInterview", new { id = interview.InterviewerId });
+                }
+
                 _interviewsService.Add(createInterview);
                 return RedirectToAction("Interviews");
             }
-            catch(Exception)
+            catch(Exception e)
             {
-                return BadRequest("Error occurred while adding a new interview");
+                return BadRequest(e.Message + " Error occurred while adding a new interview");
             }
+        }
+
+        private bool IsTimeRangeOverlapping(InterviewsCreationDto newInterview)
+        {
+            var existingInterviews = _interviewsService.GetInterviewsByInterviewerAndDate(newInterview.InterviewerId, newInterview.InterviewDate);
+
+            var newStart = DateTime.ParseExact(newInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
+            var newEnd = DateTime.ParseExact(newInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
+
+            foreach (var existingInterview in existingInterviews)
+            {
+                var existingStart = DateTime.ParseExact(existingInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
+                var existingEnd = DateTime.ParseExact(existingInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
+
+                if (newInterview.InterviewDate == existingInterview.InterviewDate)
+                {
+                    // Check if there is a time overlap
+                    if ((newStart >= existingStart && newStart < existingEnd) || 
+                        (newEnd > existingStart && newEnd <= existingEnd) ||    
+                        (newStart <= existingStart && newEnd >= existingEnd))   
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            var otherInterviewsByInterviewer = _interviewsService.GetInterviewsByInterviewer(newInterview.InterviewerId);
+            foreach (var otherInterview in otherInterviewsByInterviewer)
+            {
+                if (otherInterview.Id != newInterview.Id)
+                {
+                    var otherStart = DateTime.ParseExact(otherInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
+                    var otherEnd = DateTime.ParseExact(otherInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
+
+                    // Check if there is a date overlap
+                    if (newInterview.InterviewDate == otherInterview.InterviewDate)
+                    {
+                        // Check if there is a time overlap
+                        if ((newStart >= otherStart && newStart < otherEnd) || 
+                            (newEnd > otherStart && newEnd <= otherEnd) ||   
+                            (newStart <= otherStart && newEnd >= otherEnd))    
+                        {
+                            Console.WriteLine(2);
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            var otherInterviewsByApplicant = _interviewsService.GetInterviewsByApplicant(newInterview.ApplicantId);
+            foreach (var otherInterview in otherInterviewsByApplicant)
+            {
+                if (otherInterview.Id != newInterview.Id) 
+                {
+                    var otherStart = DateTime.ParseExact(otherInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
+                    var otherEnd = DateTime.ParseExact(otherInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
+
+                    // Check if there is a date overlap
+                    if (newInterview.InterviewDate == otherInterview.InterviewDate)
+                    {
+                        // Check if there is a time overlap
+                        if ((newStart >= otherStart && newStart < otherEnd) || 
+                            (newEnd > otherStart && newEnd <= otherEnd) ||   
+                            (newStart <= otherStart && newEnd >= otherEnd))   
+                        {
+                            Console.WriteLine(3);
+                            return true; 
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
 
         /// <summary>

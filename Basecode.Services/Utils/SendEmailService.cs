@@ -23,10 +23,11 @@ namespace Basecode.Services.Utils
         }
 
         /// <summary>
-        /// Send an email to new HR with their credentials upon creating an account 
+        /// Sends an email containing HR account details to the specified HR employee.
         /// </summary>
-        /// <param name="hrEmployee">HR Employee</param>
-        /// <param name="password">Account password</param>
+        /// <param name="hrEmployee">The HR employee to whom the email will be sent.</param>
+        /// <param name="password">The password associated with the HR account.</param>
+        /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendHrDetailsEmail(HrEmployee hrEmployee, string password)
         {
             var email = new MimeMessage();
@@ -51,72 +52,24 @@ namespace Basecode.Services.Utils
         }
 
         /// <summary>
-        /// Send an email to Applicant and Hr when an applicant apply a job 
+        /// Sends an email containing a password reset link to the specified user's email address.
         /// </summary>
-        /// <param name="applicant">Applicant</param>
-        /// <param name="position">Job position</param>
-        public async Task SendNewApplicantEmail(Applicants applicant, string position)
-        {
-            var applicantEmail = new MimeMessage();
-
-            applicantEmail.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
-            applicantEmail.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
-            applicantEmail.Subject = "Application Form Submitted";
-
-            string applicantEmailBody = File.ReadAllText("wwwroot/emailTemplates/ApplicationFormSubmitted.html");
-
-            applicantEmailBody = applicantEmailBody.Replace("{Name}", applicant.FirstName);
-            applicantEmailBody = applicantEmailBody.Replace("{JobTitle}", position);
-            applicantEmailBody = applicantEmailBody.Replace("{ApplicationID}", applicant.ApplicantId);
-            applicantEmailBody = applicantEmailBody.Replace("{DateSubmitted}", applicant.ApplicationDate.ToString());
-            applicantEmailBody = applicantEmailBody.Replace("{Company Email}", "alliance.jobhiring@gmail.com");
-
-            applicantEmail.Body = new TextPart(MimeKit.Text.TextFormat.Html)
-            {
-                Text = applicantEmailBody
-            };
-
-            var hrNotifEmail = new MimeMessage();
-            
-            hrNotifEmail.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
-            hrNotifEmail.To.Add(new MailboxAddress("HR Department", "alliance.humanresourceteam@gmail.com"));
-            hrNotifEmail.Subject = "New Applicant";
-
-            string hrEmailBody = File.ReadAllText("wwwroot/emailTemplates/HRNewApplicant.html");
-
-            hrEmailBody = hrEmailBody.Replace("{Name}", applicant.FirstName);
-            hrEmailBody = hrEmailBody.Replace("{JobTitle}", position);
-            hrEmailBody = hrEmailBody.Replace("{DateSubmitted}", applicant.ApplicationDate.ToString());
-            hrEmailBody = hrEmailBody.Replace("{Link}", "https://localhost:50140/Hr/JobApplicantsOverview");
-            hrEmailBody = hrEmailBody.Replace("{Email}", "alliance.jobhiring@gmail.com");
-
-            hrNotifEmail.Body = new TextPart(MimeKit.Text.TextFormat.Html)
-            {
-                Text = hrEmailBody
-            };
-
-            await _emailService.SendEmail(applicantEmail);
-            await _emailService.SendEmail(hrNotifEmail);
-        }
-
-        /// <summary>
-        /// Send email of regrets to Applicant if application was rejected
-        /// </summary>
-        /// <param name="applicant"></param>
-        /// <param name="job"></param>
-        public async Task SendApplicantApplicationRegretEmail(Applicants applicant, string job)
+        /// <param name="user">The IdentityUser for whom the password reset link is being sent.</param>
+        /// <param name="url">The URL where the user can reset their password.</param>
+        /// <returns>A Task representing the asynchronous email sending process.</returns>
+        public async Task SendForgotPasswordLink(IdentityUser user, string url)
         {
             var email = new MimeMessage();
 
             email.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
-            email.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
-            email.Subject = "Apologies and Regrets for Recent Application";
+            email.To.Add(new MailboxAddress(user.UserName, user.Email));
+            email.Subject = "Account Password Reset";
 
-            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ApplicantApplicationRejected.html");
+            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/HRForgotPassword.html");
 
-            emailBodyTemplate = emailBodyTemplate.Replace("{Name}", applicant.FirstName);
-            emailBodyTemplate = emailBodyTemplate.Replace("{Job}", job);
-            emailBodyTemplate = emailBodyTemplate.Replace("{HR Team Email}", "alliance.humanresourceteam@gmail.com");
+            emailBodyTemplate = emailBodyTemplate.Replace("{Name}", user.UserName);
+            emailBodyTemplate = emailBodyTemplate.Replace("{Email}", "alliance.jobhiring@gmail.com");
+            emailBodyTemplate = emailBodyTemplate.Replace("{ResetPasswordUrl}", url);
 
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
@@ -127,42 +80,12 @@ namespace Basecode.Services.Utils
         }
 
         /// <summary>
-        /// Send a job offer email to the Applicant
+        /// Sends email notifications regarding the application status to the applicant and HR Team.
         /// </summary>
-        /// <param name="applicant">Applicant</param>
-        /// <param name="job">Job name</param>
-        /// <param name="workSetup">Work Setup</param>
-        /// <param name="hours">Work shift</param>
-        public async Task SendApplicantJobOfferEmail(Applicants applicant, string job, string workSetup, string hours)
-        {
-            var email = new MimeMessage();
-
-            email.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
-            email.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
-            email.Subject = "Job Offer";
-
-            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/JobOffer.html");
-
-            emailBodyTemplate = emailBodyTemplate.Replace("{Name}", applicant.FirstName);
-            emailBodyTemplate = emailBodyTemplate.Replace("{Job}", job);
-            emailBodyTemplate = emailBodyTemplate.Replace("{WorkSetup}", workSetup);
-            emailBodyTemplate = emailBodyTemplate.Replace("{Hours}", hours);
-            emailBodyTemplate = emailBodyTemplate.Replace("{HR Team Email}", "alliance.humanresourceteam@gmail.com");
-
-            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
-            {
-                Text = emailBodyTemplate
-            };
-
-            await _emailService.SendEmail(email);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="applicant"></param>
-        /// <param name="job">Job title</param>
-        /// <param name="status">Application status</param>
+        /// <param name="applicant">The applicant whose application status is being updated.</param>
+        /// <param name="job">The name of the job for which the applicant applied.</param>
+        /// <param name="status">The updated application status.</param>
+        /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendApplicationStatusEmail(Applicants applicant, string job, string status)
         {
             var applicantEmail = new MimeMessage();
@@ -209,17 +132,68 @@ namespace Basecode.Services.Utils
         }
 
         /// <summary>
-        /// Send notification email to HR to review Applicant's application
+        /// Sends email notifications when a new applicant submits an application form.
         /// </summary>
-        /// <param name="applicant">Applicant</param>
-        /// <param name="jobTitle">Job title</param>
+        /// <param name="applicant">The new applicant whose application form is submitted.</param>
+        /// <param name="position">The position for which the applicant applied.</param>
+        /// <returns>A Task representing the asynchronous email sending process.</returns>
+        public async Task SendNewApplicantEmail(Applicants applicant, string position)
+        {
+            var applicantEmail = new MimeMessage();
+
+            applicantEmail.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
+            applicantEmail.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
+            applicantEmail.Subject = "Application Form Submitted";
+
+            string applicantEmailBody = File.ReadAllText("wwwroot/emailTemplates/ApplicationFormSubmitted.html");
+
+            applicantEmailBody = applicantEmailBody.Replace("{Name}", applicant.FirstName);
+            applicantEmailBody = applicantEmailBody.Replace("{JobTitle}", position);
+            applicantEmailBody = applicantEmailBody.Replace("{ApplicationID}", applicant.ApplicantId);
+            applicantEmailBody = applicantEmailBody.Replace("{DateSubmitted}", applicant.ApplicationDate.ToString());
+            applicantEmailBody = applicantEmailBody.Replace("{Company Email}", "alliance.jobhiring@gmail.com");
+
+            applicantEmail.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = applicantEmailBody
+            };
+
+            var hrNotifEmail = new MimeMessage();
+            
+            hrNotifEmail.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
+            hrNotifEmail.To.Add(new MailboxAddress("HR Department", "alliance.humanresourceteam@gmail.com"));
+            hrNotifEmail.Subject = "New Applicant";
+
+            string hrEmailBody = File.ReadAllText("wwwroot/emailTemplates/HRNewApplicant.html");
+
+            hrEmailBody = hrEmailBody.Replace("{Name}", applicant.FirstName);
+            hrEmailBody = hrEmailBody.Replace("{JobTitle}", position);
+            hrEmailBody = hrEmailBody.Replace("{DateSubmitted}", applicant.ApplicationDate.ToString());
+            hrEmailBody = hrEmailBody.Replace("{Link}", "https://localhost:50140/Hr/JobApplicantsOverview");
+            hrEmailBody = hrEmailBody.Replace("{Email}", "alliance.jobhiring@gmail.com");
+
+            hrNotifEmail.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = hrEmailBody
+            };
+
+            await _emailService.SendEmail(applicantEmail);
+            await _emailService.SendEmail(hrNotifEmail);
+        }
+
+        /// <summary>
+        /// Sends an email of approval to the HR team about the screening of a shortlisted applicant.
+        /// </summary>
+        /// <param name="applicant">The shortlisted applicant who is being screened.</param>
+        /// <param name="jobTitle">The title of the job for which the applicant is shortlisted.</param>
+        /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendHrApplicationApprovalEmail(Applicants applicant, string jobTitle)
         {
             var email = new MimeMessage();
 
             email.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
             email.To.Add(new MailboxAddress("HR Department", "alliance.humanresourceteam@gmail.com"));
-            email.Subject = "Shortlisted Applicants";
+            email.Subject = "Screening Applicant";
 
             string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/HRScreeningApplicant.html");
 
@@ -237,19 +211,25 @@ namespace Basecode.Services.Utils
             await _emailService.SendEmail(email);
         }
 
-        public async Task SendForgotPasswordLink(IdentityUser user, string url)
+        /// <summary>
+        /// Sends an email to the applicant to express apologies and regrets for the recent application rejection.
+        /// </summary>
+        /// <param name="applicant">The applicant who received the application rejection.</param>
+        /// <param name="job">The job for which the applicant's application was rejected.</param>
+        /// <returns>A Task representing the asynchronous email sending process.</returns>
+        public async Task SendApplicantApplicationRegretEmail(Applicants applicant, string job)
         {
             var email = new MimeMessage();
 
             email.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
-            email.To.Add(new MailboxAddress(user.UserName, user.Email));
-            email.Subject = "Account Password Reset";
+            email.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
+            email.Subject = "Apologies and Regrets for Recent Application";
 
-            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/HRForgotPassword.html");
+            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ApplicantApplicationRejected.html");
 
-            emailBodyTemplate = emailBodyTemplate.Replace("{Name}", user.UserName); 
-            emailBodyTemplate = emailBodyTemplate.Replace("{Email}", "alliance.jobhiring@gmail.com");
-            emailBodyTemplate = emailBodyTemplate.Replace("{ResetPasswordUrl}", url);
+            emailBodyTemplate = emailBodyTemplate.Replace("{Name}", applicant.FirstName);
+            emailBodyTemplate = emailBodyTemplate.Replace("{Job}", job);
+            emailBodyTemplate = emailBodyTemplate.Replace("{HR Team Email}", "alliance.humanresourceteam@gmail.com");
 
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
@@ -259,6 +239,16 @@ namespace Basecode.Services.Utils
             await _emailService.SendEmail(email);
         }
 
+        /// <summary>
+        /// Sends email notifications to an interviewer and an applicant to inform them about the scheduled interview.
+        /// </summary>
+        /// <param name="interviewer">The interviewer for whom the interview schedule is being sent.</param>
+        /// <param name="applicant">The applicant who is scheduled for an interview.</param>
+        /// <param name="interviewType">The type of the interview (e.g., in-person, remote).</param>
+        /// <param name="jobTitle">The title of the job for which the interview is scheduled.</param>
+        /// <param name="date">The date of the scheduled interview.</param>
+        /// <param name="time">The time of the scheduled interview.</param>
+        /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendSetInterviewScheduleEmail(Interviewers interviewer, Applicants applicant, string interviewType, string jobTitle, string date, string time)
         {
             var interviewerEmail = new MimeMessage();
@@ -309,6 +299,14 @@ namespace Basecode.Services.Utils
             await _emailService.SendEmail(applicantEmail);
         }
 
+        /// <summary>
+        /// Sends email reminders to an interviewer and the HR team about an upcoming interview schedule.
+        /// </summary>
+        /// <param name="applicant">The name of the applicant scheduled for the interview.</param>
+        /// <param name="interviewer">The interviewer who will conduct the interview.</param>
+        /// <param name="interviewType">The type of the interview (e.g., in-person, remote).</param>
+        /// <param name="dateAndTime">The date and time of the scheduled interview.</param>
+        /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendInterviewReminderEmail(string applicant, Interviewers interviewer, string interviewType, string dateAndTime)
         {
             var interviewerEmail = new MimeMessage();
@@ -354,6 +352,13 @@ namespace Basecode.Services.Utils
             await _emailService.SendEmail(hrNotifEmail);
         }
 
+        /// <summary>
+        /// Sends an email confirmation to the team about the approved interview/examination schedule for an applicant.
+        /// </summary>
+        /// <param name="applicant">The applicant for whom the interview/examination is scheduled.</param>
+        /// <param name="date">The date of the scheduled interview/examination.</param>
+        /// <param name="time">The time of the scheduled interview/examination.</param>
+        /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendHrApprovedScheduleEmail(Applicants applicant, string date, string time)
         {
             var email = new MimeMessage();
@@ -378,6 +383,12 @@ namespace Basecode.Services.Utils
             await _emailService.SendEmail(email);
         }
 
+        /// <summary>
+        /// Sends an email of approval to the HR team about the interview/exam status for an applicant.
+        /// </summary>
+        /// <param name="applicant">The applicant for whom the interview/exam status is being updated.</param>
+        /// <param name="interviewType">The type of the interview/exam (e.g., interview, examination).</param>
+        /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendHrInterviewApprovalEmail(Applicants applicant, string interviewType)
         {
             var hrNotifEmail = new MimeMessage();
@@ -398,16 +409,22 @@ namespace Basecode.Services.Utils
             };
 
             await _emailService.SendEmail(hrNotifEmail);
-           
         }
 
+        /// <summary>
+        /// Sends an email to notify an applicant about the regret for a recent interview/examination.
+        /// </summary>
+        /// <param name="applicant">The applicant object containing applicant information.</param>
+        /// <param name="jobTitle">The title of the job for which the applicant was interviewed.</param>
+        /// <param name="interviewType">The type of interview/examination (e.g., initial interview, technical test).</param>
+        /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendApplicantInterviewRegretEmail(Applicants applicant, string jobTitle, string interviewType)
         {
             var email = new MimeMessage();
 
             email.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
             email.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
-            email.Subject = "Apologies and Regrets for Recent Application";
+            email.Subject = "Apologies and Regrets for Recent Interview/Examination";
 
             string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ApplicantInterviewRejected.html");
 
@@ -424,6 +441,13 @@ namespace Basecode.Services.Utils
             await _emailService.SendEmail(email);
         }
 
+        /// <summary>
+        /// Sends an email to request a character reference from a given character reference contact.
+        /// </summary>
+        /// <param name="characterReference">The character reference contact's information.</param>
+        /// <param name="applicant">The name of the applicant for whom the character reference is requested.</param>
+        /// <param name="jobTitle">The title of the job for which the character reference is requested.</param>
+        /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendReferenceFormEmail(CharacterReferences characterReference, string applicant, string jobTitle)
         {
             var email = new MimeMessage();
@@ -448,6 +472,12 @@ namespace Basecode.Services.Utils
             await _emailService.SendEmail(email);
         }
 
+        /// <summary>
+        /// Sends an email to express gratitude for providing a character reference to support an applicant's job application.
+        /// </summary>
+        /// <param name="characterReference">The character reference contact's information.</param>
+        /// <param name="applicant">The name of the applicant for whom the character reference was provided.</param>
+        /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendReferenceGratitudeEmail(CharacterReferences characterReference, string applicant)
         {
             var email = new MimeMessage();
@@ -469,6 +499,12 @@ namespace Basecode.Services.Utils
             await _emailService.SendEmail(email);
         }
 
+        /// <summary>
+        /// Sends an email to notify an applicant that their provided references are absent or incomplete.
+        /// </summary>
+        /// <param name="applicant">The applicant object containing applicant information.</param>
+        /// <param name="jobTitle">The title of the job for which the references are required.</param>
+        /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendApplicantReferenceNotificationEmail(Applicants applicant, string jobTitle)
         {
             var email = new MimeMessage();
@@ -490,6 +526,11 @@ namespace Basecode.Services.Utils
             await _emailService.SendEmail(email);
         }
 
+        /// <summary>
+        /// Sends an email notification to the HR team about the completion of a reference form for applicant evaluation.
+        /// </summary>
+        /// <param name="applicant">The applicant object containing applicant information.</param>
+        /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendHrAnsweredFormNotificationEmail(Applicants applicant)
         {
             var email = new MimeMessage();
@@ -511,6 +552,11 @@ namespace Basecode.Services.Utils
             await _emailService.SendEmail(email);
         }
 
+        /// <summary>
+        /// Sends an email notification to the HR department for character reference approval of an applicant.
+        /// </summary>
+        /// <param name="applicants">The applicant object containing applicant information.</param>
+        /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendHrReferenceApprovalEmail(Applicants applicants)
         {
             var email = new MimeMessage();
@@ -534,6 +580,44 @@ namespace Basecode.Services.Utils
             await _emailService.SendEmail(email);
         }
 
+        /// <summary>
+        /// Sends an email to an applicant containing a job offer with details about the job, work setup, and hours.
+        /// </summary>
+        /// <param name="applicant">The applicant object containing applicant information.</param>
+        /// <param name="job">The title of the job being offered.</param>
+        /// <param name="workSetup">The setup or type of work being offered (e.g., full-time, part-time).</param>
+        /// <param name="hours">The expected working hours for the job.</param>
+        /// <returns>A Task representing the asynchronous email sending process.</returns>
+        public async Task SendApplicantJobOfferEmail(Applicants applicant, string job, string workSetup, string hours)
+        {
+            var email = new MimeMessage();
+
+            email.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
+            email.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
+            email.Subject = "Job Offer";
+
+            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/JobOffer.html");
+
+            emailBodyTemplate = emailBodyTemplate.Replace("{Name}", applicant.FirstName);
+            emailBodyTemplate = emailBodyTemplate.Replace("{Job}", job);
+            emailBodyTemplate = emailBodyTemplate.Replace("{WorkSetup}", workSetup);
+            emailBodyTemplate = emailBodyTemplate.Replace("{Hours}", hours);
+            emailBodyTemplate = emailBodyTemplate.Replace("{HR Team Email}", "alliance.humanresourceteam@gmail.com");
+
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = emailBodyTemplate
+            };
+
+            await _emailService.SendEmail(email);
+        }
+
+        /// <summary>
+        /// Sends an email notification to the HR team for job offer approval of an applicant.
+        /// </summary>
+        /// <param name="applicant">The applicant object containing applicant information.</param>
+        /// <param name="jobTitle">The title of the job being offered.</param>
+        /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendHrJobOfferApprovalEmail(Applicants applicant, string jobTitle)
         {
             var email = new MimeMessage();
@@ -556,6 +640,12 @@ namespace Basecode.Services.Utils
             await _emailService.SendEmail(email);
         }
 
+        /// <summary>
+        /// Sends an email notification to the Deployment Team regarding deployment requirements for an applicant.
+        /// </summary>
+        /// <param name="applicant">The applicant object containing applicant information.</param>
+        /// <param name="jobTitle">The title of the job the applicant is being deployed for.</param>
+        /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendDtRequirementNotificationEmail(Applicants applicant, string jobTitle)
         {
             var email = new MimeMessage();
@@ -579,6 +669,11 @@ namespace Basecode.Services.Utils
             await _emailService.SendEmail(email);
         }
 
+        /// <summary>
+        /// Sends an email confirmation to the Deployment Team about the successful onboarding of an applicant.
+        /// </summary>
+        /// <param name="applicant">The applicant object containing applicant information.</param>
+        /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendDtConfirmationEmail(Applicants applicant)
         {
             var email = new MimeMessage();

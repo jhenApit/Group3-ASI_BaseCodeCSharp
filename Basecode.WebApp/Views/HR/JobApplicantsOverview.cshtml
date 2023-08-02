@@ -17,7 +17,7 @@
 <div class="container table-container">
 	<div class="select-container">
 		<label for="position">Position:</label>
-		<select id="position" name="position">
+		<select id="position" name="position" @(Model.applicants.Count == 0 ? "disabled" : "")>
 			<option value="ALL">ALL</option>
 			@foreach (var jobPosting in Model.jobPostings)
 			{
@@ -25,7 +25,7 @@
 			}
 		</select>
 		<label for="status" style="margin-left: 20px;">Status:</label>
-		<select id="status" name="status">
+		<select id="status" name="status" @(Model.applicants.Count == 0 ? "disabled" : "")>
 			<option value="ALL">ALL</option>
 			@foreach (ApplicationStatus status in Enum.GetValues(typeof(ApplicationStatus)))
 			{
@@ -44,120 +44,135 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach (var applicant in Model.applicants.OrderBy(a => a.Name))
-				{
-					Color statusColor = EnumHelper.GetColorForApplicationStatus(applicant.ApplicationStatus);
-					string colorStyle = $"color: {ColorTranslator.ToHtml(statusColor)}; font-weight: bolder;";
-					
-					// ******** To refactor **************
-					var jobPost = jobPostingService.GetById(applicant.JobId);
-					var positionName = jobPost?.Name;
-					<tr class="clickable-row" data-href="/HR/ApplicantDetail/@applicant.Id" >
-						<td title="Click to View Applicant Details">@applicant.Name</td>
-						<td title="Click to View Applicant Details">@positionName</td>
-						<td title="Click to View Applicant Details" style="@colorStyle">@EnumHelper.GetEnumDescription(((ApplicationStatus)Enum.Parse(typeof(ApplicationStatus), applicant.ApplicationStatus.ToString())))</td>
-						<td>
-							<div class="applicant-container" data-title="@applicant.ApplicationStatus">
-								@switch (applicant.ApplicationStatus)
-									{
-										case ApplicationStatus.Received:
-											<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
-												<input type="hidden" name="id" value="@applicant.Id" />
-												<input type="hidden" name="status" value="Shortlisted" />
-												<button type="submit" class="btn status-btn status-change-btn">SHORTLIST</button>
-											</form>
-											break;
-										case ApplicationStatus.Shortlisted:
-											<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
-												<input type="hidden" name="id" value="@applicant.Id" />
-												<input type="hidden" name="status" value="ForScreening" />
-												<button type="submit" class="btn status-btn status-change-btn">FOR SCREENING</button>
-											</form>
-											break;
-										case ApplicationStatus.ForScreening:
-											<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
-												<input type="hidden" name="id" value="@applicant.Id" />
-												<input type="hidden" name="status" value="ForHRInterview" />
-												<button type="submit" class="btn status-btn status-change-btn">INVITE TO HR INTERVIEW</button>
-											</form>
-											break;
-										case ApplicationStatus.ForHRInterview:
-											<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
-												<input type="hidden" name="id" value="@applicant.Id" />
-												<input type="hidden" name="status" value="ForTechnicalInterview" />
-												<button type="submit" class="btn status-btn status-change-btn">INVITE TO TECHNICAL INTERVIEW</button>
-											</form>
-											break;
-										case ApplicationStatus.ForTechnicalInterview:
-											<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
-												<input type="hidden" name="id" value="@applicant.Id" />
-												<input type="hidden" name="status" value="ForTechnicalExam" />
-												<button type="submit" class="btn status-btn status-change-btn">INVITE TO TECHNICAL EXAM</button>
-											</form>
-											break;
-										case ApplicationStatus.ForTechnicalExam:
-											<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
-												<input type="hidden" name="id" value="@applicant.Id" />
-												<input type="hidden" name="status" value="UndergoingBackgroundCheck" />
-												<button type="submit" class="btn status-btn status-change-btn">CHECK BACKGROUND</button>
-											</form>
-											break;
-										case ApplicationStatus.UndergoingBackgroundCheck:
-											<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
-												<input type="hidden" name="id" value="@applicant.Id" />
-												<input type="hidden" name="status" value="ForFinalInterview" />
-												<button type="submit" class="btn status-btn status-change-btn">INVITE TO FINAL INTERVIEW</button>
-											</form>
-											break;
-										case ApplicationStatus.ForFinalInterview:
-											<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
-												<input type="hidden" name="id" value="@applicant.Id" />
-												<input type="hidden" name="status" value="UndergoingJobOffer" />
-												<button type="submit" class="btn status-btn status-change-btn">SEND JOB OFFER</button>
-											</form>
-											break;
-										case ApplicationStatus.UndergoingJobOffer:
-											<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
-												<input type="hidden" name="id" value="@applicant.Id" />
-												<input type="hidden" name="status" value="Confirmed" />
-												<button type="submit" class="btn status-btn status-change-btn">CONFIRM</button>
-											</form>
-											break;
-										case ApplicationStatus.Confirmed:
-											<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
-												<input type="hidden" name="id" value="@applicant.Id" />
-												<input type="hidden" name="status" value="Onboarding" />
-												<button type="submit" class="btn status-btn status-change-btn">ONBOARD</button>
-											</form>
-											break;
-										case ApplicationStatus.Onboarding:
-											<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
-												<input type="hidden" name="id" value="@applicant.Id" />
-												<input type="hidden" name="status" value="Deployed" />
-												<button type="submit" class="btn status-btn status-change-btn" style="justify-content: flex-start !important;">DEPLOY</button>
-											</form>
+				@{if (Model.applicants.Count == 0)
+					{
+						<tr class="CurrentApplicants-Empty">
+							<td colspan="4">
+								No new applicants at the moment...
+							</td>
+						</tr>
+					}
+					else
+					{
+						foreach (var applicant in Model.applicants.OrderBy(a => a.Name))
+						{
+							Color statusColor = EnumHelper.GetColorForApplicationStatus(applicant.ApplicationStatus);
+							string colorStyle = $"color: {ColorTranslator.ToHtml(statusColor)}; font-weight: bolder;";
+
+							// ******** To refactor **************
+							var jobPost = jobPostingService.GetById(applicant.JobId);
+							var positionName = jobPost?.Name;
+							<tr class="clickable-row" data-href="/HR/ApplicantDetail/@applicant.Id">
+								<td title="Click to View Applicant Details">@applicant.Name</td>
+								<td title="Click to View Applicant Details">@positionName</td>
+								<td title="Click to View Applicant Details" style="@colorStyle">@EnumHelper.GetEnumDescription(((ApplicationStatus)Enum.Parse(typeof(ApplicationStatus), applicant.ApplicationStatus.ToString())))</td>
+								<td>
+									<div class="applicant-container" data-title="@applicant.ApplicationStatus">
+										@switch (applicant.ApplicationStatus)
+										{
+											case ApplicationStatus.Received:
+												<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+													<input type="hidden" name="id" value="@applicant.Id" />
+													<input type="hidden" name="status" value="Shortlisted" />
+													<button type="submit" class="btn status-btn status-change-btn">SHORTLIST</button>
+												</form>
 												break;
-										default:
-										break;
-									}
-								@if (applicant.ApplicationStatus != ApplicationStatus.Confirmed && applicant.ApplicationStatus != ApplicationStatus.Onboarding && applicant.ApplicationStatus != ApplicationStatus.Deployed && applicant.ApplicationStatus != ApplicationStatus.Rejected)
-									{
-										<button type="button" class="btn reject-btn" data-bs-toggle="modal" data-bs-target="#@("modal-" + applicant.Id)" onclick="handleRejectClick(event)">
-											REJECT
-										</button>
-									}
-							</div>
-						</td>
-					</tr>
+											case ApplicationStatus.Shortlisted:
+												<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+													<input type="hidden" name="id" value="@applicant.Id" />
+													<input type="hidden" name="status" value="ForScreening" />
+													<button type="submit" class="btn status-btn status-change-btn">FOR SCREENING</button>
+												</form>
+												break;
+											case ApplicationStatus.ForScreening:
+												<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+													<input type="hidden" name="id" value="@applicant.Id" />
+													<input type="hidden" name="status" value="ForHRInterview" />
+													<button type="submit" class="btn status-btn status-change-btn">INVITE TO HR INTERVIEW</button>
+												</form>
+												break;
+											case ApplicationStatus.ForHRInterview:
+												<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+													<input type="hidden" name="id" value="@applicant.Id" />
+													<input type="hidden" name="status" value="ForTechnicalInterview" />
+													<button type="submit" class="btn status-btn status-change-btn">INVITE TO TECHNICAL INTERVIEW</button>
+												</form>
+												break;
+											case ApplicationStatus.ForTechnicalInterview:
+												<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+													<input type="hidden" name="id" value="@applicant.Id" />
+													<input type="hidden" name="status" value="ForTechnicalExam" />
+													<button type="submit" class="btn status-btn status-change-btn">INVITE TO TECHNICAL EXAM</button>
+												</form>
+												break;
+											case ApplicationStatus.ForTechnicalExam:
+												<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+													<input type="hidden" name="id" value="@applicant.Id" />
+													<input type="hidden" name="status" value="UndergoingBackgroundCheck" />
+													<button type="submit" class="btn status-btn status-change-btn">CHECK BACKGROUND</button>
+												</form>
+												break;
+											case ApplicationStatus.UndergoingBackgroundCheck:
+												<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+													<input type="hidden" name="id" value="@applicant.Id" />
+													<input type="hidden" name="status" value="ForFinalInterview" />
+													<button type="submit" class="btn status-btn status-change-btn">INVITE TO FINAL INTERVIEW</button>
+												</form>
+												break;
+											case ApplicationStatus.ForFinalInterview:
+												<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+													<input type="hidden" name="id" value="@applicant.Id" />
+													<input type="hidden" name="status" value="UndergoingJobOffer" />
+													<button type="submit" class="btn status-btn status-change-btn">SEND JOB OFFER</button>
+												</form>
+												break;
+											case ApplicationStatus.UndergoingJobOffer:
+												<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+													<input type="hidden" name="id" value="@applicant.Id" />
+													<input type="hidden" name="status" value="Confirmed" />
+													<button type="submit" class="btn status-btn status-change-btn">CONFIRM</button>
+												</form>
+												break;
+											case ApplicationStatus.Confirmed:
+												<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+													<input type="hidden" name="id" value="@applicant.Id" />
+													<input type="hidden" name="status" value="Onboarding" />
+													<button type="submit" class="btn status-btn status-change-btn">ONBOARD</button>
+												</form>
+												break;
+											case ApplicationStatus.Onboarding:
+												<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+													<input type="hidden" name="id" value="@applicant.Id" />
+													<input type="hidden" name="status" value="Deployed" />
+													<button type="submit" class="btn status-btn status-change-btn" style="justify-content: flex-start !important;">DEPLOY</button>
+												</form>
+												break;
+											default:
+												break;
+										}
+										@if (applicant.ApplicationStatus != ApplicationStatus.Confirmed && applicant.ApplicationStatus != ApplicationStatus.Onboarding && applicant.ApplicationStatus != ApplicationStatus.Deployed && applicant.ApplicationStatus != ApplicationStatus.Rejected)
+										{
+											<button type="button" class="btn reject-btn" data-bs-toggle="modal" data-bs-target="#@("modal-" + applicant.Id)" onclick="handleRejectClick(event)">
+												REJECT
+											</button>
+										}
+									</div>
+								</td>
+							</tr>
+						}
+					}
 				}
 			</tbody>
 		</table>
 	</div>
-	<div class="pagination-container">
-		<ul class="pagination">
-			<!-- Pagination links will be added dynamically via JavaScript -->
-		</ul>
-	</div>
+	@if(Model.applicants.Count > 0)
+	{
+		<div class="pagination-container">
+			<ul class="pagination">
+				<!-- Pagination links will be added dynamically via JavaScript -->
+			</ul>
+		</div>
+	}
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

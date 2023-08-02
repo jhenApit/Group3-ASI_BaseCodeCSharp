@@ -27,10 +27,13 @@
                     <th>
                         <div class="sort-btn">
                             <span>Position Name</span>
-                            <div class="sort-icons-container">
-                                <span class="sort-icon" data-sort="asc" title="Sort by ascending order">&#x25B2;</span>
-                                <span class="sort-icon" data-sort="desc" title="Sort by descending order">&#x25BC;</span> 
-                            </div>
+                            @if(Model != null)
+                            {
+                                <div class="sort-icons-container">
+                                    <span class="sort-icon" data-sort="asc" title="Sort by ascending order">&#x25B2;</span>
+                                    <span class="sort-icon" data-sort="desc" title="Sort by descending order">&#x25BC;</span>
+                                </div>
+                            }
                         </div>
                     </th>
                     <th data-sort="status">Status</th>

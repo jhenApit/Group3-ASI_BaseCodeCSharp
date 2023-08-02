@@ -59,6 +59,20 @@
     padding: 50px;
 }
 
+.Users-Empty {
+    height: 10rem;
+}
+
+    .Users-Empty td {
+        vertical-align: middle;
+        color: #55729B !important;
+        font-style: italic;
+        font-size: 1.5rem;
+        text-align: center !important;
+        background-color: #E4E9F7 !important;
+        border: none !important;
+    }
+
 .table {
     width: 90%;
     border-collapse: collapse;
@@ -97,9 +111,17 @@
 .job-post-action-icon {
     width: 20px;
     height: 20px;
-    margin-right: 10px;
+    margin: 5px 10px 5px 5px;
     cursor: pointer;
+    transition: 0.25s;
 }
+
+    .job-post-action-icon:hover {
+        width: 25px;
+        height: 25px;
+        margin: 0px 5px 0px 0px;
+        transition: 0.25s;
+    }
 
 a {
     text-decoration: none;

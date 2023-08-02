@@ -11,13 +11,13 @@
 	<link rel="stylesheet" href="~/css/JobApplicantsOverview.css" />
 }
 
-<div class="container">
+<div class="container container-header">
 	<h1>@ViewData["Title"]</h1>
 </div>
 <div class="table-container">
 	<div class="select-container">
 		<label for="position">Position:</label>
-		<select id="position" name="position">
+		<select id="position" name="position" @(Model.CurrentHires.Count == 0 ? "disabled": "")>
 			<option value="ALL">ALL</option>
 			@foreach (var jobPosting in Model.jobPostings)
 			{
@@ -32,29 +32,44 @@
 					<th style="border-left: 10px solid #55729B; border-bottom: none;">Applicant Name</th>
 					<th>Position Name</th>
 					<th>Hire Date</th>
-					<th>Status</th>
+					<th style="border-right: 10px solid #55729B; border-bottom: none;">Status</th>
 				</tr>
 			</thead>
 			<tbody>
-				@foreach (var applicant in Model.CurrentHires.OrderBy(a => a.Applicant.Name))
-				{
-						var jobPost = jobPostingService.GetById(applicant.PositionId);
-						var positionName = jobPost.Name;
-						<tr title="Click to View Applicant Details" class="clickable-row" data-href="/HR/ApplicantDetail?applicantId=@applicant.Id">
-							<td >@applicant.Applicant.Name</td>
-							<td>@positionName</td>
-							<td>@applicant.HireDate</td>
-							<td>@applicant.HireStatus</td>
+				@{if (Model.CurrentHires.Count == 0)
+					{
+						<tr class="CurrentHires-Empty">
+							<td colspan="4">
+								No new hires at the moment...
+							</td>
 						</tr>
+					}
+					else
+					{
+						foreach (var applicant in Model.CurrentHires.OrderBy(a => a.Applicant.Name))
+						{
+							var jobPost = jobPostingService.GetById(applicant.PositionId);
+							var positionName = jobPost.Name;
+							<tr title="Click to View Applicant Details" class="clickable-row" data-href="/HR/ApplicantDetail?applicantId=@applicant.Id">
+								<td>@applicant.Applicant.Name</td>
+								<td>@positionName</td>
+								<td>@applicant.HireDate</td>
+								<td>@applicant.HireStatus</td>
+							</tr>
+						}
+					}
 				}
 			</tbody>
 		</table>
 	</div>
-	<div class="pagination-container">
-		<ul class="pagination">
-			<!-- Pagination links will be added dynamically via JavaScript -->
-		</ul>
-	</div>
+	@if (Model.CurrentHires.Count > 0)
+	{
+		<div class="pagination-container">
+			<ul class="pagination">
+				<!-- Pagination links will be added dynamically via JavaScript -->
+			</ul>
+		</div>
+	}
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

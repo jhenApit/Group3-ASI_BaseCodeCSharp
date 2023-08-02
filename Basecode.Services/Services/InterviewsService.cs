@@ -75,6 +75,21 @@ namespace Basecode.Services.Services
             return _repository.GetInterviewsByApplicant(applicantId);
         }
 
+        public IEnumerable<Interviews> GetInterviewsByInterviewerAndDate(int interviewerId, DateTime interviewDate)
+        {
+            return _repository.GetInterviewsByInterviewerAndDate(interviewerId, interviewDate);
+        }
+
+        public IEnumerable<Interviews> GetInterviewsByInterviewer(int interviewerId)
+        {
+            return _repository.GetInterviewsByInterviewer(interviewerId);
+        }
+
+        public IEnumerable<Interviews> GetInterviewsByApplicant(int applicantId)
+        {
+            return _repository.GetInterviewsByApplicant(applicantId);
+        }
+
     }
 
 }

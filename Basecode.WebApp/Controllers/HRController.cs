@@ -320,14 +320,14 @@ namespace Basecode.WebApp.Controllers
         /// <returns>Redirect to View Applicants Page</returns>
         public IActionResult NewHires()
         {
-            var applicants = _applicantService.RetrieveAll();
+            var currentHires = _currentHiresService.RetrieveAll();
             var jobPostings = _jobPostingsService.RetrieveAll();
 
-            var newHiresModel = new JobApplicantOverviewModel
+            var newHiresModel = new NewHiresViewModel
             {
-                applicants = applicants,
-                jobPostings = jobPostings
-            };
+                CurrentHires = currentHires,
+				jobPostings = jobPostings
+			};
 
             return View(newHiresModel);
         }

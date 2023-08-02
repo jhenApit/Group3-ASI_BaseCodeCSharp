@@ -53,7 +53,7 @@
 					var jobPost = jobPostingService.GetById(applicant.JobId);
 					var positionName = jobPost?.Name;
 					<a asp-route-id="Id" asp-controller="HR" asp-action="ApplicantDetail">
-						<tr class="clickable-row" data-href="/HR/ApplicantDetail?applicantId=@applicant.Id">
+					<tr class="clickable-row" data-href="/HR/ApplicantDetail/@applicant.Id" >
 							<td title="Click to View Applicant Details">@applicant.Name</td>
 							<td title="Click to View Applicant Details">@positionName</td>
 							<td title="Click to View Applicant Details" style="@colorStyle">@EnumHelper.GetEnumDescription(((ApplicationStatus)Enum.Parse(typeof(ApplicationStatus), applicant.ApplicationStatus.ToString())))</td>

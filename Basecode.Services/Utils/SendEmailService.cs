@@ -252,7 +252,8 @@ namespace Basecode.Services.Utils
 
             emailBodyTemplate = emailBodyTemplate.Replace("{JobTitle}", jobTitle);
             emailBodyTemplate = emailBodyTemplate.Replace("{ApplicantName}", applicant.Name);
-            emailBodyTemplate = emailBodyTemplate.Replace("{Link}", "alliance.jobhiring@gmail.com");
+            emailBodyTemplate = emailBodyTemplate.Replace("{ApplicantID}", applicant.ApplicantId);
+            emailBodyTemplate = emailBodyTemplate.Replace("{Link}", "alliance.jobhiring@gmail.com"); // link to the applicant's profile
             emailBodyTemplate = emailBodyTemplate.Replace("{Email}", "alliance.jobhiring@gmail.com");
 
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -545,7 +546,7 @@ namespace Basecode.Services.Utils
             email.To.Add(new MailboxAddress("HR Department", "alliance.humanresourceteam@gmail.com"));
             email.Subject = "Character Reference Approval";
 
-            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ReferenceGratitude.html");
+            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ReferenceCheck.html");
 
             emailBodyTemplate = emailBodyTemplate.Replace("{Name}", applicants.Name);
             emailBodyTemplate = emailBodyTemplate.Replace("{Link}", "ReferenceFormLink1"); //add link for reference 1

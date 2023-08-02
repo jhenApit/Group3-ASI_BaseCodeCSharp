@@ -90,7 +90,7 @@
                 <td>
                     <center>
                         <!-- Email Title -->
-                        <h2 style="color: #000">Shorlisted Applicant</h2>
+                        <h2 style="color: #000">Applicant Screening </h2>
                     </center>
                     <hr style="height: 1px; background-color: #d5d5d5" />
                 </td>
@@ -105,23 +105,24 @@
                 <td style="padding:0 10px;">
                     <!-- Main Content -->
                     <p style="text-align:justify;">
-                        The Applicant <b>{Name}</b> has been shortlisted for the position of <b>{JobTitle}</b> at <b>{Department}</b>.
-                    </p>
-                    <p>
-                        Application Details:
+                        We have received an application for the <b>{JobTitle}</b> position that requires your immediate attention for screening. 
+                        Please take a moment to review the applicant's details provided below:
                     </p>
                     <ul>
-                        <li>Position: <b>{JobTitle}</b></li>
-                        <li>Applicant Name: <b>{Name}</b></li>
+                        <li>Applicant Name: <b>{ApplicantName}</b></li>
+                        <li>Applicant ID: <b>{ApplicantID}</b></li>
                         <li>Applicant's Profile: <a href="" style="color: red; font-weight: bold;">here</a></li>
                     </ul>
                     <p style="text-align:justify;">
-                        Kindly review the applicant's profile and provide your feedback by selecting one of the options below:
+                        Upon reviewing the candidate's credentials, please proceed to select one of the following options:
                     </p>
                     <center>
-                        <button style="margin-right: 20px;">Accept</button>
-                        <button>Deny</button>
+                        <button style="margin-right: 20px;">Approve</button>
+                        <button>Reject</button>
                     </center>
+                    <p>
+                        Your selection will automatically update our tracker. We appreciate your timely response.
+                    </p>
                     <p>
                         If there has been mistakes or clarifications, please contact <u style="color: #ff0000;">{Email}</u>
                     </p>

@@ -73,9 +73,6 @@
 												<button type="submit" class="btn reject-btn">REJECT</button>
 											</form>
 												break;
-											<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="ShortListApplicant">SHORTLIST</a>
-											<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
-											break;
 										case ApplicationStatus.Shortlisted:
 											<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
 												<input type="hidden" name="id" value="@applicant.Id" />
@@ -88,9 +85,6 @@
 												<button type="submit" class="btn reject-btn">REJECT</button>
 											</form>
 												break;
-											<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="ForScreeningApplicant">FOR SCREENING</a>
-											<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
-											break;
 										case ApplicationStatus.ForScreening:
 											<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
 												<input type="hidden" name="id" value="@applicant.Id" />
@@ -142,9 +136,6 @@
 												<button type="submit" class="btn reject-btn">REJECT</button>
 											</form>
 												break;
-											<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="CheckBackground">CHECK BACKGROUND</a>
-											<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
-											break;
 										case ApplicationStatus.UndergoingBackgroundCheck:
 											<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
 												<input type="hidden" name="id" value="@applicant.Id" />
@@ -157,9 +148,6 @@
 												<button type="submit" class="btn reject-btn">REJECT</button>
 											</form>
 												break;
-											<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="InviteToFinalInterview">INVITE TO FINAL INTERVIEW</a>
-											<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
-											break;
 										case ApplicationStatus.ForFinalInterview:
 											<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
 												<input type="hidden" name="id" value="@applicant.Id" />
@@ -172,9 +160,6 @@
 												<button type="submit" class="btn reject-btn">REJECT</button>
 											</form>
 												break;
-											<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="SendJobOffer">SEND JOB OFFER</a>
-											<a asp-route-id="@applicant.Id" class="reject-btn" asp-controller="HR" asp-action="RejectApplicant">REJECT</a>
-											break;
 										case ApplicationStatus.UndergoingJobOffer:
 											<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
 												<input type="hidden" name="id" value="@applicant.Id" />
@@ -199,9 +184,6 @@
 												<button type="submit" class="btn reject-btn">DECLINE</button>
 											</form>
 												break;
-											<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="ConfirmApplicant">CONFIRM</a>
-											<a asp-route-id="@applicant.Id" class="decline-btn" asp-controller="HR" asp-action="DeclineApplicant">DECLINE</a>
-											break;
 										case ApplicationStatus.Onboarding:
 											<form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
 												<input type="hidden" name="id" value="@applicant.Id" />
@@ -209,12 +191,8 @@
 												<button type="submit" class="btn status-btn status-change-btn" style="justify-content: flex-start !important;">DEPLOY</button>
 												</form>
 												break;
-										case ApplicationStatus.Rejected:
-												<input type="hidden" name="id" value="@applicant.Id" />
-												break;
 										default:
-											<a asp-route-id="@applicant.Id" class="status-btn" asp-controller="HR" asp-action="DeployApplicant" style="justify-content: flex-start !important;">DEPLOY </a>
-											break;
+										break;
 									}
 								</div>
 							</td>

@@ -77,7 +77,8 @@
     .table tbody tr {
         border-left: 10px solid white;
         border-right: 10px solid white;
-        transition: 0.2s
+        transition: 0.2s;
+        height: 4.5rem;
     }
 
         .table tbody tr:hover {

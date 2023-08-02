@@ -24,37 +24,38 @@ namespace Basecode.Services.Services
             _repository = repository;
             _mapper = mapper;
         }
-        public List<Exams> RetrieveAll()
+        public async Task<List<Exams>> RetrieveAllAsync()
         {
-            return _repository.RetrieveAll().ToList();
+            var exams = await _repository.RetrieveAllAsync();
+            return exams.ToList();
         }
 
-        public void Add(ExamCreationDto Exams)
+        public async Task AddAsync(ExamCreationDto Exams)
         {
             var ExamsModel = _mapper.Map<Exams>(Exams);
             ExamsModel.Results = false;
-            _repository.Add(ExamsModel);
+            await _repository.AddAsync(ExamsModel);
         }
 
-        public Exams? GetById(int id)
+        public async Task<Exams?> GetByIdAsync(int id)
         {
-            return _repository.GetById(id);
+            return await _repository.GetByIdAsync(id);
         }
 
-        public void Update(ExamUpdationDto Exams)
+        public async Task UpdateAsync(ExamUpdationDto Exams)
         {
             var ExamsModel = _mapper.Map<Exams>(Exams);
-            _repository.Update(ExamsModel);
+            await _repository.UpdateAsync(ExamsModel);
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            _repository.Delete(id);
+            await _repository.DeleteAsync(id);
         }
 
-        public Exams? GetByApplicantId(int applicantId)
+        public async Task<Exams?> GetByApplicantIdAsync(int applicantId)
         {
-            return _repository.GetByApplicantId(applicantId);
+            return await _repository.GetByApplicantIdAsync(applicantId);
         }
 
     }

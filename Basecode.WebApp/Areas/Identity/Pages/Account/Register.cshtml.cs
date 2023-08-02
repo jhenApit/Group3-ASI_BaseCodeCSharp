@@ -211,6 +211,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
 
                     _interviewers_service.Add(interviewerEntry);
 
+                    await _hr_service.AddAsync(hrEmployee);
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)

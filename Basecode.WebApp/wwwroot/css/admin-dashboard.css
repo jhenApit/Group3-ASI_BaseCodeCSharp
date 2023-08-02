@@ -88,6 +88,13 @@ body {
     color: red;
 }
 
+    .logout-btn:hover,
+    .logout-btn:focus
+    .logout-btn:active:focus {
+        color: red;
+        box-shadow: none;
+    }
+
 a {
     text-decoration: none !important;
     color: inherit;

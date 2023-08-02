@@ -99,6 +99,14 @@ main {
 .dropdown-logout:focus,
 .dropdown-logout:active:focus {
     background-color: rgba(255, 0, 0, 0.48);
+    box-shadow: none;
+}
+
+.logout-btn:hover,
+.logout-btn:focus
+.logout-btn:active:focus {
+    color: red;
+    box-shadow: none;
 }
 
 /* ----------- */

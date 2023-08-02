@@ -14,7 +14,7 @@
             <div class="dropdown-menu" aria-labelledby="HelloDropdown">
                 <a id="manage" class="dropdown-item nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Manage</a>
                 <form id="logoutForm" class="dropdown-item dropdown-logout form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                    <button id="logout" type="submit" class="nav-link btn btn-link text-center border-0 p-0 mx-auto">Logout</button>
+                    <button id="logout" type="submit" class="nav-link btn btn-link logout-btn text-center border-0 p-0 mx-auto">Logout</button>
                 </form>
             </div>
         </li>

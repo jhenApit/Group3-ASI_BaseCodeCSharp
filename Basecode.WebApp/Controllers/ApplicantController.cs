@@ -37,13 +37,23 @@ namespace Basecode.WebApp.Controllers
         /// <returns>The view displaying the status of employment of the applicant.</returns>
         public async Task<IActionResult> ApplicationStatus(string ApplicantId)
         {
-            Applicants data =  await _applicantService.GetByApplicantIdAsync(ApplicantId);
-            Console.WriteLine("Applicant Id+" + ApplicantId);
-            if (data != null)
+            try
             {
-                return View(data);
+                Applicants data = await _applicantService.GetByApplicantIdAsync(ApplicantId);
+                Console.WriteLine("Applicant Id: " + ApplicantId);
+
+                if (data != null)
+                {
+                    return View(data);
+                }
+
+                return RedirectToAction("TrackApplication");
             }
-            return RedirectToAction("TrackApplication");
+            catch (Exception e)
+            {
+                Console.WriteLine("An error occurred: " + e.Message);
+                return View();
+            }
         }
         /// <summary>
         /// this displays the view for TrackApplication
@@ -70,24 +80,33 @@ namespace Basecode.WebApp.Controllers
         /// <returns>The application form view.</returns>
         public async Task<IActionResult> ApplicationForm(int id)
         {
-            var jobPosting = _jobPostingsService.GetByIdAsync(id);
-            if (jobPosting != null)
+            try
             {
-                var viewModel = new ApplicationFormViewModel
+                var jobPosting = await _jobPostingsService.GetByIdAsync(id);
+
+                if (jobPosting != null)
                 {
-                    JobPosting = new JobPostings
+                    var viewModel = new ApplicationFormViewModel
                     {
-                        Name = jobPosting.Name,
-                        Id = jobPosting.Id
-                    }
-                };
-                Console.WriteLine("Job exists! " + id);
-                return View(viewModel);
+                        JobPosting = new JobPostings
+                        {
+                            Name = jobPosting.Name,
+                            Id = jobPosting.Id
+                        }
+                    };
+                    Console.WriteLine("Job exists! " + id);
+                    return View(viewModel);
+                }
+                else
+                {
+                    Console.WriteLine("Job doesn't exist! " + id);
+                    return View();
+                }
             }
-            else
+            catch (Exception e)
             {
-                Console.WriteLine("Job doesn't exist! " + id);
-                return View();
+                Console.WriteLine("An error occurred: " + e.Message);
+                return View("Index");
             }
         }
 
@@ -101,39 +120,46 @@ namespace Basecode.WebApp.Controllers
         }
 
         /// <summary>
-        /// after clicking the submit button in application form view,
-        /// it will lead to this controller. that handles the adding.
-        /// it is not tested coz i'm having trouble figuring out how to insert
-        /// 2 character ref at one post :)) --Kath
+        /// this will handle the application form process
         /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
+        /// <param name="model">the viewmodel which containes the 
+        /// required models for creation and iform file for file reading</param>
+        /// <returns>the view corresponding to succes or failure of applicant creation</returns>
         [HttpPost]
         public async Task<IActionResult> ApplicationFormProcess(ApplicationFormViewModel model, [Required] IFormFile resumeFile, IFormFile? photo)
         {
-            ModelState.Clear();
-            TryValidateModel(model);
-
-            if (ModelState.IsValid)
+            try
             {
-                // Use the service method to handle the logic
-                var isApplicantAdded = await _applicantService.AddApplicant(model, resumeFile, photo);
+                ModelState.Clear();
+                TryValidateModel(model);
 
-                if (isApplicantAdded)
+                if (ModelState.IsValid)
                 {
-                    // Applicant was successfully added
-                    return RedirectToAction("TrackApplication", new { from = "application" });
+                    // Use the service method to handle the logic
+                    var isApplicantAdded = await _applicantService.AddApplicant(model, resumeFile, photo);
+
+                    if (isApplicantAdded)
+                    {
+                        // Applicant was successfully added
+                        return RedirectToAction("TrackApplication", new { from = "application" });
+                    }
+                    else
+                    {
+                        // Handle the error case here if needed
+                        ViewBag.ErrorMessage = "Failed to add the applicant.";
+                        return View("ApplicationForm", model);
+                    }
                 }
-                else
-                {
-                    // Handle the error case here if needed
-                    ViewBag.ErrorMessage = "Failed to add the applicant.";
-                    return View("ApplicationForm", model);
-                }
+
+                ModelState.Clear();
+                return View("ApplicationForm");
             }
-
-            ModelState.Clear();
-            return View("ApplicationForm");
+            catch (Exception e)
+            {
+                Console.WriteLine("An error occurred: " + e.Message);
+                ViewBag.ErrorMessage = "An error occurred while processing the application.";
+                return View("ApplicationForm");
+            }
         }
 
     }

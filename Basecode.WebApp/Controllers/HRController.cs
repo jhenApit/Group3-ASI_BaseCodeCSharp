@@ -263,7 +263,7 @@ namespace Basecode.WebApp.Controllers
         }
 
         /// <summary>
-        /// Allows HR to create a new interview entry
+        /// Create a new interview
         /// </summary>
         /// <returns>Redirect to Create Interview Page</returns>
         public IActionResult CreateInterview(int id)
@@ -287,6 +287,11 @@ namespace Basecode.WebApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Add new interview to the database
+        /// </summary>
+        /// <param name="interview">Data</param>
+        /// <returns>Redirect to the interviews page</returns>
         [HttpPost]
         public IActionResult AddInterview(InterviewsFormViewModel interview)
         {
@@ -311,7 +316,7 @@ namespace Basecode.WebApp.Controllers
         }
 
         /// <summary>
-        /// Allows HR to edit an interview
+        /// Edit an interview
         /// </summary>
         /// <returns>Redirect to Edit Interview Page</returns>
         public IActionResult EditInterview(int id)
@@ -343,15 +348,14 @@ namespace Basecode.WebApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Update an interview in the database
+        /// </summary>
+        /// <param name="interview">Updated Data</param>
+        /// <returns>Redirect to interviews page</returns>
         [HttpPost]
         public IActionResult UpdateInterview(InterviewsFormViewModel interview)
         {
-            Console.WriteLine(interview.ApplicantId);
-            Console.WriteLine(interview.InterviewerId);
-            Console.WriteLine(interview.InterviewType);
-            Console.WriteLine(interview.InterviewDate);
-            Console.WriteLine(interview.TimeStart);
-            Console.WriteLine(interview.TimeEnd);
             try
             {
                 var updateInterview = new InterviewsUpdationDto
@@ -377,7 +381,7 @@ namespace Basecode.WebApp.Controllers
         /// Delete an interview
         /// </summary>
         /// <param name="id">Interview Id</param>
-        /// <returns>Redirect to interview page</returns>
+        /// <returns>Redirect to interviews page</returns>
         public IActionResult DeleteInterview(int id)
         {
             try

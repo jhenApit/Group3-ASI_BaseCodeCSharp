@@ -263,7 +263,7 @@ namespace Basecode.WebApp.Controllers
                     InterviewsList = (await _interviewsService.RetrieveAllAsync())
                     .OrderBy(x => x.InterviewDate)
                     .ToList()
-                };
+            };
                 return View(viewModel);
             } 
             catch(Exception)
@@ -319,7 +319,7 @@ namespace Basecode.WebApp.Controllers
                     TimeEnd = interview.TimeEnd,
                 };
 
-                if (IsTimeRangeOverlapping(createInterview))
+                if (await _interviewsService.IsTimeRangeOverlappingAsync(createInterview))
                 {
                     TempData["IsOverlap"] = true;
                     return RedirectToAction("CreateInterview", new { id = interview.InterviewerId });
@@ -386,6 +386,13 @@ namespace Basecode.WebApp.Controllers
                     TimeStart = interview.TimeStart,
                     TimeEnd = interview.TimeEnd,
                 };
+
+                if (await _interviewsService.IsTimeRangeOverlappingAsync(updateInterview))
+                {
+                    TempData["IsOverlapUpdate"] = true;
+                    return RedirectToAction("EditInterview", new { id = interview.Id });
+                }
+
                 await _interviewsService.UpdateAsync(updateInterview);
                 return RedirectToAction("Interviews");
             }

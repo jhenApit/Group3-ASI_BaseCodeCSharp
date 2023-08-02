@@ -20,6 +20,7 @@ namespace Basecode.Services.Interfaces
         Task<IEnumerable<Interviews>> GetInterviewsByInterviewerAndDateAsync(int interviewerId, DateTime interviewDate);
         Task<IEnumerable<Interviews>> GetInterviewsByInterviewerAsync(int interviewerId);
         Task<IEnumerable<Interviews>> GetInterviewsByApplicantAsync(int applicantId);
-        Task<bool> IsTimeRangeOverlapping(InterviewsCreationDto newInterview);
+        Task<bool> IsTimeRangeOverlappingAsync(InterviewsCreationDto newInterview);
+        Task<bool> IsTimeRangeOverlappingAsync(InterviewsUpdationDto newInterview);
     }
 }

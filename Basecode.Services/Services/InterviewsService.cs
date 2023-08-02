@@ -144,6 +144,73 @@ namespace Basecode.Services.Services
             return false;
         }
 
+        public async Task<bool> IsTimeRangeOverlappingAsync(InterviewsUpdationDto newInterview)
+        {
+            var existingInterviews = await GetInterviewsByInterviewerAndDateAsync(newInterview.InterviewerId, newInterview.InterviewDate);
+
+            var newStart = DateTime.ParseExact(newInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
+            var newEnd = DateTime.ParseExact(newInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
+
+            foreach (var existingInterview in existingInterviews)
+            {
+                var existingStart = DateTime.ParseExact(existingInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
+                var existingEnd = DateTime.ParseExact(existingInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
+
+                if (newInterview.InterviewDate == existingInterview.InterviewDate)
+                {
+                    if ((newStart >= existingStart && newStart < existingEnd) ||
+                        (newEnd > existingStart && newEnd <= existingEnd) ||
+                        (newStart <= existingStart && newEnd >= existingEnd))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            var otherInterviewsByInterviewer = await GetInterviewsByInterviewerAsync(newInterview.InterviewerId);
+            foreach (var otherInterview in otherInterviewsByInterviewer)
+            {
+                if (otherInterview.Id != newInterview.Id)
+                {
+                    var otherStart = DateTime.ParseExact(otherInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
+                    var otherEnd = DateTime.ParseExact(otherInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
+
+                    if (newInterview.InterviewDate == otherInterview.InterviewDate)
+                    {
+                        if ((newStart >= otherStart && newStart < otherEnd) ||
+                            (newEnd > otherStart && newEnd <= otherEnd) ||
+                            (newStart <= otherStart && newEnd >= otherEnd))
+                        {
+                            Console.WriteLine(2);
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            var otherInterviewsByApplicant = await GetInterviewsByApplicantAsync(newInterview.ApplicantId);
+            foreach (var otherInterview in otherInterviewsByApplicant)
+            {
+                if (otherInterview.Id != newInterview.Id)
+                {
+                    var otherStart = DateTime.ParseExact(otherInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
+                    var otherEnd = DateTime.ParseExact(otherInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
+
+                    if (newInterview.InterviewDate == otherInterview.InterviewDate)
+                    {
+                        if ((newStart >= otherStart && newStart < otherEnd) ||
+                            (newEnd > otherStart && newEnd <= otherEnd) ||
+                            (newStart <= otherStart && newEnd >= otherEnd))
+                        {
+                            Console.WriteLine(3);
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
     }
 
 }

@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Basecode.Data.ViewModels;
 using Basecode.Data.Models;
 using Basecode.WebApp.Models;
+using Basecode.Data.Dtos.CurrentHires;
+using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -350,6 +352,20 @@ namespace Basecode.WebApp.Controllers
 			var applicant = _applicantService.GetById(id);
 			if (applicant != null)
 			{
+                if(status == "Confirmed")
+                {
+                    var hired = new CurrentHiresCreationDto
+                    {
+                        ApplicantId = applicant.Id,
+                        PositionId = applicant.JobId,
+                        HireDate = DateTime.Now
+					};
+				    if(Enum.TryParse(status, out HireStatus parsedStatus))
+                    {
+                        hired.HireStatus = parsedStatus;
+                    }
+                    _currentHiresService.Add(hired);
+				}
 				_applicantService.Update(id, status);
 				return RedirectToAction("JobApplicantsOverview");
 			}

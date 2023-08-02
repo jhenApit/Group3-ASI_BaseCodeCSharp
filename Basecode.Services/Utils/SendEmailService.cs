@@ -367,7 +367,7 @@ namespace Basecode.Services.Utils
             email.To.Add(new MailboxAddress("HR Department", "alliance.humanresourceteam@gmail.com"));
             email.Subject = "Interview/Examination Confirmation";
 
-            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ApplicantInterviewRejected.html");
+            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/HRApplicantAcceptedDate.html");
 
             emailBodyTemplate = emailBodyTemplate.Replace("{ApplicantName}", applicant.Name);
             emailBodyTemplate = emailBodyTemplate.Replace("{Date}", date);

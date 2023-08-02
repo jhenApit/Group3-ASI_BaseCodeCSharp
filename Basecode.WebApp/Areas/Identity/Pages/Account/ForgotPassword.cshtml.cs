@@ -71,7 +71,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                _emailSender.SendForgotPasswordLink(user, callbackUrl);
+                await _emailSender.SendForgotPasswordLink(user, callbackUrl);
 
                 return RedirectToPage("~/Index", new { from = "forgotPassword" });
             }

@@ -27,7 +27,7 @@ namespace Basecode.Services.Utils
         /// </summary>
         /// <param name="hrEmployee">HR Employee</param>
         /// <param name="password">Account password</param>
-        public void SendHrDetailsEmail(HrEmployee hrEmployee, string password)
+        public async Task SendHrDetailsEmail(HrEmployee hrEmployee, string password)
         {
             var email = new MimeMessage();
 
@@ -47,7 +47,7 @@ namespace Basecode.Services.Utils
                 Text = emailBodyTemplate
             };
 
-            _emailService.SendEmail(email);
+            await _emailService.SendEmail(email);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Basecode.Services.Utils
         /// </summary>
         /// <param name="applicant">Applicant</param>
         /// <param name="position">Job position</param>
-        public void SendNewApplicantEmail(Applicants applicant, string position)
+        public async Task SendNewApplicantEmail(Applicants applicant, string position)
         {
             var applicantEmail = new MimeMessage();
 
@@ -95,8 +95,8 @@ namespace Basecode.Services.Utils
                 Text = hrEmailBody
             };
 
-            _emailService.SendEmail(applicantEmail);
-            _emailService.SendEmail(hrNotifEmail);
+            await _emailService.SendEmail(applicantEmail);
+            await _emailService.SendEmail(hrNotifEmail);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace Basecode.Services.Utils
         /// </summary>
         /// <param name="applicant"></param>
         /// <param name="job"></param>
-        public void SendApplicantApplicationRegretEmail(Applicants applicant, string job)
+        public async Task SendApplicantApplicationRegretEmail(Applicants applicant, string job)
         {
             var email = new MimeMessage();
 
@@ -123,7 +123,7 @@ namespace Basecode.Services.Utils
                 Text = emailBodyTemplate
             };
 
-            _emailService.SendEmail(email);
+            await _emailService.SendEmail(email);
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace Basecode.Services.Utils
         /// <param name="job">Job name</param>
         /// <param name="workSetup">Work Setup</param>
         /// <param name="hours">Work shift</param>
-        public void SendApplicantJobOfferEmail(Applicants applicant, string job, string workSetup, string hours)
+        public async Task SendApplicantJobOfferEmail(Applicants applicant, string job, string workSetup, string hours)
         {
             var email = new MimeMessage();
 
@@ -154,7 +154,7 @@ namespace Basecode.Services.Utils
                 Text = emailBodyTemplate
             };
 
-            _emailService.SendEmail(email);
+            await _emailService.SendEmail(email);
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace Basecode.Services.Utils
         /// </summary>
         /// <param name="applicant">Applicant</param>
         /// <param name="jobTitle">Job Title</param>
-        public void SendHrJobOfferConfirmationEmail(Applicants applicant, string jobTitle)
+        public async Task SendHrJobOfferConfirmationEmail(Applicants applicant, string jobTitle)
         {
             var email = new MimeMessage();
 
@@ -181,7 +181,7 @@ namespace Basecode.Services.Utils
                 Text = emailBodyTemplate
             };
 
-            _emailService.SendEmail(email);
+            await _emailService.SendEmail(email);
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace Basecode.Services.Utils
         /// <param name="applicant"></param>
         /// <param name="job">Job title</param>
         /// <param name="status">Application status</param>
-        public void SendApplicationStatusEmail(Applicants applicant, string job, string status)
+        public async Task SendApplicationStatusEmail(Applicants applicant, string job, string status)
         {
             var applicantEmail = new MimeMessage();
 
@@ -231,8 +231,8 @@ namespace Basecode.Services.Utils
                 Text = hrEmailBody
             };
 
-            _emailService.SendEmail(applicantEmail);
-            _emailService.SendEmail(hrNotifEmail);
+            await _emailService.SendEmail(applicantEmail);
+            await _emailService.SendEmail(hrNotifEmail);
         }
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace Basecode.Services.Utils
         /// </summary>
         /// <param name="applicant">Applicant</param>
         /// <param name="jobTitle">Job title</param>
-        public void SendHrApplicationApprovalEmail(Applicants applicant, string jobTitle)
+        public async Task SendHrApplicationApprovalEmail(Applicants applicant, string jobTitle)
         {
             var email = new MimeMessage();
 
@@ -260,10 +260,10 @@ namespace Basecode.Services.Utils
                 Text = emailBodyTemplate
             };
 
-            _emailService.SendEmail(email);
+            await _emailService.SendEmail(email);
         }
 
-        public void SendForgotPasswordLink(IdentityUser user, string url)
+        public async Task SendForgotPasswordLink(IdentityUser user, string url)
         {
             var email = new MimeMessage();
 
@@ -282,10 +282,10 @@ namespace Basecode.Services.Utils
                 Text = emailBodyTemplate
             };
 
-            _emailService.SendEmail(email);
+            await _emailService.SendEmail(email);
         }
 
-        public void SendSetInterviewScheduleEmail(Interviewers interviewer, Applicants applicant, string interviewType, string jobTitle, string date, string time)
+        public async Task SendSetInterviewScheduleEmail(Interviewers interviewer, Applicants applicant, string interviewType, string jobTitle, string date, string time)
         {
             var interviewerEmail = new MimeMessage();
 
@@ -331,11 +331,11 @@ namespace Basecode.Services.Utils
                 Text = applicantEmailBody
             };
 
-            _emailService.SendEmail(interviewerEmail);
-            _emailService.SendEmail(applicantEmail);
+            await _emailService.SendEmail(interviewerEmail);
+            await _emailService.SendEmail(applicantEmail);
         }
 
-        public void SendInterviewReminderEmail(string applicant, Interviewers interviewer, string interviewType, string dateAndTime)
+        public async Task SendInterviewReminderEmail(string applicant, Interviewers interviewer, string interviewType, string dateAndTime)
         {
             var interviewerEmail = new MimeMessage();
 
@@ -376,11 +376,11 @@ namespace Basecode.Services.Utils
                 Text = hrEmailBody
             };
 
-            _emailService.SendEmail(interviewerEmail);
-            _emailService.SendEmail(hrNotifEmail);
+            await _emailService.SendEmail(interviewerEmail);
+            await _emailService.SendEmail(hrNotifEmail);
         }
 
-        public void SendHrApprovedScheduleEmail(Applicants applicant, string date, string time)
+        public async Task SendHrApprovedScheduleEmail(Applicants applicant, string date, string time)
         {
             var email = new MimeMessage();
 
@@ -401,10 +401,10 @@ namespace Basecode.Services.Utils
                 Text = emailBodyTemplate
             };
 
-            _emailService.SendEmail(email);
+            await _emailService.SendEmail(email);
         }
 
-        public void SendHrInterviewApprovalEmail(Applicants applicant, string interviewType)
+        public async Task SendHrInterviewApprovalEmail(Applicants applicant, string interviewType)
         {
             var hrNotifEmail = new MimeMessage();
 
@@ -423,11 +423,11 @@ namespace Basecode.Services.Utils
                 Text = hrEmailBody
             };
 
-            _emailService.SendEmail(hrNotifEmail);
+            await _emailService.SendEmail(hrNotifEmail);
            
         }
 
-        public void SendApplicantInterviewRegretEmail(Applicants applicant, string jobTitle, string interviewType)
+        public async Task SendApplicantInterviewRegretEmail(Applicants applicant, string jobTitle, string interviewType)
         {
             var email = new MimeMessage();
 
@@ -447,10 +447,10 @@ namespace Basecode.Services.Utils
                 Text = emailBodyTemplate
             };
 
-            _emailService.SendEmail(email);
+            await _emailService.SendEmail(email);
         }
 
-        public void SendReferenceFormEmail(CharacterReferences characterReference, string applicant, string jobTitle)
+        public async Task SendReferenceFormEmail(CharacterReferences characterReference, string applicant, string jobTitle)
         {
             var email = new MimeMessage();
 
@@ -471,10 +471,10 @@ namespace Basecode.Services.Utils
                 Text = emailBodyTemplate
             };
 
-            _emailService.SendEmail(email);
+            await _emailService.SendEmail(email);
         }
 
-        public void SendReferenceGratitudeEmail(CharacterReferences characterReference, string applicant)
+        public async Task SendReferenceGratitudeEmail(CharacterReferences characterReference, string applicant)
         {
             var email = new MimeMessage();
 
@@ -492,10 +492,10 @@ namespace Basecode.Services.Utils
                 Text = emailBodyTemplate
             };
 
-            _emailService.SendEmail(email);
+            await _emailService.SendEmail(email);
         }
 
-        public void SendApplicantReferenceNotificationEmail(Applicants applicant, string jobTitle)
+        public async Task SendApplicantReferenceNotificationEmail(Applicants applicant, string jobTitle)
         {
             var email = new MimeMessage();
 
@@ -513,10 +513,10 @@ namespace Basecode.Services.Utils
                 Text = emailBodyTemplate
             };
 
-            _emailService.SendEmail(email);
+            await _emailService.SendEmail(email);
         }
 
-        public void SendHrAnsweredFormNotificationEmail(Applicants applicant)
+        public async Task SendHrAnsweredFormNotificationEmail(Applicants applicant)
         {
             var email = new MimeMessage();
 
@@ -534,10 +534,10 @@ namespace Basecode.Services.Utils
                 Text = emailBodyTemplate
             };
 
-            _emailService.SendEmail(email);
+            await _emailService.SendEmail(email);
         }
 
-        public void SendHrReferenceApprovalEmail(Applicants applicants)
+        public async Task SendHrReferenceApprovalEmail(Applicants applicants)
         {
             var email = new MimeMessage();
 
@@ -557,10 +557,10 @@ namespace Basecode.Services.Utils
                 Text = emailBodyTemplate
             };
 
-            _emailService.SendEmail(email);
+            await _emailService.SendEmail(email);
         }
 
-        public void SendHrJobOfferApprovalEmail(Applicants applicant, string jobTitle)
+        public async Task SendHrJobOfferApprovalEmail(Applicants applicant, string jobTitle)
         {
             var email = new MimeMessage();
 
@@ -579,10 +579,10 @@ namespace Basecode.Services.Utils
                 Text = emailBodyTemplate
             };
 
-            _emailService.SendEmail(email);
+            await _emailService.SendEmail(email);
         }
 
-        public void SendDtRequirementNotificationEmail(Applicants applicant, string jobTitle)
+        public async Task SendDtRequirementNotificationEmail(Applicants applicant, string jobTitle)
         {
             var email = new MimeMessage();
 
@@ -602,10 +602,10 @@ namespace Basecode.Services.Utils
                 Text = emailBodyTemplate
             };
 
-            _emailService.SendEmail(email);
+            await _emailService.SendEmail(email);
         }
 
-        public void SendDtConfirmationEmail(Applicants applicant)
+        public async Task SendDtConfirmationEmail(Applicants applicant)
         {
             var email = new MimeMessage();
 
@@ -623,7 +623,7 @@ namespace Basecode.Services.Utils
                 Text = emailBodyTemplate
             };
 
-            _emailService.SendEmail(email);
+            await _emailService.SendEmail(email);
         }
     }
 }

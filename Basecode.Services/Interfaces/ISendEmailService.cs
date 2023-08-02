@@ -11,29 +11,29 @@ namespace Basecode.Services.Interfaces
 {
     public interface ISendEmailService
     {
-        void SendHrDetailsEmail(HrEmployee hrEmployee, string password);
-        void SendApplicantApplicationRegretEmail(Applicants applicant, string job);
-        void SendNewApplicantEmail(Applicants applicant, string position);
-        void SendApplicantJobOfferEmail(Applicants applicant, string job, string workSetup, string hours);
-        void SendHrJobOfferConfirmationEmail(Applicants applicants, string jobTitle);
-        void SendApplicationStatusEmail(Applicants applicant, string job, string status);
-        void SendHrApplicationApprovalEmail(Applicants applicant, string jobTitle);
-        void SendForgotPasswordLink(IdentityUser user, string url);
+        Task SendHrDetailsEmail(HrEmployee hrEmployee, string password);
+        Task SendApplicantApplicationRegretEmail(Applicants applicant, string job);
+        Task SendNewApplicantEmail(Applicants applicant, string position);
+        Task SendApplicantJobOfferEmail(Applicants applicant, string job, string workSetup, string hours);
+        Task SendHrJobOfferConfirmationEmail(Applicants applicants, string jobTitle);
+        Task SendApplicationStatusEmail(Applicants applicant, string job, string status);
+        Task SendHrApplicationApprovalEmail(Applicants applicant, string jobTitle);
+        Task SendForgotPasswordLink(IdentityUser user, string url);
 
         //Start here!
-        void SendSetInterviewScheduleEmail(Interviewers interviewer, Applicants applicant, string interviewType, string jobTitle, string date, string time); // done
-        void SendInterviewReminderEmail(string applicant, Interviewers interviewer, string interviewType, string dateAndTime); // done
-        void SendHrApprovedScheduleEmail(Applicants applicant, string date, string time); //done
-        void SendHrInterviewApprovalEmail(Applicants applicant, string interviewType); // done
-        void SendApplicantInterviewRegretEmail(Applicants applicant, string jobTitle, string interviewType); //done
-        void SendReferenceFormEmail(CharacterReferences characterReference, string applicant, string jobTitle); // done
-        void SendReferenceGratitudeEmail(CharacterReferences characterReference, string applicant); // done
-        void SendApplicantReferenceNotificationEmail(Applicants applicant, string jobTitle); // done
-        void SendHrAnsweredFormNotificationEmail(Applicants applicant); // done
-        void SendHrReferenceApprovalEmail(Applicants applicants); // done
-        void SendHrJobOfferApprovalEmail(Applicants applicant, string jobTitle); // done
-        void SendDtRequirementNotificationEmail(Applicants applicant, string jobTitle); // done
-        void SendDtConfirmationEmail(Applicants applicant); // done
+        Task SendSetInterviewScheduleEmail(Interviewers interviewer, Applicants applicant, string interviewType, string jobTitle, string date, string time); // done
+        Task SendInterviewReminderEmail(string applicant, Interviewers interviewer, string interviewType, string dateAndTime); // done
+        Task SendHrApprovedScheduleEmail(Applicants applicant, string date, string time); //done
+        Task SendHrInterviewApprovalEmail(Applicants applicant, string interviewType); // done
+        Task SendApplicantInterviewRegretEmail(Applicants applicant, string jobTitle, string interviewType); //done
+        Task SendReferenceFormEmail(CharacterReferences characterReference, string applicant, string jobTitle); // done
+        Task SendReferenceGratitudeEmail(CharacterReferences characterReference, string applicant); // done
+        Task SendApplicantReferenceNotificationEmail(Applicants applicant, string jobTitle); // done
+        Task SendHrAnsweredFormNotificationEmail(Applicants applicant); // done
+        Task SendHrReferenceApprovalEmail(Applicants applicants); // done
+        Task SendHrJobOfferApprovalEmail(Applicants applicant, string jobTitle); // done
+        Task SendDtRequirementNotificationEmail(Applicants applicant, string jobTitle); // done
+        Task SendDtConfirmationEmail(Applicants applicant); // done
 
     }
 }

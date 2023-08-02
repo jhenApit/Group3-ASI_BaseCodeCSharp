@@ -9,6 +9,6 @@ namespace Basecode.Services.Interfaces
 {
     public interface IEmailService
     {
-        void SendEmail(MimeMessage email);
+        Task SendEmail(MimeMessage email);
     }
 }

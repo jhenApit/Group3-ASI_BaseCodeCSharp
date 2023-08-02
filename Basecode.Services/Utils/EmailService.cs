@@ -7,13 +7,13 @@ namespace Basecode.Services.Utils
 {
     public class EmailService : IEmailService
     {
-        public void SendEmail(MimeMessage email)
+        public async Task SendEmail(MimeMessage email)
         {
             using var client = new SmtpClient();
-            client.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
-            client.Authenticate("alliance.jobhiring@gmail.com", "zepzkrqsybiahgmf");
-            client.Send(email);
-            client.Disconnect(true);
+            await client.ConnectAsync("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+            await client.AuthenticateAsync("alliance.jobhiring@gmail.com", "zepzkrqsybiahgmf");
+            await client.SendAsync(email);
+            await client.DisconnectAsync(true);
         }
     }
 }

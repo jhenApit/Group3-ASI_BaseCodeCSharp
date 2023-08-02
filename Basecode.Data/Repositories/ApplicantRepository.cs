@@ -23,10 +23,10 @@ namespace Basecode.Data.Repositories
         /// Adds a new applicant to the database.
         /// </summary>
         /// <param name="applicant">The applicant to be added.</param>
-        public void Add(Applicants applicant)
+        public async Task AddAsync(Applicants applicant)
         {
-            _context.Applicants.Add(applicant);
-            _context.SaveChanges();
+            await _context.Applicants.AddAsync(applicant);
+            await _context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -34,13 +34,19 @@ namespace Basecode.Data.Repositories
         /// </summary>
         /// <param name="applicantId">The ID of the applicant to retrieve.</param>
         /// <returns>The applicant with the specified ID, or null if not found.</returns>
-        public Applicants? GetByApplicantId(string applicantId)
+        public async Task<Applicants?> GetByApplicantIdAsync(string applicantId)
         {
-            return _context.Applicants.SingleOrDefault(e => e.ApplicantId == applicantId);
+            return await _context.Applicants.SingleOrDefaultAsync(e => e.ApplicantId == applicantId);
         }
-        public Applicants? GetById(int id)
+
+        public async Task<IQueryable<Applicants>> GetByEmailAsync(string email)
         {
-            return _context.Applicants.Find(id);
+            return await Task.FromResult(this.GetDbSet<Applicants>().Where(e => e.Email == email));
+        }
+
+        public async Task<Applicants?> GetByIdAsync(int id)
+        {
+            return await _context.Applicants.FindAsync(id);
         }
 
         /// <summary>
@@ -48,21 +54,18 @@ namespace Basecode.Data.Repositories
         /// </summary>
         /// <param name="name">The name of the applicant to retrieve.</param>
         /// <returns>The applicant with the specified name, or null if not found.</returns>
-        public Applicants? GetByName(string fname, string mname, string lname)
+        public async Task<Applicants?> GetByNameAsync(string fname, string mname, string lname)
         {
-            return _context.Applicants.FirstOrDefault(e => e.FirstName == fname && e.MiddleName == mname && e.LastName == lname);
+            return await _context.Applicants.FirstOrDefaultAsync(e => e.FirstName == fname && e.MiddleName == mname && e.LastName == lname);
         }
-        public IQueryable<Applicants> GetByEmail(string email)
-        {
-            return this.GetDbSet<Applicants>().Where(e => e.Email == email);
-        }
+
         /// <summary>
         /// Retrieves all applicants from the database.
         /// </summary>
         /// <returns>An IQueryable collection of all applicants.</returns> 
-        public IQueryable<Applicants> RetrieveAll()
+        public async Task<IQueryable<Applicants>> RetrieveAllAsync()
         {
-            return this.GetDbSet<Applicants>();
+            return await Task.FromResult(this.GetDbSet<Applicants>());
         }
 
     }

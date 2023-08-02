@@ -9,9 +9,9 @@ namespace Basecode.Data.Interfaces
 {
     public interface ICharacterReferencesRepository
     {
-        IQueryable<CharacterReferences> RetrieveAll();
-        CharacterReferences GetByName(string name);
-        void Add(CharacterReferences characterReferences);
-        CharacterReferences GetById(int id);
+        Task<IQueryable<CharacterReferences>> RetrieveAllAsync();
+        Task<CharacterReferences?> GetByNameAsync(string name);
+        Task AddAsync(CharacterReferences characterReferences);
+        Task<CharacterReferences?> GetByIdAsync(int id);
     }
 }

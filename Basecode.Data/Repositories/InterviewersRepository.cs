@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Basecode.Data.Repositories
 {
@@ -20,19 +21,19 @@ namespace Basecode.Data.Repositories
         /// Retrieves all interviewers from the database.
         /// </summary>
         /// <returns>An IQueryable collection of Interviewers.</returns>
-        public IQueryable<Interviewers> RetrieveAll()
+        public async Task<IQueryable<Interviewers>> RetrieveAllAsync()
         {
-            return this.GetDbSet<Interviewers>();
+            return await Task.FromResult(this.GetDbSet<Interviewers>());
         }
 
         /// <summary>
         /// Adds a new Interviewers entity to the database.
         /// </summary>
         /// <param name="Interviewers">The Interviewers entity to be added.</param>
-        public void Add(Interviewers Interviewers)
+        public async Task AddAsync(Interviewers Interviewers)
         {
-            _context.Interviewers.Add(Interviewers);
-            _context.SaveChanges();
+            await _context.Interviewers.AddAsync(Interviewers);
+            await _context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -40,25 +41,25 @@ namespace Basecode.Data.Repositories
         /// </summary>
         /// <param name="id">The ID of the Interviewers entity.</param>
         /// <returns>The Interviewers entity if found, otherwise null.</returns>
-        public Interviewers? GetById(int id)
+        public async Task<Interviewers?> GetByIdAsync(int id)
         {
-            return _context.Interviewers.Find(id);
+            return await _context.Interviewers.FindAsync(id);
         }
 
         /// <summary>
         /// Updates an existing Interviewers entity in the database.
         /// </summary>
         /// <param name="Interviewers">The updated Interviewers entity.</param>
-        public void Update(Interviewers Interviewers)
+        public async Task UpdateAsync(Interviewers Interviewers)
         {
-            var existingInterviewers = _context.Interviewers.Find(Interviewers.Id);
+            var existingInterviewers = await _context.Interviewers.FindAsync(Interviewers.Id);
             if (existingInterviewers != null)
             {
                 // Update the properties of the existing entity
                 existingInterviewers.Name = Interviewers.Name;
 
                 // Save the changes
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
 
@@ -66,13 +67,13 @@ namespace Basecode.Data.Repositories
         /// Deletes an Interviewers entity from the database by its ID.
         /// </summary>
         /// <param name="id">The ID of the Interviewers entity to be deleted.</param>
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var data = _context.Interviewers.Find(id);
+            var data = await _context.Interviewers.FindAsync(id);
             if (data != null)
             {
                 _context.Interviewers.Remove(data);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
 
@@ -81,9 +82,9 @@ namespace Basecode.Data.Repositories
         /// </summary>
         /// <param name="name">The name of the Interviewers entity.</param>
         /// <returns>The Interviewers entity if found, otherwise null.</returns>
-        public Interviewers? GetByName(string name)
+        public async Task<Interviewers?> GetByNameAsync(string name)
         {
-            return _context.Interviewers.FirstOrDefault(e => e.Name == name);
+            return await _context.Interviewers.FirstOrDefaultAsync(e => e.Name == name);
         }
 
     }

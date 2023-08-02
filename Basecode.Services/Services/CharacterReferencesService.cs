@@ -28,19 +28,20 @@ namespace Basecode.Services.Services
         /// Retrieves all character references from the repository.
         /// </summary>
         /// <returns>A list of character references.</returns>
-        public List<CharacterReferences> RetrieveAll()
+        public async Task<List<CharacterReferences>> RetrieveAllAsync()
         {
-            return _repository.RetrieveAll().ToList();
+            var characterRef = await _repository.RetrieveAllAsync();
+            return characterRef.ToList();
         }
 
         /// <summary>
         /// Adds a new character reference to the repository.
         /// </summary>
         /// <param name="characterReferencesDto">The data transfer object containing the information of the character reference to be added.</param>
-        public void Add(CharacterReferencesCreationDto characterReferencesDto)
+        public async Task AddAsync(CharacterReferencesCreationDto characterReferencesDto)
         {
             var characterReferencesModel = _mapper.Map<CharacterReferences>(characterReferencesDto);
-            _repository.Add(characterReferencesModel);
+            await _repository.AddAsync(characterReferencesModel);
         }
 
         /// <summary>
@@ -48,9 +49,9 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="id">The ID of the character reference.</param>
         /// <returns>The character reference with the specified ID.</returns>
-        public CharacterReferences GetById(int id)
+        public async Task<CharacterReferences?> GetByIdAsync(int id)
         {
-            return _repository.GetById(id);
+            return await _repository.GetByIdAsync(id);
         }
 
         /// <summary>
@@ -58,9 +59,9 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="name">The name of the character reference.</param>
         /// <returns>The character reference with the specified name.</returns>
-        public CharacterReferences GetByName(string name)
+        public async Task<CharacterReferences?> GetByNameAsync(string name)
         {
-            return _repository.GetByName(name);
+            return await _repository.GetByNameAsync(name);
         }
 
     }

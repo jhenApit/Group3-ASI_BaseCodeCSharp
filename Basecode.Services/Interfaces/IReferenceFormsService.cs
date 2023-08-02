@@ -10,9 +10,9 @@ namespace Basecode.Services.Interfaces
 {
     public interface IReferenceFormsService
     {
-        List<ReferenceForms> RetrieveAll();
-        ReferenceForms? GetByCharacterReferenceId(int characterReferenceId);
-        void Add(ReferenceFormsCreationDto ReferenceForms);
-        ReferenceForms? GetById(int id);
+        Task<List<ReferenceForms>> RetrieveAllAsync();
+        Task<ReferenceForms?> GetByCharacterReferenceIdAsync(int characterReferenceId);
+        Task AddAsync(ReferenceFormsCreationDto ReferenceForms);
+        Task<ReferenceForms?> GetByIdAsync(int id);
     }
 }

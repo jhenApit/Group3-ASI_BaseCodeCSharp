@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Basecode.Data.Dtos.Interviews;
+using Basecode.Data.Models;
 using static Basecode.Data.Enums.Enums;
-using static Basecode.Data.Models.Interviews;
 
-namespace Basecode.Data.Dtos.Interviews
+namespace Basecode.Data.ViewModels
 {
-    public class InterviewsCreationDto
+    public class InterviewsFormViewModel
     {
+        public Interviewers? Interviewer { get; set; }
+        public List<Applicants>? ApplicantsList { get; set; }
         public int Id { get; set; }
         public int ApplicantId { get; set; }
         public int InterviewerId { get; set; }
@@ -17,6 +20,5 @@ namespace Basecode.Data.Dtos.Interviews
         public DateTime InterviewDate { get; set; }
         public string? TimeStart { get; set; }
         public string? TimeEnd { get; set; }
-        public bool Results { get; set; }
     }
 }

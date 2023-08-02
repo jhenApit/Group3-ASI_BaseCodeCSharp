@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Basecode.Data;
+using Basecode.Data.Dtos;
 using Basecode.Data.Dtos.HrEmployee;
 using Basecode.Data.Dtos.JobPostings;
 using Basecode.Data.Interfaces;
@@ -8,6 +9,7 @@ using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net.NetworkInformation;
 using static Basecode.Data.Constants;
@@ -35,20 +37,21 @@ namespace Basecode.Services.Services
         /// Retrieves all HR employees from the repository.
         /// </summary>
         /// <returns>List of HR employees</returns>
-        public List<HrEmployee> RetrieveAll()
+        public async Task<List<HrEmployee>> RetrieveAllAsync()
         {
-            return _repository.RetrieveAll().ToList();
+            var hr = await _repository.RetrieveAllAsync();
+            return hr.ToList();
         }
 
         /// <summary>
         /// Adds a new HR employee to the repository.
         /// </summary>
         /// <param name="hrEmployeeDto">The DTO object containing the information of the HR employee to be added</param>
-        public void Add(HREmployeeCreationDto hrEmployeeDto)
+        public async Task AddAsync(HREmployeeCreationDto hrEmployeeDto)
         {
             var hrEmployeeModel = _mapper.Map<HrEmployee>(hrEmployeeDto);
 
-            _repository.Add(hrEmployeeModel);
+            await _repository.AddAsync(hrEmployeeModel);
         }
 
         /// <summary>
@@ -56,19 +59,19 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="id">The ID of the HR employee to retrieve</param>
         /// <returns>The HR employee object</returns>
-        public HrEmployee GetById(int id)
+        public async Task<HrEmployee?> GetByIdAsync(int id)
         {
-            return _repository.GetById(id);
+            return await _repository.GetByIdAsync(id);
         }
-        public HrEmployee GetByUserId(string id)
+        public async Task<HrEmployee> GetByUserIdAsync(string id)
         {
-            return _repository.GetByUserId(id);
+            return await _repository.GetByUserIdAsync(id);
         }
         /// <summary>
         /// Updates an existing HR employee in the repository.
         /// </summary>
         /// <param name="hrEmployee">The DTO object containing the updated information of the HR employee</param>
-        public void Update(HREmployeeUpdationDto hrEmployee)
+        public async Task UpdateAsync(HREmployeeUpdationDto hrEmployee)
         {
             var hrEmployeeModel = _mapper.Map<HrEmployee>(hrEmployee);
 
@@ -79,16 +82,16 @@ namespace Basecode.Services.Services
             hrEmployeeModel.ModifiedBy = hrEmployee.ModifiedBy;
             hrEmployeeModel.ModifiedDate = DateTime.Now;
 
-            _repository.Update(hrEmployeeModel);
+            await _repository.UpdateAsync(hrEmployeeModel);
         }
 
         /// <summary>
         /// Permanently deletes an HR employee from the repository.
         /// </summary>
         /// <param name="id">The ID of the HR employee to permanently delete</param>
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            _repository.Delete(id);
+            await _repository.DeleteAsync(id);
         }
 
         /// <summary>
@@ -96,9 +99,9 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="email">The email of the HR employee to retrieve</param>
         /// <returns>The HR employee object</returns>
-        public HrEmployee GetByEmail(string email)
+        public async Task<HrEmployee?> GetByEmailAsync(string email)
         {
-            return _repository.GetByEmail(email);
+            return await _repository.GetByEmailAsync(email);
         }
 
         /// <summary>
@@ -106,9 +109,9 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="hrEmployee">The DTO object containing the information of the HR employee to be created</param>
         /// <returns>The log content upon creating a HR account</returns>
-        public LogContent CreateHrAccount(HREmployeeCreationDto hrEmployee)
+        /*public LogContent CreateHrAccount(HREmployeeCreationDto hrEmployee)
         {
-            HrEmployee hr = GetByEmail(hrEmployee.Email);
+            HrEmployee hr = await GetByEmailAsync(hrEmployee.Email);
             if (hr != null)
             {
                 _logContent.Result = false;
@@ -121,47 +124,42 @@ namespace Basecode.Services.Services
             }
 
             return _logContent;
-        }
+        }*/
 
-        /// <summary>
+        /*/// <summary>
         /// Edits an HR account and logs the error content if the edit fails.
         /// </summary>
         /// <param name="hrEmployee">The DTO object containing the updated information of the HR employee</param>
         /// <returns>The log content upon editing a HR account</returns>
-        public LogContent EditHrAccount(HREmployeeUpdationDto hrEmployee)
+        public async Task<LogContent> EditHrAccount(HREmployeeUpdationDto hrEmployee)
         {
+            List<string> errors = new List<string>();
             var hrEmail = GetByEmail(hrEmployee.Email);
             if (hrEmail != null)
             {
                 if (hrEmail.Id != hrEmployee.Id)
                 {
-                    _logContent.Result = false;
-                    _logContent.ErrorCode = "400. Edit Failed!";
-                    _logContent.Message = "Email already exists";
+                    errors.Add($"{hrEmployee.Email} is already registered to another account\n");
                 }
-                else
-                {
-                    _logContent.Result = true;
-                }
-            }
-            else
-            {
-                _logContent.Result = true;
             }
 
-            var hrUsername = GetById(hrEmployee.Id);
-            if (hrUsername != null)
+            var existingUsername = await _userManager.FindByNameAsync(hrEmployee.UserName);
+            if (existingUsername != null)
             {
-                if (hrUsername.User.Id != hrEmployee.UserId)
+                if (existingUsername.Id != hrEmployee.UserId)
                 {
-                    _logContent.Result = false;
-                    _logContent.ErrorCode = "400. Edit Failed!";
-                    _logContent.Message = "Username is not available";
+                    errors.Add("Username is not available");
                 }
-                else
-                {
-                    _logContent.Result = true;
-                }
+            }
+            if (errors.Count > 0)
+            {
+                // Combine the error messages into a single string with line breaks
+                string errorMessage = string.Join(Environment.NewLine, errors);
+
+                // Set the log content properties
+                _logContent.Result = false;
+                _logContent.ErrorCode = "400. Edit Failed!";
+                _logContent.Message = errorMessage;
             }
             else
             {
@@ -201,6 +199,6 @@ namespace Basecode.Services.Services
                 _logContent.Message = "Email doesn't exist";
             }
             return _logContent;
-        }
+        }*/
     }
 }

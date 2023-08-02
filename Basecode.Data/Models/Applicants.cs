@@ -34,6 +34,10 @@ namespace Basecode.Data.Models
         [EmailAddress(ErrorMessage = "Email must be a valid email address.")]
         public string? Email { get; set; }
 
+        public string? ModifiedBy { get; set; }
+
+        public DateTime ModifiedDate { get; set; }
+
         public AdditionalInfo AdditionalInfo { get; set; }
 
         public ApplicationStatus ApplicationStatus { get; set; }

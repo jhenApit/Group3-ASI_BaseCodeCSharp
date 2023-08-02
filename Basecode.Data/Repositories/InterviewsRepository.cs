@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Basecode.Data.Repositories
 {
@@ -16,25 +17,25 @@ namespace Basecode.Data.Repositories
             _context = context;
         }
 
-        public IQueryable<Interviews> RetrieveAll()
+        public async Task<IQueryable<Interviews>> RetrieveAllAsync()
         {
-            return this.GetDbSet<Interviews>();
+            return await Task.FromResult(this.GetDbSet<Interviews>().Include(e => e.Interviewer).Include(e => e.Applicant));
         }
 
-        public void Add(Interviews Interviews)
+        public async Task AddAsync(Interviews Interviews)
         {
-            _context.Interviews.Add(Interviews);
-            _context.SaveChanges();
+            await _context.Interviews.AddAsync(Interviews);
+            await _context.SaveChangesAsync();
         }
 
-        public Interviews? GetById(int id)
+        public async Task<Interviews?> GetByIdAsync(int id)
         {
-            return _context.Interviews.Find(id);
+            return await _context.Interviews.FindAsync(id);
         }
 
-        public void Update(Interviews Interviews)
+        public async Task UpdateAsync(Interviews Interviews)
         {
-            var existingInterviews = _context.Interviews.Find(Interviews.Id);
+            var existingInterviews = await _context.Interviews.FindAsync(Interviews.Id);
             if (existingInterviews != null)
             {
                 // Update the properties of the existing entity
@@ -43,25 +44,27 @@ namespace Basecode.Data.Repositories
                 existingInterviews.InterviewType = Interviews.InterviewType;
                 existingInterviews.Results = Interviews.Results;
                 existingInterviews.InterviewDate = Interviews.InterviewDate;
+                existingInterviews.TimeStart = Interviews.TimeStart;
+                existingInterviews.TimeEnd = Interviews.TimeEnd;
 
                 // Save the changes
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
 
         }
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var data = _context.Interviews.Find(id);
+            var data = await _context.Interviews.FindAsync(id);
             if (data != null)
             {
                 _context.Interviews.Remove(data);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
 
-        public Interviews? GetByApplicantId(int applicantId)
+        public async Task<Interviews?> GetByApplicantIdAsync(int applicantId)
         {
-            return _context.Interviews.FirstOrDefault(e => e.ApplicantId == applicantId);
+            return await _context.Interviews.FirstOrDefaultAsync(e => e.ApplicantId == applicantId);
         }
 
     }

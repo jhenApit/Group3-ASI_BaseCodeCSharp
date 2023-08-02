@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Basecode.Data.Dtos.HrEmployee;
+using Basecode.Data.Models;
 
 namespace Basecode.WebApp.Areas.Identity.Pages.Account
 {
@@ -30,8 +31,8 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IHrEmployeeService _hrService;
-        private readonly ISendEmailService _sendEmailService;
+        private readonly IHrEmployeeService _hr_service;
+        private readonly IInterviewersService _interviewers_service;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -39,8 +40,8 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             RoleManager<IdentityRole> roleManager,
-            IHrEmployeeService hrService,
-            ISendEmailService sendEmailService)
+            IHrEmployeeService hr_service,
+            IInterviewersService interviewers_service)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -48,8 +49,8 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _roleManager = roleManager;
-            _hrService = hrService;
-            _sendEmailService = sendEmailService;
+            _hr_service = hr_service;
+            _interviewers_service = interviewers_service;
         }
 
         /// <summary>
@@ -138,7 +139,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
                 var existingUser = await _userManager.FindByEmailAsync(Input.Email);
                 if (existingUsername != null)
                 {
-                    // Email is already registered
+                    // User is already registered
                     ModelState.AddModelError(string.Empty, "The username " + @Input.Username + " is already taken");
                     if (existingUser != null)
                     {
@@ -197,12 +198,18 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
                     hrEmployee.Password = user.PasswordHash;
                     
                     //save user to employees table
-                    _hrService.Add(hrEmployee);
+                    hrEmployee.Password = user.PasswordHash;
+                    await _hr_service.AddAsync(hrEmployee);
 
-                    var hr = _hrService.GetByUserId(hrEmployee.UserId);
+                    var interviewerEntry = new Interviewers
+                    {
+                        Name = hrEmployee.Name,
+                        Email = hrEmployee.Email,
+                    };
 
-                    _sendEmailService.SendHrDetailsEmail(hr, Input.Password);
+                    await _interviewers_service.AddAsync(interviewerEntry);
 
+                    await _hr_service.AddAsync(hrEmployee);
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)

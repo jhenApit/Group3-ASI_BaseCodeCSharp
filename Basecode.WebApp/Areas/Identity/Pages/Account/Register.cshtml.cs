@@ -201,7 +201,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
                     hrEmployee.UserId = user.Id;
                     //save user to employees table
                     hrEmployee.Password = user.PasswordHash;
-                    _hr_service.Add(hrEmployee);
+                    await _hr_service.AddAsync(hrEmployee);
 
                     var interviewerEntry = new Interviewers
                     {
@@ -209,7 +209,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
                         Email = hrEmployee.Email,
                     };
 
-                    _interviewers_service.Add(interviewerEntry);
+                    await _interviewers_service.AddAsync(interviewerEntry);
 
                     await _hr_service.AddAsync(hrEmployee);
                     return LocalRedirect(returnUrl);

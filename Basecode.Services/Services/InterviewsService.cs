@@ -10,6 +10,7 @@ using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
+using Microsoft.EntityFrameworkCore;
 using static Basecode.Services.Utils.ErrorHandling;
 
 namespace Basecode.Services.Services
@@ -56,6 +57,21 @@ namespace Basecode.Services.Services
         public Interviews? GetByApplicantId(int applicantId)
         {
             return _repository.GetByApplicantId(applicantId);
+        }
+
+        public IEnumerable<Interviews> GetInterviewsByInterviewerAndDate(int interviewerId, DateTime interviewDate)
+        {
+            return _repository.GetInterviewsByInterviewerAndDate(interviewerId, interviewDate);
+        }
+
+        public IEnumerable<Interviews> GetInterviewsByInterviewer(int interviewerId)
+        {
+            return _repository.GetInterviewsByInterviewer(interviewerId);
+        }
+
+        public IEnumerable<Interviews> GetInterviewsByApplicant(int applicantId)
+        {
+            return _repository.GetInterviewsByApplicant(applicantId);
         }
 
     }

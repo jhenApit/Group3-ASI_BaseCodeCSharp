@@ -17,5 +17,8 @@ namespace Basecode.Services.Interfaces
         Interviews? GetById(int id);
         void Update(InterviewsUpdationDto Interviews);
         void Delete(int id);
+        IEnumerable<Interviews> GetInterviewsByInterviewerAndDate(int interviewerId, DateTime interviewDate);
+        IEnumerable<Interviews> GetInterviewsByInterviewer(int interviewerId);
+        IEnumerable<Interviews> GetInterviewsByApplicant(int applicantId);
     }
 }

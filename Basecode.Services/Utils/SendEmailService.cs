@@ -158,33 +158,6 @@ namespace Basecode.Services.Utils
         }
 
         /// <summary>
-        /// Send a confirmation email to the HR if an Applicant accepted the job offer
-        /// </summary>
-        /// <param name="applicant">Applicant</param>
-        /// <param name="jobTitle">Job Title</param>
-        public async Task SendHrJobOfferConfirmationEmail(Applicants applicant, string jobTitle)
-        {
-            var email = new MimeMessage();
-
-            email.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
-            email.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
-            email.Subject = "Job Offer Confirmation ";
-
-            string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/HRJobOfferAccepted.html");
-
-            emailBodyTemplate = emailBodyTemplate.Replace("{ApplicantName}", applicant.Name);
-            emailBodyTemplate = emailBodyTemplate.Replace("{JobTitle}", jobTitle);
-            emailBodyTemplate = emailBodyTemplate.Replace("{CompanyEmail}", "alliance.jobhiring@gmail.com");
-
-            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
-            {
-                Text = emailBodyTemplate
-            };
-
-            await _emailService.SendEmail(email);
-        }
-
-        /// <summary>
         /// 
         /// </summary>
         /// <param name="applicant"></param>

@@ -11,29 +11,47 @@ namespace Basecode.Services.Interfaces
 {
     public interface ISendEmailService
     {
-        Task SendHrDetailsEmail(HrEmployee hrEmployee, string password);
-        Task SendApplicantApplicationRegretEmail(Applicants applicant, string job);
-        Task SendNewApplicantEmail(Applicants applicant, string position);
-        Task SendApplicantJobOfferEmail(Applicants applicant, string job, string workSetup, string hours);
-        Task SendHrJobOfferConfirmationEmail(Applicants applicants, string jobTitle);
-        Task SendApplicationStatusEmail(Applicants applicant, string job, string status);
-        Task SendHrApplicationApprovalEmail(Applicants applicant, string jobTitle);
         Task SendForgotPasswordLink(IdentityUser user, string url);
+        Task SendHrDetailsEmail(HrEmployee hrEmployee, string password);
 
-        //Start here!
-        Task SendSetInterviewScheduleEmail(Interviewers interviewer, Applicants applicant, string interviewType, string jobTitle, string date, string time); // done
-        Task SendInterviewReminderEmail(string applicant, Interviewers interviewer, string interviewType, string dateAndTime); // done
-        Task SendHrApprovedScheduleEmail(Applicants applicant, string date, string time); //done
-        Task SendHrInterviewApprovalEmail(Applicants applicant, string interviewType); // done
-        Task SendApplicantInterviewRegretEmail(Applicants applicant, string jobTitle, string interviewType); //done
-        Task SendReferenceFormEmail(CharacterReferences characterReference, string applicant, string jobTitle); // done
-        Task SendReferenceGratitudeEmail(CharacterReferences characterReference, string applicant); // done
-        Task SendApplicantReferenceNotificationEmail(Applicants applicant, string jobTitle); // done
-        Task SendHrAnsweredFormNotificationEmail(Applicants applicant); // done
-        Task SendHrReferenceApprovalEmail(Applicants applicants); // done
-        Task SendHrJobOfferApprovalEmail(Applicants applicant, string jobTitle); // done
-        Task SendDtRequirementNotificationEmail(Applicants applicant, string jobTitle); // done
-        Task SendDtConfirmationEmail(Applicants applicant); // done
+        //Application and Screening
+        Task SendApplicationStatusEmail(Applicants applicant, string job, string status);
+        Task SendNewApplicantEmail(Applicants applicant, string position);
+        Task SendHrApplicationApprovalEmail(Applicants applicant, string jobTitle);
+        Task SendApplicantApplicationRegretEmail(Applicants applicant, string job);
+
+        //Interviews
+        Task SendSetInterviewScheduleEmail(Interviewers interviewer, Applicants applicant, string interviewType, string jobTitle, string date, string time);
+        Task SendInterviewReminderEmail(string applicant, Interviewers interviewer, string interviewType, string dateAndTime);
+        Task SendHrApprovedScheduleEmail(Applicants applicant, string date, string time);
+        Task SendHrInterviewApprovalEmail(Applicants applicant, string interviewType);
+        Task SendApplicantInterviewRegretEmail(Applicants applicant, string jobTitle, string interviewType);
+
+        //Background Check
+        Task SendReferenceFormEmail(CharacterReferences characterReference, string applicant, string jobTitle);
+        Task SendReferenceGratitudeEmail(CharacterReferences characterReference, string applicant);
+        Task SendApplicantReferenceNotificationEmail(Applicants applicant, string jobTitle);
+        Task SendHrAnsweredFormNotificationEmail(Applicants applicant);
+        Task SendHrReferenceApprovalEmail(Applicants applicants);
+
+        //Job Offer
+        Task SendApplicantJobOfferEmail(Applicants applicant, string job, string workSetup, string hours);
+        Task SendHrJobOfferApprovalEmail(Applicants applicant, string jobTitle);
+        Task SendDtRequirementNotificationEmail(Applicants applicant, string jobTitle);
+        Task SendDtConfirmationEmail(Applicants applicant);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
     }
 }

@@ -80,9 +80,8 @@ namespace Basecode.WebApp.Controllers
             }
             catch (Exception e)
             {
-                // log the exception here please
-                ViewBag.ErrorMessage = "An error occurred: " + e.Message;
-                return View();
+                Console.WriteLine(e.Message);
+                return BadRequest();
             }
 
         }
@@ -102,7 +101,7 @@ namespace Basecode.WebApp.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                return View();
+                return BadRequest("An error occured when retrieving job post list.");
             }
         }
 
@@ -121,26 +120,37 @@ namespace Basecode.WebApp.Controllers
         /// <returns>The view containing the job post edit form.</returns>
         public async Task<IActionResult> EditJobPost(int id)
         {
-            var jobPosting = await _jobPostingsService.GetByIdAsync(id);
-            var loggedUser = await _userManager.GetUserAsync(User);
+            try
+            {
+                var jobPosting = await _jobPostingsService.GetByIdAsync(id);
+                var loggedUser = await _userManager.GetUserAsync(User);
 
-            if (jobPosting == null)
-            {
-                return RedirectToAction("JobPostList");
+                if (jobPosting == null)
+                {
+                    return RedirectToAction("JobPostList");
+                }
+
+                JobPostingsUpdationDto jobPostingDto = new JobPostingsUpdationDto
+                {
+                    Name = jobPosting.Name,
+                    Description = jobPosting.Description,
+                    Qualifications = jobPosting.Qualifications,
+                    Responsibilities = jobPosting.Responsibilities,
+                    WorkSetup = jobPosting.WorkSetup,
+                    JobStatus = jobPosting.JobStatus,
+                    Hours = jobPosting.Hours,
+                    EmploymentType = jobPosting.EmploymentType,
+                    UpdatedBy = loggedUser.UserName
+                };
+
+                return View(jobPostingDto);
             }
-			JobPostingsUpdationDto jobPostingDto = new JobPostingsUpdationDto
+            catch (Exception e)
             {
-                Name = jobPosting.Name,
-                Description = jobPosting.Description,
-                Qualifications = jobPosting.Qualifications,
-                Responsibilities = jobPosting.Responsibilities,
-                WorkSetup = jobPosting.WorkSetup,
-                JobStatus = jobPosting.JobStatus,
-                Hours = jobPosting.Hours,
-                EmploymentType = jobPosting.EmploymentType,
-                UpdatedBy = loggedUser.UserName
-            };
-            return View(jobPostingDto);
+                Console.WriteLine(e.Message);
+                return BadRequest("An error occured when retrieving the job to be edited.");
+            }
+
 
         }
 
@@ -150,73 +160,91 @@ namespace Basecode.WebApp.Controllers
         /// <returns>The view containing the job post details.</returns>
         public async Task<IActionResult> ViewJobPost(int id)
         {
-            var job = await _jobPostingsService.GetByIdAsync(id);
-            return View(job);
+            try
+            {
+                var job = await _jobPostingsService.GetByIdAsync(id);
+                return View(job);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return BadRequest("An error occured when retrieving the job post to view.");
+            }
+            
         }
 
         [HttpPost]
         public async Task<IActionResult> Add(JobPostingsCreationDto jobPostingsCreationDto)
         {
-            if (ModelState.IsValid)
+            try
             {
-                //Get AspNetUser Data
-                var loggedUser = await _userManager.GetUserAsync(User);
-
-                jobPostingsCreationDto.CreatedBy = loggedUser.UserName;
-                jobPostingsCreationDto.Qualifications = string.Join(", ", jobPostingsCreationDto.QualificationList);
-				jobPostingsCreationDto.Responsibilities = string.Join(", ", jobPostingsCreationDto.ResponsibilityList);
-				
-                //logger to be implemented
-                //var data = _jobPostingsService.CreateJobPosting(jobPostingsCreationDto);
-                
-                /*if (!data.Result)
+                if (ModelState.IsValid)
                 {
-                    //_logger.Error(_errorHandling.SetLog(data));
-                    ViewBag.ErrorMessage = data.Message;
-                    return View(jobPostingsCreationDto);
-                }*/
-                await _jobPostingsService.AddAsync(jobPostingsCreationDto);
-                return RedirectToAction("JobPostList");
+                    // Get AspNetUser Data
+                    var loggedUser = await _userManager.GetUserAsync(User);
+
+                    jobPostingsCreationDto.CreatedBy = loggedUser.UserName;
+                    jobPostingsCreationDto.Qualifications = string.Join(", ", jobPostingsCreationDto.QualificationList);
+                    jobPostingsCreationDto.Responsibilities = string.Join(", ", jobPostingsCreationDto.ResponsibilityList);
+
+                    await _jobPostingsService.AddAsync(jobPostingsCreationDto);
+                    return RedirectToAction("JobPostList");
+                }
+                ModelState.Clear();
+                return View("JobPostList", jobPostingsCreationDto);
             }
-            ModelState.Clear();
-			return View("JobPostList", jobPostingsCreationDto);
-		}
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return BadRequest("An error occured when trying to add a job.");
+            }
+
+        }
 
         [HttpPost]
         public async Task<IActionResult> Update(JobPostingsUpdationDto jobPostingsUpdationDto)
         {
-            if (ModelState.IsValid)
+            try
             {
-                //Get AspNetUser Data
-                var loggedUser = await _userManager.GetUserAsync(User);
-                
-                jobPostingsUpdationDto.UpdatedBy = loggedUser.UserName;
-                jobPostingsUpdationDto.Qualifications = string.Join(", ", jobPostingsUpdationDto.QualificationList);
-                jobPostingsUpdationDto.Responsibilities = string.Join(", ", jobPostingsUpdationDto.ResponsibilityList);
-                
-                //logger to be implemented
-                //var data = _jobPostingsService.UpdateJobPosting(jobPostingsUpdationDto);
-                
-                /*if (!data.Result)
+                if (ModelState.IsValid)
                 {
-                    //_logger.Error(_errorHandling.SetLog(data));
-                    ViewBag.ErrorMessage = data.Message;
-                    return View(jobPostingsUpdationDto);
-                }*/
-                await _jobPostingsService.UpdateAsync(jobPostingsUpdationDto);
-                return RedirectToAction("JobPostList");
+                    // Get AspNetUser Data
+                    var loggedUser = await _userManager.GetUserAsync(User);
+
+                    jobPostingsUpdationDto.UpdatedBy = loggedUser.UserName;
+                    jobPostingsUpdationDto.Qualifications = string.Join(", ", jobPostingsUpdationDto.QualificationList);
+                    jobPostingsUpdationDto.Responsibilities = string.Join(", ", jobPostingsUpdationDto.ResponsibilityList);
+
+                    await _jobPostingsService.UpdateAsync(jobPostingsUpdationDto);
+                    return RedirectToAction("JobPostList");
+                }
+                return View("EditJobPost", jobPostingsUpdationDto);
             }
-            return View("EditJobPost", jobPostingsUpdationDto);
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return BadRequest("An error occured when trying to update a job.");
+            }
+
         }
 
         public async Task<IActionResult> DeleteJob(int id)
         {
-            var job = await _jobPostingsService.GetByIdAsync(id);
-            if (job != null)
+            try
             {
-                await _jobPostingsService.PermaDeleteAsync(id);
+                var job = await _jobPostingsService.GetByIdAsync(id);
+                if (job != null)
+                {
+                    await _jobPostingsService.PermaDeleteAsync(id);
+                }
+                return RedirectToAction("JobPostList");
             }
-            return RedirectToAction("JobPostList");
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return BadRequest("An error occured when trying to delete a job.");
+            }
+
         }
         /// <summary>
         /// Displays the details of a applicant's application.
@@ -252,9 +280,8 @@ namespace Basecode.WebApp.Controllers
             }
             catch (Exception e)
             {
-                // please log the exception here
-                ViewBag.ErrorMessage = "An error occurred: " + e.Message;
-                return View("ErrorView");
+                Console.WriteLine(e.Message);
+                return BadRequest("An error occured when retrieving applicant detail");
             }
         }
 
@@ -278,11 +305,10 @@ namespace Basecode.WebApp.Controllers
                 // If the model is not valid or the user is not logged in, return the EditJobPosting view with the appropriate error
                 return View("EditJobPosting", model);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                // log the exception here please
-                ViewBag.ErrorMessage = "An error occurred: " + ex.Message;
-                return View("ErrorView");
+                Console.WriteLine(e.Message);
+                return BadRequest("An error occured when updating a job post list.");
             }
 
         }
@@ -320,30 +346,39 @@ namespace Basecode.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateApplicantStatus(int id, string status)
         {
-            var applicant = await _applicantService.GetByIdAsync(id);
-            if (applicant != null)
+            try
             {
-                if (status == "Confirmed")
+                var applicant = await _applicantService.GetByIdAsync(id);
+                if (applicant != null)
                 {
-                    var hired = new CurrentHiresCreationDto
+                    if (status == "Confirmed")
                     {
-                        ApplicantId = applicant.Id,
-                        PositionId = applicant.JobId,
-                        HireDate = DateTime.Now
-                    };
-                    if (Enum.TryParse(status, out HireStatus parsedStatus))
-                    {
-                        hired.HireStatus = parsedStatus;
+                        var hired = new CurrentHiresCreationDto
+                        {
+                            ApplicantId = applicant.Id,
+                            PositionId = applicant.JobId,
+                            HireDate = DateTime.Now
+                        };
+                        if (Enum.TryParse(status, out HireStatus parsedStatus))
+                        {
+                            hired.HireStatus = parsedStatus;
+                        }
+                        await _currentHiresService.AddAsync(hired);
                     }
-                    await _currentHiresService.AddAsync(hired);
+                    await _applicantService.UpdateAsync(id, status);
+                    return RedirectToAction("JobApplicantsOverview");
                 }
-                await _applicantService.UpdateAsync(id, status);
-                return RedirectToAction("JobApplicantsOverview");
+                else
+                {
+                    return RedirectToAction("Index");
+                }
             }
-            else
+            catch (Exception e)
             {
-                return RedirectToAction("Index");
+                Console.WriteLine(e.Message);
+                return BadRequest("An error occured when updating the status of applicant.");
             }
+
         }
 
         /// <summary>

@@ -3,6 +3,7 @@ using Basecode.Data.Dtos;
 using Basecode.Data.Dtos.Applicants;
 using Basecode.Data.Dtos.CurrentHires;
 using Basecode.Data.Dtos.HrEmployee;
+using Basecode.Data.Dtos.Interviews;
 using Basecode.Data.Dtos.JobPostings;
 using Basecode.Data.Models;
 using Basecode.Data.ViewModels;
@@ -26,6 +27,8 @@ namespace Basecode.WebApp
 				cfg.CreateMap<AddressCreationDto, Addresses>();
                 cfg.CreateMap<CharacterReferencesCreationDto, CharacterReferences>();
                 cfg.CreateMap<ReferenceFormsCreationDto, ReferenceForms>();
+                cfg.CreateMap<InterviewsCreationDto, Interviews>();
+                cfg.CreateMap<InterviewsUpdationDto, Interviews>();
             });
 
             services.AddSingleton(Config.CreateMapper());

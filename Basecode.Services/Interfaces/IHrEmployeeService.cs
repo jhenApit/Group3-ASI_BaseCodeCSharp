@@ -13,15 +13,12 @@ namespace Basecode.Services.Interfaces
 {
     public interface IHrEmployeeService
     {
-        List<HrEmployee> RetrieveAll();
-        HrEmployee GetByEmail(string email);
-        void Add(HREmployeeCreationDto hrEmployee);
-        HrEmployee GetById(int id);
-        HrEmployee GetByUserId(string id);
-        void Update(HREmployeeUpdationDto hrEmployee);
-        void Delete(int id);
-        public LogContent CreateHrAccount(HREmployeeCreationDto hrEmployee);
-        public Task<LogContent> EditHrAccount(HREmployeeUpdationDto hrEmployee);
-        public LogContent Login(string email, string password);
+        Task<List<HrEmployee>> RetrieveAllAsync();
+        Task<HrEmployee> GetByEmailAsync(string email);
+        Task AddAsync(HREmployeeCreationDto hrEmployee);
+        Task<HrEmployee> GetByIdAsync(int id);
+        Task<HrEmployee> GetByUserIdAsync(string id);
+        Task UpdateAsync(HREmployeeUpdationDto hrEmployee);
+        Task DeleteAsync(int id);
     }
 }

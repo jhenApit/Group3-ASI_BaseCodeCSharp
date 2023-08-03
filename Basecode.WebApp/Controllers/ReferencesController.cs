@@ -41,17 +41,19 @@ namespace Basecode.WebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Submit(ReferenceFormsCreationDto referenceFormsCreationDto)
+        public async Task<IActionResult> Submit(ReferenceFormsCreationDto referenceFormsCreationDto)
         {
             var id = 1; //temporary
-            if (_characterReferencesService.GetById(id) == null)
+            var existingRef = await _characterReferencesService.GetByIdAsync(id);
+
+			if (existingRef == null)
             {
                 //error
                 return View("Error");
             }
             referenceFormsCreationDto.CharacterReferenceId = id; //temporary
 
-            _service.Add(referenceFormsCreationDto);
+            await _service.AddAsync(referenceFormsCreationDto);
             TempData.Clear();
             return RedirectToAction("Index", "Home");
         }

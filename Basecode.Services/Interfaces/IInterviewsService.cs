@@ -11,11 +11,11 @@ namespace Basecode.Services.Interfaces
 {
     public interface IInterviewsService
     {
-        List<Interviews> RetrieveAll();
-        List<Interviews> GetByApplicantId(int applicantId);
-        void Add(InterviewsCreationDto Interviews);
-        Interviews? GetById(int id);
-        void Update(InterviewsUpdationDto Interviews);
-        void Delete(int id);
+        Task<List<Interviews>> RetrieveAllAsync();
+        Task<Interviews?> GetByApplicantIdAsync(int applicantId);
+        Task AddAsync(InterviewsCreationDto Interviews);
+        Task<Interviews?> GetByIdAsync(int id);
+        Task UpdateAsync(InterviewsUpdationDto Interviews);
+        Task DeleteAsync(int id);
     }
 }

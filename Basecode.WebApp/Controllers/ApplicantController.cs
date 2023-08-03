@@ -1,14 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Basecode.Data.Dtos;
-using Basecode.Data.Dtos.Applicants;
 using Basecode.Data.Dtos.JobPostings;
 using Basecode.Data.Models;
-using Basecode.WebApp.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Services;
 using Basecode.Services.Utils;
 using Basecode.WebApp.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 
@@ -39,9 +36,9 @@ namespace Basecode.WebApp.Controllers
         /// </summary>
         /// <param name="applicantId">The ID of the applicant.</param>
         /// <returns>The view displaying the status of employment of the applicant.</returns>
-        public IActionResult ApplicationStatus(string ApplicantId)
+        public async Task<IActionResult> ApplicationStatus(string ApplicantId)
         {
-            Applicants data = _applicantService.GetByApplicantId(ApplicantId);
+            Applicants data = await _applicantService.GetByApplicantIdAsync(ApplicantId);
             Console.WriteLine("Applicant Id+" + ApplicantId);
             if (data != null)
             {
@@ -72,9 +69,9 @@ namespace Basecode.WebApp.Controllers
         /// Displays the application form page.
         /// </summary>
         /// <returns>The application form view.</returns>
-        public IActionResult ApplicationForm(int id)
+        public async Task<IActionResult> ApplicationForm(int id)
         {
-            var jobPosting = _jobPostingsService.GetById(id);
+            var jobPosting = await _jobPostingsService.GetByIdAsync(id);
             if (jobPosting != null)
             {
                 var viewModel = new ApplicationFormViewModel
@@ -113,13 +110,13 @@ namespace Basecode.WebApp.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult ApplicationFormProcess(ApplicationFormViewModel model, [Required] IFormFile resumeFile, IFormFile? photo)
+        public async Task<IActionResult> ApplicationFormProcess(ApplicationFormViewModel model, [Required] IFormFile resumeFile, IFormFile? photo)
         {
             if (resumeFile != null && resumeFile.Length > 0)
             {
                 using (var memoryStream = new MemoryStream())
                 {
-                    resumeFile.CopyTo(memoryStream);
+                    await resumeFile.CopyToAsync(memoryStream);
 
                     // Convert the file content to a byte array and store it in the model
                     model.Applicant.Resume = memoryStream.ToArray();
@@ -129,7 +126,7 @@ namespace Basecode.WebApp.Controllers
             {
                 using (var memoryStream = new MemoryStream())
                 {
-                    photo.CopyTo(memoryStream);
+                    await photo.CopyToAsync(memoryStream);
 
                     // Convert the file content to a byte array and store it in the model
                     model.Applicant.Photo = memoryStream.ToArray();
@@ -143,23 +140,24 @@ namespace Basecode.WebApp.Controllers
             TryValidateModel(model);
             if (ModelState.IsValid)
             {
-                var data = _applicantService.AddApplicantLogContent(model.Applicant);
-                if (!data.Result)
-                {
-                    //_logger.Error(_errorHandling.SetLog(data));
-                    ViewBag.ErrorMessage = data.Message;
-                    //get current job applied
-                    var jobPosting = _jobPostingsService.GetById(model.Applicant.JobId);
-                    //pass job to view model
-                    model.JobPosting = new JobPostings
-                    {
-                        Name = jobPosting.Name,
-                        Id = jobPosting.Id
-                    };
-                    return View("ApplicationForm", model);
-                }
-                
-                var applicantIsInserted = _applicantService.Add(model.Applicant);
+                //logger to be implemented
+                //var data = _applicantService.AddApplicantLogContent(model.Applicant);
+                //if (!data.Result)
+                //{
+                //    //_logger.Error(_errorHandling.SetLog(data));
+                //    ViewBag.ErrorMessage = data.Message;
+                //    //get current job applied
+                //    var jobPosting = await _jobPostingsService.GetByIdAsync(model.Applicant.JobId);
+                //    //pass job to view model
+                //    model.JobPosting = new JobPostings
+                //    {
+                //        Name = jobPosting.Name,
+                //        Id = jobPosting.Id
+                //    };
+                //    return View("ApplicationForm", model);
+                //}
+
+                var applicantIsInserted = await _applicantService.AddAsync(model.Applicant);
                 var address = new AddressCreationDto
                 {
                     ApplicantId = applicantIsInserted,
@@ -188,14 +186,14 @@ namespace Basecode.WebApp.Controllers
                 };
                 if (applicantIsInserted != 0)
                 {
-                    _addressService.Add(address);
-                    _characterService.Add(characRef1);
-                    _characterService.Add(characRef2);
+                    await _addressService.AddAsync(address);
+                    await _characterService.AddAsync(characRef1);
+                    await _characterService.AddAsync(characRef2);
                     var recipient = model.Applicant.Email;
                     var subject = "Application Update";
                     var body = "Your application ID is " + model.Applicant.ApplicantId;
 
-                    _emailService.SendEmail(recipient, subject, body);
+                    await _emailService.SendEmail(recipient, subject, body);
                 }
                 else
                 {
@@ -208,19 +206,5 @@ namespace Basecode.WebApp.Controllers
             return View("ApplicationForm");
         }
 
-
-        /*public async Task<IActionResult> UpdateApplicationStatus(ApplicantsUpdationDto applicantsUpdationDto)
-        {
-            if (ModelState.IsValid)
-            {
-
-                //Get AspNetUser Data
-                //var loggedUser = await _userManager.GetUserAsync(User)
-                 _applicantService.Update(applicantsUpdationDto);
-
-                return RedirectToAction("JobPostList");
-            }
-            return View("EditJobPost", applicantsUpdationDto);
-        }*/
     }
 }

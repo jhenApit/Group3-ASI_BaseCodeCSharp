@@ -5,10 +5,8 @@ namespace Basecode.Services.Interfaces
 {
     public interface IAddressService
     {
-        List<Addresses> RetrieveAll();
-        Addresses GetByCity(string city);
-        void Add(AddressCreationDto address);
-        Addresses GetById(int id);
-        Addresses GetByApplicantId(int applicantId);
+        Task<List<Addresses>> RetrieveAllAsync();
+        Task AddAsync(AddressCreationDto address);
+        Task<Addresses?> GetByIdAsync(int id);
     }
 }

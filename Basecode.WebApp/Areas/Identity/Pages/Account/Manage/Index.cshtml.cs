@@ -80,7 +80,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account.Manage
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var email = await _userManager.GetEmailAsync(user);
-            var hr = _service.GetByUserId(user.Id);
+            var hr = await _service.GetByUserIdAsync(user.Id);
             var name = hr.Name;
             Email = email;
             UserName = userName;
@@ -136,7 +136,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
-            var hr = _service.GetByUserId(user.Id);
+            var hr = _service.GetByUserIdAsync(user.Id);
             var hrEmployeeDto = new HREmployeeUpdationDto
             {
                 Name = Input.Name,
@@ -146,7 +146,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account.Manage
                 UserId = user.Id,
                 Id = hr.Id
             };
-            _service.Update(hrEmployeeDto);
+            await _service.UpdateAsync(hrEmployeeDto);
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();

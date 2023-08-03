@@ -9,12 +9,12 @@ namespace Basecode.Data.Interfaces
 {
     public interface ICurrentHiresRepository
     {
-        IQueryable<CurrentHires> RetrieveAll();
-        CurrentHires? GetByPositionId(int positionId);
-        void Add(CurrentHires currentHires);
-        CurrentHires? GetById(int id);
-        void Update(CurrentHires currentHires);
-        void Delete(int id);
-        CurrentHires? GetByHireStatus(string status);
+        Task<IQueryable<CurrentHires>> RetrieveAllAsync();
+        Task<CurrentHires?> GetByPositionIdAsync(int positionId);
+        Task AddAsync(CurrentHires currentHires);
+        Task<CurrentHires?> GetByIdAsync(int id);
+        Task UpdateAsync(CurrentHires currentHires);
+        Task DeleteAsync(int id);
+        Task<CurrentHires?> GetByHireStatusAsync(string status);
     }
 }

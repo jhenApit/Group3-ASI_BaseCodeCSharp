@@ -21,10 +21,10 @@ namespace Basecode.Data.Repositories
         /// Adds a new character reference to the database.
         /// </summary>
         /// <param name="characterReferences">The character reference to add.</param>
-        public void Add(CharacterReferences characterReferences)
+        public async Task AddAsync(CharacterReferences characterReferences)
         {
-            _context.CharacterReferences.Add(characterReferences);
-            _context.SaveChanges();
+            await _context.CharacterReferences.AddAsync(characterReferences);
+            await _context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -32,9 +32,9 @@ namespace Basecode.Data.Repositories
         /// </summary>
         /// <param name="name">The name of the character reference.</param>
         /// <returns>The character reference matching the specified name, or null if not found.</returns>
-        public CharacterReferences GetByName(string name)
+        public async Task<CharacterReferences?> GetByNameAsync(string name)
         {
-            return _context.CharacterReferences.FirstOrDefault(e => e.Name == name)!;
+            return await _context.CharacterReferences.FirstOrDefaultAsync(e => e.Name == name)!;
         }
 
         /// <summary>
@@ -42,18 +42,18 @@ namespace Basecode.Data.Repositories
         /// </summary>
         /// <param name="id">The ID of the character reference.</param>
         /// <returns>The character reference matching the specified ID, or null if not found.</returns>
-        public CharacterReferences GetById(int id)
+        public async Task<CharacterReferences?> GetByIdAsync(int id)
         {
-            return _context.CharacterReferences.FirstOrDefault(e => e.Id == id)!;
+            return await _context.CharacterReferences.FirstOrDefaultAsync(e => e.Id == id)!;
         }
 
         /// <summary>
         /// Retrieves all character references.
         /// </summary>
         /// <returns>An IQueryable of CharacterReferences representing all character references.</returns>
-        public IQueryable<CharacterReferences> RetrieveAll()
+        public async Task<IQueryable<CharacterReferences>> RetrieveAllAsync()
         {
-            return this.GetDbSet<CharacterReferences>();
+            return await Task.FromResult(this.GetDbSet<CharacterReferences>());
         }
         /// <summary>
         /// This gets the list of character references of an applicant

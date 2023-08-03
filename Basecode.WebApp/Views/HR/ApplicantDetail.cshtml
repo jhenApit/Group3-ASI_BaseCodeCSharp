@@ -8,7 +8,7 @@
 @{
     ViewData ["Title"] = "Application Detail";
     Layout = "_SideBarAdmin";
-    var job = _jobPostingService.GetById(Model.Applicant.JobId);
+    var job = await _jobPostingService.GetByIdAsync(Model.Applicant.JobId);
     <link rel="stylesheet" href="~/css/ApplicantDetail.css" />
 }
 

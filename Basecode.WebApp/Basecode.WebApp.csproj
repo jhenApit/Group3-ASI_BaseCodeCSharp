@@ -53,6 +53,7 @@
     <None Include="Views\HR\Interviews.cshtml" />
     <None Include="Views\HR\JobPostList.cshtml" />
     <None Include="Views\HR\ViewJobPost.cshtml" />
+    <None Include="wwwroot\css\ApplicantDetail.css" />
     <None Include="wwwroot\images\building.png" />
   </ItemGroup>
 

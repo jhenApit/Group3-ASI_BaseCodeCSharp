@@ -14,10 +14,10 @@ namespace Basecode.Services.Interfaces
     public interface IHrEmployeeService
     {
         Task<List<HrEmployee>> RetrieveAllAsync();
-        Task<HrEmployee?> GetByEmailAsync(string email);
+        Task<HrEmployee> GetByEmailAsync(string email);
         Task AddAsync(HREmployeeCreationDto hrEmployee);
-        Task<HrEmployee?> GetByIdAsync(int id);
-        Task<HrEmployee?> GetByUserIdAsync(string id);
+        Task<HrEmployee> GetByIdAsync(int id);
+        Task<HrEmployee> GetByUserIdAsync(string id);
         Task UpdateAsync(HREmployeeUpdationDto hrEmployee);
         Task DeleteAsync(int id);
     }

@@ -2,9 +2,11 @@
 using Basecode.Data.Dtos;
 using Basecode.Data.Dtos.JobPostings;
 using Basecode.Data.Models;
+using Basecode.WebApp.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Services;
 using Basecode.Services.Utils;
+using Basecode.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 

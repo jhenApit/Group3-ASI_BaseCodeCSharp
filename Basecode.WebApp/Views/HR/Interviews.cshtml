@@ -33,7 +33,7 @@
                 <option selected disabled value="">Select an Interviewer... </option>
                 @foreach (var interviewer in Model.InterviewersList)
                 {
-                    <option value="@interviewer.Id">@interviewer.Name</option>
+                    <option class="text-capitalize" value="@interviewer.Id">@interviewer.Name</option>
                 }
             </select>
         </div>
@@ -153,6 +153,11 @@
         window.location.href = url;
     }
 
+    function deleteInterviewer(interviewerId) {
+        $("#deleteInterviewerModal").modal("show");
+        $("#deleteInterviewerForm").attr("action", "@Url.Action("DeleteInterviewer", "HR")" + "?id=" + interviewerId);
+    }
+
     $(document).ready(function () {
         $("#partialViewSelector").change(function () {
             var selectedInterviewerId = $(this).val();
@@ -163,6 +168,14 @@
         $("#New_Interview").click(function () {
             if (!NewInterviewButton.hasClass("disabled-button")) {
                 createNewInterview();
+            }
+        });
+        $("#Delete_Interviewer").click(function () {
+            if (!DeleteInterviewerButton.hasClass("disabled-button")) {
+                var selectedInterviewerId = $("#partialViewSelector").val();
+                if (selectedInterviewerId && selectedInterviewerId !== "") {
+                    deleteInterviewer(selectedInterviewerId);
+                }
             }
         });
     });
@@ -202,7 +215,7 @@
 @foreach (var interviews in Model.InterviewsList)
 {
     <!-- Cancel Interview Modal -->
-    <div class="modal fade" id="@("modal-" + interviews.Id)" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="@("modal-" + interviews.Id)" tabindex="-1" aria-labelledby="deleteInterviewModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header text-center">
@@ -224,7 +237,7 @@
     </div>
 
     <!-- Delete Interview Success Modal -->
-    <div class="modal fade" id="@("modal2-" + interviews.Id)" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal fade" id="@("modal2-" + interviews.Id)" aria-hidden="true" aria-labelledby="deleteInterviewModalLabel2" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -246,3 +259,25 @@
         </div>
     </div>
 }
+
+<!-- Delete Interviewer Modal -->
+<div class="modal fade" id="deleteInterviewerModal" tabindex="-1" role="dialog" aria-labelledby="deleteInterviewerModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Interviewer</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" id="deleteInterviewerForm" asp-action="DeleteInterviewer" asp-route-id="">
+                <div class="modal-body">
+                    <p class="text-center">Are you sure you want to delete this interviewer?</p>
+                    <p class="text-center"><strong><span style="color: #FF0000;">Warning!</span> Deleting an interviewer will also delete their list of interviews</strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn b-cancel" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                    <button type="submit" class="btn b-red">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -25,13 +25,15 @@ namespace Basecode.WebApp.Controllers
         private readonly IInterviewersService _interviewersService;
         private readonly IAddressService _addressService;
         private readonly ICharacterReferencesService _characterReferencesService;
+        private readonly IFileService _fileService;
         private readonly IErrorHandling _errorHandling; 
         private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public HRController(
-            IHrEmployeeService service, 
-            IJobPostingsService jobPostingsService, 
+            IHrEmployeeService service,
+            IFileService fileService,
+        IJobPostingsService jobPostingsService, 
             IErrorHandling errorHandling, 
             UserManager<IdentityUser> userManager, 
             IApplicantService applicantService,
@@ -44,6 +46,7 @@ namespace Basecode.WebApp.Controllers
         {
             _addressService = addressService;
             _service = service;
+            _fileService = fileService;
             _jobPostingsService = jobPostingsService;
             _errorHandling = errorHandling;
             _userManager = userManager;
@@ -58,20 +61,30 @@ namespace Basecode.WebApp.Controllers
 
         public async Task<IActionResult> AdminDashboard()
         {
-            var user = _userManager.GetUserId(User);
-            var jobs = await _jobPostingsService.RetrieveAllAsync();
-            var employees = await _currentHiresService.RetrieveAllAsync();
-            var interviews = await _interviewsService.RetrieveAllAsync();
-
-			DashboardView model = new DashboardView
+            try
             {
-                User = await _service.GetByUserIdAsync(user),
-                JobCount = jobs.Count(),
-                Candidates = await _applicantService.RetrieveAllAsync(),
-                EmployeeCount = employees.Count(),
-                Interviews = interviews.OrderBy(x => x.InterviewDate).Take(6).ToList()
-            };
-            return View(model);
+                var user = _userManager.GetUserId(User);
+                var jobs = await _jobPostingsService.RetrieveAllAsync();
+                var employees = await _currentHiresService.RetrieveAllAsync();
+                var interviews = await _interviewsService.RetrieveAllAsync();
+
+                DashboardView model = new DashboardView
+                {
+                    User = await _service.GetByUserIdAsync(user),
+                    JobCount = jobs.Count(),
+                    Candidates = await _applicantService.RetrieveAllAsync(),
+                    EmployeeCount = employees.Count(),
+                    Interviews = interviews.OrderBy(x => x.InterviewDate).Take(6).ToList()
+                };
+                return View(model);
+            }
+            catch (Exception e)
+            {
+                // log the exception here please
+                ViewBag.ErrorMessage = "An error occurred: " + e.Message;
+                return View();
+            }
+
         }
 
 
@@ -81,8 +94,16 @@ namespace Basecode.WebApp.Controllers
         /// <returns>The view containing the job post list.</returns>
         public async Task<IActionResult> JobPostList()
         {
-            var data = await _jobPostingsService.RetrieveAllAsync();
-            return View(data);
+            try
+            {
+                var data = await _jobPostingsService.RetrieveAllAsync();
+                return View(data);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return View();
+            }
         }
 
         /// <summary>
@@ -203,56 +224,67 @@ namespace Basecode.WebApp.Controllers
         /// <returns>The view containing the application details.</returns>
         public async Task<IActionResult> ApplicantDetail(int id)
         {
-            if (System.IO.File.Exists("wwwroot/applicants/resume/resume.pdf"))
+            try
             {
-                System.IO.File.Delete("wwwroot/applicants/resume/resume.pdf");
+                var applicant = await _applicantService.GetByIdAsync(id);
+                var address = await _addressService.GetByApplicantIdAsync(applicant.Id);
+                var characterReferences = await _characterReferencesService.GetByApplicantIdAsync(applicant.Id);
+                var interviews = await _interviewsService.GetByApplicantIdAsync(applicant.Id);
+                var applicantDetailViewModel = new ApplicantDetailViewModel
+                {
+                    Applicant = applicant,
+                    Address = address,
+                    CharacterReferences = characterReferences,
+                    Interviews = interviews
+                };
+
+                string imreBase64Data = Convert.ToBase64String(applicantDetailViewModel.Applicant.Photo);
+                string imgDataURL = $"data:image/png;base64,{imreBase64Data}";
+
+                ViewBag.ImageData = imgDataURL;
+
+                _fileService.DeleteFile("wwwroot/applicants/resume/resume.pdf");
+                _fileService.SaveFile("wwwroot/applicants/resume/resume.pdf", applicantDetailViewModel.Applicant.Resume);
+
+                ViewBag.ResumeData = File("wwwroot/applicants/resume/resume.pdf", "application/pdf");
+
+                return View(applicantDetailViewModel);
             }
-            var applicant = await _applicantService.GetByIdAsync(id);
-            var address = await _addressService.GetByApplicantIdAsync(applicant.Id);
-            var characterReferences = await _characterReferencesService.GetByApplicantIdAsync(applicant.Id);
-            var interviews = await _interviewsService.GetByApplicantIdAsync(applicant.Id);
-            var applicantDetailViewModel = new ApplicantDetailViewModel
+            catch (Exception e)
             {
-                Applicant = applicant,
-                Address = address,
-                CharacterReferences = characterReferences,
-                Interviews = interviews
-            };
-            string imreBase64Data = Convert.ToBase64String(applicant.Photo);
-            string imgDataURL = string.Format($"data:image/png;base64,{imreBase64Data}");
-            string resumeBase64Data = Convert.ToBase64String(applicant.Resume);
-            System.IO.FileStream stream =
-                new FileStream(@"wwwroot/applicants/resume/resume.pdf", FileMode.CreateNew);
-            System.IO.BinaryWriter writer =
-                new BinaryWriter(stream);
-            writer.Write(applicant.Resume, 0, applicant.Resume.Length);
-            writer.Close();
-            //Passing image data in viewbag to view
-            ViewBag.ImageData = imgDataURL;
-            //puts the resume file to the viewbag 
-            ViewBag.ResumeData = File(@"C:\temp\file.pdf", "appliction/pdf");
-
-
-            return View(applicantDetailViewModel);
+                // please log the exception here
+                ViewBag.ErrorMessage = "An error occurred: " + e.Message;
+                return View("ErrorView");
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> UpdateJobPosting(JobPostingsUpdationDto model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                // Retrieve the currently logged-in user
-                var loggedInUser = await _userManager.GetUserAsync(User);
-
-                if (loggedInUser != null)
+                if (ModelState.IsValid)
                 {
-					await _jobPostingsService.UpdateAsync(model);
-                    return RedirectToAction("JobPostList");
+                    // Retrieve the currently logged-in user
+                    var loggedInUser = await _userManager.GetUserAsync(User);
+
+                    if (loggedInUser != null)
+                    {
+                        await _jobPostingsService.UpdateAsync(model);
+                        return RedirectToAction("JobPostList");
+                    }
                 }
+
+                // If the model is not valid or the user is not logged in, return the EditJobPosting view with the appropriate error
+                return View("EditJobPosting", model);
+            }
+            catch (Exception ex)
+            {
+                // log the exception here please
+                ViewBag.ErrorMessage = "An error occurred: " + ex.Message;
+                return View("ErrorView");
             }
 
-            // If the model is not valid or the user is not logged in, return the EditJobPosting view with the appropriate error
-            return View("EditJobPosting", model);
         }
 
         /// <summary>

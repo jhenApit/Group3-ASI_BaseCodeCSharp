@@ -1,12 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Basecode.Data.Dtos;
-using Basecode.Data.Dtos.JobPostings;
 using Basecode.Data.Models;
-using Basecode.WebApp.Models;
 using Basecode.Services.Interfaces;
-using Basecode.Services.Services;
-using Basecode.Services.Utils;
-using Basecode.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 
@@ -138,7 +132,7 @@ namespace Basecode.WebApp.Controllers
                 if (ModelState.IsValid)
                 {
                     // Use the service method to handle the logic
-                    var isApplicantAdded = await _applicantService.AddApplicant(model, resumeFile, photo);
+                    var isApplicantAdded = await _applicantService.AddApplicantAsync(model, resumeFile, photo);
 
                     if (isApplicantAdded)
                     {

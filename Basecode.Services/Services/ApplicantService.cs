@@ -14,6 +14,8 @@ using Basecode.Data.Dtos.Applicants;
 using static Basecode.Data.Enums.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Basecode.Data.Dtos;
+using Basecode.WebApp.Models;
 
 namespace Basecode.Services.Services
 {
@@ -23,6 +25,7 @@ namespace Basecode.Services.Services
         private readonly ICharacterReferencesService _characterService;
         private readonly IEmailService _emailService;
         private readonly IApplicantRepository _repository;
+        private readonly ICharacterReferencesService _characterReferencesService;
         private readonly IMapper _mapper;
         private readonly IDGenerator _idGenerator = new();
         private readonly LogContent _logContent = new();
@@ -31,6 +34,7 @@ namespace Basecode.Services.Services
             IAddressService addressService,
             ICharacterReferencesService characterService,
             IEmailService emailService,
+            ICharacterReferencesService characterReferencesService,
             IApplicantRepository repository, 
             IMapper mapper
         )
@@ -38,6 +42,7 @@ namespace Basecode.Services.Services
             _addressService = addressService;
             _characterService = characterService;
             _emailService = emailService;
+            _characterReferencesService = characterReferencesService;
             _repository = repository;
             _mapper = mapper;
         }

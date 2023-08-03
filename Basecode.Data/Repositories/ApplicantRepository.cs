@@ -72,7 +72,7 @@ namespace Basecode.Data.Repositories
         /// This update the applicant form the database
         /// </summary>
         /// <param name="applicant"> the applicant model to update</param>
-		public bool Update(Applicants applicant)
+		public async Task<bool> UpdateAsync(Applicants applicant)
 		{
             var existingApplicant = _context.Applicants.Find(applicant.Id);
             if(existingApplicant != null)

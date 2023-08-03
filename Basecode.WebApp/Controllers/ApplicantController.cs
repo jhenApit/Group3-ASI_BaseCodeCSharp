@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Basecode.Data.Models;
+using Basecode.Data.ViewModels;
 using Basecode.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using NLog;

@@ -1,6 +1,6 @@
 ﻿using Basecode.Data.Models;
 
-namespace Basecode.WebApp.Models
+namespace Basecode.Data.ViewModels
 {
     public class ApplicantDetailViewModel
     {

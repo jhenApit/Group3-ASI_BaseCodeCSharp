@@ -1,5 +1,6 @@
 ﻿using Basecode.Data.Dtos.Applicants;
 using Basecode.Data.Models;
+using Basecode.Data.ViewModels;
 using Microsoft.AspNetCore.Http;
 
 namespace Basecode.Services.Interfaces

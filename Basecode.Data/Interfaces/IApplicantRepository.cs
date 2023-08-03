@@ -15,7 +15,7 @@ namespace Basecode.Data.Interfaces
         Task<IQueryable<Applicants>> RetrieveAllAsync();
         Task<Applicants?> GetByNameAsync(string fname, string mname, string lname);
         Task AddAsync(Applicants applicant);
-        public bool Update(Applicants applicant);
+        Task<bool> UpdateAsync(Applicants applicant);
         Task<Applicants?> GetByApplicantIdAsync(string trackerId);
         Task<IQueryable<Applicants>> GetByEmailAsync(string email);
     }

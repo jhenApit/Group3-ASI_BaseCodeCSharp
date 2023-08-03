@@ -1,7 +1,8 @@
 ﻿using Basecode.Data.Dtos;
 using Basecode.Data.Dtos.Applicants;
+using Basecode.Data.Models;
 
-namespace Basecode.Data.Models
+namespace Basecode.Data.ViewModels
 {
     public class ApplicationFormViewModel
     {

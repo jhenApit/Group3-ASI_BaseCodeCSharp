@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
-using Basecode.Data.Dtos.JobPostings;
+﻿using AutoMapper;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
@@ -13,9 +7,8 @@ using Basecode.Data.RandomIDGenerator;
 using Basecode.Data.Dtos.Applicants;
 using static Basecode.Data.Enums.Enums;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using Basecode.Data.Dtos;
-using Basecode.WebApp.Models;
+using Basecode.Data.ViewModels;
 
 namespace Basecode.Services.Services
 {
@@ -86,7 +79,7 @@ namespace Basecode.Services.Services
                     };
                     Console.WriteLine("applicant is updated." + parsedStatus);
                     var applicantMapper = _mapper.Map<Applicants>(applicant);
-                    return  _repository.Update(applicantMapper);
+                    return await  _repository.UpdateAsync(applicantMapper);
                 }
                 return false;
             }

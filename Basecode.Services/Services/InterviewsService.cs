@@ -82,6 +82,11 @@ namespace Basecode.Services.Services
             await _repository.DeleteAsync(id);
         }
 
+        /// <summary>
+        /// Retrieves an interview by applicant ID asynchronously.
+        /// </summary>
+        /// <param name="applicantId">The ID of the applicant to retrieve the interview for.</param>
+        /// <returns>An asynchronous task that represents the operation, containing the interview if found, or null if not found.</returns>
         public async Task<List<Interviews>> GetByApplicantIdAsync(int applicantId)
         {
             var interviews = await _repository.GetByApplicantIdAsync(applicantId);

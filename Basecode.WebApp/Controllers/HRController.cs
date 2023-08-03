@@ -323,7 +323,8 @@ namespace Basecode.WebApp.Controllers
 
                 var jobApplicantsOverviewModel = new JobApplicantOverviewModel
                 {
-                    applicants = applicants
+                    applicants = applicants,
+                    jobPostings = jobs
                 };
 
                 return View(jobApplicantsOverviewModel);
@@ -396,7 +397,7 @@ namespace Basecode.WebApp.Controllers
                     InterviewsList = (await _interviewsService.RetrieveAllAsync())
                     .OrderBy(x => x.InterviewDate)
                     .ToList()
-            };
+                };
                 return View(viewModel);
             } 
             catch(Exception)

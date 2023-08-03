@@ -59,20 +59,28 @@ namespace Basecode.WebApp.Controllers
 
         public async Task<IActionResult> AdminDashboard()
         {
-            var user = _userManager.GetUserId(User);
-            var jobs = await _jobPostingsService.RetrieveAllAsync();
-            var employees = await _currentHiresService.RetrieveAllAsync();
-            var interviews = await _interviewsService.RetrieveAllAsync();
-
-			DashboardView model = new DashboardView
+            try
             {
-                User = await _service.GetByUserIdAsync(user),
-                JobCount = jobs.Count(),
-                Candidates = await _applicantService.RetrieveAllAsync(),
-                EmployeeCount = employees.Count(),
-                Interviews = interviews.OrderBy(x => x.InterviewDate).Take(6).ToList()
-            };
-            return View(model);
+                var user = _userManager.GetUserId(User);
+                var jobs = await _jobPostingsService.RetrieveAllAsync();
+                var employees = await _currentHiresService.RetrieveAllAsync();
+                var interviews = await _interviewsService.RetrieveAllAsync();
+
+                DashboardView model = new DashboardView
+                {
+                    User = await _service.GetByUserIdAsync(user),
+                    JobCount = jobs.Count(),
+                    Candidates = await _applicantService.RetrieveAllAsync(),
+                    EmployeeCount = employees.Count(),
+                    Interviews = interviews.OrderBy(x => x.InterviewDate).Take(6).ToList()
+                };
+                return View(model);
+            }
+            catch (Exception ex) 
+            {
+                _logger.Error(ex, "Failed to load data");
+                throw;
+            }
         }
 
 

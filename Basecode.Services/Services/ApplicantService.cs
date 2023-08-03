@@ -66,7 +66,7 @@ namespace Basecode.Services.Services
                     };
                     Console.WriteLine("applicant is updated." + parsedStatus);
                     var applicantMapper = _mapper.Map<Applicants>(applicant);
-                    return  _repository.Update(applicantMapper);
+                    return await _repository.Update(applicantMapper);
                 }
                 return false;
             }

@@ -48,7 +48,7 @@ namespace Basecode.WebApp.Controllers
             catch (Exception e)
             {
                 Console.WriteLine("An error occurred: " + e.Message);
-                return View();
+                return BadRequest("An error occured when retrieving application status.");
             }
         }
         /// <summary>
@@ -57,8 +57,16 @@ namespace Basecode.WebApp.Controllers
         /// <returns>the view</returns>
         public IActionResult TrackApplication(string from)
         {
-            ViewBag.IsFromApplication = (from == "application");
-            return View();
+            try
+            {
+                ViewBag.IsFromApplication = (from == "application");
+                return View();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("An error occurred: " + e.Message);
+                return BadRequest("An error occured when trying to access track application");
+            }
         }
 
         /// <summary>
@@ -102,7 +110,7 @@ namespace Basecode.WebApp.Controllers
             catch (Exception e)
             {
                 Console.WriteLine("An error occurred: " + e.Message);
-                return View("Index");
+                return BadRequest("An error occured when trying to access application form");
             }
         }
 
@@ -153,8 +161,7 @@ namespace Basecode.WebApp.Controllers
             catch (Exception e)
             {
                 Console.WriteLine("An error occurred: " + e.Message);
-                ViewBag.ErrorMessage = "An error occurred while processing the application.";
-                return View("ApplicationForm");
+                return BadRequest("An error occured when trying to process application form.");
             }
         }
 

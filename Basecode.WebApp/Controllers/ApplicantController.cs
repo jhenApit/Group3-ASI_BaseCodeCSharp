@@ -134,23 +134,45 @@ namespace Basecode.WebApp.Controllers
 			try
 			{
 				var applicant = await _applicantService.GetByIdAsync(id);
+
 				if (applicant != null)
 				{
-					if (status == "Confirmed")
-					{
-						var hired = new CurrentHiresCreationDto
-						{
-							ApplicantId = applicant.Id,
-							PositionId = applicant.JobId,
-							HireDate = DateTime.Now
-						};
-						if (Enum.TryParse(status, out HireStatus parsedStatus))
-						{
-							hired.HireStatus = parsedStatus;
-						}
-						await _currentHiresService.AddAsync(hired);
-					}
+                    if (status.Contains("Interview") || status.Contains("Exam"))
+                    {
+                        
+                    }
+                    else
+                    {
+                        if (status == "For Screening")
+                        {
+                            //Send an email notification to HR to proceed with screening applicant
+                            await _sendEmailService.SendHrApplicationApprovalEmail(applicant);
+                        }
+
+                        if (status == "Rejected")
+                        {
+                            //Send an email of regret to applicant if the application was rejected
+                            await _sendEmailService.SendApplicantApplicationRegretEmail(applicant);
+                        }
+
+                        if (status == "Confirmed")
+                        {
+                            var hired = new CurrentHiresCreationDto
+                            {
+                                ApplicantId = applicant.Id,
+                                PositionId = applicant.JobId,
+                                HireDate = DateTime.Now
+                            };
+                            if (Enum.TryParse(status, out HireStatus parsedStatus))
+                            {
+                                hired.HireStatus = parsedStatus;
+                            }
+                            await _currentHiresService.AddAsync(hired);
+                        }
+                    }
+
 					await _applicantService.UpdateAsync(id, status);
+                    await _sendEmailService.SendApplicationStatusEmail(applicant, status);
 					return RedirectToAction("JobApplicantsOverview");
 				}
 				else
@@ -197,6 +219,7 @@ namespace Basecode.WebApp.Controllers
                     if (isApplicantAdded)
                     {
                         // Applicant was successfully added
+                        
                         return RedirectToAction("TrackApplication", new { from = "application" });
                     }
                     else

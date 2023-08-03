@@ -25,7 +25,6 @@ namespace Basecode.Services.Services
         public ApplicantService (
             IAddressService addressService,
             ICharacterReferencesService characterService,
-            ICharacterReferencesService characterReferencesService,
             IApplicantRepository repository, 
             IMapper mapper,
             ISendEmailService sendEmailService
@@ -222,6 +221,10 @@ namespace Basecode.Services.Services
                 MobileNumber = model.CharacterReferences2.MobileNumber
             };
             _characterService.AddAsync(characRef2);
+
+            var applicant = _mapper.Map<Applicants>(model.Applicant);
+
+            await _sendEmailService.SendNewApplicantEmail(applicant);
 
             // Return true if the applicant was successfully added
             return true;

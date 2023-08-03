@@ -7,15 +7,9 @@ using Microsoft.AspNetCore.Identity;
 using Basecode.Data.ViewModels;
 using Basecode.Data.Models;
 using Basecode.Data.Dtos.Interviews;
-using static Basecode.Data.Enums.Enums;
-using Basecode.Services.Services;
-using Basecode.WebApp.Models;
-using Basecode.Data.Dtos.CurrentHires;
 using Basecode.Data.Dtos.Interviewers;
-using static Basecode.Data.Enums.Enums;
-using Basecode.Services.Services;
-using Basecode.WebApp.Models;
-using Basecode.Data.Dtos.CurrentHires;
+using System.Net.WebSockets;
+using AutoMapper;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -34,11 +28,14 @@ namespace Basecode.WebApp.Controllers
         private readonly IErrorHandling _errorHandling; 
         private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly ISendEmailService _sendEmailService;
+        private readonly IMapper _mapper;
+        private readonly IMeetingLinkService _meetingLinkService;
 
         public HRController(
             IHrEmployeeService service,
             IFileService fileService,
-        IJobPostingsService jobPostingsService, 
+            IJobPostingsService jobPostingsService, 
             IErrorHandling errorHandling, 
             UserManager<IdentityUser> userManager, 
             IApplicantService applicantService,
@@ -46,7 +43,9 @@ namespace Basecode.WebApp.Controllers
             IInterviewsService interviewsService,
             IAddressService addressService,
             ICharacterReferencesService characterReferencesService,
-            IInterviewersService interviewersService
+            IInterviewersService interviewersService,
+            ISendEmailService sendEmailService,
+            IMapper mapper, IMeetingLinkService meetingLinkService
             )
         {
             _addressService = addressService;
@@ -59,7 +58,10 @@ namespace Basecode.WebApp.Controllers
             _currentHiresService = currentHiresService;
             _interviewsService = interviewsService;
             _interviewersService = interviewersService;
-             _characterReferencesService = characterReferencesService;
+            _characterReferencesService = characterReferencesService;
+            _sendEmailService = sendEmailService;
+            _mapper = mapper;
+            _meetingLinkService = meetingLinkService;
         }
 
 
@@ -459,6 +461,12 @@ namespace Basecode.WebApp.Controllers
                     return RedirectToAction("CreateInterview", new { id = interview.InterviewerId });
                 }
                 await _interviewsService.AddAsync(createInterview);
+
+                var interviewSched = _mapper.Map<Interviews>(createInterview);
+                var applicant = await _applicantService.GetByIdAsync(interviewSched.ApplicantId);
+                
+                await _sendEmailService.SendSetInterviewScheduleEmail(interviewSched, applicant!);
+                
                 return RedirectToAction("Interviews");
             }
             catch(Exception e)

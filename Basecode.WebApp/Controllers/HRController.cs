@@ -442,6 +442,11 @@ namespace Basecode.WebApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes interviewer from the database
+        /// </summary>
+        /// <param name="id">Interviewer Id</param>
+        /// <returns>Redirects to the Interviews Page</returns>
         public async Task<IActionResult> DeleteInterviewer(int id)
         {
             try

@@ -21,7 +21,6 @@ namespace Basecode.Services.Services
         private readonly IMapper _mapper;
         private readonly IDGenerator _idGenerator = new();
         private readonly LogContent _logContent = new();
-        private readonly IErrorHandling _errorHandling;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly ISendEmailService _sendEmailService;
         public ApplicantService (
@@ -42,10 +41,10 @@ namespace Basecode.Services.Services
         }
 
         /// <summary>
-        /// Retrieves an applicant by their ID.
+        /// Adds a new applicant asynchronously to the database.
         /// </summary>
-        /// <param name="id">The ID of the applicant.</param>
-        /// <returns>The applicant with the specified ID.</returns>
+        /// <param name="applicant">The <see cref="ApplicantCreationDto"/> containing applicant details.</param>
+        /// <returns>The ID of the newly added applicant.</returns>
         public async Task<int> AddAsync(ApplicantCreationDto applicant)
         {
             try
@@ -70,10 +69,11 @@ namespace Basecode.Services.Services
         }
 
         /// <summary>
-        /// display the status being passed.
+        /// Updates the status of an applicant asynchronously in the database.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">The ID of the applicant to update.</param>
+        /// <param name="status">The new status of the applicant.</param>
+        /// <returns>True if the update is successful, False otherwise.</returns>
         public async Task<bool> UpdateAsync(int id, string status)
         {
             var applicantModel = await _repository.GetByIdAsync(id);
@@ -100,6 +100,11 @@ namespace Basecode.Services.Services
             }
         }
 
+        /// <summary>
+        /// Retrieves an applicant from the database by their ApplicantID.
+        /// </summary>
+        /// <param name="applicantId">The ID of the applicant to retrieve.</param>
+        /// <returns>The applicant with the specified ID, or null if not found.</returns>
         public async Task<Applicants?> GetByApplicantIdAsync(string applicantId)
         {
             try
@@ -113,6 +118,11 @@ namespace Basecode.Services.Services
             }
         }
 
+        /// <summary>
+        /// Retrieves a list of applicants from the database by their email address.
+        /// </summary>
+        /// <param name="email">The email address to search for.</param>
+        /// <returns>A list of applicants with the specified email address.</returns>
         public async Task<List<Applicants>> GetByEmailAsync(string email)
         {
             try
@@ -127,6 +137,11 @@ namespace Basecode.Services.Services
             }
         }
 
+        /// <summary>
+        /// Retrieves an applicant from the database by their ID.
+        /// </summary>
+        /// <param name="id">The ID of the applicant to retrieve.</param>
+        /// <returns>The applicant with the specified ID, or null if not found.</returns>
         public async Task<Applicants?> GetByIdAsync(int id)
         {
             try 
@@ -140,6 +155,13 @@ namespace Basecode.Services.Services
             }
         }
 
+        /// <summary>
+        /// Retrieves an applicant from the database by their first name, middle name, and last name.
+        /// </summary>
+        /// <param name="fname">The first name of the applicant.</param>
+        /// <param name="mname">The middle name of the applicant.</param>
+        /// <param name="lname">The last name of the applicant.</param>
+        /// <returns>The applicant with the specified name, or null if not found.</returns>
         public async Task<Applicants?> GetByNameAsync(string fname, string mname, string lname)
         {
             try
@@ -153,6 +175,10 @@ namespace Basecode.Services.Services
             }
         }
 
+        /// <summary>
+        /// Retrieves a list of all applicants from the database.
+        /// </summary>
+        /// <returns>A list of all applicants.</returns>
         public async Task<List<Applicants>> RetrieveAllAsync()
         {
             try
@@ -167,6 +193,11 @@ namespace Basecode.Services.Services
             }
         }
 
+        /// <summary>
+        /// Adds log content for an applicant and validates the applicant data before adding to the database.
+        /// </summary>
+        /// <param name="applicantCreationDto">The <see cref="ApplicantCreationDto"/> containing applicant details.</param>
+        /// <returns>The log content indicating the result of the validation.</returns>
         public async Task<LogContent> AddApplicantLogContent(ApplicantCreationDto applicantCreationDto)
         {
             
@@ -202,6 +233,13 @@ namespace Basecode.Services.Services
             return _logContent;
         }
 
+        /// <summary>
+        /// Adds a new applicant asynchronously to the database with additional information.
+        /// </summary>
+        /// <param name="model">The <see cref="ApplicationFormViewModel"/> containing applicant and related information.</param>
+        /// <param name="resumeFile">The resume file of the applicant.</param>
+        /// <param name="photo">The photo file of the applicant.</param>
+        /// <returns>True if the applicant is added successfully, False otherwise.</returns>
         public async Task<bool> AddApplicantAsync(ApplicationFormViewModel model, IFormFile resumeFile, IFormFile photo)
         {
             try 

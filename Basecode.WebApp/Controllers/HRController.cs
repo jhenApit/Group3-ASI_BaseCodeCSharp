@@ -192,6 +192,13 @@ namespace Basecode.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(JobPostingsUpdationDto jobPostingsUpdationDto)
         {
+            var data = await _jobPostingsService.UpdateJobPosting(jobPostingsUpdationDto);
+            if (!data.Result)
+            {
+                _logger.Error(_errorHandling.SetLog(data));
+                ViewBag.ErrorMessage = data.Message;
+                return View("EditJobPost", jobPostingsUpdationDto);
+            }
             try
             {
                 // Get AspNetUser Data
@@ -312,15 +319,6 @@ namespace Basecode.WebApp.Controllers
         /// </summary>
         /// <returns>Redirect to View Applicants Page</returns>
         public IActionResult ViewApplicants()
-        {
-            return View();
-        }
-
-        /// <summary>
-        /// Allows HR to view disqualified job applicants in a specific job post
-        /// </summary>
-        /// <returns>Redirect to View Disqualified Applicants Page</returns>
-        public IActionResult DisqualifiedApplicants()
         {
             return View();
         }

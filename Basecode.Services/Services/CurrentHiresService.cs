@@ -26,6 +26,11 @@ namespace Basecode.Services.Services
             _repository = repository;
             _mapper = mapper;
         }
+
+        /// <summary>
+        /// Retrieves all current hires from the database.
+        /// </summary>
+        /// <returns>A list of CurrentHires objects representing all current hires.</returns>
         public async Task<List<CurrentHires>> RetrieveAllAsync()
         {
             try
@@ -40,6 +45,11 @@ namespace Basecode.Services.Services
             }
         }
 
+        /// <summary>
+        /// Adds a new current hire to the database.
+        /// </summary>
+        /// <param name="CurrentHires">The CurrentHiresCreationDto object representing the current hire to be added.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         public async Task AddAsync(CurrentHiresCreationDto CurrentHires)
         {
             try
@@ -54,6 +64,11 @@ namespace Basecode.Services.Services
             }
         }
 
+        /// <summary>
+        /// Retrieves a current hire from the database by their ID.
+        /// </summary>
+        /// <param name="id">The ID of the current hire to retrieve.</param>
+        /// <returns>The CurrentHires object with the specified ID, or null if not found.</returns>
         public async Task<CurrentHires?> GetByIdAsync(int id)
         {
             try
@@ -67,6 +82,11 @@ namespace Basecode.Services.Services
             }
         }
 
+        /// <summary>
+        /// Updates an existing current hire in the database.
+        /// </summary>
+        /// <param name="CurrentHires">The CurrentHiresUpdationDto object representing the updated current hire data.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         public async Task UpdateAsync(CurrentHiresUpdationDto CurrentHires)
         {
             try
@@ -81,6 +101,11 @@ namespace Basecode.Services.Services
             }
         }
 
+        /// <summary>
+        /// Deletes a current hire from the database by their ID.
+        /// </summary>
+        /// <param name="id">The ID of the current hire to delete.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         public async Task DeleteAsync(int id)
         {
             try
@@ -94,6 +119,11 @@ namespace Basecode.Services.Services
             }
         }
 
+        /// <summary>
+        /// Retrieves a current hire from the database by their Position ID.
+        /// </summary>
+        /// <param name="positionId">The Position ID of the current hire to retrieve.</param>
+        /// <returns>The CurrentHires object with the specified Position ID, or null if not found.</returns>
         public async Task<CurrentHires?> GetByPositionIdAsync(int positionId)
         {
             try
@@ -106,6 +136,12 @@ namespace Basecode.Services.Services
                 throw;
             }
         }
+
+        /// <summary>
+        /// Retrieves a current hire from the database by their Hire Status.
+        /// </summary>
+        /// <param name="status">The Hire Status of the current hire to retrieve.</param>
+        /// <returns>The CurrentHires object with the specified Hire Status, or null if not found.</returns>
         public async Task<CurrentHires?> GetByHireStatusAsync(string status)
         {
             try
@@ -118,6 +154,5 @@ namespace Basecode.Services.Services
                 throw;
             }
         }
-
     }
 }

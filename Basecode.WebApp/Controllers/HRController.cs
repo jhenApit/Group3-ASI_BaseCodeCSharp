@@ -11,6 +11,7 @@ using static Basecode.Data.Enums.Enums;
 using Basecode.Services.Services;
 using Basecode.WebApp.Models;
 using Basecode.Data.Dtos.CurrentHires;
+using Basecode.Data.Dtos.Interviewers;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -371,10 +372,12 @@ namespace Basecode.WebApp.Controllers
 
 				var viewModel = new InterviewsViewModel
                 {
-                    Interviewers = new Interviewers(),
+                    Interviewers = new InterviewersCreationDto(),
                     InterviewersList = await _interviewersService.RetrieveAllAsync(),
-                    InterviewsList = interviews.OrderBy(x => x.InterviewDate).ToList()
-                };
+                    InterviewsList = (await _interviewsService.RetrieveAllAsync())
+                    .OrderBy(x => x.InterviewDate)
+                    .ToList()
+            };
                 return View(viewModel);
             } 
             catch(Exception)
@@ -429,12 +432,18 @@ namespace Basecode.WebApp.Controllers
                     TimeStart = interview.TimeStart,
                     TimeEnd = interview.TimeEnd,
                 };
+
+                if (await _interviewsService.IsTimeRangeOverlappingAsync(createInterview))
+                {
+                    TempData["IsOverlap"] = true;
+                    return RedirectToAction("CreateInterview", new { id = interview.InterviewerId });
+                }
                 await _interviewsService.AddAsync(createInterview);
                 return RedirectToAction("Interviews");
             }
-            catch(Exception)
+            catch(Exception e)
             {
-                return BadRequest("Error occurred while adding a new interview");
+                return BadRequest(e.Message + " Error occurred while adding a new interview");
             }
         }
 
@@ -446,7 +455,7 @@ namespace Basecode.WebApp.Controllers
         {
             try
             {
-                var interviews = await _interviewsService.GetByIdAsync(id);
+                Interviews interviews = await _interviewsService.GetByIdAsync(id);
                 Console.WriteLine(interviews);
                 if (interviews != null)
                 {
@@ -491,6 +500,13 @@ namespace Basecode.WebApp.Controllers
                     TimeStart = interview.TimeStart,
                     TimeEnd = interview.TimeEnd,
                 };
+
+                if (await _interviewsService.IsTimeRangeOverlappingAsync(updateInterview))
+                {
+                    TempData["IsOverlapUpdate"] = true;
+                    return RedirectToAction("EditInterview", new { id = interview.Id });
+                }
+
                 await _interviewsService.UpdateAsync(updateInterview);
                 return RedirectToAction("Interviews");
             }
@@ -528,19 +544,37 @@ namespace Basecode.WebApp.Controllers
         /// <param name="interviewers">Data</param>
         /// <returns>Redirects to the Interviews Page</returns>
         [HttpPost]
-        public async Task<IActionResult> AddInterviewer(Interviewers interviewers)
+        public async Task<IActionResult> AddInterviewer(InterviewsViewModel interviewsViewModel)
         {
             try
             {
-                await _interviewersService.AddAsync(interviewers);
+                await _interviewersService.AddAsync(interviewsViewModel.Interviewers);
+                return RedirectToAction("Interviews");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message + " An error happend while adding an interviewer.");
+            }
+        }
+
+        /// <summary>
+        /// Deletes interviewer from the database
+        /// </summary>
+        /// <param name="id">Interviewer Id</param>
+        /// <returns>Redirects to the Interviews Page</returns>
+        public async Task<IActionResult> DeleteInterviewer(int id)
+        {
+            try
+            {
+                Console.WriteLine("Heere" + id);
+                await _interviewersService.DeleteAsync(id);
                 return RedirectToAction("Interviews");
             }
             catch (Exception)
             {
-                return BadRequest("An error happend while adding an interviewer.");
+                return BadRequest("An error happend while removing an interviewer.");
             }
         }
-
         #endregion
     }
 }

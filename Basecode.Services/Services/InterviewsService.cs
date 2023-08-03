@@ -59,6 +59,10 @@ namespace Basecode.Services.Services
             return await _repository.GetByApplicantIdAsync(applicantId);
         }
 
+        public List<Interviews> GetByApplicantId(int applicantId)
+        {
+            return _repository.GetByApplicantId(applicantId).ToList();
+        }
     }
 
 }

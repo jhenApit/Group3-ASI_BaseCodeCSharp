@@ -9,6 +9,7 @@ namespace Basecode.Data.Interfaces
 {
     public interface IInterviewsRepository
     {
+        IQueryable<Interviews> GetByApplicantId(int applicantId);
         Task<IQueryable<Interviews>> RetrieveAllAsync();
         Task<Interviews?> GetByApplicantIdAsync(int applicantId);
         Task AddAsync(Interviews Interviews);

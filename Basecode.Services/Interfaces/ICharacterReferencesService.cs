@@ -14,5 +14,6 @@ namespace Basecode.Services.Interfaces
         Task<CharacterReferences?> GetByNameAsync(string name);
         Task AddAsync(CharacterReferencesCreationDto characterReferences);
         Task<CharacterReferences?> GetByIdAsync(int id);
+        List<CharacterReferences> GetByApplicantId(int applicantId);
     }
 }

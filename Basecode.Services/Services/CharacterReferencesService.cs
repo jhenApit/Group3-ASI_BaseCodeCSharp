@@ -64,5 +64,14 @@ namespace Basecode.Services.Services
             return await _repository.GetByNameAsync(name);
         }
 
+        /// <summary>
+        /// Retrieves the references of an applicant using its Id.
+        /// </summary>
+        /// <param applicantId="applicantId">The id of the applicant the reference belongs to.</param>
+        /// <returns>The list of reference of the applicant.</returns>
+        public List<CharacterReferences> GetByApplicantId(int applicantId)
+        {
+            return _repository.GetByApplicantId(applicantId).ToList();
+        }
     }
 }

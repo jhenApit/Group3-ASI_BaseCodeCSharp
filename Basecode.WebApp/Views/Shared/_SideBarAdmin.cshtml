@@ -94,7 +94,7 @@
             </li>
             @{
                 var ScheduleNavItemClicked =
-                activeUrl == "Interview"
+                activeUrl == "Interviews"
                 ? true : false;
             }
             <li class="nav-item @(ScheduleNavItemClicked ? " clicked" : "" )">
@@ -107,7 +107,7 @@
                 </div>
                 <ul class="sub-menu @(ScheduleNavItemClicked ? "active" : "")">
                     <li><p class="link_name">Schedules</p></li>
-                    <li class="@(activeUrl == "Interview" ? "active-link" : "")"><a asp-controller="Hr" asp-action="Interview" class="sub-menu-item">Interviews</a></li>
+                    <li class="@(activeUrl == "Interviews" ? "active-link" : "")"><a asp-controller="Hr" asp-action="Interviews" class="sub-menu-item">Interviews</a></li>
                 </ul>
             </li>
             <li class="nav-item">

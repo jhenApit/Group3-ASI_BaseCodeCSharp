@@ -100,7 +100,6 @@ namespace Basecode.Services.Utils
             applicantEmailBody = applicantEmailBody.Replace("{Name}", applicant.FirstName);
             applicantEmailBody = applicantEmailBody.Replace("{JobName}", applicant.Job!.Name);
             applicantEmailBody = applicantEmailBody.Replace("{Status}", status);
-            applicantEmailBody = applicantEmailBody.Replace("{Link}", "https://localhost:50140/Applicant/TrackApplication");
             applicantEmailBody = applicantEmailBody.Replace("{Company Email}", "alliance.jobhiring@gmail.com");
 
             applicantEmail.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -120,7 +119,7 @@ namespace Basecode.Services.Utils
             hrEmailBody = hrEmailBody.Replace("{ApplicantID}", applicant.ApplicantId);
             hrEmailBody = hrEmailBody.Replace("{JobTitle}", applicant.Job!.Name);
             hrEmailBody = hrEmailBody.Replace("{Status}", status);
-            hrEmailBody = hrEmailBody.Replace("{Date}", "ModifiedDate");
+            hrEmailBody = hrEmailBody.Replace("{Date}", applicant.ModifiedDate.ToString());
             hrEmailBody = hrEmailBody.Replace("{Company Email}", "alliance.jobhiring@gmail.com");
 
             hrNotifEmail.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -151,7 +150,7 @@ namespace Basecode.Services.Utils
             applicantEmailBody = applicantEmailBody.Replace("{JobTitle}", applicant.Job!.Name);
             applicantEmailBody = applicantEmailBody.Replace("{ApplicationID}", applicant.ApplicantId);
             applicantEmailBody = applicantEmailBody.Replace("{DateSubmitted}", applicant.ApplicationDate.ToString());
-            applicantEmailBody = applicantEmailBody.Replace("{Company Email}", "alliance.jobhiring@gmail.com");
+            applicantEmailBody = applicantEmailBody.Replace("{Company Email}", "alliance.humanresourceteam@gmail.com");
 
             applicantEmail.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
@@ -216,7 +215,7 @@ namespace Basecode.Services.Utils
         /// </summary>
         /// <param name="applicant">The applicant who received the application rejection.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
-        public async Task SendApplicantApplicationRegretEmail(Applicants applicant)
+        public async Task SendApplicantApplicationRegretEmail(Applicants applicant) //done
         {
             var email = new MimeMessage();
 
@@ -265,7 +264,6 @@ namespace Basecode.Services.Utils
             interviewerEmailBody = interviewerEmailBody.Replace("{Date}", interview.InterviewDate.ToString("yyyy-MM-dd"));
             interviewerEmailBody = interviewerEmailBody.Replace("{StartTime}", interview.TimeStart);
             interviewerEmailBody = interviewerEmailBody.Replace("{FinishTime}", interview.TimeEnd);
-            interviewerEmailBody = interviewerEmailBody.Replace("{Link}", "https://localhost:50140/Applicant/TrackApplication"); //add correct link
             interviewerEmailBody = interviewerEmailBody.Replace("{Email}", "alliance.jobhiring@gmail.com");
 
 
@@ -288,7 +286,6 @@ namespace Basecode.Services.Utils
             applicantEmailBody = applicantEmailBody.Replace("{Date}", interview.InterviewDate.ToString("yyyy-MM-dd"));
             applicantEmailBody = applicantEmailBody.Replace("{StartTime}", interview.TimeStart);
             applicantEmailBody = applicantEmailBody.Replace("{FinishTime}", interview.TimeEnd);
-            applicantEmailBody = applicantEmailBody.Replace("{Link}", "https://localhost:50140/Applicant/TrackApplication"); //add correct link
             applicantEmailBody = applicantEmailBody.Replace("{Email}", "alliance.humanresourceteam@gmail.com");
 
             applicantEmail.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -356,7 +353,7 @@ namespace Basecode.Services.Utils
         }
 
         /// <summary>
-        /// Sends an email confirmation to the team about the approved interview/examination schedule for an applicant.
+        /// Sends an email confirmation to the HR team about the approved interview/examination schedule for an applicant.
         /// </summary>
         /// <param name="applicant">The applicant for whom the interview/examination is scheduled.</param>
         /// <param name="date">The date of the scheduled interview/examination.</param>
@@ -394,13 +391,14 @@ namespace Basecode.Services.Utils
                 Text = hrEmailBody
             };
 
+
             var interviewerEmail = new MimeMessage();
 
             interviewerEmail.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
             interviewerEmail.To.Add(new MailboxAddress(interview.Interviewer.Name, interview.Interviewer.Email));
             interviewerEmail.Subject = "Interview/Examination Confirmation";
 
-            string interviewerEmailBody = File.ReadAllText("wwwroot/emailTemplates/HRApplicantAcceptedDate.html");
+            string interviewerEmailBody = File.ReadAllText("wwwroot/emailTemplates/InterviewerApplicantAcceptedDate.html");
 
             interviewerEmailBody = interviewerEmailBody.Replace("{InterviewerName}", interview.Interviewer.Name);
             interviewerEmailBody = interviewerEmailBody.Replace("{InterviewType}", interview.InterviewType.ToString());
@@ -423,7 +421,7 @@ namespace Basecode.Services.Utils
             applicantEmail.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
             applicantEmail.Subject = "Interview/Examination Confirmation";
 
-            string applicantEmailBody = File.ReadAllText("wwwroot/emailTemplates/HRApplicantAcceptedDate.html");
+            string applicantEmailBody = File.ReadAllText("wwwroot/emailTemplates/ApplicantAcceptedDate.html");
 
             applicantEmailBody = applicantEmailBody.Replace("{ApplicantName}", applicant.Name);
             applicantEmailBody = applicantEmailBody.Replace("{JobTitle}", applicant.Job!.Name);
@@ -449,7 +447,7 @@ namespace Basecode.Services.Utils
         /// <param name="applicant">The applicant for whom the interview/exam status is being updated.</param>
         /// <param name="interviewType">The type of the interview/exam (e.g., interview, examination).</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
-        public async Task SendHrInterviewApprovalEmail(Applicants applicant, string interviewType)
+        public async Task SendHrInterviewApprovalEmail(Interviews interview)
         {
             var hrNotifEmail = new MimeMessage();
 
@@ -459,8 +457,8 @@ namespace Basecode.Services.Utils
 
             string hrEmailBody = File.ReadAllText("wwwroot/emailTemplates/HRInterviewStatusReview.html");
 
-            hrEmailBody = hrEmailBody.Replace("{Name}", applicant.Name);
-            hrEmailBody = hrEmailBody.Replace("{InterviewTypee}", interviewType);
+            hrEmailBody = hrEmailBody.Replace("{Name}", interview.Applicant.Name);
+            hrEmailBody = hrEmailBody.Replace("{InterviewTypee}", interview.InterviewType.ToString());
             hrEmailBody = hrEmailBody.Replace("{Email}", "alliance.jobhiring@gmail.com");
 
             hrNotifEmail.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -478,19 +476,19 @@ namespace Basecode.Services.Utils
         /// <param name="jobTitle">The title of the job for which the applicant was interviewed.</param>
         /// <param name="interviewType">The type of interview/examination (e.g., initial interview, technical test).</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
-        public async Task SendApplicantInterviewRegretEmail(Applicants applicant, string jobTitle, string interviewType)
+        public async Task SendApplicantInterviewRegretEmail(Interviews interview)
         {
             var email = new MimeMessage();
 
             email.From.Add(new MailboxAddress("Alliance HR Automation System", "alliance.jobhiring@gmail.com"));
-            email.To.Add(new MailboxAddress(applicant.Name, applicant.Email));
+            email.To.Add(new MailboxAddress(interview.Applicant.Name, interview.Applicant.Email));
             email.Subject = "Apologies and Regrets for Recent Interview/Examination";
 
             string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ApplicantInterviewRejected.html");
 
-            emailBodyTemplate = emailBodyTemplate.Replace("{ApplicantName}", applicant.FirstName);
-            emailBodyTemplate = emailBodyTemplate.Replace("{JobTitle}", jobTitle);
-            emailBodyTemplate = emailBodyTemplate.Replace("{InterviewType}", interviewType);
+            emailBodyTemplate = emailBodyTemplate.Replace("{ApplicantName}", interview.Applicant.FirstName);
+            emailBodyTemplate = emailBodyTemplate.Replace("{JobTitle}", interview.Applicant.Job!.Name);
+            emailBodyTemplate = emailBodyTemplate.Replace("{InterviewType}", interview.InterviewType.ToString());
             emailBodyTemplate = emailBodyTemplate.Replace("{HR Team Email}", "alliance.humanresourceteam@gmail.com");
 
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -508,7 +506,7 @@ namespace Basecode.Services.Utils
         /// <param name="applicant">The name of the applicant for whom the character reference is requested.</param>
         /// <param name="jobTitle">The title of the job for which the character reference is requested.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
-        public async Task SendReferenceFormEmail(CharacterReferences characterReference, string applicant, string jobTitle)
+        public async Task SendReferenceFormEmail(CharacterReferences characterReference, Applicants applicant) 
         {
             var email = new MimeMessage();
 
@@ -519,9 +517,8 @@ namespace Basecode.Services.Utils
             string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ReferenceRequestForm.html");
 
             emailBodyTemplate = emailBodyTemplate.Replace("{Name}", characterReference.Name);
-            emailBodyTemplate = emailBodyTemplate.Replace("{ApplicantName}", applicant);
-            emailBodyTemplate = emailBodyTemplate.Replace("{JobTitle}", jobTitle);
-            emailBodyTemplate = emailBodyTemplate.Replace("{Link}", "alliance.jobhiring@gmail.com"); // add reference form link
+            emailBodyTemplate = emailBodyTemplate.Replace("{ApplicantName}", applicant.Name);
+            emailBodyTemplate = emailBodyTemplate.Replace("{JobTitle}", applicant.Job!.Name);
             emailBodyTemplate = emailBodyTemplate.Replace("{Company Email}", "alliance.jobhiring@gmail.com");
 
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -538,7 +535,7 @@ namespace Basecode.Services.Utils
         /// <param name="characterReference">The character reference contact's information.</param>
         /// <param name="applicant">The name of the applicant for whom the character reference was provided.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
-        public async Task SendReferenceGratitudeEmail(CharacterReferences characterReference, string applicant)
+        public async Task SendReferenceGratitudeEmail(CharacterReferences characterReference) //done
         {
             var email = new MimeMessage();
 
@@ -549,7 +546,7 @@ namespace Basecode.Services.Utils
             string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ReferenceGratitude.html");
 
             emailBodyTemplate = emailBodyTemplate.Replace("{Name}", characterReference.Name);
-            emailBodyTemplate = emailBodyTemplate.Replace("{ApplicantName}", applicant);
+            emailBodyTemplate = emailBodyTemplate.Replace("{ApplicantName}", characterReference.Applicant.Name);
 
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
@@ -565,7 +562,7 @@ namespace Basecode.Services.Utils
         /// <param name="applicant">The applicant object containing applicant information.</param>
         /// <param name="jobTitle">The title of the job for which the references are required.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
-        public async Task SendApplicantReferenceNotificationEmail(Applicants applicant, string jobTitle)
+        public async Task SendApplicantReferenceNotificationEmail(Applicants applicant)
         {
             var email = new MimeMessage();
 
@@ -576,7 +573,7 @@ namespace Basecode.Services.Utils
             string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ApplicantReferenceAbsent.html");
 
             emailBodyTemplate = emailBodyTemplate.Replace("{Name}", applicant.Name);
-            emailBodyTemplate = emailBodyTemplate.Replace("{JobTitle}", jobTitle);
+            emailBodyTemplate = emailBodyTemplate.Replace("{JobTitle}", applicant.Job!.Name);
 
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
@@ -591,7 +588,7 @@ namespace Basecode.Services.Utils
         /// </summary>
         /// <param name="applicant">The applicant object containing applicant information.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
-        public async Task SendHrAnsweredFormNotificationEmail(Applicants applicant)
+        public async Task SendHrAnsweredFormNotificationEmail(Applicants applicant) // done
         {
             var email = new MimeMessage();
 
@@ -627,10 +624,9 @@ namespace Basecode.Services.Utils
 
             string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/ReferenceCheck.html");
 
+            
             emailBodyTemplate = emailBodyTemplate.Replace("{Name}", applicants.Name);
-            emailBodyTemplate = emailBodyTemplate.Replace("{Link}", "ReferenceFormLink1"); //add link for reference 1
-            emailBodyTemplate = emailBodyTemplate.Replace("{Link}", "ReferenceFormLink2"); //add link for reference 2
-            emailBodyTemplate = emailBodyTemplate.Replace("{Email}", "alliance.jobhiring@gmail.com");
+            emailBodyTemplate = emailBodyTemplate.Replace("{Email}", "alliance.jobhiring@gmail.com"); // need proper links for answered reference
 
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
@@ -648,7 +644,7 @@ namespace Basecode.Services.Utils
         /// <param name="workSetup">The setup or type of work being offered (e.g., full-time, part-time).</param>
         /// <param name="hours">The expected working hours for the job.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
-        public async Task SendApplicantJobOfferEmail(Applicants applicant, string job, string workSetup, string hours)
+        public async Task SendApplicantJobOfferEmail(Applicants applicant) //done
         {
             var email = new MimeMessage();
 
@@ -660,8 +656,8 @@ namespace Basecode.Services.Utils
 
             emailBodyTemplate = emailBodyTemplate.Replace("{Name}", applicant.FirstName);
             emailBodyTemplate = emailBodyTemplate.Replace("{Job}", applicant.Job!.Name);
-            emailBodyTemplate = emailBodyTemplate.Replace("{WorkSetup}", workSetup);
-            emailBodyTemplate = emailBodyTemplate.Replace("{Hours}", hours);
+            emailBodyTemplate = emailBodyTemplate.Replace("{WorkSetup}", applicant.Job.WorkSetup.ToString());
+            emailBodyTemplate = emailBodyTemplate.Replace("{Hours}", applicant.Job.Hours.ToString());
             emailBodyTemplate = emailBodyTemplate.Replace("{HR Team Email}", "alliance.humanresourceteam@gmail.com");
 
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -678,7 +674,7 @@ namespace Basecode.Services.Utils
         /// <param name="applicant">The applicant object containing applicant information.</param>
         /// <param name="jobTitle">The title of the job being offered.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
-        public async Task SendHrJobOfferApprovalEmail(Applicants applicant, string jobTitle)
+        public async Task SendHrJobOfferApprovalEmail(Applicants applicant)
         {
             var email = new MimeMessage();
 
@@ -689,7 +685,7 @@ namespace Basecode.Services.Utils
             string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/HRJobOfferAccepted.html");
 
             emailBodyTemplate = emailBodyTemplate.Replace("{Name}", applicant.Name);
-            emailBodyTemplate = emailBodyTemplate.Replace("{JobTitle}", jobTitle);
+            emailBodyTemplate = emailBodyTemplate.Replace("{JobTitle}", applicant.Job!.Name);
             emailBodyTemplate = emailBodyTemplate.Replace("{CompanyEmail}", "alliance.jobhiring@gmail.com");
 
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
@@ -706,7 +702,7 @@ namespace Basecode.Services.Utils
         /// <param name="applicant">The applicant object containing applicant information.</param>
         /// <param name="jobTitle">The title of the job the applicant is being deployed for.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
-        public async Task SendDtRequirementNotificationEmail(Applicants applicant, string jobTitle)
+        public async Task SendDtRequirementNotificationEmail(Applicants applicant)
         {
             var email = new MimeMessage();
 
@@ -717,7 +713,7 @@ namespace Basecode.Services.Utils
             string emailBodyTemplate = File.ReadAllText("wwwroot/emailTemplates/DTRequirements.html");
 
             emailBodyTemplate = emailBodyTemplate.Replace("{Name}", applicant.Name);
-            emailBodyTemplate = emailBodyTemplate.Replace("{JobTitle}", jobTitle);
+            emailBodyTemplate = emailBodyTemplate.Replace("{JobTitle}", applicant.Job!.Name);
             emailBodyTemplate = emailBodyTemplate.Replace("{Link}", "link for input requirements"); // add link
             emailBodyTemplate = emailBodyTemplate.Replace("{Email}", "alliance.jobhiring@gmail.com");
 

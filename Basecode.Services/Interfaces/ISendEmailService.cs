@@ -24,20 +24,20 @@ namespace Basecode.Services.Interfaces
         Task SendSetInterviewScheduleEmail(Interviews interview, Applicants applicant);
         Task SendInterviewReminderEmail(Interviews interview, Applicants applicant);
         Task SendApprovedScheduleEmail(Applicants applicant, Interviews interview);
-        Task SendHrInterviewApprovalEmail(Applicants applicant, string interviewType);
-        Task SendApplicantInterviewRegretEmail(Applicants applicant, string jobTitle, string interviewType);
+        Task SendHrInterviewApprovalEmail(Interviews interview);
+        Task SendApplicantInterviewRegretEmail(Interviews interview);
 
         //Background Check
-        Task SendReferenceFormEmail(CharacterReferences characterReference, string applicant, string jobTitle);
-        Task SendReferenceGratitudeEmail(CharacterReferences characterReference, string applicant);
-        Task SendApplicantReferenceNotificationEmail(Applicants applicant, string jobTitle);
+        Task SendReferenceFormEmail(CharacterReferences characterReference, Applicants applicant);
+        Task SendReferenceGratitudeEmail(CharacterReferences characterReference);
+        Task SendApplicantReferenceNotificationEmail(Applicants applicant);
         Task SendHrAnsweredFormNotificationEmail(Applicants applicant);
         Task SendHrReferenceApprovalEmail(Applicants applicants);
 
         //Job Offer
-        Task SendApplicantJobOfferEmail(Applicants applicant, string job, string workSetup, string hours);
-        Task SendHrJobOfferApprovalEmail(Applicants applicant, string jobTitle);
-        Task SendDtRequirementNotificationEmail(Applicants applicant, string jobTitle);
+        Task SendApplicantJobOfferEmail(Applicants applicant);
+        Task SendHrJobOfferApprovalEmail(Applicants applicant);
+        Task SendDtRequirementNotificationEmail(Applicants applicant);
         Task SendDtConfirmationEmail(Applicants applicant);
         
         

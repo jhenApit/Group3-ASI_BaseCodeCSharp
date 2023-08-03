@@ -197,3 +197,8 @@ $RECYCLE.BIN/
 node_modules
 */src/*/Scripts/**/*.js
 */src/*/Scripts/**/*.js.map
+Basecode.WebApp/appsettings.json
+Basecode.WebApp/appsettings.json
+Basecode.WebApp/appsettings.json
+Basecode.WebApp/appsettings.Development.json
+/Basecode.WebApp/wwwroot/applicants/resume/resume.pdf

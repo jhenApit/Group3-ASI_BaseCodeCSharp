@@ -1,0 +1,179 @@
+﻿@using Basecode.Data.Dtos.JobPostings;
+@using static Basecode.Data.Enums.Enums;
+@model JobPostingsCreationDto
+@{
+    ViewData["Title"] = "Create New Job Posting";
+    Layout = "_SideBarAdmin";
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/CreateJobPost.css" />
+}
+
+<div class="container-header shadow-sm">
+    <div class="row job-post-header ">
+        <div class="col-auto d-flex align-items-lg-center ps-5">
+            <h2 class="m-0 ps-2">@ViewData["Title"]</h2>
+        </div>
+    </div>
+</div>
+<div class="pt-4"></div> <!-- a buffer to push content down so that header won't cover it' -->
+<form method="post" asp-controller="HR" asp-action="Add" class="mt-5">
+    <div class="content">
+        <p>Input all the required details to add a new job post.</p>
+        <div class="input-container">
+            <label for="position">Position:</label>
+            <input asp-for="Name" id="position" type="text" />
+        </div>
+        <div class="input-container">
+            <label for="description">Description:</label>
+            <div class="description-input-rows">
+                <div class="description-input-row">
+                    <input asp-for="Description" type="text" class="description-input" />
+                </div>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <label for="qualification">Qualification:</label>
+            <div class="qualification-input-rows">
+                <div class="qualification-input-row">
+                    <input asp-for="QualificationList[0]" type="text" class="qualification-input" />
+                    <button class="remove-button" type="button">Remove</button>
+                </div>
+            </div>
+        </div>
+        <div class="button-container">
+            <label class="hidden-label"></label>
+            <button id="add-qualification" class="add-more-btn" type="button">Add more</button>
+        </div>
+
+        <div class="input-container">
+            <label for="responsibility">Responsibility:</label>
+            <div class="responsibility-input-rows">
+                <div class="responsibility-input-row">
+                    <input asp-for="ResponsibilityList[0]" type="text" class="responsibility-input" />
+                    <button class="remove-button" type="button">Remove</button>
+                </div>
+            </div>
+        </div>
+        <div class="button-container">
+            <label class="hidden-label"></label>
+            <button id="add-responsibility" class="add-more-btn" type="button">Add more</button>
+        </div>
+
+        <div class="select-container">
+            <label for="worksetup">Work Setup:</label>
+            <select id="worksetup" asp-for ="WorkSetup">
+                <option value="N/A"></option>
+                <option value="@WorkSetup.Online">Online</option>
+                <option value="@WorkSetup.Onsite">Onsite</option>
+                <option value="@WorkSetup.Hybrid">Hybrid (Onsite/Online)</option>
+            </select>
+            <label for="workinghours" style="margin-left: 20px;">Working Hours:</label>
+            <select id="workinghours" asp-for="Hours">
+                <option value="N/A"></option>
+                <option value="@WorkingHours.EightHourShift">8-Hour Shift</option>
+                <option value="@WorkingHours.FourHourShift">4-Hour Shift</option>
+            </select>
+        </div>
+        <div class="select-container">
+            <label for="status">Status:</label>
+            <select id="status" asp-for="JobStatus">
+                <option value="N/A"></option>
+                <option value="@JobStatus.Open">Open</option>
+                <option value="@JobStatus.Urgent">Urgent</option>
+                <option value="@JobStatus.Closed">Closed</option>
+                <option value="@JobStatus.OnHold">On Hold</option>
+            </select>
+            <label for="employmenttype" style="margin-left: 20px;">Employment Type:</label>
+            <select id="employmenttype" asp-for="EmploymentType">
+                <option value="N/A"></option>
+                <option value="@EmploymentType.FullTime">Full-time</option>
+                <option value="@EmploymentType.PartTime">Part-time</option>
+                <option value="@EmploymentType.Temporary">Temporary</option>
+                <option value="@EmploymentType.Contract">Contract</option>
+                <option value="@EmploymentType.Freelance">Freelance</option>
+                <option value="@EmploymentType.Internship">Internship</option>
+            </select>
+        </div>
+        <div class="bottom-btn">
+            <a class="cancel-btn" type="button" asp-controller="HR" asp-action="JobPostList">CANCEL</a>
+            <button class="save-button" type="submit">SAVE</button>
+        </div>
+    </div>
+</form>
+
+<!-- Script for description, qualification and responsibility input fields-->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        document.getElementById('add-qualification').addEventListener('click', function () {
+            var qualificationRows = document.querySelector('.qualification-input-rows');
+            var inputCount = qualificationRows.children.length;
+
+            var newRow = document.createElement('div');
+            newRow.className = 'qualification-input-row';
+
+            var inputField = document.createElement('input');
+            inputField.type = 'text';
+            inputField.className = 'qualification-input';
+            inputField.name = 'QualificationList[' + inputCount + ']';
+            newRow.appendChild(inputField);
+
+            var removeButton = document.createElement('button');
+            removeButton.className = 'remove-button';
+            removeButton.textContent = 'Remove';
+            removeButton.addEventListener('click', function () {
+                var rowToRemove = this.parentNode;
+                rowToRemove.parentNode.removeChild(rowToRemove);
+            });
+            newRow.appendChild(removeButton);
+
+            qualificationRows.appendChild(newRow);
+
+            if (inputCount === 0) {
+                var firstRow = qualificationRows.children[0];
+                var firstRemoveButton = firstRow.querySelector('.remove-button');
+                firstRemoveButton.style.display = 'inline-block';
+            }
+        });
+
+        document.getElementById('add-responsibility').addEventListener('click', function () {
+            var responsibilityRows = document.querySelector('.responsibility-input-rows');
+            var inputCount = responsibilityRows.children.length;
+
+            var newRow = document.createElement('div');
+            newRow.className = 'responsibility-input-row';
+
+            var inputField = document.createElement('input');
+            inputField.type = 'text';
+            inputField.className = 'responsibility-input';
+            inputField.name = 'ResponsibilityList[' + inputCount + ']';
+            newRow.appendChild(inputField);
+
+            var removeButton = document.createElement('button');
+            removeButton.className = 'remove-button';
+            removeButton.textContent = 'Remove';
+            removeButton.addEventListener('click', function () {
+                var rowToRemove = this.parentNode;
+                rowToRemove.parentNode.removeChild(rowToRemove);
+            });
+            newRow.appendChild(removeButton);
+
+            responsibilityRows.appendChild(newRow);
+
+            if (inputCount === 0) {
+                var firstRow = responsibilityRows.children[0];
+                var firstRemoveButton = firstRow.querySelector('.remove-button');
+                firstRemoveButton.style.display = 'inline-block';
+            }
+        });
+
+        document.addEventListener('click', function (event) {
+            if (event.target.classList.contains('remove-button')) {
+                var rowToRemove = event.target.parentNode;
+                rowToRemove.parentNode.removeChild(rowToRemove);
+            }
+        });
+    });
+</script>

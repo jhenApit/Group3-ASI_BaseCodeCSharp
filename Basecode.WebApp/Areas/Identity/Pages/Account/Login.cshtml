@@ -1,0 +1,90 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script>
+    function cancelForm() {
+        window.location.href = "/";
+    }
+</script>
+<title>Login</title>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-8 bg-dark" id="login_body">
+            </div>
+            <div class="col-4 bg-black vh-100 pt-5">
+                <form id ="account" method="post" class="needs-validation">
+                    <div class="d-md-flex justify-content-sm-end">
+                        <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="cancelForm()"></button>
+                    </div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                    <div class="container-fluid text-black w-75 mt-5 pt-5">
+                        <div class="top text-white text-center">
+                            <h2>Welcome!</h2>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Email" type="text" class="form-control" id="floatingInput"
+                                   placeholder="name@example.com">
+                            <label asp-for="Input.Email" for="floatingInput" class="form-label">Username</label>
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Password" type="password" class="form-control" id="floatingInput"
+                                   placeholder="password">
+                            <label asp-for="Input.Password" for="floatingInput" class="form-label">Password</label>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" value="Login" class="btn btn-danger">Sign In</button>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-3">
+                            <a asp-page="./ForgotPassword" class="text-white text-center">Forgot your password?</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+@if (ViewData["resetPasswordConfirmation"] != null && (bool)ViewData["resetPasswordConfirmation"])
+{
+    <div class="modal fade" id="ForgotPassword" tabindex="-1" role="dialog" aria-labelledby="ForgotPasswordLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center pb-4">
+                    <img class="notice-icon" src="~/images/icons/notice_icon.svg" />
+                    <button type="button" class="close d-none" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4 class="text-center">Your <span class="text-danger">Password</span> has been reset successfully <br /> You can now login to your account</h4>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                        <h5 class="pb-0 m-0">Close</h5>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+        // Show the modal when the page is ready
+        $('#ForgotPassword').modal('show');
+        });
+    </script>
+}
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

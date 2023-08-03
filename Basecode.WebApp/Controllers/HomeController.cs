@@ -13,20 +13,35 @@ namespace Basecode.WebApp.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        /// <summary>
+        /// Returns the index view.
+        /// </summary>
+        /// <returns>The index view.</returns>
+        public IActionResult Index(string from)
         {
+            ViewBag.ForgotPasswordConfirmation = (from == "forgotPassword");
+            ViewBag.ResetPasswordConfirmation = (from == "resetPassword");
             return View();
         }
 
+        /// <summary>
+        /// Returns the privacy view.
+        /// </summary>
+        /// <returns>The privacy view.</returns>
         public IActionResult Privacy()
         {
             return View();
         }
 
+        /// <summary>
+        /// Handles errors and returns the error view.
+        /// </summary>
+        /// <returns>The error view with an ErrorViewModel.</returns>
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }

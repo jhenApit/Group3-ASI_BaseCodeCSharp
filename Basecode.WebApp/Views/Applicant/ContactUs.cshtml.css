@@ -1,11 +1,8 @@
 ﻿body {
-
+    overflow: hidden auto;
 }
 
 .vertical-center {
-    min-height: 100%; /* Fallback for browsers do NOT support vh unit */
-    min-height: 100vh; /* These two lines are counted as one :-)       */
-
     display: flex;
     align-items: center;
 }
@@ -17,8 +14,8 @@ h2 {
 }
 
 .my-5 {
-    margin-top: 10vh !important;
-    margin-bottom: 10vh !important;
+    margin-top: 2.1rem !important;
+    margin-bottom: 6rem !important;
 }
 
 .rounded {

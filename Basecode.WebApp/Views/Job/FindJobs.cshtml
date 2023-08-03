@@ -1,0 +1,58 @@
+﻿@using Basecode.Data.Enums
+@using Basecode.Data.Models
+@model List<JobPostings>
+@{
+    ViewData["Title"] = "Explore Jobs";
+}
+<body class="findJobs_body">
+    <div class="container top-0">
+        <h2 class="my-5 text-black text-bold">Open positions</h2>
+
+        @foreach (var jobPosting in Model)
+        {
+            <div class="job-container px-4 pt-4 pb-2 mb-4">
+                <div class="row m-1">
+                    <div class="col-12 col-md-9">
+                        <h4 class="text-bold">@jobPosting.Name</h4>
+                        <div class="d-flex mb-2">
+                            <div class="d-flex align-items-center border rounded mx-1 px-2 tags">
+                                <img src="/images/icons/star.png" class="star-icon my-1 me-1" alt="star" />
+                                @EnumHelper.GetEnumDescription(jobPosting.Hours)
+                            </div>
+                            <div class="d-flex align-items-center border rounded mx-1 px-2 tags">
+                                <img src="/images/icons/star.png" class="star-icon my-1 me-1" alt="star" />
+                                @EnumHelper.GetEnumDescription(jobPosting.EmploymentType)
+                            </div>
+                            <div class="d-flex align-items-center border rounded mx-1 px-2 tags">
+                                <img src="/images/icons/star.png" class="star-icon my-1 me-1" alt="star" />
+                                @EnumHelper.GetEnumDescription(jobPosting.WorkSetup)
+                            </div>
+                        </div>
+                        <div class="row px-3">
+                            <div class="col">
+                                <ul>
+                                    <li>
+                                        @jobPosting.Description
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex col-auto col-lg-3 justify-content-center align-items-start mx-auto">
+                        <form asp-route-id="@jobPosting.Id" asp-controller="Job" asp-action="JobDescription">
+                            <button type="submit" class="btn btn-primary px-5 px-sm-4 px-xl-5 mt-3 mt-md-0">
+                                <h5 class="m-0 p-0">
+                                    <p class="mb-0">View Job</p>
+                                </h5>
+                            </button>
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+</body>
+
+

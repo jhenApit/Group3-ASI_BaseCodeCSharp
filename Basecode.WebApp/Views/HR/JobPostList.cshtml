@@ -1,0 +1,185 @@
+﻿@using Basecode.Data.Models
+@using static Basecode.Data.Enums.Enums;
+@model List<JobPostings> 
+@{
+    ViewData["Title"] = "Job Posting";
+    Layout = "_SideBarAdmin";
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/JobPostList.css" />
+}
+
+<div class="job-post-container">
+    <div class="job-post-header">
+        <h1>@ViewData["Title"]</h1>
+    </div>
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search..." />
+        <button type="button">
+            <a asp-controller="HR" asp-action="CreateJobPost">Add Job Posting</a>
+        </button>
+    </div>
+</div>
+<div class="table-container">
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="sort-btn">
+                            <span>Position Name</span>
+                            @if(Model != null)
+                            {
+                                <div class="sort-icons-container">
+                                    <span class="sort-icon" data-sort="asc" title="Sort by ascending order">&#x25B2;</span>
+                                    <span class="sort-icon" data-sort="desc" title="Sort by descending order">&#x25BC;</span>
+                                </div>
+                            }
+                        </div>
+                    </th>
+                    <th data-sort="status">Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model == null)
+                {
+                    <p>No Jobs Created.</p>
+                }
+                else
+                {
+                    @foreach (var jobPosting in Model)
+                    {
+                        <tr>
+                            <td>@jobPosting.Name</td>
+                            <td>@((JobStatus)Enum.Parse(typeof(JobStatus), jobPosting.JobStatus.ToString()))</td>
+                            <td>
+                                <a asp-route-id="@jobPosting.Id" title="View Full Details" asp-controller="HR" asp-action="ViewJobPost">
+                                    <img src="~/images/icons/file-icon.png" alt="View" class="job-post-action-icon" />
+                                </a>
+                                <a asp-route-id="@jobPosting.Id" title="Edit" asp-controller="HR" asp-action="EditJobPost">
+                                    <img src="~/images/icons/edit.png" alt="Edit" class="job-post-action-icon" />
+                                </a>
+                         <!-- Button trigger modal -->
+                                <a data-bs-toggle="modal" data-bs-target="#@("modal-" + jobPosting.Id)" title="Delete">
+                            <img src="~/images/icons/delete.png" alt="Delete" class="job-post-action-icon" />
+                        </a>
+                        </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var positionSortOrder = 'asc'; // Default sort order
+
+        // Function to sort the table rows based on the selected header
+        function sortTable(column, order) {
+            var tbody = $('tbody');
+            var rows = tbody.find('tr').get();
+
+            rows.sort(function (a, b) {
+                var aValue = $(a).find('td:nth-child(' + column + ')').text().toUpperCase();
+                var bValue = $(b).find('td:nth-child(' + column + ')').text().toUpperCase();
+
+                if (order === 'asc') {
+                    return aValue.localeCompare(bValue);
+                } else {
+                    return bValue.localeCompare(aValue);
+                }
+            });
+
+            $.each(rows, function (index, row) {
+                tbody.append(row);
+            });
+        }
+
+        // Set up click event handler for sort icons
+        $('.sort-icon').click(function () {
+            var sortOrder = $(this).data('sort');
+            positionSortOrder = sortOrder;
+            $('.sort-icon').removeClass('active');
+            $(this).addClass('active');
+            sortTable(1, positionSortOrder); // Sort by the 1st column (Position Name) based on selected order
+        });
+
+        $('#searchInput').on('input', function () {
+            var searchQuery = $(this).val().toLowerCase();
+
+            $('tbody tr').each(function () {
+                var id = $(this).find('td:first-child').text().toLowerCase();
+                var position = $(this).find('td:nth-child(2)').text().toLowerCase();
+                var name = $(this).find('td:first-child').text().toLowerCase();
+                var status = $(this).find('td:nth-child(3)').text().toLowerCase();
+
+                if (id.includes(searchQuery) || position.includes(searchQuery) || name.includes(searchQuery) || status.includes(searchQuery)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    function confirmDelete() {
+        // Hide the main modal
+        $('#deleteModal').modal('hide');
+
+        // Perform any front-end delete operation here
+        // You can show a success message or update the UI accordingly
+
+        // Show the success modal immediately after hiding the main modal
+        $('#successModal').modal('show');
+    }
+</script>
+
+
+@foreach(var jobPosting in Model){
+    <!-- Main Modal -->
+    <div class="modal fade" id="@("modal-" + jobPosting.Id)" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h5 class="modal-title" id="exampleModalLabel">Warning!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="delete-msg">
+                        <strong>@jobPosting.Name</strong> will be <strong>deleted.</strong>
+                        <br />
+                        <strong><span class="text-danger">WARNING!</span> This cannot be undone!</strong>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">CANCEL</button>
+                    <button type="button" class="btn btn-danger" data-bs-target="#@("modal2-" + jobPosting.Id)" data-bs-toggle="modal" data-bs-dismiss="modal">DELETE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="@("modal2-" + jobPosting.Id)" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Success</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>
+                        <strong><span class="text-danger">Job post</span> deleted successfully.</strong>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-danger" asp-route-id="@jobPosting.Id" asp-controller="HR" asp-action="DeleteJob">OKAY</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

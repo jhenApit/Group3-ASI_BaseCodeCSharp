@@ -1,0 +1,175 @@
+body {
+    margin: 0;
+    font-family: "Montserrat", sans-serif;
+    background-color: #e4e9f7;
+    font-size: calc(.75rem + 0.2vw);
+}
+
+.top-header {
+    height: 78px;
+    background: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: calc(100% + 520px);
+    position: fixed;
+}
+
+    .top-header h1 {
+        font-size: x-large;
+        font-weight: bold;
+    }
+
+.top-header .tab-label{
+    align-items: center;
+    font-size: 45px;
+    font-weight: 900;
+    padding: 0 10px;
+}
+
+.top-header .header-details {
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top-header .header-details p.welcome {
+    font-size: 25px;
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.name {
+    padding: 0.625rem 1rem;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.top-header .header-details i {
+    font-size: 50px;
+    padding: 0 10px 0 5px;
+}
+
+/* dropdown menu*/
+
+.dropdown {
+    vertical-align: middle;
+    height: 100%;
+}
+.dropdown-menu {
+    margin-top: 0;
+    text-align: center;
+    min-width: 8rem;
+}
+
+    .dropdown-menu[data-bs-popper] {
+        top: 70%;
+        left: 0;
+        margin-top: 0;
+    }
+
+.dropdown-item {
+    font-weight: bold;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus,
+.dropdown-item:active:focus {
+    background-color: rgba(64, 64, 64, 0.48);
+}
+
+.dropdown-logout:hover,
+.dropdown-logout:focus,
+.dropdown-logout:active:focus {
+    background-color: rgba(255, 0, 0, 0.48);
+}
+
+.logout-btn {
+    font-weight: bold;
+    color: red;
+}
+
+    .logout-btn:hover,
+    .logout-btn:focus
+    .logout-btn:active:focus {
+        color: red;
+        box-shadow: none;
+    }
+
+a {
+    text-decoration: none !important;
+    color: inherit;
+}
+
+    a:hover {
+        text-decoration: none !important;
+        color: inherit;
+    }
+
+.dashboard-cards {
+    border-radius: .5rem;
+    background-color: white;
+    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.15);
+    height: 100%;
+}
+
+.card-title {
+    color: #ff0000;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.card-content {
+    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    text-align: center;
+}
+
+
+.card-icon {
+    font-size: calc(1.625rem + 6vw);
+}
+
+.card-value {
+    font-size: calc(1.625rem + 2vw);
+    font-weight: bolder;
+    margin-bottom: 0;
+}
+
+.bottom-card {
+    height: 100%;
+}
+
+.view-all {
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    opacity: 0.9;
+}
+
+    .view-all:hover {
+        color: #EC2224;
+    }
+
+.table-header {
+    border-bottom: .2rem solid black;
+    text-align: center;
+}
+
+td {
+    background-color: white;
+    vertical-align: middle !important;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+td {
+    padding: 1rem 0.5rem !important;
+}
+
+.table > tbody > tr:nth-of-type(even) {
+    --bs-table-accent-bg: var(--bs-table-striped-bg);
+    color: var(--bs-table-striped-color);
+}

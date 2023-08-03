@@ -60,7 +60,7 @@
                                     <img src="~/images/icons/edit.png" alt="Edit" class="job-post-action-icon" />
                                 </a>
                          <!-- Button trigger modal -->
-                        <a asp-route-id="@jobPosting.Id" asp-controller="HR" asp-action="DeleteJob" title="Delete">
+                                <a data-bs-toggle="modal" data-bs-target="#@("modal-" + jobPosting.Id)" title="Delete">
                             <img src="~/images/icons/delete.png" alt="Delete" class="job-post-action-icon" />
                         </a>
                         </td>
@@ -126,28 +126,6 @@
     });
 </script>
 
-<!-- Main Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header text-center">
-                <h5 class="modal-title" id="exampleModalLabel">Warning!</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center">
-                <p class="delete-msg">
-                    This <strong>job post</strong> will be <strong>deleted.</strong>
-                    <br />
-                    <strong><span class="text-danger">WARNING!</span> This cannot be undone!</strong>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">CANCEL</button>
-                <button type="button" class="btn btn-danger" onclick="confirmDelete()">DELETE</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
     function confirmDelete() {
         // Hide the main modal
@@ -161,22 +139,47 @@
     }
 </script>
 
-<!-- Success Modal -->
-<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Success</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center">
-                <p>
-                    <strong><span class="text-danger">Job post</span> deleted successfully.</strong>
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">OK</button>
+
+@foreach(var jobPosting in Model){
+    <!-- Main Modal -->
+    <div class="modal fade" id="@("modal-" + jobPosting.Id)" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h5 class="modal-title" id="exampleModalLabel">Warning!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="delete-msg">
+                        This <strong>job post</strong> will be <strong>deleted.</strong>
+                        <br />
+                        <strong><span class="text-danger">WARNING!</span> This cannot be undone!</strong>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">CANCEL</button>
+                    <button type="button" class="btn btn-danger" data-bs-target="#@("modal2-" + jobPosting.Id)" data-bs-toggle="modal" data-bs-dismiss="modal">DELETE</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="@("modal2-" + jobPosting.Id)" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Success</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>
+                        <strong><span class="text-danger">Job post</span> deleted successfully.</strong>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-danger" asp-route-id="@jobPosting.Id" asp-controller="HR" asp-action="DeleteJob">OKAY</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

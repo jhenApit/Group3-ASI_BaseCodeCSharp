@@ -169,14 +169,14 @@
             </div>
             <form method="post" asp-controller="HR" asp-action="AddInterviewer">
                 <div class="modal-body">
-                    <input type="hidden" asp-for="Interviewers.Id" />
+                    <input type="hidden" asp-for="@Model.Interviewers.Id" />
                     <div class="form-group">
                         <label for="interviewer-name" class="col-form-label">Name:</label>
-                        <input asp-for="Interviewers.Name" type="text" class="form-control" id="interviewer-name">
+                        <input asp-for="@Model.Interviewers.Name" type="text" class="form-control" id="interviewer-name">
                     </div>
                     <div class="form-group">
                         <label for="interviewer-email" class="col-form-label">Email:</label>
-                        <input asp-for="Interviewers.Email" type="email" class="form-control" id="interviewer-email">
+                        <input asp-for="@Model.Interviewers.Email" type="email" class="form-control" id="interviewer-email">
                     </div>
                 </div>
                 <div class="modal-footer">

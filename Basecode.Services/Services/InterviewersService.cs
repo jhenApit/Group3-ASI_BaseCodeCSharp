@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Basecode.Data.Dtos;
+using Basecode.Data.Dtos.Interviewers;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
@@ -32,13 +32,10 @@ namespace Basecode.Services.Services
         /// Adds a new Interviewer to the repository.
         /// </summary>
         /// <param name="Interviewers">The Interviewer to add.</param>
-        public async Task AddAsync(Interviewers Interviewers)
+        public async Task AddAsync(InterviewersCreationDto Interviewers)
         {
-            var interviewersModel = new Interviewers();
-            interviewersModel.Name = Interviewers.Name;
-            interviewersModel.Email = Interviewers.Email;
-
-            await _repository.AddAsync(interviewersModel);
+            var InterviewsModel = _mapper.Map<Interviewers>(Interviewers);
+            await _repository.AddAsync(InterviewsModel);
         }
 
         /// <summary>

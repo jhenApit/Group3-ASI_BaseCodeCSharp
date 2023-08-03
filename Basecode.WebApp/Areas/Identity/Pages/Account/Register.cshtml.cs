@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Basecode.Data.Dtos;
 using Basecode.Data.Dtos.HrEmployee;
+using Basecode.Data.Dtos.Interviewers;
 using Basecode.Data.Models;
 
 namespace Basecode.WebApp.Areas.Identity.Pages.Account
@@ -203,7 +204,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
                     hrEmployee.Password = user.PasswordHash;
                     await _hr_service.AddAsync(hrEmployee);
 
-                    var interviewerEntry = new Interviewers
+                    var interviewerEntry = new InterviewersCreationDto
                     {
                         Name = hrEmployee.Name,
                         Email = hrEmployee.Email,

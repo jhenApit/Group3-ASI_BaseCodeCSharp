@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Basecode.Data.ViewModels;
 using Basecode.Data.Models;
 using Basecode.Data.Dtos.Interviews;
+using Basecode.Data.Dtos.Interviewers;
 using static Basecode.Data.Enums.Enums;
 using System.Globalization;
 
@@ -258,7 +259,7 @@ namespace Basecode.WebApp.Controllers
 
 				var viewModel = new InterviewsViewModel
                 {
-                    Interviewers = new Interviewers(),
+                    Interviewers = new InterviewersCreationDto(),
                     InterviewersList = await _interviewersService.RetrieveAllAsync(),
                     InterviewsList = (await _interviewsService.RetrieveAllAsync())
                     .OrderBy(x => x.InterviewDate)
@@ -430,16 +431,20 @@ namespace Basecode.WebApp.Controllers
         /// <param name="interviewers">Data</param>
         /// <returns>Redirects to the Interviews Page</returns>
         [HttpPost]
-        public async Task<IActionResult> AddInterviewer(Interviewers interviewers)
+        public async Task<IActionResult> AddInterviewer(InterviewsViewModel interviewsViewModel)
         {
+            Console.WriteLine(interviewsViewModel.Interviewers.Id);
+            Console.WriteLine(interviewsViewModel.Interviewers.Name);
+            Console.WriteLine(interviewsViewModel.Interviewers.Email);
+
             try
             {
-                await _interviewersService.AddAsync(interviewers);
+                await _interviewersService.AddAsync(interviewsViewModel.Interviewers);
                 return RedirectToAction("Interviews");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest("An error happend while adding an interviewer.");
+                return BadRequest(ex.Message + " An error happend while adding an interviewer.");
             }
         }
 

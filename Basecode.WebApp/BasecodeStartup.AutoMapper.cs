@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Basecode.Data.Dtos;
 using Basecode.Data.Dtos.HrEmployee;
+using Basecode.Data.Dtos.Interviewers;
 using Basecode.Data.Dtos.Interviews;
 using Basecode.Data.Dtos.JobPostings;
 using Basecode.Data.Models;
@@ -25,6 +26,7 @@ namespace Basecode.WebApp
                 cfg.CreateMap<ReferenceFormsCreationDto, ReferenceForms>();
                 cfg.CreateMap<InterviewsCreationDto, Interviews>();
                 cfg.CreateMap<InterviewsUpdationDto, Interviews>();
+                cfg.CreateMap<InterviewersCreationDto, Interviewers>();
             });
 
             services.AddSingleton(Config.CreateMapper());

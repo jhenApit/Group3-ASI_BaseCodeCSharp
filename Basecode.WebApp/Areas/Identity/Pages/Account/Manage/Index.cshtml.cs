@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Basecode.Data.Dtos.HrEmployee;
 using Basecode.Services.Interfaces;
 using Basecode.Data.Models;
+using NLog;
+using static Basecode.Data.Constants;
 
 namespace Basecode.WebApp.Areas.Identity.Pages.Account.Manage
 {
@@ -21,6 +23,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IHrEmployeeService _service;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public IndexModel(
             UserManager<IdentityUser> userManager,
@@ -94,62 +97,79 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            try
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                var user = await _userManager.GetUserAsync(User);
+                //if (user == null)
+                //{
+                //    return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                //}
+                await LoadAsync(user);
+                _logger.Info("Successfully loaded user profile");
+                return Page();
             }
-
-            await LoadAsync(user);
-            return Page();
+            catch (System.Exception ex) 
+            {
+                _logger.Error(ex,"Failed to load user");
+                throw;
+            }
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            Input.Name = Input.FirstName + ' ' + Input.MiddleName + ' ' + Input.LastName;
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            try
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                await LoadAsync(user);
-                return Page();
-            }
-
-            var userName = await _userManager.GetUserNameAsync(user);
-            if (Input.UserName != userName)
-            {
-                var existingUser = await _userManager.FindByNameAsync(Input.UserName);
-                if (existingUser != null)
+                Input.Name = Input.FirstName + ' ' + Input.MiddleName + ' ' + Input.LastName;
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
                 {
-                    // Email is already registered
-                    StatusMessage = "The username '" + Input.UserName + "' is not available";
-                    return RedirectToPage();
+                    return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
                 }
-                var result = await _userManager.SetUserNameAsync(user, Input.UserName);
-                if (!result.Succeeded)
+
+                if (!ModelState.IsValid)
                 {
-                    StatusMessage = "Unexpected error when trying to set username";
-                    return RedirectToPage();
+                    await LoadAsync(user);
+                    return Page();
                 }
+
+                var userName = await _userManager.GetUserNameAsync(user);
+                if (Input.UserName != userName)
+                {
+                    var existingUser = await _userManager.FindByNameAsync(Input.UserName);
+                    if (existingUser != null)
+                    {
+                        // Email is already registered
+                        StatusMessage = "The username '" + Input.UserName + "' is not available";
+                        return RedirectToPage();
+                    }
+                    var result = await _userManager.SetUserNameAsync(user, Input.UserName);
+                    if (!result.Succeeded)
+                    {
+                        StatusMessage = "Unexpected error when trying to set username";
+                        return RedirectToPage();
+                    }
+                }
+                var hr = _service.GetByUserIdAsync(user.Id);
+                var hrEmployeeDto = new HREmployeeUpdationDto
+                {
+                    Name = Input.Name,
+                    Email = user.Email,
+                    Password = user.PasswordHash,
+                    UserName = Input.UserName,
+                    UserId = user.Id,
+                    Id = hr.Id
+                };
+                await _service.UpdateAsync(hrEmployeeDto);
+                await _signInManager.RefreshSignInAsync(user);
+                StatusMessage = "Your profile has been updated";
+                _logger.Info("Profile updated successfully");
+                return RedirectToPage();
             }
-            var hr = _service.GetByUserIdAsync(user.Id);
-            var hrEmployeeDto = new HREmployeeUpdationDto
+            catch (System.Exception ex) 
             {
-                Name = Input.Name,
-                Email = user.Email,
-                Password = user.PasswordHash,
-                UserName = Input.UserName,
-                UserId = user.Id,
-                Id = hr.Id
-            };
-            await _service.UpdateAsync(hrEmployeeDto);
-            await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
-            return RedirectToPage();
+                _logger.Error(ex, "Failed to update account");
+                throw;
+            }
         }
     }
 }

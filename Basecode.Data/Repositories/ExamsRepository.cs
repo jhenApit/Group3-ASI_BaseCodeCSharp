@@ -12,44 +12,69 @@ namespace Basecode.Data.Repositories
     public class ExamsRepository : BaseRepository, IExamsRepository
     {
         private readonly BasecodeContext _context;
+
         public ExamsRepository(IUnitOfWork unitOfWork, BasecodeContext context) : base(unitOfWork)
         {
             _context = context;
         }
 
+        /// <summary>
+        /// Retrieves all exams from the database.
+        /// </summary>
+        /// <returns>An IQueryable containing all exams.</returns>
         public async Task<IQueryable<Exams>> RetrieveAllAsync()
         {
             return await Task.FromResult(this.GetDbSet<Exams>());
         }
 
-        public async Task AddAsync(Exams Exams)
+        /// <summary>
+        /// Adds an exam to the database asynchronously.
+        /// </summary>
+        /// <param name="exams">The exam to add.</param>
+        /// <returns>Task representing the asynchronous operation.</returns>
+        public async Task AddAsync(Exams exams)
         {
-            await _context.Exams.AddAsync(Exams);
+            await _context.Exams.AddAsync(exams);
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Retrieves an exam from the database by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the exam to retrieve.</param>
+        /// <returns>The exam with the specified ID, or null if not found.</returns>
         public async Task<Exams?> GetByIdAsync(int id)
         {
             return await _context.Exams.FindAsync(id);
         }
 
-        public async Task UpdateAsync(Exams Exams)
+        /// <summary>
+        /// Updates an existing exam in the database asynchronously.
+        /// </summary>
+        /// <param name="exams">The updated exam object.</param>
+        /// <returns>Task representing the asynchronous operation.</returns>
+        public async Task UpdateAsync(Exams exams)
         {
-            var existingExams = await _context.Exams.FindAsync(Exams.Id);
+            var existingExams = await _context.Exams.FindAsync(exams.Id);
             if (existingExams != null)
             {
                 // Update the properties of the existing entity
-                existingExams.ApplicantId = Exams.ApplicantId;
-                existingExams.ProctorId = Exams.ProctorId;
-                existingExams.ExamType = Exams.ExamType;
-                existingExams.Results = Exams.Results;
-                existingExams.ExamDate = Exams.ExamDate;
+                existingExams.ApplicantId = exams.ApplicantId;
+                existingExams.ProctorId = exams.ProctorId;
+                existingExams.ExamType = exams.ExamType;
+                existingExams.Results = exams.Results;
+                existingExams.ExamDate = exams.ExamDate;
 
                 // Save the changes
                 await _context.SaveChangesAsync();
             }
-
         }
+
+        /// <summary>
+        /// Deletes an exam from the database asynchronously.
+        /// </summary>
+        /// <param name="id">The ID of the exam to delete.</param>
+        /// <returns>Task representing the asynchronous operation.</returns>
         public async Task DeleteAsync(int id)
         {
             var data = await _context.Exams.FindAsync(id);
@@ -60,10 +85,14 @@ namespace Basecode.Data.Repositories
             }
         }
 
+        /// <summary>
+        /// Retrieves an exam from the database by the applicant's ID.
+        /// </summary>
+        /// <param name="applicantId">The ID of the applicant.</param>
+        /// <returns>The exam associated with the specified applicant ID, or null if not found.</returns>
         public async Task<Exams?> GetByApplicantIdAsync(int applicantId)
         {
             return await _context.Exams.FirstOrDefaultAsync(e => e.ApplicantId == applicantId);
         }
-
     }
 }

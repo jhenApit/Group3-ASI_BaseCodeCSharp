@@ -8,6 +8,8 @@ using Basecode.Data.ViewModels;
 using Basecode.Data.Models;
 using Basecode.Data.Dtos.Interviews;
 using Basecode.Data.Dtos.Interviewers;
+using AutoMapper;
+using Basecode.Data.Enums;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -26,6 +28,9 @@ namespace Basecode.WebApp.Controllers
         private readonly IErrorHandling _errorHandling; 
         private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly ISendEmailService _sendEmailService;
+        private readonly IMapper _mapper;
+        private readonly IMeetingLinkService _meetingLinkService;
 
         public HRController(
             IHrEmployeeService service,
@@ -38,7 +43,9 @@ namespace Basecode.WebApp.Controllers
             IInterviewsService interviewsService,
             IAddressService addressService,
             ICharacterReferencesService characterReferencesService,
-            IInterviewersService interviewersService
+            IInterviewersService interviewersService,
+            ISendEmailService sendEmailService,
+            IMapper mapper, IMeetingLinkService meetingLinkService
             )
         {
             _addressService = addressService;
@@ -52,6 +59,9 @@ namespace Basecode.WebApp.Controllers
             _interviewsService = interviewsService;
             _interviewersService = interviewersService;
             _characterReferencesService = characterReferencesService;
+            _sendEmailService = sendEmailService;
+            _mapper = mapper;
+            _meetingLinkService = meetingLinkService;
         }
 
 
@@ -73,15 +83,14 @@ namespace Basecode.WebApp.Controllers
                     EmployeeCount = employees.Count(),
                     Interviews = interviews.OrderBy(x => x.InterviewDate).Take(6).ToList()
                 };
-
+                _logger.Info("Dashboard data retrieved");
                 return View(model);
             }
-            catch (Exception e)
+            catch (Exception ex) 
             {
-                Console.WriteLine(e.Message);
-                return BadRequest();
+                _logger.Error(ex, "Failed to load data");
+                return BadRequest("An error occured when loading dashboard");
             }
-
         }
 
 
@@ -98,7 +107,7 @@ namespace Basecode.WebApp.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                _logger.Error(e, "Failed to retrieve jobpost list");
                 return BadRequest("An error occured when retrieving job post list.");
             }
         }
@@ -123,12 +132,7 @@ namespace Basecode.WebApp.Controllers
                 var jobPosting = await _jobPostingsService.GetByIdAsync(id);
                 var loggedUser = await _userManager.GetUserAsync(User);
 
-                if (jobPosting == null)
-                {
-                    return RedirectToAction("JobPostList");
-                }
-
-                JobPostingsUpdationDto jobPostingDto = new ()
+                JobPostingsUpdationDto jobPostingDto = new JobPostingsUpdationDto
                 {
                     Name = jobPosting.Name,
                     Description = jobPosting.Description,
@@ -145,8 +149,8 @@ namespace Basecode.WebApp.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                return BadRequest("An error occured when retrieving the job to be edited.");
+                _logger.Error(e, "Failed to update jobpost");
+                return BadRequest("An error occured when trying to update job");
             }
 
 
@@ -165,7 +169,7 @@ namespace Basecode.WebApp.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                _logger.Error(e, "Failed to retrieve jobpost");
                 return BadRequest("An error occured when retrieving the job post to view.");
             }
             
@@ -176,19 +180,14 @@ namespace Basecode.WebApp.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    // Get AspNetUser Data
-                    var loggedUser = await _userManager.GetUserAsync(User);
-                    await _jobPostingsService.AddAsync(jobPostingsCreationDto, loggedUser);
-                    return RedirectToAction("JobPostList");
-                }
-                ModelState.Clear();
-                return View("JobPostList", jobPostingsCreationDto);
+                var loggedUser = await _userManager.GetUserAsync(User);
+                await _jobPostingsService.AddAsync(jobPostingsCreationDto, loggedUser);
+                return RedirectToAction("JobPostList");
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                ModelState.Clear();
+                _logger.Error(e, "Failed to add jobpost");
                 return BadRequest("An error occured when trying to add a job.");
             }
 
@@ -197,20 +196,23 @@ namespace Basecode.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(JobPostingsUpdationDto jobPostingsUpdationDto)
         {
+            var data = await _jobPostingsService.UpdateJobPosting(jobPostingsUpdationDto);
+            if (!data.Result)
+            {
+                _logger.Error(_errorHandling.SetLog(data));
+                ViewBag.ErrorMessage = data.Message;
+                return View("EditJobPost", jobPostingsUpdationDto);
+            }
             try
             {
-                if (ModelState.IsValid)
-                {
-                    // Get AspNetUser Data
-                    var loggedUser = await _userManager.GetUserAsync(User);
-                    await _jobPostingsService.UpdateAsync(jobPostingsUpdationDto, loggedUser);
-                    return RedirectToAction("JobPostList");
-                }
-                return View("EditJobPost", jobPostingsUpdationDto);
+                // Get AspNetUser Data
+                var loggedUser = await _userManager.GetUserAsync(User);
+                await _jobPostingsService.UpdateAsync(jobPostingsUpdationDto, loggedUser);
+                return RedirectToAction("JobPostList");
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                _logger.Error(e, "Failed to update jobpost");
                 return BadRequest("An error occured when trying to update a job.");
             }
 
@@ -221,15 +223,12 @@ namespace Basecode.WebApp.Controllers
             try
             {
                 var job = await _jobPostingsService.GetByIdAsync(id);
-                if (job != null)
-                {
-                    await _jobPostingsService.PermaDeleteAsync(id);
-                }
+                await _jobPostingsService.PermaDeleteAsync(id);
                 return RedirectToAction("JobPostList");
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                _logger.Error(e, "Failed to delete jobpost");
                 return BadRequest("An error occured when trying to delete a job.");
             }
 
@@ -253,7 +252,7 @@ namespace Basecode.WebApp.Controllers
                     Address = address,
                     JobPosting = job,
                     CharacterReferences = characterReferences,
-                    Interviews = interviews
+                    Interviews = interviews,
                 };
 
                 string imreBase64Data = Convert.ToBase64String(applicantDetailViewModel.Applicant.Photo);
@@ -270,7 +269,7 @@ namespace Basecode.WebApp.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                _logger.Error(e, "Failed to retrieve applicant details");
                 return BadRequest("An error occured when retrieving applicant detail");
             }
         }
@@ -280,24 +279,14 @@ namespace Basecode.WebApp.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    // Retrieve the currently logged-in user
-                    var loggedInUser = await _userManager.GetUserAsync(User);
-
-                    if (loggedInUser != null)
-                    {
-                        await _jobPostingsService.UpdateAsync(model, loggedInUser);
-                        return RedirectToAction("JobPostList");
-                    }
-                }
-
-                // If the model is not valid or the user is not logged in, return the EditJobPosting view with the appropriate error
-                return View("EditJobPosting", model);
+                // Retrieve the currently logged-in user
+                var loggedInUser = await _userManager.GetUserAsync(User);
+                await _jobPostingsService.UpdateAsync(model, loggedInUser);
+                return RedirectToAction("JobPostList");
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                _logger.Error(e, "Failed to retrieve update job post");
                 return BadRequest("An error occured when updating a job post list.");
             }
 
@@ -322,8 +311,9 @@ namespace Basecode.WebApp.Controllers
 
                 return View(jobApplicantsOverviewModel);
             }
-            catch(Exception)
+            catch(Exception e)
             {
+                _logger.Error(e, "Failed to retrieve update overview data");
                 return BadRequest("An error occurred while retrieving the Job Applicant Overview.");
             }
         }
@@ -333,15 +323,6 @@ namespace Basecode.WebApp.Controllers
         /// </summary>
         /// <returns>Redirect to View Applicants Page</returns>
         public IActionResult ViewApplicants()
-        {
-            return View();
-        }
-
-        /// <summary>
-        /// Allows HR to view disqualified job applicants in a specific job post
-        /// </summary>
-        /// <returns>Redirect to View Disqualified Applicants Page</returns>
-        public IActionResult DisqualifiedApplicants()
         {
             return View();
         }
@@ -365,8 +346,9 @@ namespace Basecode.WebApp.Controllers
 
                 return View(newHiresModel);
             }
-            catch(Exception)
+            catch(Exception e)
             {
+                _logger.Error(e, "Failed to retrieve retrieve current hires data");
                 return BadRequest("An error occurred while retriving New Hires.");
             }
         }
@@ -393,8 +375,9 @@ namespace Basecode.WebApp.Controllers
                 };
                 return View(viewModel);
             } 
-            catch(Exception)
+            catch(Exception e)
             {
+                _logger.Error(e, "Failed to retrieve interviews data");
                 return BadRequest("An error occurred while retriving Interviews.");
             }
         }
@@ -408,20 +391,16 @@ namespace Basecode.WebApp.Controllers
             try
             {
                 var existingIntervewer = await _interviewersService.GetByIdAsync(id);
-
-				if (existingIntervewer != null)
+                var viewModel = new InterviewsFormViewModel
                 {
-                    var viewModel = new InterviewsFormViewModel
-                    {
-                        Interviewer = await _interviewersService.GetByIdAsync(id),
-                        ApplicantsList = await _applicantService.RetrieveAllAsync(),
-                    };
-                    return View(viewModel);
-                }
-                return RedirectToAction("Interviews");
+                    Interviewer = await _interviewersService.GetByIdAsync(id),
+                    ApplicantsList = await _applicantService.RetrieveAllAsync(),
+                };
+                return View(viewModel);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.Error(e, "Failed to load view");
                 return BadRequest("An error occurred while retriving this page.");
             }
         }
@@ -446,17 +425,29 @@ namespace Basecode.WebApp.Controllers
                     TimeEnd = interview.TimeEnd,
                 };
 
+                if(await _interviewsService.GetByApplicantIdAndInterviewTypeAsync(createInterview.ApplicantId, createInterview.InterviewType))
+                {
+                    return BadRequest("Applicant already has " + EnumHelper.GetEnumDescription(createInterview.InterviewType) + " scheduled.");
+                }
+
                 if (await _interviewsService.IsTimeRangeOverlappingAsync(createInterview))
                 {
-                    TempData["IsOverlap"] = true;
-                    return RedirectToAction("CreateInterview", new { id = interview.InterviewerId });
+                    return BadRequest("Inputed Date and Time ovelrap with other Interviews.");
                 }
                 await _interviewsService.AddAsync(createInterview);
+
+                var interviewSched = _mapper.Map<Interviews>(createInterview);
+                var applicant = await _applicantService.GetByIdAsync(interviewSched.ApplicantId);
+                
+                //Send email notification to Interviewer and applicant once the interview/examination schedule was set
+                await _sendEmailService.SendSetInterviewScheduleEmail(interviewSched, applicant!);
+                
                 return RedirectToAction("Interviews");
             }
-            catch(Exception e)
+            catch(Exception)
             {
-                return BadRequest(e.Message + " Error occurred while adding a new interview");
+                _logger.Error("Failed to add new interview");
+                return BadRequest("Error occurred while adding a new interview");
             }
         }
 
@@ -470,25 +461,22 @@ namespace Basecode.WebApp.Controllers
             {
                 Interviews interviews = await _interviewsService.GetByIdAsync(id);
                 Console.WriteLine(interviews);
-                if (interviews != null)
+                var viewModel = new InterviewsFormViewModel
                 {
-                    var viewModel = new InterviewsFormViewModel
-                    {
-                        Interviewer = await _interviewersService.GetByIdAsync(interviews.InterviewerId),
-                        ApplicantsList = await _applicantService.RetrieveAllAsync(),
-                        ApplicantId = interviews.ApplicantId,
-                        InterviewerId = interviews.InterviewerId,
-                        InterviewType = interviews.InterviewType,
-                        InterviewDate = interviews.InterviewDate,
-                        TimeStart = interviews.TimeStart,
-                        TimeEnd = interviews.TimeEnd
-                    };
-                    return View(viewModel);
-                }
-                return RedirectToAction("Interviews");
+                    Interviewer = await _interviewersService.GetByIdAsync(interviews.InterviewerId),
+                    ApplicantsList = await _applicantService.RetrieveAllAsync(),
+                    ApplicantId = interviews.ApplicantId,
+                    InterviewerId = interviews.InterviewerId,
+                    InterviewType = interviews.InterviewType,
+                    InterviewDate = interviews.InterviewDate,
+                    TimeStart = interviews.TimeStart,
+                    TimeEnd = interviews.TimeEnd
+                };
+                return View(viewModel);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.Error(e, "Failed to load view");
                 return BadRequest("An error occurred while retriving this page.");
             }
         }
@@ -514,18 +502,23 @@ namespace Basecode.WebApp.Controllers
                     TimeEnd = interview.TimeEnd,
                 };
 
+                if (await _interviewsService.GetByApplicantIdAndInterviewTypeAsync(updateInterview.ApplicantId, updateInterview.InterviewType))
+                {
+                    return BadRequest("Applicant already has " + EnumHelper.GetEnumDescription(updateInterview.InterviewType) + " scheduled.");
+                }
+
                 if (await _interviewsService.IsTimeRangeOverlappingAsync(updateInterview))
                 {
-                    TempData["IsOverlapUpdate"] = true;
-                    return RedirectToAction("EditInterview", new { id = interview.Id });
+                    return BadRequest("Inputed Date and Time ovelrap with other Interviews.");
                 }
 
                 await _interviewsService.UpdateAsync(updateInterview);
                 return RedirectToAction("Interviews");
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest("Error occurred while adding a new interview");
+                _logger.Error(e, "Failed to update interview");
+                return BadRequest("Error occurred while updating interview");
             }
         }
 
@@ -543,6 +536,7 @@ namespace Basecode.WebApp.Controllers
             }
             catch
             {
+                _logger.Error("Failed to delete interview");
                 return BadRequest("Delete Failed");
             }
         }
@@ -566,6 +560,7 @@ namespace Basecode.WebApp.Controllers
             }
             catch (Exception ex)
             {
+                _logger.Error(ex, "Failed to add interviewer");
                 return BadRequest(ex.Message + " An error happend while adding an interviewer.");
             }
         }
@@ -579,12 +574,13 @@ namespace Basecode.WebApp.Controllers
         {
             try
             {
-                Console.WriteLine("Heere" + id);
+                Console.WriteLine("Here" + id);
                 await _interviewersService.DeleteAsync(id);
                 return RedirectToAction("Interviews");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.Error(ex, "Failed to remove interviewer");
                 return BadRequest("An error happend while removing an interviewer.");
             }
         }

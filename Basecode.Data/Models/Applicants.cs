@@ -10,7 +10,6 @@ namespace Basecode.Data.Models
     {
         public int Id { get; set; } // Primary Key this should be the identity
         public string? ApplicantId { get; set; }
-        [ForeignKey("JobId")]
         public int JobId { get; set; } // Foreign Key to the JobPostings table
         [ForeignKey("JobId")]
         public JobPostings? Job { get; set; }

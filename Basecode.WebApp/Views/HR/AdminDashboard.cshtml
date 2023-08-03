@@ -147,8 +147,8 @@
                                     {
                                         <tr>
                                             <td>@interview.InterviewDate.ToString("MMMM dd, yyyy"), @interview.TimeStart - @interview.TimeEnd</td>
-                                            <td>@interview.Interviewer.Name</td>
-                                            <td>@interview.Applicant.Name</td>
+                                            <td class="text-capitalize">@interview.Interviewer.Name</td>
+                                            <td class="text-capitalize">@interview.Applicant.Name</td>
                                             <td>@EnumHelper.GetEnumDescription(interview.InterviewType)</td>
                                         </tr>
                                     }

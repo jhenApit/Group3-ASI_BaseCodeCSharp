@@ -9,6 +9,7 @@ using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
+using NLog;
 
 namespace Basecode.Services.Services
 {
@@ -16,7 +17,7 @@ namespace Basecode.Services.Services
     {
         private readonly ICharacterReferencesRepository _repository;
         private readonly IMapper _mapper;
-        private readonly LogContent _logContent = new();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public CharacterReferencesService(ICharacterReferencesRepository repository, IMapper mapper)
         {
@@ -30,8 +31,16 @@ namespace Basecode.Services.Services
         /// <returns>A list of character references.</returns>
         public async Task<List<CharacterReferences>> RetrieveAllAsync()
         {
-            var characterRef = await _repository.RetrieveAllAsync();
-            return characterRef.ToList();
+            try
+            {
+                var characterRef = await _repository.RetrieveAllAsync();
+                return characterRef.ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("CharacterReferencesService > RetrieveAllAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -40,8 +49,16 @@ namespace Basecode.Services.Services
         /// <param name="characterReferencesDto">The data transfer object containing the information of the character reference to be added.</param>
         public async Task AddAsync(CharacterReferencesCreationDto characterReferencesDto)
         {
-            var characterReferencesModel = _mapper.Map<CharacterReferences>(characterReferencesDto);
-            await _repository.AddAsync(characterReferencesModel);
+            try
+            {
+                var characterReferencesModel = _mapper.Map<CharacterReferences>(characterReferencesDto);
+                await _repository.AddAsync(characterReferencesModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("CharacterReferencesService > AddAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -51,7 +68,15 @@ namespace Basecode.Services.Services
         /// <returns>The character reference with the specified ID.</returns>
         public async Task<CharacterReferences?> GetByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            try
+            {
+                return await _repository.GetByIdAsync(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("CharacterReferencesService > GetByIdAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -61,7 +86,15 @@ namespace Basecode.Services.Services
         /// <returns>The character reference with the specified name.</returns>
         public async Task<CharacterReferences?> GetByNameAsync(string name)
         {
-            return await _repository.GetByNameAsync(name);
+            try
+            {
+                return await _repository.GetByNameAsync(name);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("CharacterReferencesService > GetByNameAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -72,8 +105,16 @@ namespace Basecode.Services.Services
         /// by it's applicantId</returns>
         public async Task<List<CharacterReferences>> GetByApplicantIdAsync(int applicantId)
         {
-            var characRef = await _repository.GetByApplicantIdAsync(applicantId);
-            return characRef.ToList();
+            try
+            {
+                var characRef = await _repository.GetByApplicantIdAsync(applicantId);
+                return characRef.ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("CharacterReferencesService > GetByApplicantIdAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
     }

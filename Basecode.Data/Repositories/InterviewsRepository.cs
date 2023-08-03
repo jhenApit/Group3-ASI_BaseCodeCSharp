@@ -1,6 +1,8 @@
 ﻿using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Basecode.Data.Enums;
+using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.Data.Repositories
 {
@@ -94,7 +96,7 @@ namespace Basecode.Data.Repositories
         /// <returns>returns the jobs of an applicant</returns>
         public async Task<IQueryable<Interviews>> GetByApplicantIdAsync(int applicantId)
         {
-            return await Task.FromResult(this.GetDbSet<Interviews>().Where(e => e.ApplicantId == applicantId));
+            return await Task.FromResult(this.GetDbSet<Interviews>().Where(e => e.ApplicantId == applicantId).Include(e => e.Interviewer).Include(e => e.Applicant));
         }
 
         /// <summary>
@@ -132,6 +134,18 @@ namespace Basecode.Data.Repositories
             return await _context.Interviews
                 .Where(i => i.ApplicantId == applicantId)
                 .ToListAsync();
+        }
+
+        /// <summary>
+        /// Checks if an applicant is already scheduled for a certain interview.
+        /// </summary>
+        /// <param name="applicantId">Applicant Id</param>
+        /// <param name="interviewType">Interview Type</param>
+        /// <returns>True if applicant has an existing schedule, false if otherwise.</returns>
+        public async Task<bool> GetByApplicantIdAndInterviewTypeAsync(int applicantId, InterviewType interviewType)
+        {
+            return await _context.Interviews
+                .AnyAsync(i => i.ApplicantId == applicantId && i.InterviewType == interviewType);
         }
     }
 }

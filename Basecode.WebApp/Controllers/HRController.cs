@@ -421,10 +421,14 @@ namespace Basecode.WebApp.Controllers
                     TimeEnd = interview.TimeEnd,
                 };
 
+                if(await _interviewsService.GetByApplicantIdAndInterviewTypeAsync(createInterview.ApplicantId, createInterview.InterviewType))
+                {
+                    return BadRequest("Applicant already has " + EnumHelper.GetEnumDescription(createInterview.InterviewType) + " scheduled.");
+                }
+
                 if (await _interviewsService.IsTimeRangeOverlappingAsync(createInterview))
                 {
-                    TempData["IsOverlap"] = true;
-                    return RedirectToAction("CreateInterview", new { id = interview.InterviewerId });
+                    return BadRequest("Inputed Date and Time ovelrap with other Interviews.");
                 }
                 await _interviewsService.AddAsync(createInterview);
 
@@ -436,10 +440,10 @@ namespace Basecode.WebApp.Controllers
                 
                 return RedirectToAction("Interviews");
             }
-            catch(Exception e)
+            catch(Exception)
             {
-                _logger.Error(e, "Failed to add new interview");
-                return BadRequest(e.Message + " Error occurred while adding a new interview");
+                _logger.Error("Failed to add new interview");
+                return BadRequest("Error occurred while adding a new interview");
             }
         }
 
@@ -494,10 +498,14 @@ namespace Basecode.WebApp.Controllers
                     TimeEnd = interview.TimeEnd,
                 };
 
+                if (await _interviewsService.GetByApplicantIdAndInterviewTypeAsync(updateInterview.ApplicantId, updateInterview.InterviewType))
+                {
+                    return BadRequest("Applicant already has " + EnumHelper.GetEnumDescription(updateInterview.InterviewType) + " scheduled.");
+                }
+
                 if (await _interviewsService.IsTimeRangeOverlappingAsync(updateInterview))
                 {
-                    TempData["IsOverlapUpdate"] = true;
-                    return RedirectToAction("EditInterview", new { id = interview.Id });
+                    return BadRequest("Inputed Date and Time ovelrap with other Interviews.");
                 }
 
                 await _interviewsService.UpdateAsync(updateInterview);

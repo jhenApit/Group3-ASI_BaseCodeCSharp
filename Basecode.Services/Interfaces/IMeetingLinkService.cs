@@ -8,7 +8,7 @@ namespace Basecode.Services.Interfaces
 {
     public interface IMeetingLinkService
     {
-        public string GenerateLink(string meetingSubject, DateTime startDate, DateTime startTime, 
-                                   DateTime endTime, IEnumerable<string> attendeeEmails);
+        public string GenerateLink(string meetingSubject, DateTime startDate, string startTime,
+             string endTime, IEnumerable<string> attendeeEmails);
     }
 }

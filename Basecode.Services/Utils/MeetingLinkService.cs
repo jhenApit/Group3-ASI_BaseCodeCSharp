@@ -24,18 +24,16 @@ namespace Basecode.Services.Utils
         /// Teams meeting with the provided details.
         /// </remarks>
         /// <exception cref="System.Exception">Thrown when an error occurs during link generation.</exception>
-        public string GenerateLink(string meetingSubject, DateTime startDate, DateTime startTime, 
-            DateTime endTime, IEnumerable<string> attendeeEmails)
+        public string GenerateLink(string meetingSubject, DateTime startDate, string startTime,
+             string endTime, IEnumerable<string> attendeeEmails)
         {
             try
             {
                 // Encode the meeting subject to be included in the URL
                 string encodedSubject = Uri.EscapeDataString(meetingSubject);
 
-                // Format the start date, start time, and end time in ISO 8601 format (UTC)
+                // Format the start date in ISO 8601 format (UTC)
                 string startDateIso8601 = startDate.ToUniversalTime().ToString("yyyy-MM-dd");
-                string startTimeIso8601 = startTime.ToUniversalTime().ToString("HH:mm:ss");
-                string endTimeIso8601 = endTime.ToUniversalTime().ToString("HH:mm:ss");
 
                 // Encode and join attendee email addresses
                 string encodedEmails = string.Join(";", attendeeEmails.Select(email => Uri.EscapeDataString(email)));
@@ -44,8 +42,8 @@ namespace Basecode.Services.Utils
                 var stringBuilder = new StringBuilder("https://teams.microsoft.com/l/meeting/new?");
                 stringBuilder.Append($"subject={encodedSubject}&");
                 stringBuilder.Append($"startDate={startDateIso8601}&");
-                stringBuilder.Append($"startTime={startTimeIso8601}&");
-                stringBuilder.Append($"endTime={endTimeIso8601}&");
+                stringBuilder.Append($"startTime={startTime}&");
+                stringBuilder.Append($"endTime={endTime}&");
                 stringBuilder.Append($"email={encodedEmails}&");
                 stringBuilder.Append($"attendees={encodedEmails}");
 

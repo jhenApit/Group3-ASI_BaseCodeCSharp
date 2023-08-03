@@ -13,7 +13,6 @@ body {
     align-items: center;
     width: calc(100% + 520px);
     position: fixed;
-    overflow-x: hidden;
 }
 
     .top-header h1 {
@@ -31,11 +30,6 @@ body {
 .top-header .header-details {
     justify-content: space-between;
     align-items: center;
-    gap: .5rem;
-}
-
-.top-header .header-details p{
-    padding: 10px 0 5px 0;
 }
 
 .top-header .header-details p.welcome {
@@ -44,7 +38,8 @@ body {
     color: #ff0000;
 }
 
-.top-header .header-details p.name {
+.name {
+    padding: 0.625rem 1rem;
     font-size: 20px;
     font-weight: bold;
 }
@@ -53,6 +48,52 @@ body {
     font-size: 50px;
     padding: 0 10px 0 5px;
 }
+
+/* dropdown menu*/
+
+.dropdown {
+    vertical-align: middle;
+    height: 100%;
+}
+.dropdown-menu {
+    margin-top: 0;
+    text-align: center;
+    min-width: 8rem;
+}
+
+    .dropdown-menu[data-bs-popper] {
+        top: 70%;
+        left: 0;
+        margin-top: 0;
+    }
+
+.dropdown-item {
+    font-weight: bold;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus,
+.dropdown-item:active:focus {
+    background-color: rgba(64, 64, 64, 0.48);
+}
+
+.dropdown-logout:hover,
+.dropdown-logout:focus,
+.dropdown-logout:active:focus {
+    background-color: rgba(255, 0, 0, 0.48);
+}
+
+.logout-btn {
+    font-weight: bold;
+    color: red;
+}
+
+    .logout-btn:hover,
+    .logout-btn:focus
+    .logout-btn:active:focus {
+        color: red;
+        box-shadow: none;
+    }
 
 a {
     text-decoration: none !important;

@@ -1,7 +1,7 @@
 ﻿@using Basecode.Data.ViewModels;
 @using static Basecode.Data.Enums.Enums;
-@model InterviewsFormViewModel
 
+@model InterviewsFormViewModel
 @{
     ViewData["Title"] = "New Interview";
     Layout = "_SideBarAdmin";
@@ -139,8 +139,29 @@
     </div>
 </form>
 
+@if (TempData["IsOverlap"] != null && (bool)TempData["IsOverlap"])
+{
+    <script>
+        $(document).ready(function () {
+            $('#overlapModal').modal('show');
+        });
+    </script>
+}
+
 <script>
     $(document).ready(function () {
+        var today = new Date();
+        var month = today.getMonth() + 1;
+        var year = today.getFullYear();
+        var tdate = today.getDate();
+        if (month < 10) {
+            month = "0" + month;
+        }
+        if (tdate < 10) {
+            tdate = "0" + tdate;
+        }
+        var maxDate = year + "-" + month + "-" + tdate;
+        $("#date").attr("min", maxDate);
         $('input.timepicker').timepicker({
             timeFormat: 'h:mm p',
             interval: 30,
@@ -168,7 +189,7 @@
             <div class="modal-body">
                 <p class="text-center"><strong>Inputed Date and Time ovelap with other Interviews.</strong></p>
                 <div class="d-flex justify-content-center align-items-center gap-3">
-                    <button type="button" class="btn b-red px-5 mt-2">OKAY</button>
+                    <button type="button" class="btn b-red px-5 mt-2" data-bs-dismiss="modal">OKAY</button>
                 </div>
             </div>
         </div>

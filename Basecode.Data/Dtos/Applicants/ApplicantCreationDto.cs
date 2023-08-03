@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using static Basecode.Data.Enums.Enums;
 
-namespace Basecode.Data.Dtos
+namespace Basecode.Data.Dtos.Applicants
 {
     public class ApplicantCreationDto
     {

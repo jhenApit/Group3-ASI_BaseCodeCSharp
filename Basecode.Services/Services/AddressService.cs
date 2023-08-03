@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -53,6 +54,16 @@ namespace Basecode.Services.Services
         public async Task<Addresses?> GetByIdAsync(int id)
         {
             return await _repository.GetByIdAsync(id);
+        }
+
+        /// <summary>
+        /// this gets the address by applicantid
+        /// </summary>
+        /// <param name="applicantId">the applicant id set to an address</param>
+        /// <returns>returns the address model</returns>
+        public async Task<Addresses?> GetByApplicantId(int applicantId)
+        {
+            return await _repository.GetByApplicantIdAsync(applicantId);
         }
     }
 }

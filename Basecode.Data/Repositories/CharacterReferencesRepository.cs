@@ -61,9 +61,9 @@ namespace Basecode.Data.Repositories
         /// <param name="applicantId">the applicant id set to the character references</param>
         /// <returns>the iqueryable of result of getting the character references
         /// by it's applicantId</returns>
-        public IQueryable<CharacterReferences> GetByApplicantId(int applicantId)
+        public async Task<IQueryable<CharacterReferences>> GetByApplicantIdAsync(int applicantId)
         {
-            return this.GetDbSet<CharacterReferences>().Where(e => e.ApplicantId == applicantId);
+            return await Task.FromResult(this.GetDbSet<CharacterReferences>().Where(e => e.ApplicantId == applicantId));
         }
 
     }

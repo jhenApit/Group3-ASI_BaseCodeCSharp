@@ -64,5 +64,17 @@ namespace Basecode.Services.Services
             return await _repository.GetByNameAsync(name);
         }
 
+        /// <summary>
+        /// This gets the list of character references of an applicant
+        /// </summary>
+        /// <param name="applicantId">the applicant id set to the character references</param>
+        /// <returns>the iqueryable of result of getting the character references
+        /// by it's applicantId</returns>
+        public async Task<List<CharacterReferences>> GetByApplicantIdAsync(int applicantId)
+        {
+            var characRef = await _repository.GetByApplicantIdAsync(applicantId);
+            return characRef.ToList();
+        }
+
     }
 }

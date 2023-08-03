@@ -208,7 +208,7 @@ namespace Basecode.WebApp.Controllers
             }
             var applicant = await _applicantService.GetByIdAsync(id);
             var address = await _addressService.GetByIdAsync(applicant.Id);
-            var characterReferences = _characterReferencesService.GetByApplicantId(applicant.Id);
+            var characterReferences = await _characterReferencesService.GetByApplicantId(applicant.Id);
             var interviews = _interviewsService.GetByApplicantId(applicant.Id);
             var applicantDetailViewModel = new ApplicantDetailViewModel
             {

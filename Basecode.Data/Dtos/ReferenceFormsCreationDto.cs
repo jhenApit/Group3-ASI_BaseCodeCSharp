@@ -10,8 +10,6 @@ namespace Basecode.Data.Dtos
     public class ReferenceFormsCreationDto
     {
         public int Id { get; set; }
-
-        [ForeignKey("Id")]
         public int CharacterReferenceId { get; set; }
         public string? Answer1 { get; set; }
         public string? Answer2 { get; set; }

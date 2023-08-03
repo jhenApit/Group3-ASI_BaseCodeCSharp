@@ -9,6 +9,7 @@ using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
+using NLog;
 
 namespace Basecode.Services.Services
 {
@@ -17,6 +18,7 @@ namespace Basecode.Services.Services
         private readonly IReferenceFormsRepository _repository;
         private readonly IMapper _mapper;
         private readonly LogContent _logContent = new();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public ReferenceFormsService(IReferenceFormsRepository repository, IMapper mapper)
         {
@@ -30,8 +32,16 @@ namespace Basecode.Services.Services
         /// <returns>A list of ReferenceForms.</returns>
         public async Task<List<ReferenceForms>> RetrieveAllAsync()
         {
-            var referenceForm = await _repository.RetrieveAllAsync();
-            return referenceForm.ToList();
+            try
+            {
+                var referenceForm = await _repository.RetrieveAllAsync();
+                return referenceForm.ToList();
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("ReferenceFormsService > RetrieveAllAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -40,9 +50,17 @@ namespace Basecode.Services.Services
         /// <param name="referenceFormsDto">The ReferenceFormsCreationDto object containing the data for the new reference form.</param>
         public async Task AddAsync(ReferenceFormsCreationDto referenceFormsDto)
         {
-            var referenceFormsModel = _mapper.Map<ReferenceForms>(referenceFormsDto);
-            referenceFormsModel.AnsweredDate = DateTime.Now.Date;
-            await _repository.AddAsync(referenceFormsModel);
+            try
+            {
+                var referenceFormsModel = _mapper.Map<ReferenceForms>(referenceFormsDto);
+                referenceFormsModel.AnsweredDate = DateTime.Now.Date;
+                await _repository.AddAsync(referenceFormsModel);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("ReferenceFormsService > AddAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -52,7 +70,15 @@ namespace Basecode.Services.Services
         /// <returns>The ReferenceForms object with the specified ID, or null if not found.</returns>
         public async Task<ReferenceForms?> GetByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            try
+            {
+                return await _repository.GetByIdAsync(id);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("ReferenceFormsService > GetByIdAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -62,7 +88,15 @@ namespace Basecode.Services.Services
         /// <returns>The ReferenceForms object with the specified character reference ID, or null if not found.</returns>
         public async Task<ReferenceForms?> GetByCharacterReferenceIdAsync(int characterReferenceId)
         {
-            return await _repository.GetByCharacterReferenceIdAsync(characterReferenceId);
+            try
+            {
+                return await _repository.GetByCharacterReferenceIdAsync(characterReferenceId);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("ReferenceFormsService > GetByCharacterReferenceIdAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
     }

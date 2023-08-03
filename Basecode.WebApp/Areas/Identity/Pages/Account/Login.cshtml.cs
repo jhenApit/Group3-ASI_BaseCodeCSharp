@@ -89,8 +89,15 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
             public bool RememberMe { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task OnGetAsync(string returnUrl = null, string from = null)
         {
+            ViewData["resetPasswordConfirmation"] = (from == "resetPassword");
+            //if already logged in, user will be redirected to dashboard
+            if (User.Identity.IsAuthenticated)
+            {
+                Response.Redirect("/HR/AdminDashboard");
+                return;
+            }
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
@@ -102,6 +109,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            
 
             ReturnUrl = returnUrl;
         }

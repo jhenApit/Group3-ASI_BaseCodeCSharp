@@ -10,6 +10,8 @@ using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
+using Microsoft.Extensions.Logging;
+using NLog;
 using static Basecode.Services.Utils.ErrorHandling;
 
 namespace Basecode.Services.Services
@@ -18,7 +20,7 @@ namespace Basecode.Services.Services
     {
         private readonly IAddressRepository _repository;
         private readonly IMapper _mapper;
-        private readonly LogContent _logContent = new();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public AddressService(IAddressRepository repository, IMapper mapper)
         {
@@ -32,8 +34,17 @@ namespace Basecode.Services.Services
         /// <returns>A list of Address objects.</returns>
         public async Task<List<Addresses>> RetrieveAllAsync()
         {
-            var addresses = await _repository.RetrieveAllAsync();
-            return addresses.ToList();
+            try
+            {
+                var addresses = await _repository.RetrieveAllAsync();
+                _logger.Info("Address data retrieved successfully");
+                return addresses.ToList();
+            }
+            catch (Exception ex) 
+            {
+                _logger.Error(ex, "Failed to Retrieve Addresses");
+                throw;
+            }
         }
 
         /// <summary>
@@ -42,8 +53,17 @@ namespace Basecode.Services.Services
         /// <param name="AddressDto">The AddressCreationDto object representing the address to be added.</param>
         public async Task AddAsync(AddressCreationDto AddressDto)
         {
-            var AddressModel = _mapper.Map<Addresses>(AddressDto);
-            await _repository.AddAsync(AddressModel);
+            try
+            {
+                var AddressModel = _mapper.Map<Addresses>(AddressDto);
+                await _repository.AddAsync(AddressModel);
+                _logger.Info("Address data added successfully");
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Failed to add address");
+                throw;
+            }
         }
 
         /// <summary>
@@ -53,7 +73,17 @@ namespace Basecode.Services.Services
         /// <returns>The Address object matching the specified identifier, or null if not found.</returns>
         public async Task<Addresses?> GetByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            try
+            {
+                var result = await _repository.GetByIdAsync(id);
+                _logger.Info("Address retrieved successfully");
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Failed to get address");
+                throw;
+            }
         }
 
         /// <summary>
@@ -63,7 +93,15 @@ namespace Basecode.Services.Services
         /// <returns>returns the address model</returns>
         public async Task<Addresses?> GetByApplicantIdAsync(int applicantId)
         {
-            return await _repository.GetByApplicantIdAsync(applicantId);
+            try
+            {
+                return await _repository.GetByApplicantIdAsync(applicantId);
+            }
+            catch (Exception ex) 
+            {
+                _logger.Error(ex, "Failed to get address");
+                throw;
+            }
         }
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Basecode.Services.Utils;
 using Microsoft.AspNetCore.Identity;
+using NLog;
 
 namespace Basecode.Services.Services
 {
@@ -16,19 +17,29 @@ namespace Basecode.Services.Services
         private readonly IJobPostingsRepository _repository;
         private readonly IMapper _mapper;
         private readonly LogContent _logContent = new();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
         public JobPostingsService(IJobPostingsRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
+
         /// <summary>
         /// Retrieves all job postings.
         /// </summary>
         /// <returns>A list of job postings.</returns>
         public async Task<List<JobPostings>> RetrieveAllAsync()
         {
-            var jobPost = await _repository.RetrieveAllAsync();
-            return jobPost.ToList();
+            try
+            {
+                var jobPost = await _repository.RetrieveAllAsync();
+                return jobPost.ToList();
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("JobPostingsService > RetrieveAllAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -37,17 +48,25 @@ namespace Basecode.Services.Services
         /// <param name="jobPostingsDto">The DTO object containing job posting details.</param>
         public async Task AddAsync(JobPostingsCreationDto jobPostingsDto, IdentityUser loggedUser)
         {
-            jobPostingsDto.CreatedBy = loggedUser.UserName;
-            jobPostingsDto.Qualifications = string.Join(", ", jobPostingsDto.QualificationList);
-            jobPostingsDto.Responsibilities = string.Join(", ", jobPostingsDto.ResponsibilityList);
-            var JobPostingsModel = _mapper.Map<JobPostings>(jobPostingsDto);
-            JobPostingsModel.CreatedTime = DateTime.Now;
-            JobPostingsModel.IsDeleted = false;
-            JobPostingsModel.CreatedBy = jobPostingsDto.CreatedBy;
-            JobPostingsModel.UpdatedTime = null;
-            JobPostingsModel.UpdatedBy = null;
+            try
+            {
+                jobPostingsDto.CreatedBy = loggedUser.UserName;
+                jobPostingsDto.Qualifications = string.Join(", ", jobPostingsDto.QualificationList);
+                jobPostingsDto.Responsibilities = string.Join(", ", jobPostingsDto.ResponsibilityList);
+                var JobPostingsModel = _mapper.Map<JobPostings>(jobPostingsDto);
+                JobPostingsModel.CreatedTime = DateTime.Now;
+                JobPostingsModel.IsDeleted = false;
+                JobPostingsModel.CreatedBy = jobPostingsDto.CreatedBy;
+                JobPostingsModel.UpdatedTime = null;
+                JobPostingsModel.UpdatedBy = null;
 
-            await _repository.AddAsync(JobPostingsModel);
+                await _repository.AddAsync(JobPostingsModel);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("JobPostingsService > AddAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -57,7 +76,15 @@ namespace Basecode.Services.Services
         /// <returns>The job posting with the specified ID, or null if not found.</returns>
         public async Task<JobPostings?> GetByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            try
+            {
+                return await _repository.GetByIdAsync(id);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("JobPostingsService > GetByIdAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -66,13 +93,21 @@ namespace Basecode.Services.Services
         /// <param name="JobPostings">The DTO object containing updated job posting details.</param>
         public async Task UpdateAsync(JobPostingsUpdationDto jobPostings, IdentityUser loggedUser)
         {
-            jobPostings.UpdatedBy = loggedUser.UserName;
-            jobPostings.Qualifications = string.Join(", ", jobPostings.QualificationList);
-            jobPostings.Responsibilities = string.Join(", ", jobPostings.ResponsibilityList);
-            var JobPostingsModel = _mapper.Map<JobPostings>(jobPostings);
-            JobPostingsModel.UpdatedTime = DateTime.Now;
-            JobPostingsModel.UpdatedBy = jobPostings.UpdatedBy;
-            await _repository.UpdateAsync(JobPostingsModel);
+            try
+            {
+                jobPostings.UpdatedBy = loggedUser.UserName;
+                jobPostings.Qualifications = string.Join(", ", jobPostings.QualificationList);
+                jobPostings.Responsibilities = string.Join(", ", jobPostings.ResponsibilityList);
+                var JobPostingsModel = _mapper.Map<JobPostings>(jobPostings);
+                JobPostingsModel.UpdatedTime = DateTime.Now;
+                JobPostingsModel.UpdatedBy = jobPostings.UpdatedBy;
+                await _repository.UpdateAsync(JobPostingsModel);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("JobPostingsService > UpdateAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -81,10 +116,18 @@ namespace Basecode.Services.Services
         /// <param name="id">The ID of the job posting to semi-delete.</param>
         public async Task SemiDeleteAsync(int id)
         {
-            var job = await _repository.GetByIdAsync(id);
-            job.IsDeleted = true;
-            job.UpdatedTime = DateTime.Now;
-            await _repository.SemiDeleteAsync(job);
+            try
+            {
+                var job = await _repository.GetByIdAsync(id);
+                job.IsDeleted = true;
+                job.UpdatedTime = DateTime.Now;
+                await _repository.SemiDeleteAsync(job);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("JobPostingsService > SemiDeleteAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -93,7 +136,15 @@ namespace Basecode.Services.Services
         /// <param name="id">The ID of the job posting to permanently delete.</param>
         public async Task PermaDeleteAsync(int id)
         {
-            await _repository.PermaDeleteAsync(id);
+            try
+            {
+                await _repository.PermaDeleteAsync(id);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("JobPostingsService > PermaDeleteAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -103,7 +154,15 @@ namespace Basecode.Services.Services
         /// <returns>The job posting with the specified name, or null if not found.</returns>
         public async Task<JobPostings?> GetByNameAsync(string name)
         {
-            return await _repository.GetByNameAsync(name);
+            try
+            {
+                return await _repository.GetByNameAsync(name);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("JobPostingsService > GetByNameAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -112,9 +171,9 @@ namespace Basecode.Services.Services
         /// <param name="jobPostingCreationDto"> the dto passed to create a job post</param>
         /// <returns>the log content containing the result, errorcode, message </returns>
 
-        /*public LogContent CreateJobPosting(JobPostingsCreationDto jobPostingCreationDto)
+        public async Task<LogContent> CreateJobPosting(JobPostingsCreationDto jobPostingCreationDto)
         {
-            JobPostings job = GetByName(jobPostingCreationDto.Name);
+            var job = await GetByNameAsync(jobPostingCreationDto.Name);
             if (job != null)
             {
                 _logContent.Result = false;
@@ -127,32 +186,32 @@ namespace Basecode.Services.Services
             }
 
             return _logContent;
-        }*/
+        }
 
-        /*public LogContent UpdateJobPosting(JobPostingsUpdationDto jobPostings)
+        public async Task<LogContent> UpdateJobPosting(JobPostingsUpdationDto jobPostings)
         {
-            var job = GetById(jobPostings.Id);
+            var job = await GetByIdAsync(jobPostings.Id);
             if (job != null)
             {
                 // Check if the new name is different from the current name
                 if (job.Name != jobPostings.Name)
                 {
                     // Check if the new name already exists in the table
-                    var existingJob = GetByName(jobPostings.Name);
+                    var existingJob = await GetByNameAsync(jobPostings.Name);
                     if (existingJob != null)
                     {
                         // Another job with the same name already exists
                         _logContent.Result = false;
                         _logContent.ErrorCode = "400. Edit Failed!";
                         _logContent.Message = "Position Name already exists.";
-                        //return _logContent;
+                        return _logContent;
                     }
                     _logContent.Result = true;
-                    //return _logContent;
+                    return _logContent;
                 }
                 //if job exists and job name entered is the same as the current name
                 _logContent.Result = true;
-                //return _logContent;
+                return _logContent;
             }
             else
             {
@@ -162,7 +221,6 @@ namespace Basecode.Services.Services
                 //return _logContent;
             }
             return _logContent;
-        }*/
-
+        }
     }
 }

@@ -4,23 +4,17 @@ using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
+using NLog;
 
 namespace Basecode.Services.Services
 {
-    /// <summary>
-    /// Service class for managing interviewers.
-    /// </summary>
     public class InterviewersService : IInterviewersService
     {
         private readonly IInterviewersRepository _repository;
         private readonly IMapper _mapper;
         private readonly LogContent _logContent = new();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        /// <summary>
-        /// Constructor for InterviewersService.
-        /// </summary>
-        /// <param name="repository">The repository for interviewers data.</param>
-        /// <param name="mapper">The mapper for DTO and entity conversion.</param>
         public InterviewersService(IInterviewersRepository repository, IMapper mapper)
         {
             _repository = repository;
@@ -33,8 +27,16 @@ namespace Basecode.Services.Services
         /// <returns>A list of all interviewers.</returns>
         public async Task<List<Interviewers>> RetrieveAllAsync()
         {
-            var interviews = await _repository.RetrieveAllAsync();
-            return interviews.ToList();
+            try
+            {
+                var interviews = await _repository.RetrieveAllAsync();
+                return interviews.ToList();
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("InterviewersService > RetrieveAllAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -43,8 +45,16 @@ namespace Basecode.Services.Services
         /// <param name="Interviewers">TThe DTO containing the details of the new interviewer.</param>
         public async Task AddAsync(InterviewersCreationDto Interviewers)
         {
-            var InterviewsModel = _mapper.Map<Interviewers>(Interviewers);
-            await _repository.AddAsync(InterviewsModel);
+            try
+            {
+                var InterviewsModel = _mapper.Map<Interviewers>(Interviewers);
+                await _repository.AddAsync(InterviewsModel);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("InterviewersService > AddAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -54,7 +64,15 @@ namespace Basecode.Services.Services
         /// <returns>The interview with the specified ID, or null if not found.</returns>
         public async Task<Interviewers?> GetByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            try
+            {
+                return await _repository.GetByIdAsync(id);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("InterviewersService > GetByIdAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -63,10 +81,18 @@ namespace Basecode.Services.Services
         /// <param name="Interviewers">The DTO containing the details of the updated interviewer.</param>
         public async Task UpdateAsync(InterviewersUpdationDto Interviewers)
         {
-            var InterviewersModel = _mapper.Map<Interviewers>(Interviewers);
-            InterviewersModel.Name = Interviewers.Name;
+            try
+            {
+                var InterviewersModel = _mapper.Map<Interviewers>(Interviewers);
+                InterviewersModel.Name = Interviewers.Name;
 
-            await _repository.UpdateAsync(InterviewersModel);
+                await _repository.UpdateAsync(InterviewersModel);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("InterviewersService > UpdateAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -75,7 +101,15 @@ namespace Basecode.Services.Services
         /// <param name="id">The interview with the specified ID, or null if not found.</param>
         public async Task DeleteAsync(int id)
         {
-            await _repository.DeleteAsync(id);
+            try
+            {
+                await _repository.DeleteAsync(id);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("InterviewersService > DeleteAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -85,7 +119,15 @@ namespace Basecode.Services.Services
         /// <returns>The Interviewer if found; otherwise, null.</returns>
         public async Task<Interviewers?> GetByNameAsync(string name)
         {
-            return await _repository.GetByNameAsync(name);
+            try
+            {
+                return await _repository.GetByNameAsync(name);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("InterviewersService > GetByNameAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
     }

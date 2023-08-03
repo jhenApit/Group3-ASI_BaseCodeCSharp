@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Basecode.Data.Dtos;
 using Basecode.Data.Dtos.Interviews;
 using Basecode.Data.Models;
+using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.Services.Interfaces
 {
@@ -22,5 +23,6 @@ namespace Basecode.Services.Interfaces
         Task<IEnumerable<Interviews>> GetInterviewsByApplicantAsync(int applicantId);
         Task<bool> IsTimeRangeOverlappingAsync(InterviewsCreationDto newInterview);
         Task<bool> IsTimeRangeOverlappingAsync(InterviewsUpdationDto newInterview);
+        Task<bool> GetByApplicantIdAndInterviewTypeAsync(int applicantId, InterviewType interviewType);
     }
 }

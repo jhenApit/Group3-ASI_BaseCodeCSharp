@@ -145,5 +145,37 @@ namespace Basecode.Data.Enums
             Internship
         }
 
+        public enum EmailType
+        {
+            HRCreationAccountEmail,
+
+            //Application and Screening
+            ScreeningEmailNotificationHR,
+            ScreeningEmailNotificationApplicant,
+            ScreeningEmailApplicantID,
+            ScreeningEmailofApproval,
+            ScreeningEmailofRegrets,
+
+            //Interviews
+            InterviewEmailNotificationInterviewer, 
+            InterviewEmailNotificationApplicant,
+            InterviewReminderEmailInterviewer,
+            InterviewReminderEmailHR,
+            InterviewEmailofApprovalApplicantSchedule,
+            InterviewEmailNotificationAcceptedSchedule,
+            InterviewEmailOfApproval,
+            InterviewEmailOfRegrets,
+
+            //Background Check
+            BackgroundCheckEmailofGratitude,
+            BackgroundCheckReminderEmail,
+            BackgroundCheckEmailNotification,
+            BackgroundCheckEmailOfApproval,
+
+            //Job Offer
+            JobOfferEmailOfApproval,
+            JobOfferEmailNotification,
+            JobOfferConfirmationEmail
+        }
     }
 }

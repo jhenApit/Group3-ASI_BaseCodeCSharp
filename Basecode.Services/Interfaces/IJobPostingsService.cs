@@ -14,5 +14,7 @@ namespace Basecode.Services.Interfaces
         Task UpdateAsync(JobPostingsUpdationDto jobPostings, IdentityUser loggedUser);
         Task SemiDeleteAsync(int id);
         Task PermaDeleteAsync(int id);
+        Task<LogContent> CreateJobPosting(JobPostingsCreationDto jobPostingCreationDto);
+        Task<LogContent> UpdateJobPosting(JobPostingsUpdationDto jobPostings);
     }
 }

@@ -61,7 +61,7 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="applicantId">the applicant id set to an address</param>
         /// <returns>returns the address model</returns>
-        public async Task<Addresses?> GetByApplicantId(int applicantId)
+        public async Task<Addresses?> GetByApplicantIdAsync(int applicantId)
         {
             return await _repository.GetByApplicantIdAsync(applicantId);
         }

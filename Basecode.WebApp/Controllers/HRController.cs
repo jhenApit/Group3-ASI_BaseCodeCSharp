@@ -147,13 +147,13 @@ namespace Basecode.WebApp.Controllers
                 //logger to be implemented
                 //var data = _jobPostingsService.CreateJobPosting(jobPostingsCreationDto);
                 
-                if (!data.Result)
+                /*if (!data.Result)
                 {
                     //_logger.Error(_errorHandling.SetLog(data));
                     ViewBag.ErrorMessage = data.Message;
                     return View(jobPostingsCreationDto);
-                }
-                _jobPostingsService.Add(jobPostingsCreationDto);
+                }*/
+                await _jobPostingsService.AddAsync(jobPostingsCreationDto);
                 return RedirectToAction("JobPostList");
             }
             ModelState.Clear();
@@ -175,13 +175,13 @@ namespace Basecode.WebApp.Controllers
                 //logger to be implemented
                 //var data = _jobPostingsService.UpdateJobPosting(jobPostingsUpdationDto);
                 
-                if (!data.Result)
+                /*if (!data.Result)
                 {
                     //_logger.Error(_errorHandling.SetLog(data));
                     ViewBag.ErrorMessage = data.Message;
                     return View(jobPostingsUpdationDto);
-                }
-                _jobPostingsService.Update(jobPostingsUpdationDto);
+                }*/
+                await _jobPostingsService.UpdateAsync(jobPostingsUpdationDto);
                 return RedirectToAction("JobPostList");
             }
             return View("EditJobPost", jobPostingsUpdationDto);
@@ -207,9 +207,9 @@ namespace Basecode.WebApp.Controllers
                 System.IO.File.Delete("wwwroot/applicants/resume/resume.pdf");
             }
             var applicant = await _applicantService.GetByIdAsync(id);
-            var address = await _addressService.GetByIdAsync(applicant.Id);
-            var characterReferences = await _characterReferencesService.GetByApplicantId(applicant.Id);
-            var interviews = _interviewsService.GetByApplicantId(applicant.Id);
+            var address = await _addressService.GetByApplicantIdAsync(applicant.Id);
+            var characterReferences = await _characterReferencesService.GetByApplicantIdAsync(applicant.Id);
+            var interviews = await _interviewsService.GetByApplicantIdAsync(applicant.Id);
             var applicantDetailViewModel = new ApplicantDetailViewModel
             {
                 Applicant = applicant,

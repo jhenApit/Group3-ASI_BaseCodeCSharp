@@ -1,4 +1,4 @@
-﻿ @using Basecode.Data.Enums;
+﻿@using Basecode.Data.Enums;
 @using Basecode.Data.Models;
 @using Basecode.Services.Interfaces;
 @using System.Drawing;
@@ -133,30 +133,35 @@
         </div>
         <!-- CHARACTER REFERENCE -->
         <div class="row text-header text-bold ps-2 mt-3">CHARACTER REFERENCE</div>
-        @foreach (var characterReferences in Model.CharacterReferences)
-        {
-            <div class="row form-row mt-3">
-                <label class="text-bold">Reference 1</label>
-                <div class="row form-row">
-                    <div class="col-4 form-group mt-2">
-                        <label for="name">Full Name </label>
-                        <input class="form-control" id="name" type="text" name="name" value="@characterReferences.Name" disabled />
-                    </div>
-                    <div class="col-4 form-group mt-2">
-                        <label for="relationship">Relationship</label>
-                        <input class="form-control" id="relationship" type="text" name="relationship" value="@characterReferences.Relationship" disabled />
-                    </div>
-                    <div class="col-4 form-group mt-2">
-                        <label for="email">Email Adress</label>
-                        <input class="form-control" id="email" type="text" name="email" value="@characterReferences.Email" disabled />
-                    </div>
-                    <div class="col-4 form-group mt-2">
-                        <label for="number">Phone Number</label>
-                        <input class="form-control" id="number" type="number" name="number" value="@characterReferences.MobileNumber" disabled />
+        @{
+            var num = 0;
+            foreach (var characterReferences in Model.CharacterReferences)
+            {
+                num++;
+                <div class="row form-row mt-3">
+                    <label class="text-bold">Reference @num</label>
+                    <div class="row form-row">
+                        <div class="col-4 form-group mt-2">
+                            <label for="name">Full Name </label>
+                            <input class="form-control" id="name" type="text" name="name" value="@characterReferences.Name" disabled />
+                        </div>
+                        <div class="col-4 form-group mt-2">
+                            <label for="relationship">Relationship</label>
+                            <input class="form-control" id="relationship" type="text" name="relationship" value="@characterReferences.Relationship" disabled />
+                        </div>
+                        <div class="col-4 form-group mt-2">
+                            <label for="email">Email Adress</label>
+                            <input class="form-control" id="email" type="text" name="email" value="@characterReferences.Email" disabled />
+                        </div>
+                        <div class="col-4 form-group mt-2">
+                            <label for="number">Phone Number</label>
+                            <input class="form-control" id="number" type="number" name="number" value="@characterReferences.MobileNumber" disabled />
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         }
+        
 
        
         <!-- ADDITIONAL INFORMATION -->
@@ -320,7 +325,9 @@
                 <tr>
                     @if(Model.Interviews == null || Model.Interviews.Count == 0)
                     {
-                        <p> No upcoming Interviews </p>
+                        <td colspan="4">
+                            <p> No upcoming Interviews </p>
+                        </td>
                     }
                     @foreach(var interviews in Model.Interviews)
                     {

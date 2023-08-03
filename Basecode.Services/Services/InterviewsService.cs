@@ -356,5 +356,10 @@ namespace Basecode.Services.Services
         {
             return await _repository.GetByApplicantIdAndInterviewTypeAsync(applicantId, interviewType);
         }
+
+        public async Task<bool> GetByApplicantIdAndInterviewTypeAsync(int applicantId, InterviewType interviewType)
+        {
+            return await _repository.GetByApplicantIdAndInterviewTypeAsync(applicantId, interviewType);
+        }
     }
 }

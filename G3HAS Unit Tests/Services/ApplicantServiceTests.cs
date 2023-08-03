@@ -128,7 +128,7 @@ namespace G3HAS_Unit_Tests.Services
 				ApplicationStatus = ApplicationStatus.Received,
 				Requirements = Requirements.TBC
 			};
-			string status = "Received";
+			string status = "Rejected";
 
 			_mockRepository.Setup(repo => repo.GetByIdAsync(applicantModel.Id)).ReturnsAsync(applicantModel);
 

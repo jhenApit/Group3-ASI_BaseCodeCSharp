@@ -7,15 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Basecode.Data.ViewModels;
 using Basecode.Data.Models;
 using Basecode.Data.Dtos.Interviews;
-using static Basecode.Data.Enums.Enums;
-using Basecode.Services.Services;
-using Basecode.WebApp.Models;
-using Basecode.Data.Dtos.CurrentHires;
 using Basecode.Data.Dtos.Interviewers;
-using static Basecode.Data.Enums.Enums;
-using Basecode.Services.Services;
-using Basecode.WebApp.Models;
-using Basecode.Data.Dtos.CurrentHires;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -38,7 +30,7 @@ namespace Basecode.WebApp.Controllers
         public HRController(
             IHrEmployeeService service,
             IFileService fileService,
-        IJobPostingsService jobPostingsService, 
+            IJobPostingsService jobPostingsService, 
             IErrorHandling errorHandling, 
             UserManager<IdentityUser> userManager, 
             IApplicantService applicantService,
@@ -59,7 +51,7 @@ namespace Basecode.WebApp.Controllers
             _currentHiresService = currentHiresService;
             _interviewsService = interviewsService;
             _interviewersService = interviewersService;
-             _characterReferencesService = characterReferencesService;
+            _characterReferencesService = characterReferencesService;
         }
 
 
@@ -73,7 +65,7 @@ namespace Basecode.WebApp.Controllers
                 var employees = await _currentHiresService.RetrieveAllAsync();
                 var interviews = await _interviewsService.RetrieveAllAsync();
 
-                DashboardView model = new DashboardView
+                DashboardView model = new ()
                 {
                     User = await _service.GetByUserIdAsync(user),
                     JobCount = jobs.Count(),
@@ -81,6 +73,7 @@ namespace Basecode.WebApp.Controllers
                     EmployeeCount = employees.Count(),
                     Interviews = interviews.OrderBy(x => x.InterviewDate).Take(6).ToList()
                 };
+
                 return View(model);
             }
             catch (Exception e)
@@ -135,7 +128,7 @@ namespace Basecode.WebApp.Controllers
                     return RedirectToAction("JobPostList");
                 }
 
-                JobPostingsUpdationDto jobPostingDto = new JobPostingsUpdationDto
+                JobPostingsUpdationDto jobPostingDto = new ()
                 {
                     Name = jobPosting.Name,
                     Description = jobPosting.Description,

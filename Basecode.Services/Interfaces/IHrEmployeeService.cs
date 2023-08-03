@@ -21,7 +21,7 @@ namespace Basecode.Services.Interfaces
         void Update(HREmployeeUpdationDto hrEmployee);
         void Delete(int id);
         public LogContent CreateHrAccount(HREmployeeCreationDto hrEmployee);
-        public LogContent EditHrAccount(HREmployeeUpdationDto hrEmployee);
+        public Task<LogContent> EditHrAccount(HREmployeeUpdationDto hrEmployee);
         public LogContent Login(string email, string password);
     }
 }

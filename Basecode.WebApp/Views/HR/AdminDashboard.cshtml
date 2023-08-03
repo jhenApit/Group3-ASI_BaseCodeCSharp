@@ -19,9 +19,26 @@
                 <h1 class="m-0 ps-2">@ViewData["Title"]</h1>
             </div>
             <div class="header-details d-flex">
-                <p class="welcome">WELCOME</p>
-                <p class="name"><a id="manage" class="nav-link text-dark text-capitalize" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@Model.User.Name</a></p>
-                <i class='bx bx-user-circle'></i>
+                <p class="welcome m-0">WELCOME</p>
+                @{
+                    string fullName = @Model.User.Name;
+                    string[] fullNameValues = fullName.Split(' ');
+                    string FirstName = fullNameValues[0].Trim();
+
+                }
+                <ul class="p-0 m-0" style="list-style:none;">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle name" id="HelloDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            @FirstName
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="HelloDropdown">
+                            <a id="manage" class="dropdown-item nav-link text-dark text-capitalize" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Manage</a>
+                            <form id="logoutForm" class="dropdown-item dropdown-logout form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                <button id="logout" type="submit" class="nav-link btn btn-link logout-btn text-center border-0 p-0 mx-auto">Logout</button>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
 
@@ -52,13 +69,15 @@
                     </a>
                 </div>
                 <div class="col-4">
-                    <div class="dashboard-cards p-3">
-                        <h3 class="card-title">NEW HIRES</h3>
-                        <div class="card-content p-3">
-                            <i class='bx bxs-user-rectangle card-icon'></i>
-                            <p class="card-value p-3">@Model.EmployeeCount</p>
+                    <a asp-controller="Hr" asp-action="NewHires">
+                        <div class="dashboard-cards p-3">
+                            <h3 class="card-title">NEW HIRES</h3>
+                            <div class="card-content p-3">
+                                <i class='bx bxs-user-rectangle card-icon'></i>
+                                <p class="card-value p-3">@Model.EmployeeCount</p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
 
@@ -97,7 +116,7 @@
                             <h3 class="card-title">UPCOMING INTERVIEWS</h3>
                             @if (Model.Schedules.Count() > 0)
                             {
-                                <a asp-controller="Hr" asp-action="Schedules">
+                                <a asp-controller="Hr" asp-action="Interview">
                                     <p class="d-flex view-all m-0 ms-auto">
                                         View All
                                         <i class='bx bx-chevron-right fs-3'></i>

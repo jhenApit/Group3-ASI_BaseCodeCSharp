@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Basecode.Data.ViewModels;
 using Basecode.Data.Models;
 using Basecode.WebApp.Models;
+using Basecode.Data.Dtos.CurrentHires;
+using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -48,9 +50,11 @@ namespace Basecode.WebApp.Controllers
             _characterReferencesService = characterReferencesService;
         }
 
-
-
-        public IActionResult AdminDashboard()
+		/// <summary>
+		/// Displays the admin dashboard
+		/// </summary>
+		/// <returns>The view containing the admin dashboard</returns>
+		public IActionResult AdminDashboard()
         {
             var user = _userManager.GetUserId(User);
             var model = new DashboardView
@@ -124,6 +128,11 @@ namespace Basecode.WebApp.Controllers
             return View(job);
         }
 
+        /// <summary>
+        /// Allows HR to create a Job Posting
+        /// </summary>
+        /// <param name="jobPostingsCreationDto">Job Posting details</param>
+        /// <returns>Created Job Post</returns>
         [HttpPost]
         public async Task<IActionResult> Add(JobPostingsCreationDto jobPostingsCreationDto)
         {
@@ -151,7 +160,12 @@ namespace Basecode.WebApp.Controllers
 			return View("JobPostList", jobPostingsCreationDto);
 		}
 
-        [HttpPost]
+		/// <summary>
+		/// Allows HR to update Job Posting details
+		/// </summary>
+		/// <param name="jobPostingsUpdationDto">Job Posting details</param>
+		/// <returns>The updated Job Posting details</returns>
+		[HttpPost]
         public async Task<IActionResult> Update(JobPostingsUpdationDto jobPostingsUpdationDto)
         {
             if (ModelState.IsValid)
@@ -177,6 +191,11 @@ namespace Basecode.WebApp.Controllers
             return View("EditJobPost", jobPostingsUpdationDto);
         }
 
+        /// <summary>
+        /// Deletes
+        /// </summary>
+        /// <param name="id">Job Id</param>
+        /// <returns></returns>
         public IActionResult DeleteJob(int id)
         {
             var job = _jobPostingsService.GetById(id);
@@ -186,6 +205,7 @@ namespace Basecode.WebApp.Controllers
             }
             return RedirectToAction("JobPostList");
         }
+
         /// <summary>
         /// Displays the details of a applicant's application.
         /// </summary>
@@ -224,8 +244,13 @@ namespace Basecode.WebApp.Controllers
             
             return View(applicantDetailViewModel);
         }
-        
-        [HttpPost]
+
+		/// <summary>
+		/// Allows HR to update Job Posting details
+		/// </summary>
+		/// <param name="model">Job Posting details</param>
+		/// <returns>Updated Job Post details</returns>
+		[HttpPost]
         public async Task<IActionResult> UpdateJobPosting(JobPostingsUpdationDto model)
         {
             if (ModelState.IsValid)
@@ -290,12 +315,21 @@ namespace Basecode.WebApp.Controllers
 		}
 
         /// <summary>
-        /// Allows HR to view job applicants in a specific job post with different status
+        /// Allows HR to view new hires
         /// </summary>
         /// <returns>Redirect to View Applicants Page</returns>
-        public IActionResult ViewApplicants()
+        public IActionResult NewHires()
         {
-            return View();
+            var currentHires = _currentHiresService.RetrieveAll();
+            var jobPostings = _jobPostingsService.RetrieveAll();
+
+            var newHiresModel = new NewHiresViewModel
+            {
+                CurrentHires = currentHires,
+				jobPostings = jobPostings
+			};
+
+            return View(newHiresModel);
         }
 
         /// <summary>
@@ -318,6 +352,20 @@ namespace Basecode.WebApp.Controllers
 			var applicant = _applicantService.GetById(id);
 			if (applicant != null)
 			{
+                if(status == "Confirmed")
+                {
+                    var hired = new CurrentHiresCreationDto
+                    {
+                        ApplicantId = applicant.Id,
+                        PositionId = applicant.JobId,
+                        HireDate = DateTime.Now
+					};
+				    if(Enum.TryParse(status, out HireStatus parsedStatus))
+                    {
+                        hired.HireStatus = parsedStatus;
+                    }
+                    _currentHiresService.Add(hired);
+				}
 				_applicantService.Update(id, status);
 				return RedirectToAction("JobApplicantsOverview");
 			}

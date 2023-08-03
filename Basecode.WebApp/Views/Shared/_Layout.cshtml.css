@@ -35,3 +35,33 @@ button.accept-policy {
   white-space: nowrap;
   line-height: 60px;
 }
+
+/* properties of the overlay */
+.Alliance-logo:hover .overlay {
+    width: 15rem;
+}
+
+.overlay {
+    position: absolute;
+    top: 0.5rem;
+    left: calc(.75rem + 0.5rem);
+    right: 0;
+    background-color: #EC2224;
+    overflow: hidden;
+    width: 0;
+    height: 3.7rem;
+    transition: .5s ease;
+}
+
+    .overlay .text {
+        color: white;
+        font-size: 20px;
+        position: absolute;
+        top: 50%;
+        left: 45%;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        white-space: nowrap;
+    }
+/**/

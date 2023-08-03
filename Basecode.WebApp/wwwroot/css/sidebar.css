@@ -8,6 +8,44 @@
     font-family: 'Montserrat', sans-serif;
 }
 
+.LinkDiv {
+    transition: 0.4s;
+}
+
+    .LinkDiv:hover {
+        opacity: 0.1;
+        transition:  0.4s;
+    }
+
+/* properties of the overlay */
+.logo-details:hover .overlay {
+    width: 100%;
+}
+
+.overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background-color: #EC2224;
+    overflow: hidden;
+    width: 0;
+    height: 77.5px;
+    transition: .5s ease;
+}
+
+.overlay .text {
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 40%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+}
+/**/
+
 .sidebar {
     position: fixed;
     top: 0;
@@ -220,9 +258,11 @@
     transition: all 0.3s ease;
 }
 
-.sidebar .nav-links li .sub-menu a:hover {
-    opacity: 1;
-    color: #EC2224;
+.sidebar .nav-links li .sub-menu a:hover,
+.active-link a {
+    opacity: 1 !important;
+    color: #EC2224 !important;
+    font-weight: bold !important;
 }
 
 .clicked-sub-menu-item {

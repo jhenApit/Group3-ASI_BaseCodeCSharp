@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using static Basecode.Data.Enums.Enums;
 using static Basecode.Data.Models.CurrentHires;
 
@@ -21,7 +22,7 @@ namespace Basecode.Data.Repositories
 
         public IQueryable<CurrentHires> RetrieveAll()
         {
-            return this.GetDbSet<CurrentHires>();
+            return this.GetDbSet<CurrentHires>().Include(e => e.Applicant);
         }
 
         public void Add(CurrentHires CurrentHires)

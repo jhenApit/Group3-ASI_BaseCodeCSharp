@@ -1,6 +1,7 @@
-﻿@using Basecode.Data.Enums;
+﻿ @using Basecode.Data.Enums;
 @using Basecode.Data.Models;
 @using Basecode.Services.Interfaces;
+@using System.Drawing;
 @using static Basecode.Data.Enums.Enums;
 @model ApplicantDetailViewModel
 @inject IJobPostingsService _jobPostingService;
@@ -8,6 +9,7 @@
     ViewData ["Title"] = "Application Detail";
     Layout = "_SideBarAdmin";
     var job = _jobPostingService.GetById(Model.Applicant.JobId);
+    <link rel="stylesheet" href="~/css/ApplicantDetail.css" />
 }
 
 <!-- Modals are at the bottom -->
@@ -22,12 +24,22 @@
 <div class="body-container">
     <div class="pt-5"></div><div class="pt-2"></div> <!-- a buffer to push content down so that header won't cover it' -->
     <div class="row">
-        <div class="col-auto me-auto">
-            <div class="status px-3 py-1">
-                @EnumHelper.GetEnumDescription(Model.Applicant.ApplicationStatus)
+        <div class="col d-flex align-items-center">
+            <div>
+                <a title="Back to previous page" asp-controller="HR" asp-action="JobApplicantsOverview">
+                    <img src="/images/icons/back-icon.png" class="back-icon" alt="Back Icon" />
+                </a>
             </div>
+            @{
+                Color statusColor = EnumHelper.GetColorForApplicationStatus(Model.Applicant.ApplicationStatus);
+                string colorStyle = $"background-color: {ColorTranslator.ToHtml(statusColor)};";
+                <div class="status px-3 py-1" style="@colorStyle">
+                    @EnumHelper.GetEnumDescription(Model.Applicant.ApplicationStatus)
+                </div>
+            }
         </div>
     </div>
+
     <div class="container row mt-3 mx-auto py-2 px-1 partial-view-selector">
         <div class="d-flex col-auto align-items-center pe-0">
             Select information to view:
@@ -160,15 +172,103 @@
         <!-- Buttons -->
         <div class="row mt-5 justify-content-center">
             <div class="col-auto">
-                <button asp-controller="HR" asp-action="ShortListApplicant" class="btn shortlist px-5 py-2">
-                    SHORTLIST
-                </button>
+                @switch (Model.Applicant.ApplicationStatus)
+                {
+                    case ApplicationStatus.Received:
+                        <form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.Applicant.Id" />
+                            <input type="hidden" name="status" value="Shortlisted" />
+                            <button type="submit" class="btn status-btn status-change-btn">SHORTLIST</button>
+                        </form>
+                        break;
+                    case ApplicationStatus.Shortlisted:
+                        <form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.Applicant.Id" />
+                            <input type="hidden" name="status" value="ForScreening" />
+                            <button type="submit" class="btn status-btn status-change-btn">FOR SCREENING</button>
+                        </form>
+                        break;
+                    case ApplicationStatus.ForScreening:
+                        <form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.Applicant.Id" />
+                            <input type="hidden" name="status" value="ForHRInterview" />
+                            <button type="submit" class="btn status-btn status-change-btn">INVITE TO HR INTERVIEW</button>
+                        </form>
+                        break;
+                    case ApplicationStatus.ForHRInterview:
+                        <form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.Applicant.Id" />
+                            <input type="hidden" name="status" value="ForTechnicalInterview" />
+                            <button type="submit" class="btn status-btn status-change-btn">INVITE TO TECHNICAL INTERVIEW</button>
+                        </form>
+                        break;
+                    case ApplicationStatus.ForTechnicalInterview:
+                        <form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.Applicant.Id" />
+                            <input type="hidden" name="status" value="ForTechnicalExam" />
+                            <button type="submit" class="btn status-btn status-change-btn">INVITE TO TECHNICAL EXAM</button>
+                        </form>
+                        break;
+                    case ApplicationStatus.ForTechnicalExam:
+                        <form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.Applicant.Id" />
+                            <input type="hidden" name="status" value="UndergoingBackgroundCheck" />
+                            <button type="submit" class="btn status-btn status-change-btn">CHECK BACKGROUND</button>
+                        </form>
+                        break;
+                    case ApplicationStatus.UndergoingBackgroundCheck:
+                        <form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.Applicant.Id" />
+                            <input type="hidden" name="status" value="ForFinalInterview" />
+                            <button type="submit" class="btn status-btn status-change-btn">INVITE TO FINAL INTERVIEW</button>
+                        </form>
+                        break;
+                    case ApplicationStatus.ForFinalInterview:
+                        <form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.Applicant.Id" />
+                            <input type="hidden" name="status" value="UndergoingJobOffer" />
+                            <button type="submit" class="btn status-btn status-change-btn">SEND JOB OFFER</button>
+                        </form>
+                        break;
+                    case ApplicationStatus.UndergoingJobOffer:
+                        <form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.Applicant.Id" />
+                            <input type="hidden" name="status" value="Confirmed" />
+                            <button type="submit" class="btn status-btn status-change-btn">CONFIRM</button>
+                        </form>
+                        break;
+                    case ApplicationStatus.Confirmed:
+                        <form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.Applicant.Id" />
+                            <input type="hidden" name="status" value="Onboarding" />
+                            <button type="submit" class="btn status-btn status-change-btn">ONBOARD</button>
+                        </form>
+                        break;
+                    case ApplicationStatus.Onboarding:
+                        <form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.Applicant.Id" />
+                            <input type="hidden" name="status" value="Deployed" />
+                            <button type="submit" class="btn status-btn status-change-btn" style="justify-content: flex-start !important;">DEPLOY</button>
+                        </form>
+                        break;
+                    default:
+                        if (Model.Applicant.ApplicationStatus != ApplicationStatus.Rejected)
+                        {
+                            <a asp-route-id="@Model.Applicant.Id" class="btn status-btn status-change-btn" asp-controller="HR" asp-action="UpdateApplicantStatus" style="justify-content: flex-start !important;">DEPLOY </a>
+                        }
+                        break;
+                }
             </div>
             <div class="col-auto">
                 <!-- A confirmation modal will pop-up -->
-                <button id="RejectApplicant " class="btn reject px-5 py-2" data-bs-toggle="modal" asp-controller="HR" asp-action="RejectApplicant" data-bs-target="#RejectApplicantModal">
-                    REJECT
-                </button>
+                @{
+                    if (Model.Applicant.ApplicationStatus != ApplicationStatus.Rejected)
+                    {
+                        <button id="RejectApplicant " class="btn reject px-5 py-2" data-bs-toggle="modal" asp-controller="HR" asp-action="UpdateApplicantStatus" data-bs-target="#RejectApplicantModal">
+                            REJECT
+                        </button>
+                    }
+                }
             </div>
         </div>
     </div>

@@ -28,6 +28,12 @@
                     <span class="company-name">lliance</span>
                     <span class="company-type">Alliance Software Incorporated</span>
                 </div>
+                <div id="sidebarOpen" class="overlay">
+                    <div class="text">&larr; Public Page</div>
+                </div>
+                <div id="sidebarClosed" class="d-none overlay">
+                    <div class="text">&larr;</div>
+                </div>
             </a>
             <div class="menu-icon">
                 <i class='bx bx-menu'></i>
@@ -64,7 +70,14 @@
                     </ul>
                 </li>
             }
-            <li class="nav-item  @(activeUrl == "JobPostList" ? " clicked" : "" )">
+            @{
+                var JobNavItemClicked = 
+                    activeUrl == "JobPostList" || 
+                    activeUrl == "JobApplicantsOverview" || 
+                    activeUrl == "NewHires" 
+                    ? true : false;
+            }
+            <li class="nav-item  @(JobNavItemClicked ? " clicked" : "" )">
                 <div class="icon-link">
                     <a href="#">
                         <i class='bx bxs-briefcase'></i>
@@ -72,13 +85,19 @@
                     </a>
                     <i class='bx bxs-chevron-down arrow'></i>
                 </div>
-                <ul class="sub-menu">
+                <ul class="sub-menu @(JobNavItemClicked ? "active" : "")">
                     <li><p class="link_name">Jobs</p></li>
-                    <li><a asp-controller="Hr" asp-action="JobPostList" class="sub-menu-item">Job Posting</a></li>
-                    <li><a asp-controller="Hr" asp-action="JobApplicantsOverview" class="sub-menu-item">Applicants</a></li>
+                    <li class="@(activeUrl == "JobPostList" ? "active-link" : "")"><a asp-controller="Hr" asp-action="JobPostList" class="sub-menu-item">Job Posting</a></li>
+                    <li class="@(activeUrl == "JobApplicantsOverview" ? "active-link" : "")"><a asp-controller="Hr" asp-action="JobApplicantsOverview" class="sub-menu-item">Applicants</a></li>
+                    <li class="@(activeUrl == "NewHires" ? "active-link" : "")"><a asp-controller="Hr" asp-action="NewHires" class="sub-menu-item">New Hires</a></li>
                 </ul>
             </li>
-            <li class="nav-item @(activeUrl == "Schedules" ? " clicked" : "" )">
+            @{
+                var ScheduleNavItemClicked =
+                activeUrl == "Interview"
+                ? true : false;
+            }
+            <li class="nav-item @(ScheduleNavItemClicked ? " clicked" : "" )">
                 <div class="icon-link">
                     <a href="#">
                         <i class='bx bxs-calendar-check'></i>
@@ -86,9 +105,9 @@
                     </a>
                     <i class='bx bxs-chevron-down arrow'></i>
                 </div>
-                <ul class="sub-menu">
+                <ul class="sub-menu @(ScheduleNavItemClicked ? "active" : "")">
                     <li><p class="link_name">Schedules</p></li>
-                    <li><a asp-controller="Hr" asp-action="Schedules" class="sub-menu-item">Interviews</a></li>
+                    <li class="@(activeUrl == "Interview" ? "active-link" : "")"><a asp-controller="Hr" asp-action="Interview" class="sub-menu-item">Interviews</a></li>
                 </ul>
             </li>
             <li class="nav-item">

@@ -9,10 +9,8 @@ namespace Basecode.Data.Interfaces
 {
     public interface IAddressRepository
     {
-        IQueryable<Addresses> RetrieveAll();
-        Addresses GetByCity(string city);
-        void Add(Addresses address);
-        Addresses GetById(int id);
-        Addresses GetByApplicantId(int applicantId);
+        Task<IQueryable<Addresses>> RetrieveAllAsync();
+        Task AddAsync(Addresses address);
+        Task<Addresses?> GetByIdAsync(int id);
     }
 }

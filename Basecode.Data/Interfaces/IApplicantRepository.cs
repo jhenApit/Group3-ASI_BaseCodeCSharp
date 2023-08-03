@@ -11,14 +11,11 @@ namespace Basecode.Data.Interfaces
 {
     public interface IApplicantRepository
     {
-        Applicants? GetById(int id);
-        IQueryable<Applicants> RetrieveAll();
-        Applicants? GetByName(string fname, string mname, string lname);
-        IQueryable<Applicants> GetByEmail(string email);
-        void Add(Applicants applicant);
-        Applicants? GetByApplicantId(string applicantId);
-        public bool Update(Applicants applicant);
-
-
+        Task<Applicants?> GetByIdAsync(int id);
+        Task<IQueryable<Applicants>> RetrieveAllAsync();
+        Task<Applicants?> GetByNameAsync(string fname, string mname, string lname);
+        Task AddAsync(Applicants applicant);
+        Task<Applicants?> GetByApplicantIdAsync(string trackerId);
+        Task<IQueryable<Applicants>> GetByEmailAsync(string email);
     }
 }

@@ -22,22 +22,23 @@ namespace Basecode.Services.Services
         /// Retrieves all Interviewers from the repository.
         /// </summary>
         /// <returns>A list of Interviewers.</returns>
-        public List<Interviewers> RetrieveAll()
+        public async Task<List<Interviewers>> RetrieveAllAsync()
         {
-            return _repository.RetrieveAll().ToList();
+            var interviews = await _repository.RetrieveAllAsync();
+            return interviews.ToList();
         }
 
         /// <summary>
         /// Adds a new Interviewer to the repository.
         /// </summary>
         /// <param name="Interviewers">The Interviewer to add.</param>
-        public void Add(Interviewers Interviewers)
+        public async Task AddAsync(Interviewers Interviewers)
         {
             var interviewersModel = new Interviewers();
             interviewersModel.Name = Interviewers.Name;
             interviewersModel.Email = Interviewers.Email;
 
-            _repository.Add(interviewersModel);
+            await _repository.AddAsync(interviewersModel);
         }
 
         /// <summary>
@@ -45,30 +46,30 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="id">The ID of the Interviewer.</param>
         /// <returns>The Interviewer if found; otherwise, null.</returns>
-        public Interviewers? GetById(int id)
+        public async Task<Interviewers?> GetByIdAsync(int id)
         {
-            return _repository.GetById(id);
+            return await _repository.GetByIdAsync(id);
         }
 
         /// <summary>
         /// Updates an Interviewer in the repository.
         /// </summary>
         /// <param name="Interviewers">The Interviewer to update.</param>
-        public void Update(InterviewersUpdationDto Interviewers)
+        public async Task UpdateAsync(InterviewersUpdationDto Interviewers)
         {
             var InterviewersModel = _mapper.Map<Interviewers>(Interviewers);
             InterviewersModel.Name = Interviewers.Name;
 
-            _repository.Update(InterviewersModel);
+            await _repository.UpdateAsync(InterviewersModel);
         }
 
         /// <summary>
         /// Deletes an Interviewer from the repository.
         /// </summary>
         /// <param name="id">The ID of the Interviewer to delete.</param>
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            _repository.Delete(id);
+            await _repository.DeleteAsync(id);
         }
 
         /// <summary>
@@ -76,9 +77,9 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="name">The name of the Interviewer.</param>
         /// <returns>The Interviewer if found; otherwise, null.</returns>
-        public Interviewers? GetByName(string name)
+        public async Task<Interviewers?> GetByNameAsync(string name)
         {
-            return _repository.GetByName(name);
+            return await _repository.GetByNameAsync(name);
         }
 
     }

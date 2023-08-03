@@ -20,25 +20,26 @@ namespace Basecode.Data.Repositories
             _context = context;
         }
 
-        public IQueryable<CurrentHires> RetrieveAll()
+        public async Task<IQueryable<CurrentHires>> RetrieveAllAsync()
         {
-            return this.GetDbSet<CurrentHires>().Include(e => e.Applicant);
+            return await Task.FromResult(this.GetDbSet<CurrentHires>());
         }
 
-        public void Add(CurrentHires CurrentHires)
+        public async Task AddAsync(CurrentHires CurrentHires)
         {
-            _context.CurrentHires.Add(CurrentHires);
-            _context.SaveChanges();
+            await _context.CurrentHires.AddAsync(CurrentHires);
+            await _context.SaveChangesAsync();
         }
 
-        public CurrentHires? GetById(int id)
+        public async Task<CurrentHires?> GetByIdAsync(int id)
         {
-            return _context.CurrentHires.Find(id);
+            return await _context.CurrentHires.FindAsync(id);
         }
 
-        public void Update(CurrentHires CurrentHires)
+        public async Task UpdateAsync(CurrentHires CurrentHires)
         {
-            var existingCurrentHires = _context.CurrentHires.Find(CurrentHires.Id);
+            var existingCurrentHires = await _context.CurrentHires.FindAsync(CurrentHires.Id);
+            
             if (existingCurrentHires != null)
             {
                 // Update the properties of the existing entity
@@ -46,30 +47,30 @@ namespace Basecode.Data.Repositories
                 existingCurrentHires.HireDate = CurrentHires.HireDate;
 
                 // Save the changes
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
 
         }
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var data = _context.CurrentHires.Find(id);
+            var data = await _context.CurrentHires.FindAsync(id);
             if (data != null)
             {
                 _context.CurrentHires.Remove(data);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
 
-        public CurrentHires? GetByPositionId(int positionId)
+        public async Task<CurrentHires?> GetByPositionIdAsync(int positionId)
         {
-            return _context.CurrentHires.FirstOrDefault(e => e.PositionId == positionId);
+            return await _context.CurrentHires.FirstOrDefaultAsync(e => e.PositionId == positionId);
         }
 
-        public CurrentHires? GetByHireStatus(string status)
+        public async Task<CurrentHires?> GetByHireStatusAsync(string status)
         {
             if (Enum.TryParse(status, out HireStatus hireStatus))
             {
-                return _context.CurrentHires.FirstOrDefault(e => e.HireStatus == hireStatus);
+                return await _context.CurrentHires.FirstOrDefaultAsync(e => e.HireStatus == hireStatus);
             }
             return null;
         }

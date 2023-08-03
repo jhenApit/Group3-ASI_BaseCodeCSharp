@@ -10,10 +10,9 @@ namespace Basecode.Services.Interfaces
 {
     public interface ICharacterReferencesService
     {
-        List<CharacterReferences> RetrieveAll();
-        CharacterReferences GetByName(string name);
-        void Add(CharacterReferencesCreationDto characterReferences);
-        CharacterReferences GetById(int id);
-        List<CharacterReferences> GetByApplicantId(int applicantId);
+        Task<List<CharacterReferences>> RetrieveAllAsync();
+        Task<CharacterReferences?> GetByNameAsync(string name);
+        Task AddAsync(CharacterReferencesCreationDto characterReferences);
+        Task<CharacterReferences?> GetByIdAsync(int id);
     }
 }

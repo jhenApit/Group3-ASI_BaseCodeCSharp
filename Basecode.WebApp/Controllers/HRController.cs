@@ -6,13 +6,14 @@ using Basecode.Data.Dtos.JobPostings;
 using Microsoft.AspNetCore.Identity;
 using Basecode.Data.ViewModels;
 using Basecode.Data.Models;
-using Basecode.WebApp.Models;
-using Basecode.Data.Dtos.CurrentHires;
+using Basecode.Data.Dtos.Interviews;
 using static Basecode.Data.Enums.Enums;
+using Basecode.Services.Services;
+using Basecode.WebApp.Models;
 
 namespace Basecode.WebApp.Controllers
 {
-	[Authorize(Roles = "hr,admin")]
+    [Authorize(Roles = "hr,admin")]
     public class HRController : Controller
     {
         private readonly IHrEmployeeService _service;
@@ -20,6 +21,7 @@ namespace Basecode.WebApp.Controllers
         private readonly IApplicantService _applicantService;
         private readonly ICurrentHiresService _currentHiresService;
         private readonly IInterviewsService _interviewsService;
+        private readonly IInterviewersService _interviewersService;
         private readonly IAddressService _addressService;
         private readonly ICharacterReferencesService _characterReferencesService;
         private readonly IErrorHandling _errorHandling; 
@@ -33,37 +35,40 @@ namespace Basecode.WebApp.Controllers
             UserManager<IdentityUser> userManager, 
             IApplicantService applicantService,
             ICurrentHiresService currentHiresService,
-            IInterviewsService interviewersService,
+            IInterviewsService interviewsService,
             IAddressService addressService,
-            ICharacterReferencesService characterReferencesService
+            ICharacterReferencesService characterReferencesService,
+            IInterviewersService interviewersService
             )
         {
             _addressService = addressService;
             _service = service;
             _jobPostingsService = jobPostingsService;
-            _applicantService = applicantService;
             _errorHandling = errorHandling;
             _userManager = userManager;
             _applicantService = applicantService;
             _currentHiresService = currentHiresService;
-            _interviewsService = interviewersService;
-            _characterReferencesService = characterReferencesService;
+            _interviewsService = interviewsService;
+            _interviewersService = interviewersService;
+             _characterReferencesService = characterReferencesService;
         }
 
-		/// <summary>
-		/// Displays the admin dashboard
-		/// </summary>
-		/// <returns>The view containing the admin dashboard</returns>
-		public IActionResult AdminDashboard()
+
+
+        public async Task<IActionResult> AdminDashboard()
         {
             var user = _userManager.GetUserId(User);
-            var model = new DashboardView
+            var jobs = await _jobPostingsService.RetrieveAllAsync();
+            var employees = await _currentHiresService.RetrieveAllAsync();
+            var interviews = await _interviewsService.RetrieveAllAsync();
+
+			DashboardView model = new DashboardView
             {
-                User = _service.GetByUserId(user),
-                JobCount = _jobPostingsService.RetrieveAll().Count(),
-                Candidates = _applicantService.RetrieveAll(),
-                EmployeeCount = _currentHiresService.RetrieveAll().Count(),
-                Schedules = _interviewsService.RetrieveAll()
+                User = await _service.GetByUserIdAsync(user),
+                JobCount = jobs.Count(),
+                Candidates = await _applicantService.RetrieveAllAsync(),
+                EmployeeCount = employees.Count(),
+                Interviews = interviews.OrderBy(x => x.InterviewDate).Take(6).ToList()
             };
             return View(model);
         }
@@ -73,9 +78,9 @@ namespace Basecode.WebApp.Controllers
         /// Displays the list of job posts.
         /// </summary>
         /// <returns>The view containing the job post list.</returns>
-        public IActionResult JobPostList()
+        public async Task<IActionResult> JobPostList()
         {
-            var data = _jobPostingsService.RetrieveAll();
+            var data = await _jobPostingsService.RetrieveAllAsync();
             return View(data);
         }
 
@@ -94,15 +99,14 @@ namespace Basecode.WebApp.Controllers
         /// <returns>The view containing the job post edit form.</returns>
         public async Task<IActionResult> EditJobPost(int id)
         {
-            var jobPosting = _jobPostingsService.GetById(id);
+            var jobPosting = await _jobPostingsService.GetByIdAsync(id);
             var loggedUser = await _userManager.GetUserAsync(User);
 
             if (jobPosting == null)
             {
-                // Handle the case where the job posting is not found, for example, redirect to an error page or show an error message
                 return RedirectToAction("JobPostList");
             }
-            var jobPostingDto = new JobPostingsUpdationDto
+			JobPostingsUpdationDto jobPostingDto = new JobPostingsUpdationDto
             {
                 Name = jobPosting.Name,
                 Description = jobPosting.Description,
@@ -122,17 +126,12 @@ namespace Basecode.WebApp.Controllers
         /// Displays the details of a specific job post.
         /// </summary>
         /// <returns>The view containing the job post details.</returns>
-        public IActionResult ViewJobPost(int id)
+        public async Task<IActionResult> ViewJobPost(int id)
         {
-            var job = _jobPostingsService.GetById(id);
+            var job = await _jobPostingsService.GetByIdAsync(id);
             return View(job);
         }
 
-        /// <summary>
-        /// Allows HR to create a Job Posting
-        /// </summary>
-        /// <param name="jobPostingsCreationDto">Job Posting details</param>
-        /// <returns>Created Job Post</returns>
         [HttpPost]
         public async Task<IActionResult> Add(JobPostingsCreationDto jobPostingsCreationDto)
         {
@@ -145,7 +144,8 @@ namespace Basecode.WebApp.Controllers
                 jobPostingsCreationDto.Qualifications = string.Join(", ", jobPostingsCreationDto.QualificationList);
 				jobPostingsCreationDto.Responsibilities = string.Join(", ", jobPostingsCreationDto.ResponsibilityList);
 				
-                var data = _jobPostingsService.CreateJobPosting(jobPostingsCreationDto);
+                //logger to be implemented
+                //var data = _jobPostingsService.CreateJobPosting(jobPostingsCreationDto);
                 
                 if (!data.Result)
                 {
@@ -160,12 +160,7 @@ namespace Basecode.WebApp.Controllers
 			return View("JobPostList", jobPostingsCreationDto);
 		}
 
-		/// <summary>
-		/// Allows HR to update Job Posting details
-		/// </summary>
-		/// <param name="jobPostingsUpdationDto">Job Posting details</param>
-		/// <returns>The updated Job Posting details</returns>
-		[HttpPost]
+        [HttpPost]
         public async Task<IActionResult> Update(JobPostingsUpdationDto jobPostingsUpdationDto)
         {
             if (ModelState.IsValid)
@@ -177,7 +172,8 @@ namespace Basecode.WebApp.Controllers
                 jobPostingsUpdationDto.Qualifications = string.Join(", ", jobPostingsUpdationDto.QualificationList);
                 jobPostingsUpdationDto.Responsibilities = string.Join(", ", jobPostingsUpdationDto.ResponsibilityList);
                 
-                var data = _jobPostingsService.UpdateJobPosting(jobPostingsUpdationDto);
+                //logger to be implemented
+                //var data = _jobPostingsService.UpdateJobPosting(jobPostingsUpdationDto);
                 
                 if (!data.Result)
                 {
@@ -191,33 +187,27 @@ namespace Basecode.WebApp.Controllers
             return View("EditJobPost", jobPostingsUpdationDto);
         }
 
-        /// <summary>
-        /// Deletes
-        /// </summary>
-        /// <param name="id">Job Id</param>
-        /// <returns></returns>
-        public IActionResult DeleteJob(int id)
+        public async Task<IActionResult> DeleteJob(int id)
         {
-            var job = _jobPostingsService.GetById(id);
+            var job = await _jobPostingsService.GetByIdAsync(id);
             if (job != null)
             {
-                _jobPostingsService.PermaDelete(id);
+                await _jobPostingsService.PermaDeleteAsync(id);
             }
             return RedirectToAction("JobPostList");
         }
-
         /// <summary>
         /// Displays the details of a applicant's application.
         /// </summary>
         /// <returns>The view containing the application details.</returns>
-        public IActionResult ApplicantDetail(int id)
+        public async Task<IActionResult> ApplicantDetail(int id)
         {
-            if(System.IO.File.Exists("wwwroot/applicants/resume/resume.pdf"))
+            if (System.IO.File.Exists("wwwroot/applicants/resume/resume.pdf"))
             {
                 System.IO.File.Delete("wwwroot/applicants/resume/resume.pdf");
             }
-            var applicant = _applicantService.GetById(id);
-            var address = _addressService.GetByApplicantId(applicant.Id);
+            var applicant = await _applicantService.GetByIdAsync(id);
+            var address = await _addressService.GetByIdAsync(applicant.Id);
             var characterReferences = _characterReferencesService.GetByApplicantId(applicant.Id);
             var interviews = _interviewsService.GetByApplicantId(applicant.Id);
             var applicantDetailViewModel = new ApplicantDetailViewModel
@@ -241,16 +231,11 @@ namespace Basecode.WebApp.Controllers
             //puts the resume file to the viewbag 
             ViewBag.ResumeData = File(@"C:\temp\file.pdf", "appliction/pdf");
 
-            
+
             return View(applicantDetailViewModel);
         }
 
-		/// <summary>
-		/// Allows HR to update Job Posting details
-		/// </summary>
-		/// <param name="model">Job Posting details</param>
-		/// <returns>Updated Job Post details</returns>
-		[HttpPost]
+        [HttpPost]
         public async Task<IActionResult> UpdateJobPosting(JobPostingsUpdationDto model)
         {
             if (ModelState.IsValid)
@@ -260,7 +245,7 @@ namespace Basecode.WebApp.Controllers
 
                 if (loggedInUser != null)
                 {
-                    _jobPostingsService.Update(model);
+					await _jobPostingsService.UpdateAsync(model);
                     return RedirectToAction("JobPostList");
                 }
             }
@@ -270,66 +255,37 @@ namespace Basecode.WebApp.Controllers
         }
 
         /// <summary>
-        /// View List of Upcoming Interviews
-        /// </summary>
-        /// <returns>Redirect to Interview Page</returns>
-        public IActionResult Interview()
-        {
-            return View();
-        }
-
-        /// <summary>
-        /// Allows HR to create a new interview entry
-        /// </summary>
-        /// <returns>Redirect to Create Interview Page</returns>
-        public IActionResult CreateInterview()
-        {
-            return View();
-        }
-
-        /// <summary>
-        /// Allows HR to edit an interview
-        /// </summary>
-        /// <returns>Redirect to Edit Interview Page</returns>
-        public IActionResult EditInterview()
-        {
-            return View();
-        }
-
-        /// <summary>
         /// Allows HR to view job applicants
         /// </summary>
         /// <returns>Redirect to Job Applicant Overview Page</returns>
-        public IActionResult JobApplicantsOverview()
+        public async Task<IActionResult> JobApplicantsOverview()
         {
-			var applicants = _applicantService.RetrieveAll();
-            var jobPostings = _jobPostingsService.RetrieveAll();
+            try
+            {
+                var applicants = await _applicantService.RetrieveAllAsync();
+                var jobPostings = await _jobPostingsService.RetrieveAllAsync();
 
-			var jobApplicantsOverviewModel = new JobApplicantOverviewModel
-			{
-				applicants = applicants,
-				jobPostings = jobPostings
-			};
+                var jobApplicantsOverviewModel = new JobApplicantOverviewModel
+                {
+                    applicants = applicants,
+                    jobPostings = jobPostings
+                };
 
-			return View(jobApplicantsOverviewModel);
-		}
+                return View(jobApplicantsOverviewModel);
+            }
+            catch(Exception)
+            {
+                return BadRequest("An error occurred while retrieving the Job Applicant Overview.");
+            }
+        }
 
         /// <summary>
-        /// Allows HR to view new hires
+        /// Allows HR to view job applicants in a specific job post with different status
         /// </summary>
         /// <returns>Redirect to View Applicants Page</returns>
-        public IActionResult NewHires()
+        public IActionResult ViewApplicants()
         {
-            var currentHires = _currentHiresService.RetrieveAll();
-            var jobPostings = _jobPostingsService.RetrieveAll();
-
-            var newHiresModel = new NewHiresViewModel
-            {
-                CurrentHires = currentHires,
-				jobPostings = jobPostings
-			};
-
-            return View(newHiresModel);
+            return View();
         }
 
         /// <summary>
@@ -340,40 +296,216 @@ namespace Basecode.WebApp.Controllers
         {
             return View();
         }
-        /// <summary>
-        /// this will update the applicants status
-        /// </summary>
-        /// <param name="id">the id of the applicant to be updated</param>
-        /// <param name="status">and the status it wants to uupdate to</param>
-        /// <returns>returns the jobapplicant overview view if succesful</returns>
-        [HttpPost]
-        public IActionResult UpdateApplicantStatus(int id, string status)
-        {
-			var applicant = _applicantService.GetById(id);
-			if (applicant != null)
-			{
-                if(status == "Confirmed")
-                {
-                    var hired = new CurrentHiresCreationDto
-                    {
-                        ApplicantId = applicant.Id,
-                        PositionId = applicant.JobId,
-                        HireDate = DateTime.Now
-					};
-				    if(Enum.TryParse(status, out HireStatus parsedStatus))
-                    {
-                        hired.HireStatus = parsedStatus;
-                    }
-                    _currentHiresService.Add(hired);
-				}
-				_applicantService.Update(id, status);
-				return RedirectToAction("JobApplicantsOverview");
-			}
-			else
-			{
-                return RedirectToAction("Index");
-			}
 
-		}
-	}
+        /// <summary>
+        /// Allows HR to view new hires
+        /// </summary>
+        /// <returns>Redirect to View Applicants Page</returns>
+        public async Task<IActionResult> NewHires()
+        {
+            try
+            {
+                var currentHiresList = await _currentHiresService.RetrieveAllAsync();
+                var jobPostingsList = await _jobPostingsService.RetrieveAllAsync();
+
+                var newHiresModel = new NewHiresViewModel
+                {
+                    CurrentHires = currentHiresList,
+                    jobPostings = jobPostingsList
+                };
+
+                return View(newHiresModel);
+            }
+            catch(Exception)
+            {
+                return BadRequest("An error occurred while retriving New Hires.");
+            }
+        }
+
+        #region Interviews
+
+        /// <summary>
+        /// View List of Upcoming Interviews
+        /// </summary>
+        /// <returns>Redirect to Interview Page</returns>
+        public async Task<IActionResult> Interviews()
+        {
+            try
+            {
+                var interviews = await _interviewsService.RetrieveAllAsync();
+
+				var viewModel = new InterviewsViewModel
+                {
+                    Interviewers = new Interviewers(),
+                    InterviewersList = await _interviewersService.RetrieveAllAsync(),
+                    InterviewsList = interviews.OrderBy(x => x.InterviewDate).ToList()
+                };
+                return View(viewModel);
+            } 
+            catch(Exception)
+            {
+                return BadRequest("An error occurred while retriving Interviews.");
+            }
+        }
+
+        /// <summary>
+        /// Create a new interview
+        /// </summary>
+        /// <returns>Redirect to Create Interview Page</returns>
+        public async Task<IActionResult> CreateInterview(int id)
+        {
+            try
+            {
+                var existingIntervewer = await _interviewersService.GetByIdAsync(id);
+
+				if (existingIntervewer != null)
+                {
+                    var viewModel = new InterviewsFormViewModel
+                    {
+                        Interviewer = await _interviewersService.GetByIdAsync(id),
+                        ApplicantsList = await _applicantService.RetrieveAllAsync(),
+                    };
+                    return View(viewModel);
+                }
+                return RedirectToAction("Interviews");
+            }
+            catch (Exception)
+            {
+                return BadRequest("An error occurred while retriving this page.");
+            }
+        }
+
+        /// <summary>
+        /// Add new interview to the database
+        /// </summary>
+        /// <param name="interview">Data</param>
+        /// <returns>Redirect to the interviews page</returns>
+        [HttpPost]
+        public async Task<IActionResult> AddInterview(InterviewsFormViewModel interview)
+        {
+            try
+            {
+                var createInterview = new InterviewsCreationDto
+                {
+                    ApplicantId = interview.ApplicantId,
+                    InterviewerId = interview.InterviewerId,
+                    InterviewType = interview.InterviewType,
+                    InterviewDate = interview.InterviewDate,
+                    TimeStart = interview.TimeStart,
+                    TimeEnd = interview.TimeEnd,
+                };
+                await _interviewsService.AddAsync(createInterview);
+                return RedirectToAction("Interviews");
+            }
+            catch(Exception)
+            {
+                return BadRequest("Error occurred while adding a new interview");
+            }
+        }
+
+        /// <summary>
+        /// Edit an interview
+        /// </summary>
+        /// <returns>Redirect to Edit Interview Page</returns>
+        public async Task<IActionResult> EditInterview(int id)
+        {
+            try
+            {
+                var interviews = await _interviewsService.GetByIdAsync(id);
+                Console.WriteLine(interviews);
+                if (interviews != null)
+                {
+                    var viewModel = new InterviewsFormViewModel
+                    {
+                        Interviewer = await _interviewersService.GetByIdAsync(interviews.InterviewerId),
+                        ApplicantsList = await _applicantService.RetrieveAllAsync(),
+                        ApplicantId = interviews.ApplicantId,
+                        InterviewerId = interviews.InterviewerId,
+                        InterviewType = interviews.InterviewType,
+                        InterviewDate = interviews.InterviewDate,
+                        TimeStart = interviews.TimeStart,
+                        TimeEnd = interviews.TimeEnd
+                    };
+                    return View(viewModel);
+                }
+                return RedirectToAction("Interviews");
+            }
+            catch (Exception)
+            {
+                return BadRequest("An error occurred while retriving this page.");
+            }
+        }
+
+        /// <summary>
+        /// Update an interview in the database
+        /// </summary>
+        /// <param name="interview">Updated Data</param>
+        /// <returns>Redirect to interviews page</returns>
+        [HttpPost]
+        public async Task<IActionResult> UpdateInterview(InterviewsFormViewModel interview)
+        {
+            try
+            {
+                var updateInterview = new InterviewsUpdationDto
+                {
+                    Id = interview.Id,
+                    ApplicantId = interview.ApplicantId,
+                    InterviewerId = interview.InterviewerId,
+                    InterviewType = interview.InterviewType,
+                    InterviewDate = interview.InterviewDate,
+                    TimeStart = interview.TimeStart,
+                    TimeEnd = interview.TimeEnd,
+                };
+                await _interviewsService.UpdateAsync(updateInterview);
+                return RedirectToAction("Interviews");
+            }
+            catch (Exception)
+            {
+                return BadRequest("Error occurred while adding a new interview");
+            }
+        }
+
+        /// <summary>
+        /// Delete an interview
+        /// </summary>
+        /// <param name="id">Interview Id</param>
+        /// <returns>Redirect to interviews page</returns>
+        public async Task<IActionResult> DeleteInterview(int id)
+        {
+            try
+            {
+                await _interviewsService.DeleteAsync(id);
+                return RedirectToAction("Interviews");
+            }
+            catch
+            {
+                return BadRequest("Delete Failed");
+            }
+        }
+
+        #endregion
+
+        #region Interviewers
+
+        /// <summary>
+        /// Adds interviewers to the database
+        /// </summary>
+        /// <param name="interviewers">Data</param>
+        /// <returns>Redirects to the Interviews Page</returns>
+        [HttpPost]
+        public async Task<IActionResult> AddInterviewer(Interviewers interviewers)
+        {
+            try
+            {
+                await _interviewersService.AddAsync(interviewers);
+                return RedirectToAction("Interviews");
+            }
+            catch (Exception)
+            {
+                return BadRequest("An error happend while adding an interviewer.");
+            }
+        }
+
+        #endregion
+    }
 }

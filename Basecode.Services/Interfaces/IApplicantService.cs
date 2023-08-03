@@ -12,13 +12,11 @@ namespace Basecode.Services.Interfaces
 {
     public interface IApplicantService
     {
-        Applicants GetById(int id);
-        List<Applicants> RetrieveAll();
-        Applicants GetByName(string fname, string mname, string lname);
-        List<Applicants> GetByEmail(string email);
-        int Add(ApplicantCreationDto applicant);
-        bool Update(int id, string status);
-		Applicants GetByApplicantId(string trackerId);
-        public LogContent AddApplicantLogContent(ApplicantCreationDto applicant);
+        Task <Applicants?> GetByIdAsync(int id);
+        Task<List<Applicants>> RetrieveAllAsync();
+        Task<Applicants?> GetByNameAsync(string fname, string mname, string lname);
+        Task<int> AddAsync(ApplicantCreationDto applicant);
+        Task<Applicants> GetByApplicantIdAsync(string trackerId);
+        Task<List<Applicants>> GetByEmailAsync(string email);
     }
 }

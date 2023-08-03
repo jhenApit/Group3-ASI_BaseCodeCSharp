@@ -10,6 +10,7 @@ using Basecode.Data.Dtos.Interviews;
 using static Basecode.Data.Enums.Enums;
 using Basecode.Services.Services;
 using Basecode.WebApp.Models;
+using Basecode.Data.Dtos.CurrentHires;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -276,6 +277,40 @@ namespace Basecode.WebApp.Controllers
             catch(Exception)
             {
                 return BadRequest("An error occurred while retrieving the Job Applicant Overview.");
+            }
+        }
+
+        /// <summary>
+        /// this will update the applicants status
+        /// <param name="id">the id of the applicant to be updated</param>
+        /// <param name="status">and the status it wants to uupdate to</param>
+        /// <returns>returns the jobapplicant overview view if succesful</returns>
+        [HttpPost]
+        public async Task<IActionResult> UpdateApplicantStatus(int id, string status)
+        {
+            var applicant = await _applicantService.GetByIdAsync(id);
+            if (applicant != null)
+            {
+                if (status == "Confirmed")
+                {
+                    var hired = new CurrentHiresCreationDto
+                    {
+                        ApplicantId = applicant.Id,
+                        PositionId = applicant.JobId,
+                        HireDate = DateTime.Now
+                    };
+                    if (Enum.TryParse(status, out HireStatus parsedStatus))
+                    {
+                        hired.HireStatus = parsedStatus;
+                    }
+                    await _currentHiresService.AddAsync(hired);
+                }
+                await _applicantService.UpdateAsync(id, status);
+                return RedirectToAction("JobApplicantsOverview");
+            }
+            else
+            {
+                return RedirectToAction("Index");
             }
         }
 

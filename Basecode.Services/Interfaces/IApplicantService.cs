@@ -16,6 +16,7 @@ namespace Basecode.Services.Interfaces
         Task<List<Applicants>> RetrieveAllAsync();
         Task<Applicants?> GetByNameAsync(string fname, string mname, string lname);
         Task<int> AddAsync(ApplicantCreationDto applicant);
+        Task<bool> UpdateAsync(int id, string status);
         Task<Applicants> GetByApplicantIdAsync(string trackerId);
         Task<List<Applicants>> GetByEmailAsync(string email);
     }

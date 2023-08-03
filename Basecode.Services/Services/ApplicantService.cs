@@ -45,7 +45,39 @@ namespace Basecode.Services.Services
             await _repository.AddAsync(applicantModel);
             return applicantModel.Id;
         }
-        
+
+        /// <summary>
+        /// display the status being passed.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdateAsync(int id, string status)
+        {
+            var applicantModel = await _repository.GetByIdAsync(id);
+            if (applicantModel != null)
+            {
+                Console.WriteLine("applicant is in table.");
+                if (Enum.TryParse(status, out ApplicationStatus parsedStatus))
+                {
+                    var applicant = new ApplicantsUpdationDto
+                    {
+                        Id = applicantModel.Id,
+                        ApplicationStatus = parsedStatus
+                    };
+                    Console.WriteLine("applicant is updated." + parsedStatus);
+                    var applicantMapper = _mapper.Map<Applicants>(applicant);
+                    return  _repository.Update(applicantMapper);
+                }
+                return false;
+            }
+
+            else
+            {
+                // Handle the case where the provided status is not a valid ApplicationStatus enum value
+                // You may throw an exception, log an error, or take any other appropriate action.
+                return false;
+            }
+        }
 
         public async Task<Applicants?> GetByApplicantIdAsync(string applicantId)
         {

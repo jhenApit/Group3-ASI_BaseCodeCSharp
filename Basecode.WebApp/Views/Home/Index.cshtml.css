@@ -7,11 +7,11 @@
     text-align: center;
 }
 
-.btn-primary {
+#button{
     border: .2rem solid #FC1F22;
     background: none !important;
 }
 
-    .btn-primary:hover {
+    #button:hover {
         background-color: #FC1F22 !important;
     }

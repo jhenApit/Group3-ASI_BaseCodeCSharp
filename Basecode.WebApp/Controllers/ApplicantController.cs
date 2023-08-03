@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using AutoMapper;
 using Basecode.Data.Dtos.CurrentHires;
 using Basecode.Data.Models;
 using Basecode.Data.ViewModels;
@@ -6,30 +7,39 @@ using Basecode.Services.Interfaces;
 using Basecode.Services.Services;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
+using NLog.Layouts;
+using static System.Net.Mime.MediaTypeNames;
 using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.WebApp.Controllers
 {
     public class ApplicantController : Controller
     {
-        private readonly IEmailService _emailService;
 		private readonly ICurrentHiresService _currentHiresService;
 		private readonly IApplicantService _applicantService;
         private readonly IAddressService _addressService;
         private readonly ICharacterReferencesService _characterService;
         private readonly IJobPostingsService _jobPostingsService;
         private readonly IErrorHandling _errorHandling;
+        private readonly ISendEmailService _sendEmailService;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly IMapper _mapper;
+        private readonly IInterviewsService _interviewsService;
 
-        public ApplicantController(IErrorHandling errorHandling, ICurrentHiresService currentHiresService, IJobPostingsService jobPostingsService, IEmailService emailService, IApplicantService applicantService, IAddressService addressService, ICharacterReferencesService characterService)
+        public ApplicantController(IErrorHandling errorHandling, ICurrentHiresService currentHiresService, 
+                                   IJobPostingsService jobPostingsService, IApplicantService applicantService, 
+                                   IAddressService addressService, ICharacterReferencesService characterService,
+                                   ISendEmailService sendEmailService, IMapper mapper, IInterviewsService interviewsService)
         {
-            _emailService = emailService;
             _applicantService = applicantService;
             _addressService = addressService;
 			_currentHiresService = currentHiresService;
 			_characterService = characterService;
             _jobPostingsService = jobPostingsService;
             _errorHandling = errorHandling;
+            _sendEmailService = sendEmailService;
+            _mapper = mapper;
+            _interviewsService = interviewsService;
         }
 
         /// <summary>
@@ -116,23 +126,68 @@ namespace Basecode.WebApp.Controllers
 			try
 			{
 				var applicant = await _applicantService.GetByIdAsync(id);
-				if (status == "Confirmed")
+                var interview = await _interviewsService.GetByIdAsync(id);
+                var characterReference = await _characterService.GetByIdAsync(id);
+
+				if (applicant != null)
 				{
-					var hired = new CurrentHiresCreationDto
-					{
-						ApplicantId = applicant.Id,
-						PositionId = applicant.JobId,
-						HireDate = DateTime.Now
-					};
-					if (Enum.TryParse(status, out HireStatus parsedStatus))
-					{
-						hired.HireStatus = parsedStatus;
-					}
-					await _currentHiresService.AddAsync(hired);
+                    if (status.Contains("Interview") || status.Contains("Exam"))
+                    {
+                        await _sendEmailService.SendHrInterviewApprovalEmail(interview!);
+                    }
+                    else
+                    {
+                        if (status == "For Screening")
+                        {
+                            //Send an email notification to HR to proceed with screening applicant
+                            await _sendEmailService.SendHrApplicationApprovalEmail(applicant);
+                        }
+
+                        if (status == "Rejected")
+                        {
+                            //Send an email of regret to applicant if the application was rejected
+                            await _sendEmailService.SendApplicantApplicationRegretEmail(applicant);
+                        }
+
+                        if (status == "Undergoing Background Check")
+                        {
+                            //Sends an email to request a character reference from a given character reference contact.
+                            await _sendEmailService.SendReferenceFormEmail(characterReference!, applicant);
+                        }
+                        
+                        if (status == "Undergoing Job Offer")
+                        {
+                            //Sends an email to an applicant containing a job offer with details about the job, work setup, and hours.
+                            await _sendEmailService.SendApplicantJobOfferEmail(applicant);
+                        }
+
+                        if (status == "Confirmed")
+                        {
+                            var hired = new CurrentHiresCreationDto
+                            {
+                                ApplicantId = applicant.Id,
+                                PositionId = applicant.JobId,
+                                HireDate = DateTime.Now
+                            };
+                            if (Enum.TryParse(status, out HireStatus parsedStatus))
+                            {
+                                hired.HireStatus = parsedStatus;
+                            }
+                            await _currentHiresService.AddAsync(hired);
+                        }
+                    }
+
+					await _applicantService.UpdateAsync(id, status);
+
+                   // Sends email notifications regarding the application status to the applicant and HR Team.
+                    await _sendEmailService.SendApplicationStatusEmail(applicant, status);
+
+					return RedirectToAction("JobApplicantsOverview");
 				}
-				await _applicantService.UpdateAsync(id, status);
-                _logger.Info(applicant.Id + " status updated to:" + status);
-				return RedirectToAction("JobApplicantsOverview","HR");
+				else
+				{
+					return RedirectToAction("Index");
+				}
 			}
 			catch (Exception e)
 			{
@@ -165,9 +220,13 @@ namespace Basecode.WebApp.Controllers
                 // Use the service method to handle the logic
                 var isApplicantAdded = await _applicantService.AddApplicantAsync(model, resumeFile, photo);
 
+                var applicant = _mapper.Map<Applicants>(model);
+
                 if (isApplicantAdded)
                 {
-                    // Applicant was successfully added
+                    //Sends email notifications when a new applicant submits an application form.
+                    await _sendEmailService.SendNewApplicantEmail(applicant);
+
                     return RedirectToAction("TrackApplication", new { from = "application" });
                 }
                 else

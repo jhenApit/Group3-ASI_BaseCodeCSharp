@@ -8,7 +8,7 @@ using Basecode.Data.ViewModels;
 using Basecode.Data.Models;
 using Basecode.Data.Dtos.Interviews;
 using Basecode.Data.Dtos.Interviewers;
-using Basecode.Data.Enums;
+using AutoMapper;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -27,6 +27,9 @@ namespace Basecode.WebApp.Controllers
         private readonly IErrorHandling _errorHandling; 
         private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly ISendEmailService _sendEmailService;
+        private readonly IMapper _mapper;
+        private readonly IMeetingLinkService _meetingLinkService;
 
         public HRController(
             IHrEmployeeService service,
@@ -39,7 +42,9 @@ namespace Basecode.WebApp.Controllers
             IInterviewsService interviewsService,
             IAddressService addressService,
             ICharacterReferencesService characterReferencesService,
-            IInterviewersService interviewersService
+            IInterviewersService interviewersService,
+            ISendEmailService sendEmailService,
+            IMapper mapper, IMeetingLinkService meetingLinkService
             )
         {
             _addressService = addressService;
@@ -426,6 +431,13 @@ namespace Basecode.WebApp.Controllers
                     return BadRequest("Inputed Date and Time ovelrap with other Interviews.");
                 }
                 await _interviewsService.AddAsync(createInterview);
+
+                var interviewSched = _mapper.Map<Interviews>(createInterview);
+                var applicant = await _applicantService.GetByIdAsync(interviewSched.ApplicantId);
+                
+                //Send email notification to Interviewer and applicant once the interview/examination schedule was set
+                await _sendEmailService.SendSetInterviewScheduleEmail(interviewSched, applicant!);
+                
                 return RedirectToAction("Interviews");
             }
             catch(Exception)
@@ -558,7 +570,7 @@ namespace Basecode.WebApp.Controllers
         {
             try
             {
-                Console.WriteLine("Heere" + id);
+                Console.WriteLine("Here" + id);
                 await _interviewersService.DeleteAsync(id);
                 return RedirectToAction("Interviews");
             }

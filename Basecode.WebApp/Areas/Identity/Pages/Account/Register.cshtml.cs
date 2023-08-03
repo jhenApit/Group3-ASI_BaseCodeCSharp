@@ -18,11 +18,10 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
-using Basecode.Data.Dtos;
 using Basecode.Data.Dtos.HrEmployee;
 using Basecode.Data.Dtos.Interviewers;
 using Basecode.Data.Models;
+using AutoMapper;
 
 namespace Basecode.WebApp.Areas.Identity.Pages.Account
 {
@@ -33,30 +32,33 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
         private readonly IUserStore<IdentityUser> _userStore;
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IHrEmployeeService _hr_service;
         private readonly IInterviewersService _interviewers_service;
+        private readonly ISendEmailService _sendEmailService;
+        private readonly IMapper _mapper;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender,
             RoleManager<IdentityRole> roleManager,
             IHrEmployeeService hr_service,
-            IInterviewersService interviewers_service)
+            IInterviewersService interviewers_service,
+            ISendEmailService sendEmailService,
+            IMapper mapper)
         {
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
             _roleManager = roleManager;
             _hr_service = hr_service;
+            _sendEmailService = sendEmailService;
             _interviewers_service = interviewers_service;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -90,7 +92,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
             public string FirstName { get; set; }
             [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Name must contain only letters")]
             [Display(Name = "Middle Name")]
-            public string? MiddleName { get; set; }
+            public string MiddleName { get; set; }
             [Required]
             [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Name must contain only letters")]
             [Display(Name = "Last Name")]
@@ -166,7 +168,7 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
 
                 var user = CreateUser();
 
-                //create a employee entity
+                //Create Employee Entity
                 var hrEmployee = new HREmployeeCreationDto
                 {
                     Name = string.IsNullOrEmpty(Input.MiddleName)
@@ -200,9 +202,16 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     hrEmployee.UserId = user.Id;
+
+                    hrEmployee.Password = user.PasswordHash;
+                    
                     //save user to employees table
                     hrEmployee.Password = user.PasswordHash;
+                    
                     await _hr_service.AddAsync(hrEmployee);
+                    
+                    var newHrEmployee = _mapper.Map<HrEmployee>(hrEmployee);
+                    await _sendEmailService.SendHrDetailsEmail(newHrEmployee, newHrEmployee.Password);
 
                     var interviewerEntry = new InterviewersCreationDto
                     {

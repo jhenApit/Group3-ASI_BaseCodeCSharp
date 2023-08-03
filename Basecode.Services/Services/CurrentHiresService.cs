@@ -10,6 +10,7 @@ using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
+using NLog;
 using static Basecode.Services.Utils.ErrorHandling;
 
 namespace Basecode.Services.Services
@@ -18,7 +19,7 @@ namespace Basecode.Services.Services
     {
         private readonly ICurrentHiresRepository _repository;
         private readonly IMapper _mapper;
-        private readonly LogContent _logContent = new();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public CurrentHiresService(ICurrentHiresRepository repository, IMapper mapper)
         {
@@ -27,39 +28,95 @@ namespace Basecode.Services.Services
         }
         public async Task<List<CurrentHires>> RetrieveAllAsync()
         {
-            var currentHires = await _repository.RetrieveAllAsync();
-            return currentHires.ToList();
+            try
+            {
+                var currentHires = await _repository.RetrieveAllAsync();
+                return currentHires.ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("CurrentHiresService > RetrieveAllAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         public async Task AddAsync(CurrentHiresCreationDto CurrentHires)
         {
-            var CurrentHiresModel = _mapper.Map<CurrentHires>(CurrentHires);
-            await _repository.AddAsync(CurrentHiresModel);
+            try
+            {
+                var CurrentHiresModel = _mapper.Map<CurrentHires>(CurrentHires);
+                await _repository.AddAsync(CurrentHiresModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("CurrentHiresService > AddAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         public async Task<CurrentHires?> GetByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            try
+            {
+                return await _repository.GetByIdAsync(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("CurrentHiresService > GetByIdAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         public async Task UpdateAsync(CurrentHiresUpdationDto CurrentHires)
         {
-            var CurrentHiresModel = _mapper.Map<CurrentHires>(CurrentHires);
-            await _repository.UpdateAsync(CurrentHiresModel);
+            try
+            {
+                var CurrentHiresModel = _mapper.Map<CurrentHires>(CurrentHires);
+                await _repository.UpdateAsync(CurrentHiresModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("CurrentHiresService > UpdateAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         public async Task DeleteAsync(int id)
         {
-            await _repository.DeleteAsync(id);
+            try
+            {
+                await _repository.DeleteAsync(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("CurrentHiresService > DeleteAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         public async Task<CurrentHires?> GetByPositionIdAsync(int positionId)
         {
-            return await _repository.GetByPositionIdAsync(positionId);
+            try
+            {
+                return await _repository.GetByPositionIdAsync(positionId);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("CurrentHiresService > GetByPositionIdAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
         public async Task<CurrentHires?> GetByHireStatusAsync(string status)
         {
-            return await _repository.GetByHireStatusAsync(status);
+            try
+            {
+                return await _repository.GetByHireStatusAsync(status);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("CurrentHiresService > GetByHireStatusAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
     }

@@ -94,7 +94,15 @@ namespace Basecode.Services.Services
         /// <returns>returns the address model</returns>
         public async Task<Addresses?> GetByApplicantIdAsync(int applicantId)
         {
-            return await _repository.GetByApplicantIdAsync(applicantId);
+            try
+            {
+                return await _repository.GetByApplicantIdAsync(applicantId);
+            }
+            catch (Exception ex) 
+            {
+                _logger.Error(ex, "Failed to get address");
+                throw;
+            }
         }
     }
 }

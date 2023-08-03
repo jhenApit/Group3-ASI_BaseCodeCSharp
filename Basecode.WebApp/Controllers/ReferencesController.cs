@@ -1,6 +1,7 @@
 ﻿using Basecode.Data.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Basecode.Services.Interfaces;
+using NLog;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -8,6 +9,7 @@ namespace Basecode.WebApp.Controllers
     {
         public readonly IReferenceFormsService _service;
         public readonly ICharacterReferencesService _characterReferencesService;
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public ReferencesController(IReferenceFormsService service, ICharacterReferencesService characterReferencesService)
         {
@@ -27,12 +29,20 @@ namespace Basecode.WebApp.Controllers
         [HttpPost]
         public IActionResult ToPage2(ReferenceFormsCreationDto referenceFormsCreationDto)
         {
-            TempData["Answer1"] = referenceFormsCreationDto.Answer1;
-            TempData["Answer2"] = referenceFormsCreationDto.Answer2;
-            TempData["Answer3"] = referenceFormsCreationDto.Answer3;
-            TempData["Answer4"] = referenceFormsCreationDto.Answer4;
-            TempData["Answer5"] = referenceFormsCreationDto.Answer5;
-            return RedirectToAction("Page2");
+            try
+            {
+                TempData["Answer1"] = referenceFormsCreationDto.Answer1;
+                TempData["Answer2"] = referenceFormsCreationDto.Answer2;
+                TempData["Answer3"] = referenceFormsCreationDto.Answer3;
+                TempData["Answer4"] = referenceFormsCreationDto.Answer4;
+                TempData["Answer5"] = referenceFormsCreationDto.Answer5;
+                return RedirectToAction("Page2");
+            }
+            catch (Exception ex) 
+            {
+                _logger.Error("Error Occured: Failed to retrive data");
+                return BadRequest(ex.Message);
+            }
         }
 
         public IActionResult Page2()
@@ -43,19 +53,21 @@ namespace Basecode.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Submit(ReferenceFormsCreationDto referenceFormsCreationDto)
         {
-            var id = 1; //temporary
-            var existingRef = await _characterReferencesService.GetByIdAsync(id);
-
-			if (existingRef == null)
+            try
             {
-                //error
-                return View("Error");
-            }
-            referenceFormsCreationDto.CharacterReferenceId = id; //temporary
+                var id = 1; //temporary
+                var existingRef = await _characterReferencesService.GetByIdAsync(id);
+                referenceFormsCreationDto.CharacterReferenceId = id; //temporary
 
-            await _service.AddAsync(referenceFormsCreationDto);
-            TempData.Clear();
-            return RedirectToAction("Index", "Home");
+                await _service.AddAsync(referenceFormsCreationDto);
+                TempData.Clear();
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Error Occured: Failed to retrive data");
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

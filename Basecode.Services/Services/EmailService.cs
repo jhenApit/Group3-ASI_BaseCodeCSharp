@@ -6,12 +6,16 @@ using System.Net.Mail;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using NLog;
 
 namespace Basecode.Services.Services
 {
+
 	public class EmailService : IEmailService
 	{
-		public async Task SendEmail(string recipient, string subject, string body)
+
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        public async Task SendEmail(string recipient, string subject, string body)
 		{
 			try
 			{
@@ -30,13 +34,15 @@ namespace Basecode.Services.Services
 						await smtpClient.SendMailAsync(mailMessage);
 					}
 				}
-
+				_logger.Info("Email sent successfully.");
 				Console.WriteLine("Email sent successfully.");
 			}
 			catch (Exception ex)
 			{
 				Console.WriteLine("ERR! Failed to send email: " + ex.Message);
-			}
+                _logger.Error("EmailService > SendEmail > Failed:" + ex.Message);
+                throw;
+            }
 		}
 
 	}

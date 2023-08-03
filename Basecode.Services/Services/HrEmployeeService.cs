@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 using System.Net.NetworkInformation;
 using static Basecode.Data.Constants;
 
@@ -24,6 +25,7 @@ namespace Basecode.Services.Services
         private readonly LogContent _logContent = new();
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
 
         public HrEmployeeService(IHrEmployeeRepository repository, IMapper mapper, SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
@@ -39,8 +41,16 @@ namespace Basecode.Services.Services
         /// <returns>List of HR employees</returns>
         public async Task<List<HrEmployee>> RetrieveAllAsync()
         {
-            var hr = await _repository.RetrieveAllAsync();
-            return hr.ToList();
+            try
+            {
+                var hr = await _repository.RetrieveAllAsync();
+                return hr.ToList();
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("HrEmployeeService > RetrieveAllAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -49,9 +59,16 @@ namespace Basecode.Services.Services
         /// <param name="hrEmployeeDto">The DTO object containing the information of the HR employee to be added</param>
         public async Task AddAsync(HREmployeeCreationDto hrEmployeeDto)
         {
-            var hrEmployeeModel = _mapper.Map<HrEmployee>(hrEmployeeDto);
-
-            await _repository.AddAsync(hrEmployeeModel);
+            try
+            {
+                var hrEmployeeModel = _mapper.Map<HrEmployee>(hrEmployeeDto);
+                await _repository.AddAsync(hrEmployeeModel);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("HrEmployeeService > AddAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -61,11 +78,27 @@ namespace Basecode.Services.Services
         /// <returns>The HR employee object</returns>
         public async Task<HrEmployee?> GetByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            try
+            {
+                return await _repository.GetByIdAsync(id);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("HrEmployeeService > GetByIdAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
         public async Task<HrEmployee> GetByUserIdAsync(string id)
         {
-            return await _repository.GetByUserIdAsync(id);
+            try
+            {
+                return await _repository.GetByUserIdAsync(id);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("HrEmployeeService > GetByUserIdAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
         /// <summary>
         /// Updates an existing HR employee in the repository.
@@ -73,16 +106,24 @@ namespace Basecode.Services.Services
         /// <param name="hrEmployee">The DTO object containing the updated information of the HR employee</param>
         public async Task UpdateAsync(HREmployeeUpdationDto hrEmployee)
         {
-            var hrEmployeeModel = _mapper.Map<HrEmployee>(hrEmployee);
+            try
+            {
+                var hrEmployeeModel = _mapper.Map<HrEmployee>(hrEmployee);
 
-            // Update only the properties that should be modified
-            hrEmployeeModel.Name = hrEmployee.Name;
-            hrEmployeeModel.Email = hrEmployee.Email;
-            hrEmployeeModel.Password = hrEmployee.Password;
-            hrEmployeeModel.ModifiedBy = hrEmployee.ModifiedBy;
-            hrEmployeeModel.ModifiedDate = DateTime.Now;
+                // Update only the properties that should be modified
+                hrEmployeeModel.Name = hrEmployee.Name;
+                hrEmployeeModel.Email = hrEmployee.Email;
+                hrEmployeeModel.Password = hrEmployee.Password;
+                hrEmployeeModel.ModifiedBy = hrEmployee.ModifiedBy;
+                hrEmployeeModel.ModifiedDate = DateTime.Now;
 
-            await _repository.UpdateAsync(hrEmployeeModel);
+                await _repository.UpdateAsync(hrEmployeeModel);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("HrEmployeeService > UpdateAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -91,7 +132,15 @@ namespace Basecode.Services.Services
         /// <param name="id">The ID of the HR employee to permanently delete</param>
         public async Task DeleteAsync(int id)
         {
-            await _repository.DeleteAsync(id);
+            try
+            {
+                await _repository.DeleteAsync(id);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("HrEmployeeService > DeleteAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -101,30 +150,16 @@ namespace Basecode.Services.Services
         /// <returns>The HR employee object</returns>
         public async Task<HrEmployee?> GetByEmailAsync(string email)
         {
-            return await _repository.GetByEmailAsync(email);
+            try
+            {
+                return await _repository.GetByEmailAsync(email);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("HrEmployeeService > GetByEmailAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
-
-        /// <summary>
-        /// Creates an HR account and logs the error content if the account creation fails.
-        /// </summary>
-        /// <param name="hrEmployee">The DTO object containing the information of the HR employee to be created</param>
-        /// <returns>The log content upon creating a HR account</returns>
-        /*public LogContent CreateHrAccount(HREmployeeCreationDto hrEmployee)
-        {
-            HrEmployee hr = await GetByEmailAsync(hrEmployee.Email);
-            if (hr != null)
-            {
-                _logContent.Result = false;
-                _logContent.ErrorCode = "400";
-                _logContent.Message = "Email already registered.";
-            }
-            else
-            {
-                _logContent.Result = true;
-            }
-
-            return _logContent;
-        }*/
 
         /// <summary>
         /// Edits an HR account and logs the error content if the edit fails.

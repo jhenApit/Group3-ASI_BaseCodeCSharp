@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/CreateJobPost.css" />
+    <script src="https://kit.fontawesome.com/b68ff1da95.js" crossorigin="anonymous"></script>
 }
 
 <div class="container-header shadow-sm">
@@ -20,15 +21,23 @@
 <form method="post" asp-controller="HR" asp-action="Add" class="mt-5">
     <div class="content">
         <p>Input all the required details to add a new job post.</p>
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <div class="alert alert-danger" role="alert">
+                <pre>@ViewBag.ErrorMessage</pre>
+            </div>
+        }
         <div class="input-container">
             <label for="position">Position:</label>
             <input asp-for="Name" id="position" type="text" />
+            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="input-container">
             <label for="description">Description:</label>
             <div class="description-input-rows">
                 <div class="description-input-row">
-                    <input asp-for="Description" type="text" class="description-input" />
+                    <input asp-for="Description" type="text" class="description-input" required />
+                    <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
             </div>
         </div>
@@ -38,6 +47,7 @@
             <div class="qualification-input-rows">
                 <div class="qualification-input-row">
                     <input asp-for="QualificationList[0]" type="text" class="qualification-input" />
+                    <span asp-validation-for="QualificationList" class="text-danger"></span>
                     <button class="remove-button" type="button">Remove</button>
                 </div>
             </div>
@@ -63,14 +73,14 @@
 
         <div class="select-container">
             <label for="worksetup">Work Setup:</label>
-            <select id="worksetup" asp-for ="WorkSetup">
+            <select id="worksetup" asp-for ="WorkSetup" required>
                 <option value="N/A"></option>
                 <option value="@WorkSetup.Online">Online</option>
                 <option value="@WorkSetup.Onsite">Onsite</option>
                 <option value="@WorkSetup.Hybrid">Hybrid (Onsite/Online)</option>
             </select>
             <label for="workinghours" style="margin-left: 20px;">Working Hours:</label>
-            <select id="workinghours" asp-for="Hours">
+            <select id="workinghours" asp-for="Hours" required>
                 <option value="N/A"></option>
                 <option value="@WorkingHours.EightHourShift">8-Hour Shift</option>
                 <option value="@WorkingHours.FourHourShift">4-Hour Shift</option>
@@ -78,7 +88,7 @@
         </div>
         <div class="select-container">
             <label for="status">Status:</label>
-            <select id="status" asp-for="JobStatus">
+            <select id="status" asp-for="JobStatus" required>
                 <option value="N/A"></option>
                 <option value="@JobStatus.Open">Open</option>
                 <option value="@JobStatus.Urgent">Urgent</option>
@@ -86,7 +96,7 @@
                 <option value="@JobStatus.OnHold">On Hold</option>
             </select>
             <label for="employmenttype" style="margin-left: 20px;">Employment Type:</label>
-            <select id="employmenttype" asp-for="EmploymentType">
+            <select id="employmenttype" asp-for="EmploymentType" required>
                 <option value="N/A"></option>
                 <option value="@EmploymentType.FullTime">Full-time</option>
                 <option value="@EmploymentType.PartTime">Part-time</option>
@@ -177,3 +187,9 @@
         });
     });
 </script>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

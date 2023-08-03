@@ -253,7 +253,7 @@ namespace Basecode.WebApp.Controllers
                     Address = address,
                     JobPosting = job,
                     CharacterReferences = characterReferences,
-                    Interviews = interviews
+                    Interviews = interviews,
                 };
 
                 string imreBase64Data = Convert.ToBase64String(applicantDetailViewModel.Applicant.Photo);

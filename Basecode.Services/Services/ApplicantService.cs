@@ -228,7 +228,7 @@ namespace Basecode.Services.Services
             var recipient = model.Applicant.Email;
             var subject = "Application Update";
             var body = "Your application ID is " + model.Applicant.ApplicantId;
-            await _emailService.SendEmail(recipient, subject, body);
+            //await _emailService.SendEmail(recipient, subject, body);
 
             // Return true if the applicant was successfully added
             return true;

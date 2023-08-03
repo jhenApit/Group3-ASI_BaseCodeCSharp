@@ -66,7 +66,7 @@ namespace Basecode.Data.Repositories
         /// <returns>An IQueryable collection of all applicants.</returns> 
         public async Task<IQueryable<Applicants>> RetrieveAllAsync()
         {
-            return await Task.FromResult(this.GetDbSet<Applicants>());
+            return await Task.FromResult(this.GetDbSet<Applicants>().Include(job => job.Job));
         }
         /// <summary>
         /// This update the applicant form the database

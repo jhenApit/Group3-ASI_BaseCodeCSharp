@@ -3,7 +3,6 @@
 @using static Basecode.Data.Enums.Enums;
 @using Basecode.Data.ViewModels;
 @using Basecode.Services.Interfaces
-@inject IJobPostingsService jobPostingService;
 @using System.Drawing;
 @model JobApplicantOverviewModel
 @{
@@ -60,12 +59,9 @@
 							Color statusColor = EnumHelper.GetColorForApplicationStatus(applicant.ApplicationStatus);
 							string colorStyle = $"color: {ColorTranslator.ToHtml(statusColor)}; font-weight: bolder;";
 
-							// ******** To refactor **************
-							var jobPost = await jobPostingService.GetByIdAsync(applicant.JobId);
-							var positionName = jobPost?.Name;
 							<tr class="clickable-row" data-href="/HR/ApplicantDetail/@applicant.Id">
 								<td title="Click to View Applicant Details">@applicant.Name</td>
-								<td title="Click to View Applicant Details">@positionName</td>
+								<td title="Click to View Applicant Details">@applicant.Job.Name</td>
 								<td title="Click to View Applicant Details" style="@colorStyle">@EnumHelper.GetEnumDescription(((ApplicationStatus)Enum.Parse(typeof(ApplicationStatus), applicant.ApplicationStatus.ToString())))</td>
 								<td>
 									<div class="applicant-container" data-title="@applicant.ApplicationStatus">

@@ -8,6 +8,7 @@ namespace Basecode.Data.ViewModels
         public Addresses Address { get; set; }
         public List<CharacterReferences> CharacterReferences { get; set; }
         public List<Interviews> Interviews { get; set; }
+        public JobPostings? JobPosting { get; set; }
 
     }
 }

@@ -10,7 +10,7 @@ namespace Basecode.Data.ViewModels
 {
     public class JobApplicantOverviewModel
     {
-        public List<JobPostings>? jobPostings { get; set; }
+        public List<JobPostings> jobPostings { get; set; }
         public List<Applicants>? applicants { get; set; }
     }
 }

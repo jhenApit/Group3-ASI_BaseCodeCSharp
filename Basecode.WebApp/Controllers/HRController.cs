@@ -187,12 +187,7 @@ namespace Basecode.WebApp.Controllers
                 {
                     // Get AspNetUser Data
                     var loggedUser = await _userManager.GetUserAsync(User);
-
-                    jobPostingsCreationDto.CreatedBy = loggedUser.UserName;
-                    jobPostingsCreationDto.Qualifications = string.Join(", ", jobPostingsCreationDto.QualificationList);
-                    jobPostingsCreationDto.Responsibilities = string.Join(", ", jobPostingsCreationDto.ResponsibilityList);
-
-                    await _jobPostingsService.AddAsync(jobPostingsCreationDto);
+                    await _jobPostingsService.AddAsync(jobPostingsCreationDto, loggedUser);
                     return RedirectToAction("JobPostList");
                 }
                 ModelState.Clear();
@@ -215,12 +210,7 @@ namespace Basecode.WebApp.Controllers
                 {
                     // Get AspNetUser Data
                     var loggedUser = await _userManager.GetUserAsync(User);
-
-                    jobPostingsUpdationDto.UpdatedBy = loggedUser.UserName;
-                    jobPostingsUpdationDto.Qualifications = string.Join(", ", jobPostingsUpdationDto.QualificationList);
-                    jobPostingsUpdationDto.Responsibilities = string.Join(", ", jobPostingsUpdationDto.ResponsibilityList);
-
-                    await _jobPostingsService.UpdateAsync(jobPostingsUpdationDto);
+                    await _jobPostingsService.UpdateAsync(jobPostingsUpdationDto, loggedUser);
                     return RedirectToAction("JobPostList");
                 }
                 return View("EditJobPost", jobPostingsUpdationDto);
@@ -263,10 +253,12 @@ namespace Basecode.WebApp.Controllers
                 var address = await _addressService.GetByApplicantIdAsync(applicant.Id);
                 var characterReferences = await _characterReferencesService.GetByApplicantIdAsync(applicant.Id);
                 var interviews = await _interviewsService.GetByApplicantIdAsync(applicant.Id);
+                var job = await _jobPostingsService.GetByIdAsync(applicant.JobId);
                 var applicantDetailViewModel = new ApplicantDetailViewModel
                 {
                     Applicant = applicant,
                     Address = address,
+                    JobPosting = job,
                     CharacterReferences = characterReferences,
                     Interviews = interviews
                 };
@@ -302,7 +294,7 @@ namespace Basecode.WebApp.Controllers
 
                     if (loggedInUser != null)
                     {
-                        await _jobPostingsService.UpdateAsync(model);
+                        await _jobPostingsService.UpdateAsync(model, loggedInUser);
                         return RedirectToAction("JobPostList");
                     }
                 }
@@ -327,12 +319,11 @@ namespace Basecode.WebApp.Controllers
             try
             {
                 var applicants = await _applicantService.RetrieveAllAsync();
-                var jobPostings = await _jobPostingsService.RetrieveAllAsync();
+                var jobs = await _jobPostingsService.RetrieveAllAsync();
 
                 var jobApplicantsOverviewModel = new JobApplicantOverviewModel
                 {
-                    applicants = applicants,
-                    jobPostings = jobPostings
+                    applicants = applicants
                 };
 
                 return View(jobApplicantsOverviewModel);

@@ -12,7 +12,6 @@ namespace Basecode.WebApp.Controllers
 {
     public class ApplicantController : Controller
     {
-        private readonly IEmailService _emailService;
 		private readonly ICurrentHiresService _currentHiresService;
 		private readonly IApplicantService _applicantService;
         private readonly IAddressService _addressService;
@@ -22,7 +21,10 @@ namespace Basecode.WebApp.Controllers
         private readonly ISendEmailService _sendEmailService;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public ApplicantController(IErrorHandling errorHandling, ICurrentHiresService currentHiresService, IJobPostingsService jobPostingsService, IEmailService emailService, IApplicantService applicantService, IAddressService addressService, ICharacterReferencesService characterService)
+        public ApplicantController(IErrorHandling errorHandling, ICurrentHiresService currentHiresService, 
+                                   IJobPostingsService jobPostingsService, IApplicantService applicantService, 
+                                   IAddressService addressService, ICharacterReferencesService characterService,
+                                   ISendEmailService sendEmailService)
         {
             _applicantService = applicantService;
             _addressService = addressService;

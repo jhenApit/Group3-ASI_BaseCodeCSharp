@@ -16,28 +16,26 @@ namespace Basecode.Services.Services
     {
         private readonly IAddressService _addressService;
         private readonly ICharacterReferencesService _characterService;
-        private readonly IEmailService _emailService;
         private readonly IApplicantRepository _repository;
-        private readonly ICharacterReferencesService _characterReferencesService;
         private readonly IMapper _mapper;
         private readonly IDGenerator _idGenerator = new();
         private readonly LogContent _logContent = new();
         private readonly IErrorHandling _errorHandling;
+        private readonly ISendEmailService _sendEmailService;
         public ApplicantService (
             IAddressService addressService,
             ICharacterReferencesService characterService,
-            IEmailService emailService,
             ICharacterReferencesService characterReferencesService,
             IApplicantRepository repository, 
-            IMapper mapper
+            IMapper mapper,
+            ISendEmailService sendEmailService
         )
         {
             _addressService = addressService;
             _characterService = characterService;
-            _emailService = emailService;
-            _characterReferencesService = characterReferencesService;
             _repository = repository;
             _mapper = mapper;
+            _sendEmailService = sendEmailService;
         }
 
         /// <summary>
@@ -224,11 +222,6 @@ namespace Basecode.Services.Services
                 MobileNumber = model.CharacterReferences2.MobileNumber
             };
             _characterService.AddAsync(characRef2);
-
-            var recipient = model.Applicant.Email;
-            var subject = "Application Update";
-            var body = "Your application ID is " + model.Applicant.ApplicantId;
-            await _emailService.SendEmail(recipient, subject, body);
 
             // Return true if the applicant was successfully added
             return true;

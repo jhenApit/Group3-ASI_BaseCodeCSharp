@@ -162,7 +162,7 @@ namespace Basecode.WebApp.Controllers
         {
             await _service.UpdateAsync(hrEmployee);
             return RedirectToAction("HrList");
-        }*/
+        }
     }
 }
 

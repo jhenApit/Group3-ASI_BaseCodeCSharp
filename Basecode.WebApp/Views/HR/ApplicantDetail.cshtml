@@ -6,7 +6,7 @@
 @using static Basecode.Data.Enums.Enums;
 @model ApplicantDetailViewModel
 @{
-    ViewData ["Title"] = "Application Detail";
+    ViewData["Title"] = "Application Detail";
     Layout = "_SideBarAdmin";
     <link rel="stylesheet" href="~/css/ApplicantDetail.css" />
 }
@@ -66,14 +66,14 @@
             </div>
         </div>
         <div class="row text-header text-bold ps-2 mt-3">PERSONAL INFORMATION</div>
-        <div class="row mt-3"> 
+        <div class="row mt-3">
             <div class="d-flex col-auto align-items-center mt-2">
                 <div class="photo-container">
                     <!--Insert src of applicant photo here-->
                     <img class="h-100 w-100 rounded-3" src="@ViewBag.ImageData" />
                     <!--
                         If photo does not exist this, this line of code will run instead
-                        <img src="~/images/Photo-Placeholder.png"/> 
+                        <img src="~/images/Photo-Placeholder.png"/>
                     -->
                 </div>
             </div>
@@ -160,9 +160,9 @@
                 </div>
             }
         }
-        
 
-       
+
+
         <!-- ADDITIONAL INFORMATION -->
         <div class="row text-header text-bold ps-2 mt-3">ADDITIONAL INFORMATION</div>
         <div class="row mt-3">
@@ -172,7 +172,7 @@
                     <input class="form-select mt-2 reference" id="additional" name="additional" value="@EnumHelper.GetEnumDescription(Model.Applicant.AdditionalInfo)" disabled />
                 </div>
             </div>
-        </div> 
+        </div>
         <!-- Buttons -->
         <div class="row mt-5 justify-content-center">
             <div class="col-auto">
@@ -288,7 +288,7 @@
                         <label class="d-inline">Full Name: </label>
                     </div>
                     <div class="col">
-                        <input class="form-control" id="fullname" type="text" name="fullname" value="@Model.Applicant.Name" disabled />
+                        <input class="form-control text-capitalize" id="fullname" type="text" name="fullname" value="@Model.Applicant.Name" disabled />
                     </div>
                 </div>
                 <div class="row form-group mt-3">
@@ -296,7 +296,7 @@
                         <label class="d-inline">Job Applied: </label>
                     </div>
                     <div class="col">
-                        <input class="form-control" id="jobapplied" type="text" name="jobapplied" value="@Model.JobPosting?.Name" disabled />
+                        <input class="form-control text-capitalize" id="jobapplied" type="text" name="jobapplied" value="@Model.JobPosting?.Name" disabled />
                     </div>
                 </div>
                 <div class="row form-group mt-3">
@@ -304,7 +304,7 @@
                         <label class="d-inline">Date Applied: </label>
                     </div>
                     <div class="col">
-                        <input class="form-control" id="dateapplied" type="text" name="dateapplied" value="@Model.Applicant.ApplicationDate" disabled />
+                        <input class="form-control" id="dateapplied" type="text" name="dateapplied" value="@Model.Applicant.ApplicationDate.ToString("MMMM dd, yyyy, hh:mm tt")" disabled />
                     </div>
                 </div>
             </div>
@@ -321,26 +321,43 @@
                 </tr>
             </thead>
             <tbody class="text-center">
-                <tr>
-                    @if(Model.Interviews == null || Model.Interviews.Count == 0)
-                    {
+                @if (Model.Interviews == null || Model.Interviews.Count == 0)
+                {
+                    <tr class="bg-white">
                         <td colspan="4">
                             <p> No upcoming Interviews </p>
                         </td>
-                    }
-                    @foreach(var interviews in Model.Interviews)
+                    </tr>
+                }
+                @foreach (var interviews in Model.Interviews)
+                {
+                    Color interviewStatusColor;
+                    string interviewStatusText;
+
+                    // Determine interview status color and text based on conditions
+                    if (interviews.Results == true)
                     {
-                        <td>@interviews.InterviewType</td>
-                        <td>@interviews.Interviewer</td>
-                        <td>@interviews.InterviewDate</td>
+                        interviewStatusColor = Color.Green; // Use the appropriate color for green (you may need to define it)
+                        interviewStatusText = "PASSED";
+                    }
+                    else
+                    {
+                        interviewStatusColor = Color.Red; // Use the appropriate color for red (you may need to define it)
+                        interviewStatusText = "FAILED";
+                    }
+
+                    string interviewColorStyle = $"background-color: {ColorTranslator.ToHtml(interviewStatusColor)};";
+                    <tr class="bg-white">
+                        <td>@EnumHelper.GetEnumDescription(interviews.InterviewType)</td>
+                        <td class="text-capitalize">@interviews.Interviewer.Name</td>
+                        <td>@interviews.InterviewDate.ToString("MMMM dd, yyyy"), @interviews.TimeStart - @interviews.TimeEnd</td>
                         <td>
-                            <span class="passed px-4 py-1">
-                                @interviews.Results
+                            <span class="passed px-4 py-1" style="@interviewColorStyle">
+                                @interviewStatusText
                             </span>
                         </td>
-                    }
-                    
-                </tr>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>

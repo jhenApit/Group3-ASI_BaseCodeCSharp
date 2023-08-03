@@ -94,7 +94,7 @@ namespace Basecode.Data.Repositories
         /// <returns>returns the jobs of an applicant</returns>
         public async Task<IQueryable<Interviews>> GetByApplicantIdAsync(int applicantId)
         {
-            return await Task.FromResult(this.GetDbSet<Interviews>().Where(e => e.ApplicantId == applicantId));
+            return await Task.FromResult(this.GetDbSet<Interviews>().Where(e => e.ApplicantId == applicantId).Include(e => e.Interviewer).Include(e => e.Applicant));
         }
 
         /// <summary>

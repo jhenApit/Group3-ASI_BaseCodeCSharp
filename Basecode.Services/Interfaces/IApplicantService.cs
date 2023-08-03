@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Basecode.Data.Dtos;
+﻿using Basecode.Data.Dtos.Applicants;
 using Basecode.Data.Models;
-using Basecode.Services.Utils;
+using Basecode.Data.ViewModels;
+using Microsoft.AspNetCore.Http;
 
 namespace Basecode.Services.Interfaces
 {
@@ -14,7 +10,9 @@ namespace Basecode.Services.Interfaces
         Task <Applicants?> GetByIdAsync(int id);
         Task<List<Applicants>> RetrieveAllAsync();
         Task<Applicants?> GetByNameAsync(string fname, string mname, string lname);
+        Task<bool> AddApplicantAsync(ApplicationFormViewModel model, IFormFile resumeFile, IFormFile photo);
         Task<int> AddAsync(ApplicantCreationDto applicant);
+        Task<bool> UpdateAsync(int id, string status);
         Task<Applicants> GetByApplicantIdAsync(string trackerId);
         Task<List<Applicants>> GetByEmailAsync(string email);
     }

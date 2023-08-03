@@ -56,7 +56,7 @@ namespace Basecode.Data.Enums
                 case Enums.ApplicationStatus.UndergoingJobOffer:
                 case Enums.ApplicationStatus.Confirmed:
                 case Enums.ApplicationStatus.NotConfirmed:
-                    return Color.GreenYellow;
+                    return Color.LightGreen;
                 case Enums.ApplicationStatus.Onboarding:
                 case Enums.ApplicationStatus.Deployed:
                     return Color.DarkGreen;

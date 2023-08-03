@@ -19,8 +19,16 @@ namespace Basecode.WebApp.Controllers
         /// <returns>An <see cref="IActionResult"/> representing the result of the action.</returns>
         public async Task<IActionResult> FindJobs()
         {
-            var data = await _service.RetrieveAllAsync();
-            return View(data);
+            try
+            {
+                var data = await _service.RetrieveAllAsync();
+                return View(data);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
         }
 
         /// <summary>
@@ -30,8 +38,15 @@ namespace Basecode.WebApp.Controllers
         /// <returns>An <see cref="IActionResult"/> representing the result of the action.</returns>
         public async Task<IActionResult> JobDescription(int id)
         {
-            var data = await _service.GetByIdAsync(id);
-            return View(data);
+            try
+            {
+                var data = await _service.GetByIdAsync(id);
+                return View(data);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

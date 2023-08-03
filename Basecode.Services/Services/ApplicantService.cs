@@ -28,7 +28,6 @@ namespace Basecode.Services.Services
             ICharacterReferencesService characterService,
             IApplicantRepository repository, 
             IMapper mapper,
-            IErrorHandling errorHandling,
             ISendEmailService sendEmailService
         )
         {
@@ -36,7 +35,6 @@ namespace Basecode.Services.Services
             _characterService = characterService;
             _repository = repository;
             _mapper = mapper;
-            _errorHandling = errorHandling;
             _sendEmailService = sendEmailService;
         }
 

@@ -136,6 +136,12 @@ namespace Basecode.Data.Repositories
                 .ToListAsync();
         }
 
+        /// <summary>
+        /// Checks if an applicant is already scheduled for a certain interview.
+        /// </summary>
+        /// <param name="applicantId">Applicant Id</param>
+        /// <param name="interviewType">Interview Type</param>
+        /// <returns>True if applicant has an existing schedule, false if otherwise.</returns>
         public async Task<bool> GetByApplicantIdAndInterviewTypeAsync(int applicantId, InterviewType interviewType)
         {
             return await _context.Interviews

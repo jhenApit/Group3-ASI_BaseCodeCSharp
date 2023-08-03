@@ -86,14 +86,14 @@
             <tr>
                 <!-- Greetings -->
                 <td style="padding:10px 10px 0 10px;">
-                    Attention <b>HR Team</b>,
+                    Dear <b>{InterviewerName}</b>,
                 </td>
             </tr>
             <tr>
                 <td style="padding:0 10px;">
                     <!-- Main Content -->
                     <p style="text-align:justify;">
-                        We wanted to confirm that the <b>{InterviewType} interview </b> schedule proposed for <b>{ApplicantName}</b> has been accepted.
+                        We wanted to confirm that the <b>{InterviewType}</b> schedule proposed for <b>{ApplicantName}</b> has been accepted.
                     </p>
                     <p>
                         Interview Details:
@@ -101,13 +101,19 @@
                     <ul>
                         <li>Date: <b>{Date}</b></li>
                         <li>Time: <b>{StartTime}</b> - <b>{StartTime}</b></li>
-                        <li>Link: <a href="" style="color: red; font-weight: bold;">{MeetingLink}</a></li>
                     </ul>
+                    <p>
+                        Please be prepared to discuss the applicant's qualifications and suitability for the role during the interview.
+                    </p>
+                    <p>
+                        To join the interview, please use the following link:
+                    </p>
+                        <a href="" style="color: red; font-weight: bold;">{MeetingLink}</a>
                     <p>
                         If there has been mistakes or clarifications, please contact <u style="color: #ff0000;">{Email}</u>
                     </p>
                     <p>
-                        Thank you for your coordination and support in the hiring process.
+                        Thank you for your time and commitment to the interview process.
                     </p>
                 </td>
             </tr>

@@ -255,7 +255,7 @@ namespace Basecode.Services.Services
                     Province = model.Address.Province,
                     ZipCode = model.Address.ZipCode
                 };
-                _addressService.AddAsync(address);
+                await _addressService.AddAsync(address);
 
                 var characRef1 = new CharacterReferencesCreationDto
                 {
@@ -265,7 +265,7 @@ namespace Basecode.Services.Services
                     Email = model.CharacterReferences1.Email,
                     MobileNumber = model.CharacterReferences1.MobileNumber
                 };
-                _characterService.AddAsync(characRef1);
+                await _characterService.AddAsync(characRef1);
 
                 var characRef2 = new CharacterReferencesCreationDto
                 {
@@ -275,7 +275,7 @@ namespace Basecode.Services.Services
                     Email = model.CharacterReferences2.Email,
                     MobileNumber = model.CharacterReferences2.MobileNumber
                 };
-                _characterService.AddAsync(characRef2);
+                await _characterService.AddAsync(characRef2);
 
                 var recipient = model.Applicant.Email;
                 var subject = "Application Update";

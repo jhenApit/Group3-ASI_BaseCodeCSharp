@@ -8,9 +8,6 @@ using NLog;
 
 namespace Basecode.Services.Services
 {
-    /// <summary>
-    /// Service class for managing interviewers.
-    /// </summary>
     public class InterviewersService : IInterviewersService
     {
         private readonly IInterviewersRepository _repository;
@@ -18,11 +15,6 @@ namespace Basecode.Services.Services
         private readonly LogContent _logContent = new();
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        /// <summary>
-        /// Constructor for InterviewersService.
-        /// </summary>
-        /// <param name="repository">The repository for interviewers data.</param>
-        /// <param name="mapper">The mapper for DTO and entity conversion.</param>
         public InterviewersService(IInterviewersRepository repository, IMapper mapper)
         {
             _repository = repository;

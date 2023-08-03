@@ -11,9 +11,6 @@ using static Basecode.Services.Utils.ErrorHandling;
 
 namespace Basecode.Services.Services
 {
-    /// <summary>
-    /// Service class for managing interviews.
-    /// </summary>
     public class InterviewsService : ErrorHandling, IInterviewsService
     {
         private readonly IInterviewsRepository _repository;
@@ -21,11 +18,6 @@ namespace Basecode.Services.Services
         private readonly LogContent _logContent = new();
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        /// <summary>
-        /// Constructor for InterviewsService.
-        /// </summary>
-        /// <param name="repository">The repository for interviews data.</param>
-        /// <param name="mapper">The mapper for DTO and entity conversion.</param>
         public InterviewsService(IInterviewsRepository repository, IMapper mapper)
         {
             _repository = repository;
@@ -359,5 +351,4 @@ namespace Basecode.Services.Services
             }
         }
     }
-
 }

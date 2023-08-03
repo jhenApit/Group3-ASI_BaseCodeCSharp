@@ -23,6 +23,7 @@ namespace Basecode.Services.Services
             _repository = repository;
             _mapper = mapper;
         }
+
         /// <summary>
         /// Retrieves all job postings.
         /// </summary>
@@ -170,9 +171,9 @@ namespace Basecode.Services.Services
         /// <param name="jobPostingCreationDto"> the dto passed to create a job post</param>
         /// <returns>the log content containing the result, errorcode, message </returns>
 
-        /*public LogContent CreateJobPosting(JobPostingsCreationDto jobPostingCreationDto)
+        public async Task<LogContent> CreateJobPosting(JobPostingsCreationDto jobPostingCreationDto)
         {
-            JobPostings job = GetByName(jobPostingCreationDto.Name);
+            var job = await GetByNameAsync(jobPostingCreationDto.Name);
             if (job != null)
             {
                 _logContent.Result = false;
@@ -185,18 +186,18 @@ namespace Basecode.Services.Services
             }
 
             return _logContent;
-        }*/
+        }
 
-        /*public LogContent UpdateJobPosting(JobPostingsUpdationDto jobPostings)
+        public async Task<LogContent> UpdateJobPosting(JobPostingsUpdationDto jobPostings)
         {
-            var job = GetById(jobPostings.Id);
+            var job = await GetByIdAsync(jobPostings.Id);
             if (job != null)
             {
                 // Check if the new name is different from the current name
                 if (job.Name != jobPostings.Name)
                 {
                     // Check if the new name already exists in the table
-                    var existingJob = GetByName(jobPostings.Name);
+                    var existingJob = await GetByNameAsync(jobPostings.Name);
                     if (existingJob != null)
                     {
                         // Another job with the same name already exists
@@ -220,7 +221,6 @@ namespace Basecode.Services.Services
                 //return _logContent;
             }
             return _logContent;
-        }*/
-
+        }
     }
 }

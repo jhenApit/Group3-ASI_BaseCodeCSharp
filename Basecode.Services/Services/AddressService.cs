@@ -20,7 +20,6 @@ namespace Basecode.Services.Services
     {
         private readonly IAddressRepository _repository;
         private readonly IMapper _mapper;
-        private readonly LogContent _logContent = new();
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public AddressService(IAddressRepository repository, IMapper mapper)

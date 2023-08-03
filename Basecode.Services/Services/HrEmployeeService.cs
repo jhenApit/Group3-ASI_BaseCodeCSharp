@@ -23,18 +23,16 @@ namespace Basecode.Services.Services
         private readonly IHrEmployeeRepository _repository;
         private readonly IMapper _mapper;
         private readonly LogContent _logContent = new();
-        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-
-        public HrEmployeeService(IHrEmployeeRepository repository, IMapper mapper, SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
+        public HrEmployeeService(IHrEmployeeRepository repository, IMapper mapper, UserManager<IdentityUser> userManager)
         {
             _repository = repository;
-            _signInManager = signInManager;
             _mapper = mapper;
             _userManager = userManager;
         }
+
         /// <summary>
         /// Retrieves all HR employees from the repository.
         /// </summary>
@@ -88,6 +86,12 @@ namespace Basecode.Services.Services
                 throw;
             }
         }
+
+        /// <summary>
+        /// Retrieves an HrEmployee from the database by their UserId.
+        /// </summary>
+        /// <param name="id">The ID of the user to retrieve the HrEmployee for.</param>
+        /// <returns>The HrEmployee associated with the specified user ID.</returns>
         public async Task<HrEmployee> GetByUserIdAsync(string id)
         {
             try
@@ -100,6 +104,7 @@ namespace Basecode.Services.Services
                 throw;
             }
         }
+
         /// <summary>
         /// Updates an existing HR employee in the repository.
         /// </summary>

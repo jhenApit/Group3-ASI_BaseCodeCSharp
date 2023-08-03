@@ -12,6 +12,10 @@ using Basecode.Services.Services;
 using Basecode.WebApp.Models;
 using Basecode.Data.Dtos.CurrentHires;
 using Basecode.Data.Dtos.Interviewers;
+using static Basecode.Data.Enums.Enums;
+using Basecode.Services.Services;
+using Basecode.WebApp.Models;
+using Basecode.Data.Dtos.CurrentHires;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -26,13 +30,15 @@ namespace Basecode.WebApp.Controllers
         private readonly IInterviewersService _interviewersService;
         private readonly IAddressService _addressService;
         private readonly ICharacterReferencesService _characterReferencesService;
+        private readonly IFileService _fileService;
         private readonly IErrorHandling _errorHandling; 
         private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public HRController(
-            IHrEmployeeService service, 
-            IJobPostingsService jobPostingsService, 
+            IHrEmployeeService service,
+            IFileService fileService,
+        IJobPostingsService jobPostingsService, 
             IErrorHandling errorHandling, 
             UserManager<IdentityUser> userManager, 
             IApplicantService applicantService,
@@ -45,6 +51,7 @@ namespace Basecode.WebApp.Controllers
         {
             _addressService = addressService;
             _service = service;
+            _fileService = fileService;
             _jobPostingsService = jobPostingsService;
             _errorHandling = errorHandling;
             _userManager = userManager;
@@ -83,6 +90,8 @@ namespace Basecode.WebApp.Controllers
             }
         }
 
+        }
+
 
         /// <summary>
         /// Displays the list of job posts.
@@ -90,8 +99,16 @@ namespace Basecode.WebApp.Controllers
         /// <returns>The view containing the job post list.</returns>
         public async Task<IActionResult> JobPostList()
         {
-            var data = await _jobPostingsService.RetrieveAllAsync();
-            return View(data);
+            try
+            {
+                var data = await _jobPostingsService.RetrieveAllAsync();
+                return View(data);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return BadRequest("An error occured when retrieving job post list.");
+            }
         }
 
         /// <summary>
@@ -109,26 +126,37 @@ namespace Basecode.WebApp.Controllers
         /// <returns>The view containing the job post edit form.</returns>
         public async Task<IActionResult> EditJobPost(int id)
         {
-            var jobPosting = await _jobPostingsService.GetByIdAsync(id);
-            var loggedUser = await _userManager.GetUserAsync(User);
+            try
+            {
+                var jobPosting = await _jobPostingsService.GetByIdAsync(id);
+                var loggedUser = await _userManager.GetUserAsync(User);
 
-            if (jobPosting == null)
-            {
-                return RedirectToAction("JobPostList");
+                if (jobPosting == null)
+                {
+                    return RedirectToAction("JobPostList");
+                }
+
+                JobPostingsUpdationDto jobPostingDto = new JobPostingsUpdationDto
+                {
+                    Name = jobPosting.Name,
+                    Description = jobPosting.Description,
+                    Qualifications = jobPosting.Qualifications,
+                    Responsibilities = jobPosting.Responsibilities,
+                    WorkSetup = jobPosting.WorkSetup,
+                    JobStatus = jobPosting.JobStatus,
+                    Hours = jobPosting.Hours,
+                    EmploymentType = jobPosting.EmploymentType,
+                    UpdatedBy = loggedUser.UserName
+                };
+
+                return View(jobPostingDto);
             }
-			JobPostingsUpdationDto jobPostingDto = new JobPostingsUpdationDto
+            catch (Exception e)
             {
-                Name = jobPosting.Name,
-                Description = jobPosting.Description,
-                Qualifications = jobPosting.Qualifications,
-                Responsibilities = jobPosting.Responsibilities,
-                WorkSetup = jobPosting.WorkSetup,
-                JobStatus = jobPosting.JobStatus,
-                Hours = jobPosting.Hours,
-                EmploymentType = jobPosting.EmploymentType,
-                UpdatedBy = loggedUser.UserName
-            };
-            return View(jobPostingDto);
+                Console.WriteLine(e.Message);
+                return BadRequest("An error occured when retrieving the job to be edited.");
+            }
+
 
         }
 
@@ -138,73 +166,81 @@ namespace Basecode.WebApp.Controllers
         /// <returns>The view containing the job post details.</returns>
         public async Task<IActionResult> ViewJobPost(int id)
         {
-            var job = await _jobPostingsService.GetByIdAsync(id);
-            return View(job);
+            try
+            {
+                var job = await _jobPostingsService.GetByIdAsync(id);
+                return View(job);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return BadRequest("An error occured when retrieving the job post to view.");
+            }
+            
         }
 
         [HttpPost]
         public async Task<IActionResult> Add(JobPostingsCreationDto jobPostingsCreationDto)
         {
-            if (ModelState.IsValid)
+            try
             {
-                //Get AspNetUser Data
-                var loggedUser = await _userManager.GetUserAsync(User);
-
-                jobPostingsCreationDto.CreatedBy = loggedUser.UserName;
-                jobPostingsCreationDto.Qualifications = string.Join(", ", jobPostingsCreationDto.QualificationList);
-				jobPostingsCreationDto.Responsibilities = string.Join(", ", jobPostingsCreationDto.ResponsibilityList);
-				
-                //logger to be implemented
-                //var data = _jobPostingsService.CreateJobPosting(jobPostingsCreationDto);
-                
-                /*if (!data.Result)
+                if (ModelState.IsValid)
                 {
-                    //_logger.Error(_errorHandling.SetLog(data));
-                    ViewBag.ErrorMessage = data.Message;
-                    return View(jobPostingsCreationDto);
-                }*/
-                await _jobPostingsService.AddAsync(jobPostingsCreationDto);
-                return RedirectToAction("JobPostList");
+                    // Get AspNetUser Data
+                    var loggedUser = await _userManager.GetUserAsync(User);
+                    await _jobPostingsService.AddAsync(jobPostingsCreationDto, loggedUser);
+                    return RedirectToAction("JobPostList");
+                }
+                ModelState.Clear();
+                return View("JobPostList", jobPostingsCreationDto);
             }
-            ModelState.Clear();
-			return View("JobPostList", jobPostingsCreationDto);
-		}
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return BadRequest("An error occured when trying to add a job.");
+            }
+
+        }
 
         [HttpPost]
         public async Task<IActionResult> Update(JobPostingsUpdationDto jobPostingsUpdationDto)
         {
-            if (ModelState.IsValid)
+            try
             {
-                //Get AspNetUser Data
-                var loggedUser = await _userManager.GetUserAsync(User);
-                
-                jobPostingsUpdationDto.UpdatedBy = loggedUser.UserName;
-                jobPostingsUpdationDto.Qualifications = string.Join(", ", jobPostingsUpdationDto.QualificationList);
-                jobPostingsUpdationDto.Responsibilities = string.Join(", ", jobPostingsUpdationDto.ResponsibilityList);
-                
-                //logger to be implemented
-                //var data = _jobPostingsService.UpdateJobPosting(jobPostingsUpdationDto);
-                
-                /*if (!data.Result)
+                if (ModelState.IsValid)
                 {
-                    //_logger.Error(_errorHandling.SetLog(data));
-                    ViewBag.ErrorMessage = data.Message;
-                    return View(jobPostingsUpdationDto);
-                }*/
-                await _jobPostingsService.UpdateAsync(jobPostingsUpdationDto);
-                return RedirectToAction("JobPostList");
+                    // Get AspNetUser Data
+                    var loggedUser = await _userManager.GetUserAsync(User);
+                    await _jobPostingsService.UpdateAsync(jobPostingsUpdationDto, loggedUser);
+                    return RedirectToAction("JobPostList");
+                }
+                return View("EditJobPost", jobPostingsUpdationDto);
             }
-            return View("EditJobPost", jobPostingsUpdationDto);
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return BadRequest("An error occured when trying to update a job.");
+            }
+
         }
 
         public async Task<IActionResult> DeleteJob(int id)
         {
-            var job = await _jobPostingsService.GetByIdAsync(id);
-            if (job != null)
+            try
             {
-                await _jobPostingsService.PermaDeleteAsync(id);
+                var job = await _jobPostingsService.GetByIdAsync(id);
+                if (job != null)
+                {
+                    await _jobPostingsService.PermaDeleteAsync(id);
+                }
+                return RedirectToAction("JobPostList");
             }
-            return RedirectToAction("JobPostList");
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return BadRequest("An error occured when trying to delete a job.");
+            }
+
         }
         /// <summary>
         /// Displays the details of a applicant's application.
@@ -212,56 +248,67 @@ namespace Basecode.WebApp.Controllers
         /// <returns>The view containing the application details.</returns>
         public async Task<IActionResult> ApplicantDetail(int id)
         {
-            if (System.IO.File.Exists("wwwroot/applicants/resume/resume.pdf"))
+            try
             {
-                System.IO.File.Delete("wwwroot/applicants/resume/resume.pdf");
+                var applicant = await _applicantService.GetByIdAsync(id);
+                var address = await _addressService.GetByApplicantIdAsync(applicant.Id);
+                var characterReferences = await _characterReferencesService.GetByApplicantIdAsync(applicant.Id);
+                var interviews = await _interviewsService.GetByApplicantIdAsync(applicant.Id);
+                var job = await _jobPostingsService.GetByIdAsync(applicant.JobId);
+                var applicantDetailViewModel = new ApplicantDetailViewModel
+                {
+                    Applicant = applicant,
+                    Address = address,
+                    JobPosting = job,
+                    CharacterReferences = characterReferences,
+                    Interviews = interviews
+                };
+
+                string imreBase64Data = Convert.ToBase64String(applicantDetailViewModel.Applicant.Photo);
+                string imgDataURL = $"data:image/png;base64,{imreBase64Data}";
+
+                ViewBag.ImageData = imgDataURL;
+
+                _fileService.DeleteFile("wwwroot/applicants/resume/resume.pdf");
+                _fileService.SaveFile("wwwroot/applicants/resume/resume.pdf", applicantDetailViewModel.Applicant.Resume);
+
+                ViewBag.ResumeData = File("wwwroot/applicants/resume/resume.pdf", "application/pdf");
+
+                return View(applicantDetailViewModel);
             }
-            var applicant = await _applicantService.GetByIdAsync(id);
-            var address = await _addressService.GetByApplicantIdAsync(applicant.Id);
-            var characterReferences = await _characterReferencesService.GetByApplicantIdAsync(applicant.Id);
-            var interviews = await _interviewsService.GetByApplicantIdAsync(applicant.Id);
-            var applicantDetailViewModel = new ApplicantDetailViewModel
+            catch (Exception e)
             {
-                Applicant = applicant,
-                Address = address,
-                CharacterReferences = characterReferences,
-                Interviews = interviews
-            };
-            string imreBase64Data = Convert.ToBase64String(applicant.Photo);
-            string imgDataURL = string.Format($"data:image/png;base64,{imreBase64Data}");
-            string resumeBase64Data = Convert.ToBase64String(applicant.Resume);
-            System.IO.FileStream stream =
-                new FileStream(@"wwwroot/applicants/resume/resume.pdf", FileMode.CreateNew);
-            System.IO.BinaryWriter writer =
-                new BinaryWriter(stream);
-            writer.Write(applicant.Resume, 0, applicant.Resume.Length);
-            writer.Close();
-            //Passing image data in viewbag to view
-            ViewBag.ImageData = imgDataURL;
-            //puts the resume file to the viewbag 
-            ViewBag.ResumeData = File(@"C:\temp\file.pdf", "appliction/pdf");
-
-
-            return View(applicantDetailViewModel);
+                Console.WriteLine(e.Message);
+                return BadRequest("An error occured when retrieving applicant detail");
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> UpdateJobPosting(JobPostingsUpdationDto model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                // Retrieve the currently logged-in user
-                var loggedInUser = await _userManager.GetUserAsync(User);
-
-                if (loggedInUser != null)
+                if (ModelState.IsValid)
                 {
-					await _jobPostingsService.UpdateAsync(model);
-                    return RedirectToAction("JobPostList");
+                    // Retrieve the currently logged-in user
+                    var loggedInUser = await _userManager.GetUserAsync(User);
+
+                    if (loggedInUser != null)
+                    {
+                        await _jobPostingsService.UpdateAsync(model, loggedInUser);
+                        return RedirectToAction("JobPostList");
+                    }
                 }
+
+                // If the model is not valid or the user is not logged in, return the EditJobPosting view with the appropriate error
+                return View("EditJobPosting", model);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return BadRequest("An error occured when updating a job post list.");
             }
 
-            // If the model is not valid or the user is not logged in, return the EditJobPosting view with the appropriate error
-            return View("EditJobPosting", model);
         }
 
         /// <summary>
@@ -273,12 +320,12 @@ namespace Basecode.WebApp.Controllers
             try
             {
                 var applicants = await _applicantService.RetrieveAllAsync();
-                var jobPostings = await _jobPostingsService.RetrieveAllAsync();
+                var jobs = await _jobPostingsService.RetrieveAllAsync();
 
                 var jobApplicantsOverviewModel = new JobApplicantOverviewModel
                 {
                     applicants = applicants,
-                    jobPostings = jobPostings
+                    jobPostings = jobs
                 };
 
                 return View(jobApplicantsOverviewModel);
@@ -286,40 +333,6 @@ namespace Basecode.WebApp.Controllers
             catch(Exception)
             {
                 return BadRequest("An error occurred while retrieving the Job Applicant Overview.");
-            }
-        }
-
-        /// <summary>
-        /// this will update the applicants status
-        /// <param name="id">the id of the applicant to be updated</param>
-        /// <param name="status">and the status it wants to uupdate to</param>
-        /// <returns>returns the jobapplicant overview view if succesful</returns>
-        [HttpPost]
-        public async Task<IActionResult> UpdateApplicantStatus(int id, string status)
-        {
-            var applicant = await _applicantService.GetByIdAsync(id);
-            if (applicant != null)
-            {
-                if (status == "Confirmed")
-                {
-                    var hired = new CurrentHiresCreationDto
-                    {
-                        ApplicantId = applicant.Id,
-                        PositionId = applicant.JobId,
-                        HireDate = DateTime.Now
-                    };
-                    if (Enum.TryParse(status, out HireStatus parsedStatus))
-                    {
-                        hired.HireStatus = parsedStatus;
-                    }
-                    await _currentHiresService.AddAsync(hired);
-                }
-                await _applicantService.UpdateAsync(id, status);
-                return RedirectToAction("JobApplicantsOverview");
-            }
-            else
-            {
-                return RedirectToAction("Index");
             }
         }
 
@@ -385,7 +398,7 @@ namespace Basecode.WebApp.Controllers
                     InterviewsList = (await _interviewsService.RetrieveAllAsync())
                     .OrderBy(x => x.InterviewDate)
                     .ToList()
-            };
+                };
                 return View(viewModel);
             } 
             catch(Exception)

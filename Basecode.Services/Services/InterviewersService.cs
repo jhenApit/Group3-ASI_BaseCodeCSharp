@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Basecode.Data.Dtos;
+using Basecode.Data.Dtos.Interviewers;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
@@ -7,21 +7,30 @@ using Basecode.Services.Utils;
 
 namespace Basecode.Services.Services
 {
+    /// <summary>
+    /// Service class for managing interviewers.
+    /// </summary>
     public class InterviewersService : IInterviewersService
     {
         private readonly IInterviewersRepository _repository;
         private readonly IMapper _mapper;
         private readonly LogContent _logContent = new();
 
+        /// <summary>
+        /// Constructor for InterviewersService.
+        /// </summary>
+        /// <param name="repository">The repository for interviewers data.</param>
+        /// <param name="mapper">The mapper for DTO and entity conversion.</param>
         public InterviewersService(IInterviewersRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
+
         /// <summary>
-        /// Retrieves all Interviewers from the repository.
+        /// Retrieves all Interviewers asynchronously.
         /// </summary>
-        /// <returns>A list of Interviewers.</returns>
+        /// <returns>A list of all interviewers.</returns>
         public async Task<List<Interviewers>> RetrieveAllAsync()
         {
             var interviews = await _repository.RetrieveAllAsync();
@@ -29,32 +38,29 @@ namespace Basecode.Services.Services
         }
 
         /// <summary>
-        /// Adds a new Interviewer to the repository.
+        /// Adds a new Interviewer asynchronously.
         /// </summary>
-        /// <param name="Interviewers">The Interviewer to add.</param>
-        public async Task AddAsync(Interviewers Interviewers)
+        /// <param name="Interviewers">TThe DTO containing the details of the new interviewer.</param>
+        public async Task AddAsync(InterviewersCreationDto Interviewers)
         {
-            var interviewersModel = new Interviewers();
-            interviewersModel.Name = Interviewers.Name;
-            interviewersModel.Email = Interviewers.Email;
-
-            await _repository.AddAsync(interviewersModel);
+            var InterviewsModel = _mapper.Map<Interviewers>(Interviewers);
+            await _repository.AddAsync(InterviewsModel);
         }
 
         /// <summary>
-        /// Retrieves an Interviewer by its ID from the repository.
+        /// Retrieves an Interviewer by its ID asynchronously.
         /// </summary>
         /// <param name="id">The ID of the Interviewer.</param>
-        /// <returns>The Interviewer if found; otherwise, null.</returns>
+        /// <returns>The interview with the specified ID, or null if not found.</returns>
         public async Task<Interviewers?> GetByIdAsync(int id)
         {
             return await _repository.GetByIdAsync(id);
         }
 
         /// <summary>
-        /// Updates an Interviewer in the repository.
+        /// Updates an Interviewer asynchronously.
         /// </summary>
-        /// <param name="Interviewers">The Interviewer to update.</param>
+        /// <param name="Interviewers">The DTO containing the details of the updated interviewer.</param>
         public async Task UpdateAsync(InterviewersUpdationDto Interviewers)
         {
             var InterviewersModel = _mapper.Map<Interviewers>(Interviewers);
@@ -64,9 +70,9 @@ namespace Basecode.Services.Services
         }
 
         /// <summary>
-        /// Deletes an Interviewer from the repository.
+        /// Deletes an Interviewer asynchronously.
         /// </summary>
-        /// <param name="id">The ID of the Interviewer to delete.</param>
+        /// <param name="id">The interview with the specified ID, or null if not found.</param>
         public async Task DeleteAsync(int id)
         {
             await _repository.DeleteAsync(id);

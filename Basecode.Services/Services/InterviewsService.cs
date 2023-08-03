@@ -7,6 +7,7 @@ using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
 using Microsoft.EntityFrameworkCore;
 using NLog;
+using static Basecode.Data.Enums.Enums;
 using static Basecode.Services.Utils.ErrorHandling;
 
 namespace Basecode.Services.Services
@@ -349,6 +350,11 @@ namespace Basecode.Services.Services
                 _logger.Error("InterviewsService > IsTimeRangeOverlappingAsync > Failed:" + ex.Message);
                 throw;
             }
+        }
+
+        public async Task<bool> GetByApplicantIdAndInterviewTypeAsync(int applicantId, InterviewType interviewType)
+        {
+            return await _repository.GetByApplicantIdAndInterviewTypeAsync(applicantId, interviewType);
         }
     }
 }

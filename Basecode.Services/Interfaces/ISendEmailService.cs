@@ -23,7 +23,7 @@ namespace Basecode.Services.Interfaces
         //Interviews
         Task SendSetInterviewScheduleEmail(Interviews interview, Applicants applicant);
         Task SendInterviewReminderEmail(Interviews interview, Applicants applicant);
-        Task SendHrApprovedScheduleEmail(Applicants applicant, Interviews interview);
+        Task SendApprovedScheduleEmail(Applicants applicant, Interviews interview);
         Task SendHrInterviewApprovalEmail(Applicants applicant, string interviewType);
         Task SendApplicantInterviewRegretEmail(Applicants applicant, string jobTitle, string interviewType);
 

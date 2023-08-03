@@ -21,6 +21,8 @@ namespace Basecode.WebApp
             services.AddScoped<IErrorHandling, ErrorHandling>();
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<ISendEmailService, SendEmailService>();
+            services.AddTransient<IFileService,  FileService>();
+            services.AddTransient<IMeetingLinkService,  MeetingLinkService>();
 
             // Services 
             services.AddScoped<IUserService, UserService>();

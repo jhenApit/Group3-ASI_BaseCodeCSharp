@@ -442,6 +442,19 @@ namespace Basecode.WebApp.Controllers
             }
         }
 
+        public async Task<IActionResult> DeleteInterviewer(int id)
+        {
+            try
+            {
+                Console.WriteLine("Heere" + id);
+                await _interviewersService.DeleteAsync(id);
+                return RedirectToAction("Interviews");
+            }
+            catch (Exception)
+            {
+                return BadRequest("An error happend while removing an interviewer.");
+            }
+        }
         #endregion
     }
 }

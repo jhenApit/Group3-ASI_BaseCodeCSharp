@@ -335,49 +335,6 @@ namespace Basecode.WebApp.Controllers
         }
 
         /// <summary>
-        /// this will update the applicants status
-        /// <param name="id">the id of the applicant to be updated</param>
-        /// <param name="status">and the status it wants to uupdate to</param>
-        /// <returns>returns the jobapplicant overview view if succesful</returns>
-        [HttpPost]
-        public async Task<IActionResult> UpdateApplicantStatus(int id, string status)
-        {
-            try
-            {
-                var applicant = await _applicantService.GetByIdAsync(id);
-                if (applicant != null)
-                {
-                    if (status == "Confirmed")
-                    {
-                        var hired = new CurrentHiresCreationDto
-                        {
-                            ApplicantId = applicant.Id,
-                            PositionId = applicant.JobId,
-                            HireDate = DateTime.Now
-                        };
-                        if (Enum.TryParse(status, out HireStatus parsedStatus))
-                        {
-                            hired.HireStatus = parsedStatus;
-                        }
-                        await _currentHiresService.AddAsync(hired);
-                    }
-                    await _applicantService.UpdateAsync(id, status);
-                    return RedirectToAction("JobApplicantsOverview");
-                }
-                else
-                {
-                    return RedirectToAction("Index");
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return BadRequest("An error occured when updating the status of applicant.");
-            }
-
-        }
-
-        /// <summary>
         /// Allows HR to view job applicants in a specific job post with different status
         /// </summary>
         /// <returns>Redirect to View Applicants Page</returns>

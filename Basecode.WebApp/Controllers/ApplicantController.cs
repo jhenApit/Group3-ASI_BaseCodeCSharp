@@ -1,28 +1,33 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Basecode.Data.Dtos.CurrentHires;
 using Basecode.Data.Models;
 using Basecode.Data.ViewModels;
 using Basecode.Services.Interfaces;
+using Basecode.Services.Services;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
+using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.WebApp.Controllers
 {
     public class ApplicantController : Controller
     {
         private readonly IEmailService _emailService;
-        private readonly IApplicantService _applicantService;
+		private readonly ICurrentHiresService _currentHiresService;
+		private readonly IApplicantService _applicantService;
         private readonly IAddressService _addressService;
         private readonly ICharacterReferencesService _characterService;
         private readonly IJobPostingsService _jobPostingsService;
         private readonly IErrorHandling _errorHandling;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public ApplicantController(IErrorHandling errorHandling, IJobPostingsService jobPostingsService, IEmailService emailService, IApplicantService applicantService, IAddressService addressService, ICharacterReferencesService characterService)
+        public ApplicantController(IErrorHandling errorHandling, ICurrentHiresService currentHiresService, IJobPostingsService jobPostingsService, IEmailService emailService, IApplicantService applicantService, IAddressService addressService, ICharacterReferencesService characterService)
         {
             _emailService = emailService;
             _applicantService = applicantService;
             _addressService = addressService;
-            _characterService = characterService;
+			_currentHiresService = currentHiresService;
+			_characterService = characterService;
             _jobPostingsService = jobPostingsService;
             _errorHandling = errorHandling;
         }
@@ -115,11 +120,54 @@ namespace Basecode.WebApp.Controllers
             }
         }
 
-        /// <summary>
-        /// Displays the terms and conditions page.
-        /// </summary>
-        /// <returns>The terms and conditions view.</returns>
-        public IActionResult TermsAndConditions()
+		/// <summary>
+		/// this will update the applicants status
+		/// <param name="id">the id of the applicant to be updated</param>
+		/// <param name="status">and the status it wants to uupdate to</param>
+		/// <returns>returns the jobapplicant overview view if succesful</returns>
+		[HttpPost]
+		public async Task<IActionResult> UpdateApplicantStatus(int id, string status)
+		{
+			try
+			{
+				var applicant = await _applicantService.GetByIdAsync(id);
+				if (applicant != null)
+				{
+					if (status == "Confirmed")
+					{
+						var hired = new CurrentHiresCreationDto
+						{
+							ApplicantId = applicant.Id,
+							PositionId = applicant.JobId,
+							HireDate = DateTime.Now
+						};
+						if (Enum.TryParse(status, out HireStatus parsedStatus))
+						{
+							hired.HireStatus = parsedStatus;
+						}
+						await _currentHiresService.AddAsync(hired);
+					}
+					await _applicantService.UpdateAsync(id, status);
+					return RedirectToAction("JobApplicantsOverview");
+				}
+				else
+				{
+					return RedirectToAction("Index");
+				}
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e.Message);
+				return BadRequest("An error occured when updating the status of applicant.");
+			}
+
+		}
+
+		/// <summary>
+		/// Displays the terms and conditions page.
+		/// </summary>
+		/// <returns>The terms and conditions view.</returns>
+		public IActionResult TermsAndConditions()
         {
             return View();
         }

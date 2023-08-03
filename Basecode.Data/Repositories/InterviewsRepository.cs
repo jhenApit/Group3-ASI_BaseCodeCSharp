@@ -88,13 +88,13 @@ namespace Basecode.Data.Repositories
         }
 
         /// <summary>
-        /// Retrieves an interview by applicant ID asynchronously.
+        /// this gets the list of jobs the applicant applied for
         /// </summary>
-        /// <param name="applicantId">The ID of the applicant to retrieve the interview for.</param>
-        /// <returns>An asynchronous task that represents the operation, containing the interview if found, or null if not found.</returns>
-        public async Task<Interviews?> GetByApplicantIdAsync(int applicantId)
+        /// <param name="applicantId">the applicant id set to jobs</param>
+        /// <returns>returns the jobs of an applicant</returns>
+        public async Task<IQueryable<Interviews>> GetByApplicantIdAsync(int applicantId)
         {
-            return await _context.Interviews.FirstOrDefaultAsync(e => e.ApplicantId == applicantId);
+            return await Task.FromResult(this.GetDbSet<Interviews>().Where(e => e.ApplicantId == applicantId));
         }
 
         /// <summary>

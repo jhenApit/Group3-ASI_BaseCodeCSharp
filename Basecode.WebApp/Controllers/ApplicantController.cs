@@ -2,9 +2,11 @@
 using Basecode.Data.Dtos;
 using Basecode.Data.Dtos.JobPostings;
 using Basecode.Data.Models;
+using Basecode.WebApp.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Services;
 using Basecode.Services.Utils;
+using Basecode.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 
@@ -155,7 +157,7 @@ namespace Basecode.WebApp.Controllers
                 //    };
                 //    return View("ApplicationForm", model);
                 //}
-                
+
                 var applicantIsInserted = await _applicantService.AddAsync(model.Applicant);
                 var address = new AddressCreationDto
                 {
@@ -186,8 +188,8 @@ namespace Basecode.WebApp.Controllers
                 if (applicantIsInserted != 0)
                 {
                     await _addressService.AddAsync(address);
-					await _characterService.AddAsync(characRef1);
-					await _characterService.AddAsync(characRef2);
+                    await _characterService.AddAsync(characRef1);
+                    await _characterService.AddAsync(characRef2);
                     var recipient = model.Applicant.Email;
                     var subject = "Application Update";
                     var body = "Your application ID is " + model.Applicant.ApplicantId;

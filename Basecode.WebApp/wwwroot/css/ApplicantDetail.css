@@ -41,13 +41,14 @@ a {
     background-color: #B1B1B1;
 }
 
-.shortlist {
+.status-btn {
     border-color: #55729B;
     color: white;
     border-radius: .5rem;
+    padding: 0.5rem 3rem;
 }
 
-.shortlist, .btn-secondary {
+.status-btn, .btn-secondary {
     background-color: #55729B;
 }
 

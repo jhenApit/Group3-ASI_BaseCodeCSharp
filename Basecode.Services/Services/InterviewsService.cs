@@ -87,9 +87,10 @@ namespace Basecode.Services.Services
         /// </summary>
         /// <param name="applicantId">The ID of the applicant to retrieve the interview for.</param>
         /// <returns>An asynchronous task that represents the operation, containing the interview if found, or null if not found.</returns>
-        public async Task<Interviews?> GetByApplicantIdAsync(int applicantId)
+        public async Task<List<Interviews>> GetByApplicantIdAsync(int applicantId)
         {
-            return await _repository.GetByApplicantIdAsync(applicantId);
+            var interviews = await _repository.GetByApplicantIdAsync(applicantId);
+            return interviews.ToList();
         }
 
         /// <summary>

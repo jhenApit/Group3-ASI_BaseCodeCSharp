@@ -115,6 +115,19 @@
         color: white;
     }
 
+.Users-Empty {
+    height: 5rem;
+}
+    .Users-Empty td {
+        vertical-align: middle;
+        color: #55729B !important;
+        font-style: italic;
+        font-size: 1.5rem;
+        text-align: center !important;
+        background-color: #E4E9F7 !important;
+        border: none !important;
+    }
+
 .table {
     border-collapse: collapse;
     margin-left: auto;

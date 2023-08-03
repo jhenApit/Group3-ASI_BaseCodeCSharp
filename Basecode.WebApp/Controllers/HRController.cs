@@ -8,8 +8,6 @@ using Basecode.Data.ViewModels;
 using Basecode.Data.Models;
 using Basecode.Data.Dtos.Interviews;
 using Basecode.Data.Dtos.Interviewers;
-using static Basecode.Data.Enums.Enums;
-using System.Globalization;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -433,10 +431,6 @@ namespace Basecode.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> AddInterviewer(InterviewsViewModel interviewsViewModel)
         {
-            Console.WriteLine(interviewsViewModel.Interviewers.Id);
-            Console.WriteLine(interviewsViewModel.Interviewers.Name);
-            Console.WriteLine(interviewsViewModel.Interviewers.Email);
-
             try
             {
                 await _interviewersService.AddAsync(interviewsViewModel.Interviewers);

@@ -126,7 +126,7 @@ namespace Basecode.Services.Services
             return _logContent;
         }*/
 
-        /*/// <summary>
+        /// <summary>
         /// Edits an HR account and logs the error content if the edit fails.
         /// </summary>
         /// <param name="hrEmployee">The DTO object containing the updated information of the HR employee</param>
@@ -134,7 +134,7 @@ namespace Basecode.Services.Services
         public async Task<LogContent> EditHrAccount(HREmployeeUpdationDto hrEmployee)
         {
             List<string> errors = new List<string>();
-            var hrEmail = GetByEmail(hrEmployee.Email);
+            var hrEmail = await GetByEmailAsync(hrEmployee.Email);
             if (hrEmail != null)
             {
                 if (hrEmail.Id != hrEmployee.Id)
@@ -168,37 +168,5 @@ namespace Basecode.Services.Services
 
             return _logContent;
         }
-        /// <summary>
-        /// Handles the login and logging for the errors of the input
-        /// </summary>
-        /// <param name="email">the email input for log in</param>
-        /// <param name="password">the password input for log in</param>
-        /// <returns> the log content for the log in</returns>
-        public LogContent Login(string email, string password)
-        {
-            var hr = GetByEmail(email);
-
-            if (hr != null)
-            {
-                if (hr.Password != password)
-                {
-                    _logContent.Result = false;
-                    _logContent.ErrorCode = "401. Incorrect Password!";
-                    _logContent.Message = "Incorrect Password";
-                }
-                else
-                {
-                    _logContent.Result = true;
-                    _logContent.Message = "Login succesful for user " + email;
-                }
-            }
-            else
-            {
-                _logContent.Result = false;
-                _logContent.ErrorCode = "401. Incorrect Email!";
-                _logContent.Message = "Email doesn't exist";
-            }
-            return _logContent;
-        }*/
     }
 }

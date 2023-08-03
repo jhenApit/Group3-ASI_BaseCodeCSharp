@@ -46,13 +46,19 @@ namespace Basecode.WebApp.Controllers
         /// <returns>The HR list view with all HR employee data</returns>
         public async Task<IActionResult> HrList()
         {
-            var data = await _service.RetrieveAllAsync();
-            var user = await _userManager.GetUserAsync(User);
-            if (user != null)
+            try
             {
+                var data = await _service.RetrieveAllAsync();
+                var user = await _userManager.GetUserAsync(User);
                 data = data.Where(item => item.UserId != user.Id).ToList();
+                _logger.Info("Successfully retrived hr list");
+                return View(data);
             }
-            return View(data);
+            catch (System.Exception ex) 
+            {
+                _logger.Error(ex, "Error occured in retrieving list");
+                throw;
+            }
         }
 
         /// <summary>
@@ -62,40 +68,46 @@ namespace Basecode.WebApp.Controllers
         /// <returns>View of the page with the details of the account</returns>
         public async Task<IActionResult> EditHrAccountView(int id)
         {
-            // Retrieve the HR employee from the database using the ID
-            var hrEmployee = await _service.GetByIdAsync(id);
-            var hrRole = await _userManager.GetRolesAsync(hrEmployee.User);
-            var loggedUser = await _userManager.GetUserAsync(User);
-            var role = hrRole.FirstOrDefault();
-            if (hrEmployee != null)
+            try
             {
-                // Access user attributes
-                string userName = hrEmployee.User.UserName;
-                // Other user attributes you may want to access
-                // Create an instance of HREmployeeUpdationDto and populate it with data
-                var hrEmployeeDto = new HREmployeeUpdationDto
-                {
-                    Name = hrEmployee.Name,
-                    Email = hrEmployee.Email,
-                    Password = hrEmployee.Password,
-                    UserName = userName,
-                    UserId = hrEmployee.User.Id,
-                    ModifiedBy = loggedUser.UserName,
-                    Id = hrEmployee.Id
-                };
-                if (role == "admin")
-                {
-                    hrEmployeeDto.IsAdmin = true;
-                }
-                else
-                {
-                    hrEmployeeDto.IsAdmin = false;
-                }
-                // Pass the HREmployeeUpdationDto as the model to the view
-                return View(hrEmployeeDto);
-            }
-            return View(hrEmployee);
+				// Retrieve the HR employee from the database using the ID
+				var hrEmployee = await _service.GetByIdAsync(id);
+				var hrRole = await _userManager.GetRolesAsync(hrEmployee.User);
+				var loggedUser = await _userManager.GetUserAsync(User);
+				var role = hrRole.FirstOrDefault();
+				// Access user attributes
+				string userName = hrEmployee.User.UserName;
+				// Other user attributes you may want to access
+				// Create an instance of HREmployeeUpdationDto and populate it with data
+				var hrEmployeeDto = new HREmployeeUpdationDto
+				{
+					Name = hrEmployee.Name,
+					Email = hrEmployee.Email,
+					Password = hrEmployee.Password,
+					UserName = userName,
+					UserId = hrEmployee.User.Id,
+					ModifiedBy = loggedUser.UserName,
+					Id = hrEmployee.Id
+				};
 
+				if (role == "admin")
+				{
+					hrEmployeeDto.IsAdmin = true;
+				}
+				else
+				{
+					hrEmployeeDto.IsAdmin = false;
+				}
+                _logger.Info("successfully retrieved hr profile");
+				// Pass the HREmployeeUpdationDto as the model to the view
+				return View(hrEmployeeDto);
+
+			}
+            catch (System.Exception ex) 
+            {
+                _logger.Error(ex, "Error occured when retrieving hr profile");
+                throw;
+            }
         }
 
         /// <summary>
@@ -110,26 +122,20 @@ namespace Basecode.WebApp.Controllers
         public async Task<IActionResult> EditHrAccount(HREmployeeUpdationDto hrEmployee)
         {
             hrEmployee.Name = hrEmployee.FirstName + ' ' + hrEmployee.MiddleName + ' ' + hrEmployee.LastName;
-            /*var data = _service.EditHrAccount(hrEmployee);
+            var data = await _service.EditHrAccount(hrEmployee);
             if (!data.Result)
             {
-                //_logger.Error(_errorHandling.SetLog(data));
+                _logger.Error(_errorHandling.SetLog(data));
                 ViewBag.ErrorMessage = data.Message;
                 return View("EditHrAccountView", hrEmployee);
             }
-            else*/ if (ModelState.IsValid)
+            try
             {
                 //get hremployee data
                 var hr = await _service.GetByIdAsync(hrEmployee.Id);
-                //get aspnetuser data
-                var user = await _userManager.GetUserAsync(User);
                 //update username
                 await _userManager.SetUserNameAsync(hr.User, hrEmployee.UserName);
                 await _userManager.GenerateChangeEmailTokenAsync(hr.User, hrEmployee.Email);
-                if(hrEmployee.Password != null) 
-                {
-                    await _userManager.ChangePasswordAsync(hr.User, hr.Password, hrEmployee.Password);
-                }
                 if (hrEmployee.IsAdmin)
                 {
                     await _userManager.AddToRoleAsync(hr.User, "admin");
@@ -141,9 +147,14 @@ namespace Basecode.WebApp.Controllers
                     await _userManager.RemoveFromRoleAsync(hr.User, "admin");
                 }
                 await _service.UpdateAsync(hrEmployee);
+                _logger.Info("Edit Successful");
                 return RedirectToAction("HrList");
             }
-            return RedirectToAction("HrList");
+            catch (System.Exception ex) 
+            {
+                _logger.Error(ex, "Error occurred in editing account");
+                return RedirectToAction("HrList");
+            }
 
         }
 

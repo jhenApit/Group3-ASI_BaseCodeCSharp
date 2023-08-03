@@ -20,5 +20,6 @@ namespace Basecode.Services.Interfaces
         Task<HrEmployee> GetByUserIdAsync(string id);
         Task UpdateAsync(HREmployeeUpdationDto hrEmployee);
         Task DeleteAsync(int id);
+        Task<LogContent> EditHrAccount(HREmployeeUpdationDto hrEmployee);
     }
 }

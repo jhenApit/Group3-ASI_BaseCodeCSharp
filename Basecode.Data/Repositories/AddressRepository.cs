@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Basecode.Data.Interfaces;
@@ -49,10 +50,9 @@ namespace Basecode.Data.Repositories
         /// </summary>
         /// <param name="applicantId">the applicant id set to an address</param>
         /// <returns>returns the address of an applicant</returns>
-        public Addresses GetByApplicantId(int applicantId)
+        public async Task<Addresses?> GetByApplicantIdAsync(int applicantId)
         {
-            return _context.Addresses.FirstOrDefault(e => e.ApplicantId == applicantId)!;
+            return await _context.Addresses.FirstOrDefaultAsync(e => e.ApplicantId == applicantId);
         }
-
     }
 }

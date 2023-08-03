@@ -54,14 +54,10 @@ namespace Basecode.Services.Services
             await _repository.DeleteAsync(id);
         }
 
-        public async Task<Interviews?> GetByApplicantIdAsync(int applicantId)
+        public async Task<List<Interviews>> GetByApplicantIdAsync(int applicantId)
         {
-            return await _repository.GetByApplicantIdAsync(applicantId);
-        }
-
-        public List<Interviews> GetByApplicantId(int applicantId)
-        {
-            return _repository.GetByApplicantId(applicantId).ToList();
+            var interviews = await _repository.GetByApplicantIdAsync(applicantId);
+            return interviews.ToList();
         }
     }
 

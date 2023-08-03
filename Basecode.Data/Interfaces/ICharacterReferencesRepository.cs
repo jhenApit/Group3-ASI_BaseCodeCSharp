@@ -13,6 +13,6 @@ namespace Basecode.Data.Interfaces
         Task<CharacterReferences?> GetByNameAsync(string name);
         Task AddAsync(CharacterReferences characterReferences);
         Task<CharacterReferences?> GetByIdAsync(int id);
-        IQueryable<CharacterReferences> GetByApplicantId(int applicantId);
+        Task<IQueryable<CharacterReferences>> GetByApplicantIdAsync(int applicantId);
     }
 }

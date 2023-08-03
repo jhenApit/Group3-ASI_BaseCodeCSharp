@@ -2,6 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Basecode.Services.Interfaces;
 using NLog;
+using Basecode.Data.Models;
+using AutoMapper;
+using Humanizer;
+using Microsoft.CodeAnalysis;
+using NLog.Layouts;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -9,12 +14,18 @@ namespace Basecode.WebApp.Controllers
     {
         public readonly IReferenceFormsService _service;
         public readonly ICharacterReferencesService _characterReferencesService;
+        private readonly ISendEmailService _sendEmailService;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly IMapper _mapper;
 
-        public ReferencesController(IReferenceFormsService service, ICharacterReferencesService characterReferencesService)
+        public ReferencesController(IReferenceFormsService service, 
+            ICharacterReferencesService characterReferencesService,
+            ISendEmailService sendEmailService, IMapper mapper)
         {
             _service = service;
             _characterReferencesService = characterReferencesService;
+            _sendEmailService = sendEmailService;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -60,6 +71,18 @@ namespace Basecode.WebApp.Controllers
                 referenceFormsCreationDto.CharacterReferenceId = id; //temporary
 
                 await _service.AddAsync(referenceFormsCreationDto);
+
+
+                var characterReference = _mapper.Map<CharacterReferences>(referenceFormsCreationDto);
+
+                // Sends an email to express gratitude for providing a character reference to support an applicant's job application.
+                await _sendEmailService.SendReferenceGratitudeEmail(characterReference);
+                
+                //Sends an email notification to the HR team about the completion of a reference form for applicant evaluation.
+                await _sendEmailService.SendHrAnsweredFormNotificationEmail(characterReference.Applicant);
+
+                //Sends an email notification to the HR department for character reference approval of an applicant.
+                await _sendEmailService.SendHrReferenceApprovalEmail(characterReference.Applicant);
                 TempData.Clear();
                 return RedirectToAction("Index", "Home");
             }

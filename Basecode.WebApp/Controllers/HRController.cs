@@ -8,6 +8,7 @@ using Basecode.Data.ViewModels;
 using Basecode.Data.Models;
 using Basecode.Data.Dtos.Interviews;
 using Basecode.Data.Dtos.Interviewers;
+using AutoMapper;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -432,6 +433,7 @@ namespace Basecode.WebApp.Controllers
                 var interviewSched = _mapper.Map<Interviews>(createInterview);
                 var applicant = await _applicantService.GetByIdAsync(interviewSched.ApplicantId);
                 
+                //Send email notification to Interviewer and applicant once the interview/examination schedule was set
                 await _sendEmailService.SendSetInterviewScheduleEmail(interviewSched, applicant!);
                 
                 return RedirectToAction("Interviews");
@@ -562,7 +564,7 @@ namespace Basecode.WebApp.Controllers
         {
             try
             {
-                Console.WriteLine("Heere" + id);
+                Console.WriteLine("Here" + id);
                 await _interviewersService.DeleteAsync(id);
                 return RedirectToAction("Interviews");
             }

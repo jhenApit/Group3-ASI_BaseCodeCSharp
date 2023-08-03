@@ -45,18 +45,12 @@ namespace Basecode.WebApp.Controllers
             try
             {
                 Applicants data = await _applicantService.GetByApplicantIdAsync(ApplicantId);
-                Console.WriteLine("Applicant Id: " + ApplicantId);
-
-                if (data != null)
-                {
-                    return View(data);
-                }
-
-                return RedirectToAction("TrackApplication");
+                _logger.Info("Applicant Id: " + ApplicantId);
+                return View(data);
             }
             catch (Exception e)
             {
-                Console.WriteLine("An error occurred: " + e.Message);
+                _logger.Error("An error occurred: " + e.Message);
                 return BadRequest("An error occured when retrieving application status.");
             }
         }
@@ -73,7 +67,7 @@ namespace Basecode.WebApp.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine("An error occurred: " + e.Message);
+                _logger.Error("An error occurred: " + e.Message);
                 return BadRequest("An error occured when trying to access track application");
             }
         }
@@ -96,29 +90,20 @@ namespace Basecode.WebApp.Controllers
             try
             {
                 var jobPosting = await _jobPostingsService.GetByIdAsync(id);
-
-                if (jobPosting != null)
+                var viewModel = new ApplicationFormViewModel
                 {
-                    var viewModel = new ApplicationFormViewModel
+                    JobPosting = new JobPostings
                     {
-                        JobPosting = new JobPostings
-                        {
-                            Name = jobPosting.Name,
-                            Id = jobPosting.Id
-                        }
-                    };
-                    Console.WriteLine("Job exists! " + id);
-                    return View(viewModel);
-                }
-                else
-                {
-                    Console.WriteLine("Job doesn't exist! " + id);
-                    return View();
-                }
+                        Name = jobPosting.Name,
+                        Id = jobPosting.Id
+                    }
+                };
+                _logger.Info("Job exists! " + id);
+                return View(viewModel);
             }
             catch (Exception e)
             {
-                Console.WriteLine("An error occurred: " + e.Message);
+                _logger.Error("An error occurred: " + e.Message);
                 return BadRequest("An error occured when trying to access application form");
             }
         }
@@ -134,56 +119,28 @@ namespace Basecode.WebApp.Controllers
 			try
 			{
 				var applicant = await _applicantService.GetByIdAsync(id);
-
-				if (applicant != null)
+				if (status == "Confirmed")
 				{
-                    if (status.Contains("Interview") || status.Contains("Exam"))
-                    {
-                        
-                    }
-                    else
-                    {
-                        if (status == "For Screening")
-                        {
-                            //Send an email notification to HR to proceed with screening applicant
-                            await _sendEmailService.SendHrApplicationApprovalEmail(applicant);
-                        }
-
-                        if (status == "Rejected")
-                        {
-                            //Send an email of regret to applicant if the application was rejected
-                            await _sendEmailService.SendApplicantApplicationRegretEmail(applicant);
-                        }
-
-                        if (status == "Confirmed")
-                        {
-                            var hired = new CurrentHiresCreationDto
-                            {
-                                ApplicantId = applicant.Id,
-                                PositionId = applicant.JobId,
-                                HireDate = DateTime.Now
-                            };
-                            if (Enum.TryParse(status, out HireStatus parsedStatus))
-                            {
-                                hired.HireStatus = parsedStatus;
-                            }
-                            await _currentHiresService.AddAsync(hired);
-                        }
-                    }
-
-					await _applicantService.UpdateAsync(id, status);
-                    await _sendEmailService.SendApplicationStatusEmail(applicant, status);
-					return RedirectToAction("JobApplicantsOverview");
+					var hired = new CurrentHiresCreationDto
+					{
+						ApplicantId = applicant.Id,
+						PositionId = applicant.JobId,
+						HireDate = DateTime.Now
+					};
+					if (Enum.TryParse(status, out HireStatus parsedStatus))
+					{
+						hired.HireStatus = parsedStatus;
+					}
+					await _currentHiresService.AddAsync(hired);
 				}
-				else
-				{
-					return RedirectToAction("Index");
-				}
+				await _applicantService.UpdateAsync(id, status);
+                _logger.Info(applicant.Id + " status updated to:" + status);
+				return RedirectToAction("JobApplicantsOverview","HR");
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine(e.Message);
-				return BadRequest("An error occured when updating the status of applicant.");
+                _logger.Error("Error: " + e.Message);
+                return BadRequest("An error occured when updating the status of applicant.");
 			}
 
 		}
@@ -208,34 +165,24 @@ namespace Basecode.WebApp.Controllers
         {
             try
             {
-                ModelState.Clear();
-                TryValidateModel(model);
+                // Use the service method to handle the logic
+                var isApplicantAdded = await _applicantService.AddApplicantAsync(model, resumeFile, photo);
 
-                if (ModelState.IsValid)
+                if (isApplicantAdded)
                 {
-                    // Use the service method to handle the logic
-                    var isApplicantAdded = await _applicantService.AddApplicantAsync(model, resumeFile, photo);
-
-                    if (isApplicantAdded)
-                    {
-                        // Applicant was successfully added
-                        
-                        return RedirectToAction("TrackApplication", new { from = "application" });
-                    }
-                    else
-                    {
-                        // Handle the error case here if needed
-                        ViewBag.ErrorMessage = "Failed to add the applicant.";
-                        return View("ApplicationForm", model);
-                    }
+                    // Applicant was successfully added
+                    return RedirectToAction("TrackApplication", new { from = "application" });
                 }
-
-                ModelState.Clear();
-                return View("ApplicationForm");
+                else
+                {
+                    // Handle the error case here if needed
+                    ViewBag.ErrorMessage = "Failed to add the applicant.";
+                    return View("ApplicationForm", model);
+                }
             }
             catch (Exception e)
             {
-                Console.WriteLine("An error occurred: " + e.Message);
+                _logger.Error("An error occurred: " + e.Message);
                 return BadRequest("An error occured when trying to process application form.");
             }
         }

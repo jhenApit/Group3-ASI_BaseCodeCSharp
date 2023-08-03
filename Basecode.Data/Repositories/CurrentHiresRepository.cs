@@ -22,7 +22,7 @@ namespace Basecode.Data.Repositories
 
         public async Task<IQueryable<CurrentHires>> RetrieveAllAsync()
         {
-            return await Task.FromResult(this.GetDbSet<CurrentHires>());
+            return await Task.FromResult(this.GetDbSet<CurrentHires>().Include(e => e.Applicant));
         }
 
         public async Task AddAsync(CurrentHires CurrentHires)

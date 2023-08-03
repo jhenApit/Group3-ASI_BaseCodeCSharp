@@ -6,6 +6,7 @@ using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 using static Basecode.Services.Utils.ErrorHandling;
 
 namespace Basecode.Services.Services
@@ -18,6 +19,7 @@ namespace Basecode.Services.Services
         private readonly IInterviewsRepository _repository;
         private readonly IMapper _mapper;
         private readonly LogContent _logContent = new();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Constructor for InterviewsService.
@@ -36,8 +38,16 @@ namespace Basecode.Services.Services
         /// <returns>A list of all interviews.</returns>
         public async Task<List<Interviews>> RetrieveAllAsync()
         {
-            var interviews = await _repository.RetrieveAllAsync();
-            return interviews.ToList();
+            try
+            {
+                var interviews = await _repository.RetrieveAllAsync();
+                return interviews.ToList();
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("InterviewsService > RetrieveAllAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -46,8 +56,16 @@ namespace Basecode.Services.Services
         /// <param name="interviews">The DTO containing the details of the new interview.</param>
         public async Task AddAsync(InterviewsCreationDto interviews)
         {
-            var InterviewsModel = _mapper.Map<Interviews>(interviews);
-            await _repository.AddAsync(InterviewsModel);
+            try
+            {
+                var InterviewsModel = _mapper.Map<Interviews>(interviews);
+                await _repository.AddAsync(InterviewsModel);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("InterviewsService > AddAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -57,7 +75,15 @@ namespace Basecode.Services.Services
         /// <returns>The interview with the specified ID, or null if not found.</returns>
         public async Task<Interviews?> GetByIdAsync(int id)
         {
-            return await  _repository.GetByIdAsync(id);
+            try
+            {
+                return await _repository.GetByIdAsync(id);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("InterviewsService > GetByIdAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -67,9 +93,17 @@ namespace Basecode.Services.Services
         /// <returns>Updated interview</returns>
         public async Task UpdateAsync(InterviewsUpdationDto Interviews)
         {
-            var InterviewsModel = _mapper.Map<Interviews>(Interviews);
-            Console.WriteLine("Services" + InterviewsModel.InterviewDate);
-            await _repository.UpdateAsync(InterviewsModel);
+            try
+            {
+                var InterviewsModel = _mapper.Map<Interviews>(Interviews);
+                Console.WriteLine("Services" + InterviewsModel.InterviewDate);
+                await _repository.UpdateAsync(InterviewsModel);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("InterviewsService > UpdateAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -79,7 +113,15 @@ namespace Basecode.Services.Services
         /// <returns>The interview with the specified ID, or null if not found</returns>
         public async Task DeleteAsync(int id)
         {
-            await _repository.DeleteAsync(id);
+            try
+            {
+                await _repository.DeleteAsync(id);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("InterviewsService > DeleteAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -89,8 +131,16 @@ namespace Basecode.Services.Services
         /// <returns>An asynchronous task that represents the operation, containing the interview if found, or null if not found.</returns>
         public async Task<List<Interviews>> GetByApplicantIdAsync(int applicantId)
         {
-            var interviews = await _repository.GetByApplicantIdAsync(applicantId);
-            return interviews.ToList();
+            try
+            {
+                var interviews = await _repository.GetByApplicantIdAsync(applicantId);
+                return interviews.ToList();
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("InterviewsService > GetByApplicantIdAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -101,7 +151,15 @@ namespace Basecode.Services.Services
         /// <returns>An asynchronous task that represents the operation, containing the collection of interviews.</returns>
         public async Task<IEnumerable<Interviews>> GetInterviewsByInterviewerAndDateAsync(int interviewerId, DateTime interviewDate)
         {
-            return await _repository.GetInterviewsByInterviewerAndDateAsync(interviewerId, interviewDate);
+            try
+            {
+                return await _repository.GetInterviewsByInterviewerAndDateAsync(interviewerId, interviewDate);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("InterviewsService > GetInterviewsByInterviewerAndDateAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -111,7 +169,15 @@ namespace Basecode.Services.Services
         /// <returns>An asynchronous task that represents the operation, containing the collection of interviews.</returns>
         public async Task<IEnumerable<Interviews>> GetInterviewsByInterviewerAsync(int interviewerId)
         {
-            return await _repository.GetInterviewsByInterviewerAsync(interviewerId);
+            try
+            {
+                return await _repository.GetInterviewsByInterviewerAsync(interviewerId);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("InterviewsService > GetInterviewsByInterviewerAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -121,7 +187,15 @@ namespace Basecode.Services.Services
         /// <returns>An asynchronous task that represents the operation, containing the collection of interviews.</returns>
         public async Task<IEnumerable<Interviews>> GetInterviewsByApplicantAsync(int applicantId)
         {
-            return await _repository.GetInterviewsByApplicantAsync(applicantId);
+            try
+            {
+                return await _repository.GetInterviewsByApplicantAsync(applicantId);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("InterviewsService > GetInterviewsByApplicantAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -131,70 +205,78 @@ namespace Basecode.Services.Services
         /// <returns>True if the time range overlaps with existing interviews, otherwise false.</returns>
         public async Task<bool> IsTimeRangeOverlappingAsync(InterviewsCreationDto newInterview)
         {
-            var existingInterviews = await GetInterviewsByInterviewerAndDateAsync(newInterview.InterviewerId, newInterview.InterviewDate);
-
-            var newStart = DateTime.ParseExact(newInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
-            var newEnd = DateTime.ParseExact(newInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
-
-            foreach (var existingInterview in existingInterviews)
+            try
             {
-                var existingStart = DateTime.ParseExact(existingInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
-                var existingEnd = DateTime.ParseExact(existingInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
+                var existingInterviews = await GetInterviewsByInterviewerAndDateAsync(newInterview.InterviewerId, newInterview.InterviewDate);
 
-                if (newInterview.InterviewDate == existingInterview.InterviewDate)
+                var newStart = DateTime.ParseExact(newInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
+                var newEnd = DateTime.ParseExact(newInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
+
+                foreach (var existingInterview in existingInterviews)
                 {
-                    if ((newStart >= existingStart && newStart < existingEnd) ||
-                        (newEnd > existingStart && newEnd <= existingEnd) ||
-                        (newStart <= existingStart && newEnd >= existingEnd))
-                    {
-                        return true;
-                    }
-                }
-            }
+                    var existingStart = DateTime.ParseExact(existingInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
+                    var existingEnd = DateTime.ParseExact(existingInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
 
-            var otherInterviewsByInterviewer = await GetInterviewsByInterviewerAsync(newInterview.InterviewerId);
-            foreach (var otherInterview in otherInterviewsByInterviewer)
-            {
-                if (otherInterview.Id != newInterview.Id)
-                {
-                    var otherStart = DateTime.ParseExact(otherInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
-                    var otherEnd = DateTime.ParseExact(otherInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
-
-                    if (newInterview.InterviewDate == otherInterview.InterviewDate)
+                    if (newInterview.InterviewDate == existingInterview.InterviewDate)
                     {
-                        if ((newStart >= otherStart && newStart < otherEnd) ||
-                            (newEnd > otherStart && newEnd <= otherEnd) ||
-                            (newStart <= otherStart && newEnd >= otherEnd))
+                        if ((newStart >= existingStart && newStart < existingEnd) ||
+                            (newEnd > existingStart && newEnd <= existingEnd) ||
+                            (newStart <= existingStart && newEnd >= existingEnd))
                         {
-                            Console.WriteLine(2);
                             return true;
                         }
                     }
                 }
-            }
 
-            var otherInterviewsByApplicant = await GetInterviewsByApplicantAsync(newInterview.ApplicantId);
-            foreach (var otherInterview in otherInterviewsByApplicant)
-            {
-                if (otherInterview.Id != newInterview.Id)
+                var otherInterviewsByInterviewer = await GetInterviewsByInterviewerAsync(newInterview.InterviewerId);
+                foreach (var otherInterview in otherInterviewsByInterviewer)
                 {
-                    var otherStart = DateTime.ParseExact(otherInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
-                    var otherEnd = DateTime.ParseExact(otherInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
-
-                    if (newInterview.InterviewDate == otherInterview.InterviewDate)
+                    if (otherInterview.Id != newInterview.Id)
                     {
-                        if ((newStart >= otherStart && newStart < otherEnd) ||
-                            (newEnd > otherStart && newEnd <= otherEnd) ||
-                            (newStart <= otherStart && newEnd >= otherEnd))
+                        var otherStart = DateTime.ParseExact(otherInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
+                        var otherEnd = DateTime.ParseExact(otherInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
+
+                        if (newInterview.InterviewDate == otherInterview.InterviewDate)
                         {
-                            Console.WriteLine(3);
-                            return true;
+                            if ((newStart >= otherStart && newStart < otherEnd) ||
+                                (newEnd > otherStart && newEnd <= otherEnd) ||
+                                (newStart <= otherStart && newEnd >= otherEnd))
+                            {
+                                Console.WriteLine(2);
+                                return true;
+                            }
                         }
                     }
                 }
-            }
 
-            return false;
+                var otherInterviewsByApplicant = await GetInterviewsByApplicantAsync(newInterview.ApplicantId);
+                foreach (var otherInterview in otherInterviewsByApplicant)
+                {
+                    if (otherInterview.Id != newInterview.Id)
+                    {
+                        var otherStart = DateTime.ParseExact(otherInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
+                        var otherEnd = DateTime.ParseExact(otherInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
+
+                        if (newInterview.InterviewDate == otherInterview.InterviewDate)
+                        {
+                            if ((newStart >= otherStart && newStart < otherEnd) ||
+                                (newEnd > otherStart && newEnd <= otherEnd) ||
+                                (newStart <= otherStart && newEnd >= otherEnd))
+                            {
+                                Console.WriteLine(3);
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("InterviewsService > IsTimeRangeOverlappingAsync > Failed:" + ex.Message);
+                throw;
+            }
+            
         }
 
         /// <summary>
@@ -204,70 +286,77 @@ namespace Basecode.Services.Services
         /// <returns>True if the time range overlaps with existing interviews, otherwise false.</returns>
         public async Task<bool> IsTimeRangeOverlappingAsync(InterviewsUpdationDto newInterview)
         {
-            var existingInterviews = await GetInterviewsByInterviewerAndDateAsync(newInterview.InterviewerId, newInterview.InterviewDate);
-
-            var newStart = DateTime.ParseExact(newInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
-            var newEnd = DateTime.ParseExact(newInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
-
-            foreach (var existingInterview in existingInterviews)
+            try
             {
-                var existingStart = DateTime.ParseExact(existingInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
-                var existingEnd = DateTime.ParseExact(existingInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
+                var existingInterviews = await GetInterviewsByInterviewerAndDateAsync(newInterview.InterviewerId, newInterview.InterviewDate);
 
-                if (newInterview.InterviewDate == existingInterview.InterviewDate)
+                var newStart = DateTime.ParseExact(newInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
+                var newEnd = DateTime.ParseExact(newInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
+
+                foreach (var existingInterview in existingInterviews)
                 {
-                    if ((newStart >= existingStart && newStart < existingEnd) ||
-                        (newEnd > existingStart && newEnd <= existingEnd) ||
-                        (newStart <= existingStart && newEnd >= existingEnd))
-                    {
-                        return true;
-                    }
-                }
-            }
+                    var existingStart = DateTime.ParseExact(existingInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
+                    var existingEnd = DateTime.ParseExact(existingInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
 
-            var otherInterviewsByInterviewer = await GetInterviewsByInterviewerAsync(newInterview.InterviewerId);
-            foreach (var otherInterview in otherInterviewsByInterviewer)
-            {
-                if (otherInterview.Id != newInterview.Id)
-                {
-                    var otherStart = DateTime.ParseExact(otherInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
-                    var otherEnd = DateTime.ParseExact(otherInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
-
-                    if (newInterview.InterviewDate == otherInterview.InterviewDate)
+                    if (newInterview.InterviewDate == existingInterview.InterviewDate)
                     {
-                        if ((newStart >= otherStart && newStart < otherEnd) ||
-                            (newEnd > otherStart && newEnd <= otherEnd) ||
-                            (newStart <= otherStart && newEnd >= otherEnd))
+                        if ((newStart >= existingStart && newStart < existingEnd) ||
+                            (newEnd > existingStart && newEnd <= existingEnd) ||
+                            (newStart <= existingStart && newEnd >= existingEnd))
                         {
-                            Console.WriteLine(2);
                             return true;
                         }
                     }
                 }
-            }
 
-            var otherInterviewsByApplicant = await GetInterviewsByApplicantAsync(newInterview.ApplicantId);
-            foreach (var otherInterview in otherInterviewsByApplicant)
-            {
-                if (otherInterview.Id != newInterview.Id)
+                var otherInterviewsByInterviewer = await GetInterviewsByInterviewerAsync(newInterview.InterviewerId);
+                foreach (var otherInterview in otherInterviewsByInterviewer)
                 {
-                    var otherStart = DateTime.ParseExact(otherInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
-                    var otherEnd = DateTime.ParseExact(otherInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
-
-                    if (newInterview.InterviewDate == otherInterview.InterviewDate)
+                    if (otherInterview.Id != newInterview.Id)
                     {
-                        if ((newStart >= otherStart && newStart < otherEnd) ||
-                            (newEnd > otherStart && newEnd <= otherEnd) ||
-                            (newStart <= otherStart && newEnd >= otherEnd))
+                        var otherStart = DateTime.ParseExact(otherInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
+                        var otherEnd = DateTime.ParseExact(otherInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
+
+                        if (newInterview.InterviewDate == otherInterview.InterviewDate)
                         {
-                            Console.WriteLine(3);
-                            return true;
+                            if ((newStart >= otherStart && newStart < otherEnd) ||
+                                (newEnd > otherStart && newEnd <= otherEnd) ||
+                                (newStart <= otherStart && newEnd >= otherEnd))
+                            {
+                                Console.WriteLine(2);
+                                return true;
+                            }
                         }
                     }
                 }
-            }
 
-            return false;
+                var otherInterviewsByApplicant = await GetInterviewsByApplicantAsync(newInterview.ApplicantId);
+                foreach (var otherInterview in otherInterviewsByApplicant)
+                {
+                    if (otherInterview.Id != newInterview.Id)
+                    {
+                        var otherStart = DateTime.ParseExact(otherInterview.TimeStart, "h:mm tt", CultureInfo.InvariantCulture);
+                        var otherEnd = DateTime.ParseExact(otherInterview.TimeEnd, "h:mm tt", CultureInfo.InvariantCulture);
+
+                        if (newInterview.InterviewDate == otherInterview.InterviewDate)
+                        {
+                            if ((newStart >= otherStart && newStart < otherEnd) ||
+                                (newEnd > otherStart && newEnd <= otherEnd) ||
+                                (newStart <= otherStart && newEnd >= otherEnd))
+                            {
+                                Console.WriteLine(3);
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error("InterviewsService > IsTimeRangeOverlappingAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
     }
 

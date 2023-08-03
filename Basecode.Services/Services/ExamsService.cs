@@ -9,6 +9,7 @@ using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
+using NLog;
 using static Basecode.Services.Utils.ErrorHandling;
 
 namespace Basecode.Services.Services
@@ -17,7 +18,7 @@ namespace Basecode.Services.Services
     {
         private readonly IExamsRepository _repository;
         private readonly IMapper _mapper;
-        private readonly LogContent _logContent = new();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public ExamsService(IExamsRepository repository, IMapper mapper)
         {
@@ -26,36 +27,84 @@ namespace Basecode.Services.Services
         }
         public async Task<List<Exams>> RetrieveAllAsync()
         {
-            var exams = await _repository.RetrieveAllAsync();
-            return exams.ToList();
+            try
+            {
+                var exams = await _repository.RetrieveAllAsync();
+                return exams.ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("ExamsService > RetrieveAllAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         public async Task AddAsync(ExamCreationDto Exams)
         {
-            var ExamsModel = _mapper.Map<Exams>(Exams);
-            ExamsModel.Results = false;
-            await _repository.AddAsync(ExamsModel);
+            try
+            {
+                var ExamsModel = _mapper.Map<Exams>(Exams);
+                ExamsModel.Results = false;
+                await _repository.AddAsync(ExamsModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("ExamsService > AddAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         public async Task<Exams?> GetByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            try
+            {
+                return await _repository.GetByIdAsync(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("ExamsService > GetByIdAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         public async Task UpdateAsync(ExamUpdationDto Exams)
         {
-            var ExamsModel = _mapper.Map<Exams>(Exams);
-            await _repository.UpdateAsync(ExamsModel);
+            try
+            {
+                var ExamsModel = _mapper.Map<Exams>(Exams);
+                await _repository.UpdateAsync(ExamsModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("ExamsService > UpdateAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         public async Task DeleteAsync(int id)
         {
-            await _repository.DeleteAsync(id);
+            try
+            {
+                await _repository.DeleteAsync(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("ExamsService > DeleteAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
         public async Task<Exams?> GetByApplicantIdAsync(int applicantId)
         {
-            return await _repository.GetByApplicantIdAsync(applicantId);
+            try
+            {
+                return await _repository.GetByApplicantIdAsync(applicantId);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("ExamsService > GetByApplicantIdAsync > Failed:" + ex.Message);
+                throw;
+            }
         }
 
     }

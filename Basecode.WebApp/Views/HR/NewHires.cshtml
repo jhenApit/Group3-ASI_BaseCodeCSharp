@@ -50,7 +50,7 @@
 						{
 							var jobPost = await jobPostingService.GetByIdAsync(applicant.PositionId);
 							var positionName = jobPost.Name;
-							<tr title="Click to View Applicant Details" class="clickable-row" data-href="/HR/ApplicantDetail?applicantId=@applicant.Id">
+							<tr title="Click to View Applicant Details" class="clickable-row" data-href="/HR/ApplicantDetail/@applicant.ApplicantId">
 								<td>@applicant.Applicant.Name</td>
 								<td>@positionName</td>
 								<td>@applicant.HireDate</td>

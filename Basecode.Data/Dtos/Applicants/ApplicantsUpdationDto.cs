@@ -9,6 +9,7 @@ namespace Basecode.Data.Dtos.Applicants
 {
     public class ApplicantsUpdationDto
     {
+        public int Id { get; set; }
         public ApplicationStatus ApplicationStatus { get; set; }
     }
 }

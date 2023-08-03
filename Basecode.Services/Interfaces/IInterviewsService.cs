@@ -11,8 +11,8 @@ namespace Basecode.Services.Interfaces
 {
     public interface IInterviewsService
     {
+        Task <List<Interviews>> GetByApplicantIdAsync(int applicantId);
         Task<List<Interviews>> RetrieveAllAsync();
-        Task<Interviews?> GetByApplicantIdAsync(int applicantId);
         Task AddAsync(InterviewsCreationDto Interviews);
         Task<Interviews?> GetByIdAsync(int id);
         Task UpdateAsync(InterviewsUpdationDto Interviews);

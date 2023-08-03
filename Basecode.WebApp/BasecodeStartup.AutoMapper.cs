@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Basecode.Data.Dtos;
+using Basecode.Data.Dtos.Applicants;
+using Basecode.Data.Dtos.CurrentHires;
 using Basecode.Data.Dtos.HrEmployee;
 using Basecode.Data.Dtos.Interviews;
 using Basecode.Data.Dtos.JobPostings;
@@ -20,7 +22,9 @@ namespace Basecode.WebApp
                 cfg.CreateMap<JobPostingsCreationDto, JobPostings>();
                 cfg.CreateMap<JobPostingsUpdationDto, JobPostings>();
                 cfg.CreateMap<ApplicantCreationDto, Applicants>();
-                cfg.CreateMap<AddressCreationDto, Addresses>();
+                cfg.CreateMap<ApplicantsUpdationDto, Applicants>();
+                cfg.CreateMap<CurrentHiresCreationDto, CurrentHires>();
+				cfg.CreateMap<AddressCreationDto, Addresses>();
                 cfg.CreateMap<CharacterReferencesCreationDto, CharacterReferences>();
                 cfg.CreateMap<ReferenceFormsCreationDto, ReferenceForms>();
                 cfg.CreateMap<InterviewsCreationDto, Interviews>();

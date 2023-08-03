@@ -8,6 +8,8 @@ using Basecode.Data.ViewModels;
 using Basecode.Data.Models;
 using Basecode.Data.Dtos.Interviews;
 using static Basecode.Data.Enums.Enums;
+using Basecode.Services.Services;
+using Basecode.WebApp.Models;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -20,6 +22,8 @@ namespace Basecode.WebApp.Controllers
         private readonly ICurrentHiresService _currentHiresService;
         private readonly IInterviewsService _interviewsService;
         private readonly IInterviewersService _interviewersService;
+        private readonly IAddressService _addressService;
+        private readonly ICharacterReferencesService _characterReferencesService;
         private readonly IErrorHandling _errorHandling; 
         private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -32,9 +36,12 @@ namespace Basecode.WebApp.Controllers
             IApplicantService applicantService,
             ICurrentHiresService currentHiresService,
             IInterviewsService interviewsService,
+            IAddressService addressService,
+            ICharacterReferencesService characterReferencesService,
             IInterviewersService interviewersService
             )
         {
+            _addressService = addressService;
             _service = service;
             _jobPostingsService = jobPostingsService;
             _errorHandling = errorHandling;
@@ -43,6 +50,7 @@ namespace Basecode.WebApp.Controllers
             _currentHiresService = currentHiresService;
             _interviewsService = interviewsService;
             _interviewersService = interviewersService;
+             _characterReferencesService = characterReferencesService;
         }
 
 
@@ -139,12 +147,12 @@ namespace Basecode.WebApp.Controllers
                 //logger to be implemented
                 //var data = _jobPostingsService.CreateJobPosting(jobPostingsCreationDto);
                 
-                //if (!data.Result)
-                //{
-                //    //_logger.Error(_errorHandling.SetLog(data));
-                //    ViewBag.ErrorMessage = data.Message;
-                //    return View(jobPostingsCreationDto);
-                //}
+                /*if (!data.Result)
+                {
+                    //_logger.Error(_errorHandling.SetLog(data));
+                    ViewBag.ErrorMessage = data.Message;
+                    return View(jobPostingsCreationDto);
+                }*/
                 await _jobPostingsService.AddAsync(jobPostingsCreationDto);
                 return RedirectToAction("JobPostList");
             }
@@ -167,12 +175,12 @@ namespace Basecode.WebApp.Controllers
                 //logger to be implemented
                 //var data = _jobPostingsService.UpdateJobPosting(jobPostingsUpdationDto);
                 
-                //if (!data.Result)
-                //{
-                //    //_logger.Error(_errorHandling.SetLog(data));
-                //    ViewBag.ErrorMessage = data.Message;
-                //    return View(jobPostingsUpdationDto);
-                //}
+                /*if (!data.Result)
+                {
+                    //_logger.Error(_errorHandling.SetLog(data));
+                    ViewBag.ErrorMessage = data.Message;
+                    return View(jobPostingsUpdationDto);
+                }*/
                 await _jobPostingsService.UpdateAsync(jobPostingsUpdationDto);
                 return RedirectToAction("JobPostList");
             }
@@ -192,11 +200,41 @@ namespace Basecode.WebApp.Controllers
         /// Displays the details of a applicant's application.
         /// </summary>
         /// <returns>The view containing the application details.</returns>
-        public IActionResult ApplicantDetail()
+        public async Task<IActionResult> ApplicantDetail(int id)
         {
-            return View();
+            if (System.IO.File.Exists("wwwroot/applicants/resume/resume.pdf"))
+            {
+                System.IO.File.Delete("wwwroot/applicants/resume/resume.pdf");
+            }
+            var applicant = await _applicantService.GetByIdAsync(id);
+            var address = await _addressService.GetByApplicantIdAsync(applicant.Id);
+            var characterReferences = await _characterReferencesService.GetByApplicantIdAsync(applicant.Id);
+            var interviews = await _interviewsService.GetByApplicantIdAsync(applicant.Id);
+            var applicantDetailViewModel = new ApplicantDetailViewModel
+            {
+                Applicant = applicant,
+                Address = address,
+                CharacterReferences = characterReferences,
+                Interviews = interviews
+            };
+            string imreBase64Data = Convert.ToBase64String(applicant.Photo);
+            string imgDataURL = string.Format($"data:image/png;base64,{imreBase64Data}");
+            string resumeBase64Data = Convert.ToBase64String(applicant.Resume);
+            System.IO.FileStream stream =
+                new FileStream(@"wwwroot/applicants/resume/resume.pdf", FileMode.CreateNew);
+            System.IO.BinaryWriter writer =
+                new BinaryWriter(stream);
+            writer.Write(applicant.Resume, 0, applicant.Resume.Length);
+            writer.Close();
+            //Passing image data in viewbag to view
+            ViewBag.ImageData = imgDataURL;
+            //puts the resume file to the viewbag 
+            ViewBag.ResumeData = File(@"C:\temp\file.pdf", "appliction/pdf");
+
+
+            return View(applicantDetailViewModel);
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> UpdateJobPosting(JobPostingsUpdationDto model)
         {
@@ -220,9 +258,25 @@ namespace Basecode.WebApp.Controllers
         /// Allows HR to view job applicants
         /// </summary>
         /// <returns>Redirect to Job Applicant Overview Page</returns>
-        public IActionResult JobApplicantsOverview()
+        public async Task<IActionResult> JobApplicantsOverview()
         {
-            return View();
+            try
+            {
+                var applicants = await _applicantService.RetrieveAllAsync();
+                var jobPostings = await _jobPostingsService.RetrieveAllAsync();
+
+                var jobApplicantsOverviewModel = new JobApplicantOverviewModel
+                {
+                    applicants = applicants,
+                    jobPostings = jobPostings
+                };
+
+                return View(jobApplicantsOverviewModel);
+            }
+            catch(Exception)
+            {
+                return BadRequest("An error occurred while retrieving the Job Applicant Overview.");
+            }
         }
 
         /// <summary>
@@ -241,6 +295,31 @@ namespace Basecode.WebApp.Controllers
         public IActionResult DisqualifiedApplicants()
         {
             return View();
+        }
+
+        /// <summary>
+        /// Allows HR to view new hires
+        /// </summary>
+        /// <returns>Redirect to View Applicants Page</returns>
+        public async Task<IActionResult> NewHires()
+        {
+            try
+            {
+                var currentHiresList = await _currentHiresService.RetrieveAllAsync();
+                var jobPostingsList = await _jobPostingsService.RetrieveAllAsync();
+
+                var newHiresModel = new NewHiresViewModel
+                {
+                    CurrentHires = currentHiresList,
+                    jobPostings = jobPostingsList
+                };
+
+                return View(newHiresModel);
+            }
+            catch(Exception)
+            {
+                return BadRequest("An error occurred while retriving New Hires.");
+            }
         }
 
         #region Interviews

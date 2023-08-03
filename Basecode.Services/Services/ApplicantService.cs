@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using Basecode.Data.Dtos;
 using Basecode.Data.Dtos.JobPostings;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Basecode.Services.Interfaces;
 using Basecode.Services.Utils;
 using Basecode.Data.RandomIDGenerator;
+using Basecode.Data.Dtos.Applicants;
+using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.Services.Services
 {

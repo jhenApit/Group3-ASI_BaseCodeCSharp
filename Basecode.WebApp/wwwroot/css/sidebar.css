@@ -258,9 +258,11 @@
     transition: all 0.3s ease;
 }
 
-.sidebar .nav-links li .sub-menu a:hover {
-    opacity: 1;
-    color: #EC2224;
+.sidebar .nav-links li .sub-menu a:hover,
+.active-link a {
+    opacity: 1 !important;
+    color: #EC2224 !important;
+    font-weight: bold !important;
 }
 
 .clicked-sub-menu-item {

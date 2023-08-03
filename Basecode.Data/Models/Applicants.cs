@@ -12,7 +12,7 @@ namespace Basecode.Data.Models
         public string? ApplicantId { get; set; }
         public int JobId { get; set; } // Foreign Key to the JobPostings table
         [ForeignKey("JobId")]
-        public JobPostings Job { get; set; }
+        public JobPostings? Job { get; set; }
 
         [Required(ErrorMessage = "ApplicationDate is required.")]
         [DataType(DataType.DateTime)]

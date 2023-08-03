@@ -8,6 +8,8 @@ using Basecode.Data.ViewModels;
 using Basecode.Data.Models;
 using Basecode.Data.Dtos.Interviews;
 using Basecode.Data.Dtos.Interviewers;
+using AutoMapper;
+using Basecode.Data.Enums;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -26,6 +28,9 @@ namespace Basecode.WebApp.Controllers
         private readonly IErrorHandling _errorHandling; 
         private readonly UserManager<IdentityUser> _userManager;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly ISendEmailService _sendEmailService;
+        private readonly IMapper _mapper;
+        private readonly IMeetingLinkService _meetingLinkService;
 
         public HRController(
             IHrEmployeeService service,
@@ -38,7 +43,9 @@ namespace Basecode.WebApp.Controllers
             IInterviewsService interviewsService,
             IAddressService addressService,
             ICharacterReferencesService characterReferencesService,
-            IInterviewersService interviewersService
+            IInterviewersService interviewersService,
+            ISendEmailService sendEmailService,
+            IMapper mapper, IMeetingLinkService meetingLinkService
             )
         {
             _addressService = addressService;
@@ -52,6 +59,9 @@ namespace Basecode.WebApp.Controllers
             _interviewsService = interviewsService;
             _interviewersService = interviewersService;
             _characterReferencesService = characterReferencesService;
+            _sendEmailService = sendEmailService;
+            _mapper = mapper;
+            _meetingLinkService = meetingLinkService;
         }
 
 
@@ -428,18 +438,29 @@ namespace Basecode.WebApp.Controllers
                     TimeEnd = interview.TimeEnd,
                 };
 
+                if(await _interviewsService.GetByApplicantIdAndInterviewTypeAsync(createInterview.ApplicantId, createInterview.InterviewType))
+                {
+                    return BadRequest("Applicant already has " + EnumHelper.GetEnumDescription(createInterview.InterviewType) + " scheduled.");
+                }
+
                 if (await _interviewsService.IsTimeRangeOverlappingAsync(createInterview))
                 {
-                    TempData["IsOverlap"] = true;
-                    return RedirectToAction("CreateInterview", new { id = interview.InterviewerId });
+                    return BadRequest("Inputed Date and Time ovelrap with other Interviews.");
                 }
                 await _interviewsService.AddAsync(createInterview);
+
+                var interviewSched = _mapper.Map<Interviews>(createInterview);
+                var applicant = await _applicantService.GetByIdAsync(interviewSched.ApplicantId);
+                
+                //Send email notification to Interviewer and applicant once the interview/examination schedule was set
+                await _sendEmailService.SendSetInterviewScheduleEmail(interviewSched, applicant!);
+                
                 return RedirectToAction("Interviews");
             }
-            catch(Exception e)
+            catch(Exception)
             {
-                _logger.Error(e, "Failed to add new interview");
-                return BadRequest(e.Message + " Error occurred while adding a new interview");
+                _logger.Error("Failed to add new interview");
+                return BadRequest("Error occurred while adding a new interview");
             }
         }
 
@@ -494,10 +515,14 @@ namespace Basecode.WebApp.Controllers
                     TimeEnd = interview.TimeEnd,
                 };
 
+                if (await _interviewsService.GetByApplicantIdAndInterviewTypeAsync(updateInterview.ApplicantId, updateInterview.InterviewType))
+                {
+                    return BadRequest("Applicant already has " + EnumHelper.GetEnumDescription(updateInterview.InterviewType) + " scheduled.");
+                }
+
                 if (await _interviewsService.IsTimeRangeOverlappingAsync(updateInterview))
                 {
-                    TempData["IsOverlapUpdate"] = true;
-                    return RedirectToAction("EditInterview", new { id = interview.Id });
+                    return BadRequest("Inputed Date and Time ovelrap with other Interviews.");
                 }
 
                 await _interviewsService.UpdateAsync(updateInterview);
@@ -562,7 +587,7 @@ namespace Basecode.WebApp.Controllers
         {
             try
             {
-                Console.WriteLine("Heere" + id);
+                Console.WriteLine("Here" + id);
                 await _interviewersService.DeleteAsync(id);
                 return RedirectToAction("Interviews");
             }

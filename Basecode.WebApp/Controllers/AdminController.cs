@@ -19,26 +19,20 @@ namespace Basecode.WebApp.Controllers
         private readonly IHrEmployeeService _service;
         private readonly IAdminService _adminService;
         private readonly IErrorHandling _errorHandling;
+        private readonly ISendEmailService _sendEmailService;
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        private readonly IEmailService _emailService;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public AdminController(
-            IHrEmployeeService service, 
-            IErrorHandling errorHandling, 
-            IAdminService adminService, 
-            IEmailService emailService, 
-            UserManager<IdentityUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+
+        public AdminController(IHrEmployeeService service, IAdminService adminService, IErrorHandling errorHandling, ISendEmailService sendEmailService, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _service = service;
-            _errorHandling = errorHandling;
             _adminService = adminService;
-            _emailService = emailService;
+            _errorHandling = errorHandling;
+            _sendEmailService = sendEmailService;
             _userManager = userManager;
             _roleManager = roleManager;
         }
-
 
         /// <summary>
         /// Retrieves all HR employees and displays the HR list.

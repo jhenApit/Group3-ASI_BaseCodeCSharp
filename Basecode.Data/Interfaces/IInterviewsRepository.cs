@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Basecode.Data.Models;
+using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.Data.Interfaces
 {
@@ -18,5 +19,6 @@ namespace Basecode.Data.Interfaces
         Task<IEnumerable<Interviews>> GetInterviewsByInterviewerAndDateAsync(int interviewerId, DateTime interviewDate);
         Task<IEnumerable<Interviews>> GetInterviewsByInterviewerAsync(int interviewerId);
         Task<IEnumerable<Interviews>> GetInterviewsByApplicantAsync(int applicantId);
+        Task<bool> GetByApplicantIdAndInterviewTypeAsync(int applicantId, InterviewType interviewType);
     }
 }

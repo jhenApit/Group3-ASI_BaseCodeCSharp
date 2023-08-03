@@ -17,28 +17,25 @@ namespace Basecode.Services.Services
     {
         private readonly IAddressService _addressService;
         private readonly ICharacterReferencesService _characterService;
-        private readonly IEmailService _emailService;
         private readonly IApplicantRepository _repository;
-        private readonly ICharacterReferencesService _characterReferencesService;
         private readonly IMapper _mapper;
         private readonly IDGenerator _idGenerator = new();
         private readonly LogContent _logContent = new();
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-
+        private readonly ISendEmailService _sendEmailService;
         public ApplicantService (
             IAddressService addressService,
             ICharacterReferencesService characterService,
-            IEmailService emailService,
-            ICharacterReferencesService characterReferencesService,
             IApplicantRepository repository, 
-            IMapper mapper)
+            IMapper mapper,
+            ISendEmailService sendEmailService
+        )
         {
             _addressService = addressService;
             _characterService = characterService;
-            _emailService = emailService;
-            _characterReferencesService = characterReferencesService;
             _repository = repository;
             _mapper = mapper;
+            _sendEmailService = sendEmailService;
         }
 
         /// <summary>
@@ -54,7 +51,8 @@ namespace Basecode.Services.Services
 
                 applicantModel.ApplicantId = _idGenerator.GenerateRandomApplicantId();
                 applicantModel.ApplicationDate = DateTime.Now;
-                applicantModel.ApplicationStatus = Data.Enums.Enums.ApplicationStatus.Received;
+                applicantModel.ApplicationStatus = ApplicationStatus.Received;
+                
                 //Row 41 on the function List. Set requirements to TBC upon applying
                 applicantModel.Requirements = Data.Enums.Enums.Requirements.TBC;
 
@@ -313,10 +311,7 @@ namespace Basecode.Services.Services
                 };
                 await _characterService.AddAsync(characRef2);
 
-                var recipient = model.Applicant.Email;
-                var subject = "Application Update";
-                var body = "Your application ID is " + model.Applicant.ApplicantId;
-                //await _emailService.SendEmail(recipient, subject, body);
+                
 
                 // Return true if the applicant was successfully added
                 _logger.Info("ApplicantService > AddApplicantAsync > Successfully added applicant:");

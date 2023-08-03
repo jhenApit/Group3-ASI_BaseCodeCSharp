@@ -27,9 +27,6 @@ namespace Basecode.WebApp
 
             // Add services to the container.
             services.AddControllersWithViews();
-            services.AddScoped<IApplicantService, ApplicantService>();
-            services.AddScoped<IErrorHandling, ErrorHandling>();
-            services.AddScoped<IApplicantRepository, ApplicantRepository>();
             services.AddMvc(options => options.EnableEndpointRouting = false);
         }
 

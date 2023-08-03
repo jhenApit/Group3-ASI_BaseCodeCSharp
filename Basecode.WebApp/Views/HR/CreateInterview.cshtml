@@ -139,15 +139,6 @@
     </div>
 </form>
 
-@if (TempData["IsOverlap"] != null && (bool)TempData["IsOverlap"])
-{
-    <script>
-        $(document).ready(function () {
-            $('#overlapModal').modal('show');
-        });
-    </script>
-}
-
 <script>
     $(document).ready(function () {
         var today = new Date();
@@ -188,6 +179,19 @@
         <div class="modal-content px-3 py-4">
             <div class="modal-body">
                 <p class="text-center"><strong>Inputed Date and Time ovelap with other Interviews.</strong></p>
+                <div class="d-flex justify-content-center align-items-center gap-3">
+                    <button type="button" class="btn b-red px-5 mt-2" data-bs-dismiss="modal">OKAY</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="existModal" tabindex="-1" role="dialog" aria-labelledby="existModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content px-3 py-4">
+            <div class="modal-body">
+                <p class="text-center"><strong>Applicant already has an interview scheduled.</strong></p>
                 <div class="d-flex justify-content-center align-items-center gap-3">
                     <button type="button" class="btn b-red px-5 mt-2" data-bs-dismiss="modal">OKAY</button>
                 </div>

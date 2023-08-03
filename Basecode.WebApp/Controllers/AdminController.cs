@@ -157,7 +157,7 @@ namespace Basecode.WebApp.Controllers
             }
 
         }
-
+        
         /// <summary>
         /// Deletes the HR account with the specified ID.
         /// </summary>
@@ -165,20 +165,18 @@ namespace Basecode.WebApp.Controllers
         /// <returns>Redirects to the HrList page</returns>
         public async Task<IActionResult> DeleteHrAccount(int id)
         {
-            var hr = await _service.GetByIdAsync(id);
-            await _userManager.DeleteAsync(hr.User);
-            return RedirectToAction("HrList");
-        }
-
-        /// <summary>
-        /// Updates the HR employee's account.
-        /// </summary>
-        /// <param name="hrEmployee">The updated HR employee details</param>
-        /// <returns>Redirects to the HrList page</returns>
-        public async Task<IActionResult> Update(HREmployeeUpdationDto hrEmployee)
-        {
-            await _service.UpdateAsync(hrEmployee);
-            return RedirectToAction("HrList");
+            try
+            {
+                var hr = await _service.GetByIdAsync(id);
+                await _userManager.DeleteAsync(hr.User);
+                _logger.Info("Hr account deleted successfully");
+                return RedirectToAction("HrList");
+            }
+            catch (System.Exception ex)
+            {
+                _logger.Error(ex, "Delete Failed");
+                throw;
+            }
         }
     }
 }

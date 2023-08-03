@@ -204,14 +204,14 @@ namespace Basecode.Services.Services
                         _logContent.Result = false;
                         _logContent.ErrorCode = "400. Edit Failed!";
                         _logContent.Message = "Position Name already exists.";
-                        //return _logContent;
+                        return _logContent;
                     }
                     _logContent.Result = true;
-                    //return _logContent;
+                    return _logContent;
                 }
                 //if job exists and job name entered is the same as the current name
                 _logContent.Result = true;
-                //return _logContent;
+                return _logContent;
             }
             else
             {

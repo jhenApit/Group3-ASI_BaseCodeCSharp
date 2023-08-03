@@ -52,11 +52,11 @@ a {
     }
 
 .status-container {
-    margin-left: 20px;
+    margin-left: 30px;
     background-color: red;
     color: white;
-    padding: 10px 40px 10px 40px;
-    border-radius: 5px;
+    padding: 5px 20px;
+    border-radius: 1rem;
     font-weight: bold;
 }
 
@@ -82,10 +82,12 @@ a {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    text-align: center;
     background-color: #D0D0D0;
     color: #393939;
-    padding: 10px 10px 10px 10px;
-    border-radius: 5px;
+    padding: 5px 10px;
+    border-radius: 1rem;
+    font-size: 0.8rem;
     font-weight: bold;
     margin-right: 10px;
 }
@@ -96,10 +98,10 @@ a {
     }
 
 .star-img {
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
     margin-right: 8px;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
 }
 
 .description-container {

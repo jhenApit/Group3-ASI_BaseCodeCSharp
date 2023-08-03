@@ -8,5 +8,6 @@ namespace Basecode.Services.Interfaces
         Task<List<Addresses>> RetrieveAllAsync();
         Task AddAsync(AddressCreationDto address);
         Task<Addresses?> GetByIdAsync(int id);
+        Task<Addresses?> GetByApplicantIdAsync(int applicantId);
     }
 }

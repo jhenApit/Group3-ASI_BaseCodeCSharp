@@ -15,15 +15,15 @@ namespace Basecode.Services.Interfaces
         Task SendHrDetailsEmail(HrEmployee hrEmployee, string password);
 
         //Application and Screening
-        Task SendApplicationStatusEmail(Applicants applicant, string job, string status);
-        Task SendNewApplicantEmail(Applicants applicant, string position);
-        Task SendHrApplicationApprovalEmail(Applicants applicant, string jobTitle);
-        Task SendApplicantApplicationRegretEmail(Applicants applicant, string job);
+        Task SendApplicationStatusEmail(Applicants applicant, string status);
+        Task SendNewApplicantEmail(Applicants applicant);
+        Task SendHrApplicationApprovalEmail(Applicants applicant);
+        Task SendApplicantApplicationRegretEmail(Applicants applicant);
 
         //Interviews
-        Task SendSetInterviewScheduleEmail(Interviewers interviewer, Applicants applicant, string interviewType, string jobTitle, string date, string time);
-        Task SendInterviewReminderEmail(string applicant, Interviewers interviewer, string interviewType, string dateAndTime);
-        Task SendHrApprovedScheduleEmail(Applicants applicant, string date, string time);
+        Task SendSetInterviewScheduleEmail(Interviews interview, Applicants applicant);
+        Task SendInterviewReminderEmail(Interviews interview, Applicants applicant);
+        Task SendHrApprovedScheduleEmail(Applicants applicant, Interviews interview);
         Task SendHrInterviewApprovalEmail(Applicants applicant, string interviewType);
         Task SendApplicantInterviewRegretEmail(Applicants applicant, string jobTitle, string interviewType);
 

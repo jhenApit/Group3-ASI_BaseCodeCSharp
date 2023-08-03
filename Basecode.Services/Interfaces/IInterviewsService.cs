@@ -17,5 +17,10 @@ namespace Basecode.Services.Interfaces
         Task<Interviews?> GetByIdAsync(int id);
         Task UpdateAsync(InterviewsUpdationDto Interviews);
         Task DeleteAsync(int id);
+        Task<IEnumerable<Interviews>> GetInterviewsByInterviewerAndDateAsync(int interviewerId, DateTime interviewDate);
+        Task<IEnumerable<Interviews>> GetInterviewsByInterviewerAsync(int interviewerId);
+        Task<IEnumerable<Interviews>> GetInterviewsByApplicantAsync(int applicantId);
+        Task<bool> IsTimeRangeOverlappingAsync(InterviewsCreationDto newInterview);
+        Task<bool> IsTimeRangeOverlappingAsync(InterviewsUpdationDto newInterview);
     }
 }

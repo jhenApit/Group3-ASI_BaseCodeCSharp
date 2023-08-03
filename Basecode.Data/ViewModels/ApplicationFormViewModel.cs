@@ -2,7 +2,7 @@
 using Basecode.Data.Dtos.Applicants;
 using Basecode.Data.Models;
 
-namespace Basecode.WebApp.Models
+namespace Basecode.Data.ViewModels
 {
     public class ApplicationFormViewModel
     {

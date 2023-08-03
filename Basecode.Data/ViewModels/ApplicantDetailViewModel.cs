@@ -1,6 +1,6 @@
 ﻿using Basecode.Data.Models;
 
-namespace Basecode.WebApp.Models
+namespace Basecode.Data.ViewModels
 {
     public class ApplicantDetailViewModel
     {
@@ -8,6 +8,7 @@ namespace Basecode.WebApp.Models
         public Addresses Address { get; set; }
         public List<CharacterReferences> CharacterReferences { get; set; }
         public List<Interviews> Interviews { get; set; }
+        public JobPostings? JobPosting { get; set; }
 
     }
 }

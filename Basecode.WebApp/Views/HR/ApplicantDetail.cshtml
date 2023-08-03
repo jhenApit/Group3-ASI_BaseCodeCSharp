@@ -1,14 +1,13 @@
 ﻿@using Basecode.Data.Enums;
 @using Basecode.Data.Models;
+@using Basecode.Data.ViewModels;
 @using Basecode.Services.Interfaces;
 @using System.Drawing;
 @using static Basecode.Data.Enums.Enums;
 @model ApplicantDetailViewModel
-@inject IJobPostingsService _jobPostingService;
 @{
     ViewData ["Title"] = "Application Detail";
     Layout = "_SideBarAdmin";
-    var job = await _jobPostingService.GetByIdAsync(Model.Applicant.JobId);
     <link rel="stylesheet" href="~/css/ApplicantDetail.css" />
 }
 
@@ -297,7 +296,7 @@
                         <label class="d-inline">Job Applied: </label>
                     </div>
                     <div class="col">
-                        <input class="form-control" id="jobapplied" type="text" name="jobapplied" value="@job?.Name" disabled />
+                        <input class="form-control" id="jobapplied" type="text" name="jobapplied" value="@Model.JobPosting?.Name" disabled />
                     </div>
                 </div>
                 <div class="row form-group mt-3">

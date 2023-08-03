@@ -7,6 +7,7 @@ using Basecode.Data.Dtos.JobPostings;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Basecode.Services.Utils;
+using Microsoft.AspNetCore.Identity;
 
 namespace Basecode.Services.Services
 {
@@ -34,8 +35,11 @@ namespace Basecode.Services.Services
         /// Adds a new job posting.
         /// </summary>
         /// <param name="jobPostingsDto">The DTO object containing job posting details.</param>
-        public async Task AddAsync(JobPostingsCreationDto jobPostingsDto)
+        public async Task AddAsync(JobPostingsCreationDto jobPostingsDto, IdentityUser loggedUser)
         {
+            jobPostingsDto.CreatedBy = loggedUser.UserName;
+            jobPostingsDto.Qualifications = string.Join(", ", jobPostingsDto.QualificationList);
+            jobPostingsDto.Responsibilities = string.Join(", ", jobPostingsDto.ResponsibilityList);
             var JobPostingsModel = _mapper.Map<JobPostings>(jobPostingsDto);
             JobPostingsModel.CreatedTime = DateTime.Now;
             JobPostingsModel.IsDeleted = false;
@@ -60,12 +64,14 @@ namespace Basecode.Services.Services
         /// Updates a job posting.
         /// </summary>
         /// <param name="JobPostings">The DTO object containing updated job posting details.</param>
-        public async Task UpdateAsync(JobPostingsUpdationDto JobPostings)
+        public async Task UpdateAsync(JobPostingsUpdationDto jobPostings, IdentityUser loggedUser)
         {
-            var JobPostingsModel = _mapper.Map<JobPostings>(JobPostings);
+            jobPostings.UpdatedBy = loggedUser.UserName;
+            jobPostings.Qualifications = string.Join(", ", jobPostings.QualificationList);
+            jobPostings.Responsibilities = string.Join(", ", jobPostings.ResponsibilityList);
+            var JobPostingsModel = _mapper.Map<JobPostings>(jobPostings);
             JobPostingsModel.UpdatedTime = DateTime.Now;
-            JobPostingsModel.UpdatedBy = JobPostings.UpdatedBy;
-
+            JobPostingsModel.UpdatedBy = jobPostings.UpdatedBy;
             await _repository.UpdateAsync(JobPostingsModel);
         }
 

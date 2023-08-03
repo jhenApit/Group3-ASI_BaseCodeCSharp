@@ -9,6 +9,7 @@ using Basecode.Data.Models;
 using Basecode.Data.Dtos.Interviews;
 using Basecode.Data.Dtos.Interviewers;
 using AutoMapper;
+using Basecode.Data.Enums;
 
 namespace Basecode.WebApp.Controllers
 {
@@ -58,6 +59,9 @@ namespace Basecode.WebApp.Controllers
             _interviewsService = interviewsService;
             _interviewersService = interviewersService;
             _characterReferencesService = characterReferencesService;
+            _sendEmailService = sendEmailService;
+            _mapper = mapper;
+            _meetingLinkService = meetingLinkService;
         }
 
 

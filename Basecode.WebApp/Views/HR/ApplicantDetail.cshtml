@@ -322,16 +322,16 @@
                 </tr>
             </thead>
             <tbody class="text-center">
-                <tr>
+                <tr class="table-row">
                     @if(Model.Interviews == null || Model.Interviews.Count == 0)
                     {
-                        <td colspan="4">
-                            <p> No upcoming Interviews </p>
+                        <td class="empty" colspan="4">
+                            No upcoming Interviews
                         </td>
                     }
                     @foreach(var interviews in Model.Interviews)
                     {
-                        <td>@interviews.InterviewType</td>
+                        <td>@EnumHelper.GetEnumDescription(interviews.InterviewType)</td>
                         <td>@interviews.Interviewer</td>
                         <td>@interviews.InterviewDate</td>
                         <td>

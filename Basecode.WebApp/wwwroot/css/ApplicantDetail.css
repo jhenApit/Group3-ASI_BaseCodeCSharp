@@ -115,6 +115,22 @@ a {
     text-align: center;
 }
 
+.table-row {
+    height: 3.5rem;
+    background-color: white;
+}
+
+.empty {
+    height: 5rem;
+    vertical-align: middle;
+    color: #55729B !important;
+    font-style: italic;
+    font-size: 1.5rem;
+    text-align: center !important;
+    background-color: #E4E9F7 !important;
+    border: none !important;
+}
+
 td {
     background-color: white;
     vertical-align: middle !important;

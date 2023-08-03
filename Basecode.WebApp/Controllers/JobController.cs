@@ -1,12 +1,14 @@
 ﻿using Basecode.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 
 namespace Basecode.WebApp.Controllers
 {
     public class JobController : Controller
     {
         private readonly IJobPostingsService _service;
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         public JobController(IJobPostingsService service)
         {
@@ -26,6 +28,7 @@ namespace Basecode.WebApp.Controllers
             }
             catch (Exception e)
             {
+                _logger.Error("Error Occurred: Failed to retrieve jobs");
                 return BadRequest(e.Message);
             }
 
@@ -45,6 +48,7 @@ namespace Basecode.WebApp.Controllers
             }
             catch (Exception e)
             {
+                _logger.Error("Error Occurred: Failed to retrieve job description");
                 return BadRequest(e.Message);
             }
         }

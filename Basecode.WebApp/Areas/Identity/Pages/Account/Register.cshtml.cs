@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Basecode.Data.Dtos.HrEmployee;
 using Basecode.Data.Dtos.Interviewers;
 using Basecode.Data.Models;
+using AutoMapper;
 
 namespace Basecode.WebApp.Areas.Identity.Pages.Account
 {
@@ -34,6 +35,8 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IHrEmployeeService _hr_service;
         private readonly IInterviewersService _interviewers_service;
+        private readonly ISendEmailService _sendEmailService;
+        private readonly IMapper _mapper;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -42,7 +45,9 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             RoleManager<IdentityRole> roleManager,
             IHrEmployeeService hr_service,
-            IInterviewersService interviewers_service)
+            IInterviewersService interviewers_service,
+            ISendEmailService sendEmailService,
+            IMapper mapper)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -51,7 +56,9 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
             _logger = logger;
             _roleManager = roleManager;
             _hr_service = hr_service;
+            _sendEmailService = sendEmailService;
             _interviewers_service = interviewers_service;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -200,7 +207,11 @@ namespace Basecode.WebApp.Areas.Identity.Pages.Account
                     
                     //save user to employees table
                     hrEmployee.Password = user.PasswordHash;
+                    
                     await _hr_service.AddAsync(hrEmployee);
+                    
+                    var newHrEmployee = _mapper.Map<HrEmployee>(hrEmployee);
+                    await _sendEmailService.SendHrDetailsEmail(newHrEmployee, newHrEmployee.Password);
 
                     var interviewerEntry = new InterviewersCreationDto
                     {

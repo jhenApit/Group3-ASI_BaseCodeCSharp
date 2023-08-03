@@ -74,6 +74,43 @@ main {
     border-radius: .5rem 0px 0px .5rem;
 }
 
+/* dropdown menu*/
+.dropdown-menu {
+    background-color: #000;
+    margin-top: 0;
+    text-align: center;
+    min-width: 8rem;
+    border-top: 1px solid black;
+}
+
+    .dropdown-menu[data-bs-popper] {
+        top: 70%;
+        left: 0;
+        margin-top: 0;
+    }
+
+    .dropdown-item:hover,
+    .dropdown-item:focus,
+    .dropdown-item:active:focus {
+        background-color: rgba(64, 64, 64, 0.48);
+    }
+
+.dropdown-logout:hover,
+.dropdown-logout:focus,
+.dropdown-logout:active:focus {
+    background-color: rgba(255, 0, 0, 0.48);
+    box-shadow: none;
+}
+
+.logout-btn:hover,
+.logout-btn:focus
+.logout-btn:active:focus {
+    color: red;
+    box-shadow: none;
+}
+
+/* ----------- */
+
 /* navigation bar css */
 .nav-item {
     border-bottom: 5px solid rgba(255, 255, 255, 0.01);

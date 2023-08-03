@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Basecode.Data.Interfaces;
 using Basecode.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using static Basecode.Data.Enums.Enums;
 
 namespace Basecode.Data.Repositories
 {
@@ -67,6 +68,21 @@ namespace Basecode.Data.Repositories
         {
             return await Task.FromResult(this.GetDbSet<Applicants>());
         }
+        /// <summary>
+        /// This update the applicant form the database
+        /// </summary>
+        /// <param name="applicant"> the applicant model to update</param>
+		public async Task<bool> Update(Applicants applicant)
+		{
+            var existingApplicant = _context.Applicants.Find(applicant.Id);
+            if(existingApplicant != null)
+            {
+                existingApplicant.ApplicationStatus = applicant.ApplicationStatus;
+				_context.SaveChanges();
+                return true;
+			}
+            return false;
+		}
 
-    }
+	}
 }

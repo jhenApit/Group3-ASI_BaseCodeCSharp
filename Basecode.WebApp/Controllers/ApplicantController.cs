@@ -127,6 +127,7 @@ namespace Basecode.WebApp.Controllers
 			{
 				var applicant = await _applicantService.GetByIdAsync(id);
                 var interview = await _interviewsService.GetByIdAsync(id);
+                var characterReference = await _characterService.GetByIdAsync(id);
 
 				if (applicant != null)
 				{
@@ -150,8 +151,8 @@ namespace Basecode.WebApp.Controllers
 
                         if (status == "Undergoing Background Check")
                         {
-                            
-                            await _sendEmailService.SendReferenceFormEmail()
+                            //Sends an email to request a character reference from a given character reference contact.
+                            await _sendEmailService.SendReferenceFormEmail(characterReference!, applicant);
                         }
                         
                         if (status == "Undergoing Job Offer")
@@ -177,7 +178,10 @@ namespace Basecode.WebApp.Controllers
                     }
 
 					await _applicantService.UpdateAsync(id, status);
+
+                   // Sends email notifications regarding the application status to the applicant and HR Team.
                     await _sendEmailService.SendApplicationStatusEmail(applicant, status);
+
 					return RedirectToAction("JobApplicantsOverview");
 				}
 				else

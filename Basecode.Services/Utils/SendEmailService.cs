@@ -30,7 +30,7 @@ namespace Basecode.Services.Utils
         /// <param name="hrEmployee">The HR employee to whom the email will be sent.</param>
         /// <param name="password">The password associated with the HR account.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
-        public async Task SendHrDetailsEmail(HrEmployee hrEmployee, string password) //done
+        public async Task SendHrDetailsEmail(HrEmployee hrEmployee, string password)
         {
             var email = new MimeMessage();
 
@@ -87,7 +87,7 @@ namespace Basecode.Services.Utils
         /// <param name="applicant">The applicant whose application status is being updated.</param>
         /// <param name="status">The updated application status.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
-        public async Task SendApplicationStatusEmail(Applicants applicant, string status) //done
+        public async Task SendApplicationStatusEmail(Applicants applicant, string status)
         {
             var applicantEmail = new MimeMessage();
 
@@ -136,7 +136,7 @@ namespace Basecode.Services.Utils
         /// </summary>
         /// <param name="applicant">The new applicant whose application form is submitted.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
-        public async Task SendNewApplicantEmail(Applicants applicant) // done
+        public async Task SendNewApplicantEmail(Applicants applicant)
         {
             var applicantEmail = new MimeMessage();
 
@@ -184,9 +184,8 @@ namespace Basecode.Services.Utils
         /// Sends an email of approval to the HR team about the screening of a shortlisted applicant.
         /// </summary>
         /// <param name="applicant">The shortlisted applicant who is being screened.</param>
-        /// <param name="jobTitle">The title of the job for which the applicant is shortlisted.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
-        public async Task SendHrApplicationApprovalEmail(Applicants applicant) //done
+        public async Task SendHrApplicationApprovalEmail(Applicants applicant)
         {
             var email = new MimeMessage();
 
@@ -215,7 +214,7 @@ namespace Basecode.Services.Utils
         /// </summary>
         /// <param name="applicant">The applicant who received the application rejection.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
-        public async Task SendApplicantApplicationRegretEmail(Applicants applicant) //done
+        public async Task SendApplicantApplicationRegretEmail(Applicants applicant)
         {
             var email = new MimeMessage();
 
@@ -240,12 +239,8 @@ namespace Basecode.Services.Utils
         /// <summary>
         /// Sends email notifications to an interviewer and an applicant to inform them about the scheduled interview.
         /// </summary>
-        /// <param name="interviewer">The interviewer for whom the interview schedule is being sent.</param>
+        /// <param name="interview">The interview details for which the email notifications are being sent.</param>
         /// <param name="applicant">The applicant who is scheduled for an interview.</param>
-        /// <param name="interviewType">The type of the interview (e.g., in-person, remote).</param>
-        /// <param name="jobTitle">The title of the job for which the interview is scheduled.</param>
-        /// <param name="date">The date of the scheduled interview.</param>
-        /// <param name="time">The time of the scheduled interview.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendSetInterviewScheduleEmail(Interviews interview, Applicants applicant) // done
         {
@@ -298,12 +293,10 @@ namespace Basecode.Services.Utils
         }
 
         /// <summary>
-        /// Sends email reminders to an interviewer and the HR team about an upcoming interview schedule.
+        /// Sends email reminders to the interviewer and HR department about an upcoming interview schedule.
         /// </summary>
-        /// <param name="applicant">The name of the applicant scheduled for the interview.</param>
-        /// <param name="interviewer">The interviewer who will conduct the interview.</param>
-        /// <param name="interviewType">The type of the interview (e.g., in-person, remote).</param>
-        /// <param name="dateAndTime">The date and time of the scheduled interview.</param>
+        /// <param name="interview">The interview details for which the reminders are being sent.</param>
+        /// <param name="applicant">The applicant associated with the interview.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendInterviewReminderEmail(Interviews interview, Applicants applicant) 
         {
@@ -442,10 +435,9 @@ namespace Basecode.Services.Utils
         }
 
         /// <summary>
-        /// Sends an email of approval to the HR team about the interview/exam status for an applicant.
+        /// Sends an email notification to the HR department regarding the status of an interview or exam.
         /// </summary>
-        /// <param name="applicant">The applicant for whom the interview/exam status is being updated.</param>
-        /// <param name="interviewType">The type of the interview/exam (e.g., interview, examination).</param>
+        /// <param name="interview">The interview or exam details for which the status is being notified.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendHrInterviewApprovalEmail(Interviews interview)
         {
@@ -470,11 +462,9 @@ namespace Basecode.Services.Utils
         }
 
         /// <summary>
-        /// Sends an email to notify an applicant about the regret for a recent interview/examination.
+        /// Sends an email to an applicant notifying them of regrets for a recent interview or examination.
         /// </summary>
-        /// <param name="applicant">The applicant object containing applicant information.</param>
-        /// <param name="jobTitle">The title of the job for which the applicant was interviewed.</param>
-        /// <param name="interviewType">The type of interview/examination (e.g., initial interview, technical test).</param>
+        /// <param name="interview">The interview or examination details for which the regret notification is being sent.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendApplicantInterviewRegretEmail(Interviews interview)
         {
@@ -504,7 +494,6 @@ namespace Basecode.Services.Utils
         /// </summary>
         /// <param name="characterReference">The character reference contact's information.</param>
         /// <param name="applicant">The name of the applicant for whom the character reference is requested.</param>
-        /// <param name="jobTitle">The title of the job for which the character reference is requested.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendReferenceFormEmail(CharacterReferences characterReference, Applicants applicant) 
         {
@@ -533,9 +522,8 @@ namespace Basecode.Services.Utils
         /// Sends an email to express gratitude for providing a character reference to support an applicant's job application.
         /// </summary>
         /// <param name="characterReference">The character reference contact's information.</param>
-        /// <param name="applicant">The name of the applicant for whom the character reference was provided.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
-        public async Task SendReferenceGratitudeEmail(CharacterReferences characterReference) //done
+        public async Task SendReferenceGratitudeEmail(CharacterReferences characterReference) 
         {
             var email = new MimeMessage();
 
@@ -560,7 +548,6 @@ namespace Basecode.Services.Utils
         /// Sends an email to notify an applicant that their provided references are absent or incomplete.
         /// </summary>
         /// <param name="applicant">The applicant object containing applicant information.</param>
-        /// <param name="jobTitle">The title of the job for which the references are required.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendApplicantReferenceNotificationEmail(Applicants applicant)
         {
@@ -640,9 +627,6 @@ namespace Basecode.Services.Utils
         /// Sends an email to an applicant containing a job offer with details about the job, work setup, and hours.
         /// </summary>
         /// <param name="applicant">The applicant object containing applicant information.</param>
-        /// <param name="job">The title of the job being offered.</param>
-        /// <param name="workSetup">The setup or type of work being offered (e.g., full-time, part-time).</param>
-        /// <param name="hours">The expected working hours for the job.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendApplicantJobOfferEmail(Applicants applicant) //done
         {
@@ -672,7 +656,6 @@ namespace Basecode.Services.Utils
         /// Sends an email notification to the HR team for job offer approval of an applicant.
         /// </summary>
         /// <param name="applicant">The applicant object containing applicant information.</param>
-        /// <param name="jobTitle">The title of the job being offered.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendHrJobOfferApprovalEmail(Applicants applicant)
         {
@@ -700,7 +683,6 @@ namespace Basecode.Services.Utils
         /// Sends an email notification to the Deployment Team regarding deployment requirements for an applicant.
         /// </summary>
         /// <param name="applicant">The applicant object containing applicant information.</param>
-        /// <param name="jobTitle">The title of the job the applicant is being deployed for.</param>
         /// <returns>A Task representing the asynchronous email sending process.</returns>
         public async Task SendDtRequirementNotificationEmail(Applicants applicant)
         {

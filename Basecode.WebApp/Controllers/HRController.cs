@@ -323,7 +323,8 @@ namespace Basecode.WebApp.Controllers
 
                 var jobApplicantsOverviewModel = new JobApplicantOverviewModel
                 {
-                    applicants = applicants
+                    applicants = applicants,
+                    jobPostings = jobs
                 };
 
                 return View(jobApplicantsOverviewModel);

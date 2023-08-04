@@ -21,6 +21,12 @@
     <div class="content">
         <input type="hidden" asp-for="Id" />
         <p>Input all the required details to add a new job post.</p>
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <div class="alert alert-danger" role="alert">
+                <pre>@ViewBag.ErrorMessage</pre>
+            </div>
+        }
         <div class="input-container">
             <label for="position">Position:</label>
             <input asp-for="Name" id="position" type="text" value="@Model.Name" />

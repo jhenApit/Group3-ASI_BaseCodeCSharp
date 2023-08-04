@@ -180,9 +180,22 @@ namespace Basecode.WebApp.Controllers
         {
             try
             {
-                var loggedUser = await _userManager.GetUserAsync(User);
-                await _jobPostingsService.AddAsync(jobPostingsCreationDto, loggedUser);
-                return RedirectToAction("JobPostList");
+                var data = await _jobPostingsService.CreateJobPosting(jobPostingsCreationDto);
+                if (!data.Result)
+                {
+                    _logger.Error(_errorHandling.SetLog(data));
+                    ViewBag.ErrorMessage = data.Message;
+                    return View("CreateJobPost");
+                }
+                if (ModelState.IsValid)
+                {
+                    var loggedUser = await _userManager.GetUserAsync(User);
+                    await _jobPostingsService.AddAsync(jobPostingsCreationDto, loggedUser);
+                    return RedirectToAction("JobPostList");
+                }
+                ViewBag.ErrorMessage = "Form not complete";
+                _logger.Error("Failed to create jobpost");
+                return View("CreateJobPost");
             }
             catch (Exception e)
             {
@@ -196,20 +209,20 @@ namespace Basecode.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(JobPostingsUpdationDto jobPostingsUpdationDto)
         {
-            var data = await _jobPostingsService.UpdateJobPosting(jobPostingsUpdationDto);
-            if (!data.Result)
-            {
-                _logger.Error(_errorHandling.SetLog(data));
-                ViewBag.ErrorMessage = data.Message;
-                return View("EditJobPost", jobPostingsUpdationDto);
-            }
             try
             {
-                // Get AspNetUser Data
-                var loggedUser = await _userManager.GetUserAsync(User);
-                await _jobPostingsService.UpdateAsync(jobPostingsUpdationDto, loggedUser);
-                return RedirectToAction("JobPostList");
-            }
+                var data = await _jobPostingsService.UpdateJobPosting(jobPostingsUpdationDto);
+                if (!data.Result)
+                {
+                    _logger.Error(_errorHandling.SetLog(data));
+                    ViewBag.ErrorMessage = data.Message;
+                    return RedirectToAction("EditJobPost", new { id = jobPostingsUpdationDto.Id });
+                }
+                    // Get AspNetUser Data
+                    var loggedUser = await _userManager.GetUserAsync(User);
+                    await _jobPostingsService.UpdateAsync(jobPostingsUpdationDto, loggedUser);
+                    return RedirectToAction("JobPostList");
+                }
             catch (Exception e)
             {
                 _logger.Error(e, "Failed to update jobpost");

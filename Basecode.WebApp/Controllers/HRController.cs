@@ -440,11 +440,13 @@ namespace Basecode.WebApp.Controllers
 
                 if(await _interviewsService.GetByApplicantIdAndInterviewTypeAsync(createInterview.ApplicantId, createInterview.InterviewType))
                 {
+                    _logger.Error("Applicant already has " + EnumHelper.GetEnumDescription(createInterview.InterviewType) + " scheduled.");
                     return BadRequest("Applicant already has " + EnumHelper.GetEnumDescription(createInterview.InterviewType) + " scheduled.");
                 }
 
                 if (await _interviewsService.IsTimeRangeOverlappingAsync(createInterview))
                 {
+                    _logger.Error("Inputed Date and Time ovelrap with other Interviews.");
                     return BadRequest("Inputed Date and Time ovelrap with other Interviews.");
                 }
                 await _interviewsService.AddAsync(createInterview);
@@ -517,11 +519,13 @@ namespace Basecode.WebApp.Controllers
 
                 if (await _interviewsService.GetByApplicantIdAndInterviewTypeAsync(updateInterview.ApplicantId, updateInterview.InterviewType))
                 {
+                    _logger.Error("Applicant already has " + EnumHelper.GetEnumDescription(updateInterview.InterviewType) + " scheduled.");
                     return BadRequest("Applicant already has " + EnumHelper.GetEnumDescription(updateInterview.InterviewType) + " scheduled.");
                 }
 
                 if (await _interviewsService.IsTimeRangeOverlappingAsync(updateInterview))
                 {
+                    _logger.Error("Inputed Date and Time ovelrap with other Interviews.");
                     return BadRequest("Inputed Date and Time ovelrap with other Interviews.");
                 }
 
@@ -587,7 +591,6 @@ namespace Basecode.WebApp.Controllers
         {
             try
             {
-                Console.WriteLine("Here" + id);
                 await _interviewersService.DeleteAsync(id);
                 return RedirectToAction("Interviews");
             }

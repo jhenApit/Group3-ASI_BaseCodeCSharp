@@ -27,6 +27,7 @@ namespace G3HAS_Unit_Tests.Services
 		private Mock<IApplicantRepository> _mockRepository;
 		private Mock<IMapper> _mockMapper;
 		private Mock<IDGenerator> _mockIdGenerator;
+		private Mock<ISendEmailService> _mockSendEmailService; // Add this line
 
 		public ApplicantServiceTests()
 		{
@@ -36,14 +37,14 @@ namespace G3HAS_Unit_Tests.Services
 			_mockRepository = new Mock<IApplicantRepository>();
 			_mockMapper = new Mock<IMapper>();
 			_mockIdGenerator = new Mock<IDGenerator>();
+			_mockSendEmailService = new Mock<ISendEmailService>(); // Add this line
 
 			_applicantService = new ApplicantService(
 				_mockAddressService.Object,
 				_mockCharacterReferencesService.Object,
-				_mockEmailService.Object,
-				_mockCharacterReferencesService.Object,
 				_mockRepository.Object,
-				_mockMapper.Object
+				_mockMapper.Object,
+				_mockSendEmailService.Object
 			);
 		}
 

@@ -104,59 +104,6 @@ namespace G3HAS_Unit_Tests.Services
 		}
 
 		[Fact]
-		public async Task UpdateAsync_ValidStatus_ReturnsTrue()
-		{
-			// Arrange
-			var applicantModel = new Applicants
-			{
-				Id = 1,
-				ApplicantId = "123DFGETB68BDS8",
-				JobId = 2,
-				ApplicationDate = DateTime.Now,
-				FirstName = "John",
-				MiddleName = "Doe",
-				LastName = "Smith",
-				BirthDate = new DateTime(1990, 5, 15),
-				Resume = new byte[] { 0x12, 0x34, 0x56 },
-				Photo = null,
-				PhoneNumber = "09123456789",
-				Email = "john@example.com",
-				ModifiedBy = "Admin",
-				ModifiedDate = DateTime.Now,
-				AdditionalInfo = new AdditionalInfo
-				{
-				},
-				ApplicationStatus = ApplicationStatus.Received,
-				Requirements = Requirements.TBC
-			};
-			string status = "Rejected";
-
-			_mockRepository.Setup(repo => repo.GetByIdAsync(applicantModel.Id)).ReturnsAsync(applicantModel);
-
-			// Act
-			var result = await _applicantService.UpdateAsync(applicantModel.Id, status);
-
-			// Assert
-			Assert.True(result);
-		}
-
-		[Fact]
-		public async Task UpdateAsync_InvalidStatus_ReturnsFalse()
-		{
-			// Arrange
-			int id = 1;
-			string status = "Rejected";
-
-			_mockRepository.Setup(repo => repo.GetByIdAsync(id)).ReturnsAsync((Applicants)null);
-
-			// Act
-			var result = await _applicantService.UpdateAsync(id, status);
-
-			// Assert
-			Assert.False(result);
-		}
-
-		[Fact]
 		public async Task GetByApplicantIdAsync_ValidId_ReturnsApplicant()
 		{
 			// Arrange

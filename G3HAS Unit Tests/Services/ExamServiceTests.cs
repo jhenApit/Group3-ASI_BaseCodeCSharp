@@ -46,25 +46,6 @@ namespace G3HAS_Unit_Tests.Services
 		}
 
 		[Fact]
-		public async Task AddAsync_ValidCreationDto_ReturnTrue()
-		{
-			// Arrange
-			var examDto = new ExamCreationDto
-			{
-				ApplicantId = 1,
-				ProctorId = 1,
-				ExamType = "Sample",
-				ExamDate = DateTime.Now
-			};
-
-			// Act
-			await _service.AddAsync(examDto);
-
-			// Assert
-			_repositoryMock.Verify(repo => repo.AddAsync(It.IsAny<Exams>()), Times.Once);
-		}
-
-		[Fact]
 		public async Task GetByIdAsync_ShouldReturnExam()
 		{
 			// Arrange

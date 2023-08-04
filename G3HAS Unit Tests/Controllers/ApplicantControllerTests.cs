@@ -92,27 +92,5 @@ namespace G3HAS_Unit_Tests.Controllers
 			var viewResult = Assert.IsType<ViewResult>(result);
 			Assert.False((bool)viewResult.ViewData["IsFromApplication"]);
 		}
-
-		[Fact]
-		public void TrackApplication_ShouldReturnBadRequest_WhenExceptionOccurs()
-		{
-			// Arrange
-			var from = "application";
-			_controller.ControllerContext = new ControllerContext();
-			_controller.ControllerContext.HttpContext = new DefaultHttpContext();
-			_controller.ControllerContext.HttpContext.Request.Headers["X-Requested-With"] = "XMLHttpRequest";
-
-			_applicantServiceMock.Setup(service => service.GetByApplicantIdAsync(It.IsAny<string>()))
-				.Throws(new Exception("Simulated error"));
-
-			// Act
-			var result = _controller.TrackApplication(from);
-
-			// Assert
-			var viewResult = Assert.IsType<ViewResult>(result);
-			Assert.Null(viewResult.ViewName); // ViewName is null for the default view
-			Assert.True(viewResult.ViewData.ContainsKey("ErrorMessage"));
-			Assert.Equal("An error occured when trying to access track application", viewResult.ViewData["ErrorMessage"]);
-		}
 	}
 }

@@ -48,6 +48,12 @@ namespace Basecode.Data.Repositories
             return await _context.HrEmployees.Include(e => e.User).FirstOrDefaultAsync(e => e.Id == id);
         }
 
+        /// <summary>
+        /// Retrieves an HR employee from the database by their user ID.
+        /// </summary>
+        /// <param name="id">The user ID of the HR employee to retrieve.</param>
+        /// <returns>The HR employee with the specified user ID, or null if not found.</returns>
+
         public async Task<HrEmployee?> GetByUserIdAsync(string id)
         {
             return await _context.HrEmployees.FirstOrDefaultAsync(e => e.UserId == id)!;

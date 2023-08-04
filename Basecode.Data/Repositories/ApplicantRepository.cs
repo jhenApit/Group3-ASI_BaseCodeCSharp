@@ -40,10 +40,22 @@ namespace Basecode.Data.Repositories
             return await _context.Applicants.SingleOrDefaultAsync(e => e.ApplicantId == applicantId);
         }
 
+        /// <summary>
+        /// Retrieves applicants from the database based on their email address.
+        /// </summary>
+        /// <param name="email">The email address of the applicant(s) to retrieve.</param>
+        /// <returns>A queryable collection of applicants matching the provided email address.</returns>
+
         public async Task<IQueryable<Applicants>> GetByEmailAsync(string email)
         {
             return await Task.FromResult(this.GetDbSet<Applicants>().Where(e => e.Email == email));
         }
+
+        /// <summary>
+        /// Retrieves an applicant from the database by their ApplicantID.
+        /// </summary>
+        /// <param name="id">The ID of the applicant to retrieve.</param>
+        /// <returns>The applicant with the specified ID, or null if not found.</returns>
 
         public async Task<Applicants?> GetByIdAsync(int id)
         {

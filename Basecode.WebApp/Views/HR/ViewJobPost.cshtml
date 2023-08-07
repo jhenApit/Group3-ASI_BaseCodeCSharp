@@ -1,0 +1,69 @@
+﻿@using Basecode.Data.Models
+@using Basecode.Data.Enums
+@model JobPostings
+@{
+	ViewData["Title"] = "View Job Post";
+	Layout = "_SideBarAdmin";
+
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/ViewJobPost.css">
+}
+
+<div class="container">
+	<div class="view-page-container">
+		<div class="job-header">
+			<a title="Back to previous page" asp-controller="HR" asp-action="JobPostList">
+				<img src="/images/icons/back-icon.png" class="back-icon" alt="Back Icon" />
+			</a>
+			<h1 class="mb-0">@Model.Name</h1>
+			<div class="status-container">
+				<p>@Model.JobStatus</p>
+			</div>
+		</div>
+		<div class="details-content">
+			<div class="sub-header">
+				<div class="sub-container">
+					<img src="/images/icons/star.png" class="star-img" alt="star" />
+					<p>@EnumHelper.GetEnumDescription(Model.Hours)</p>
+				</div>
+				<div class="sub-container">
+					<img src="/images/icons/star.png" class="star-img" alt="star" />
+					<p>@EnumHelper.GetEnumDescription(Model.WorkSetup)</p>
+				</div>
+				<div class="sub-container">
+					<img src="/images/icons/star.png" class="star-img" alt="star" />
+					<p>@EnumHelper.GetEnumDescription(Model.EmploymentType)</p>
+				</div>
+			</div>
+			<div class="description-container">
+				<p>@Model.Description</p>
+			</div>
+			@{
+				//Separating CSV values
+				string qualification = @Model.Qualifications;
+				string[] qualificationValues = qualification.Split(',');
+				string responsibility = @Model.Responsibilities;
+				string[] responsibilityValues = responsibility.Split(',');
+			}
+			<div class="job-details-content">
+				<h3>Job Qualifications</h3>
+				<ul>
+					@foreach (var value in qualificationValues)
+					{
+						<li>@value.Trim()</li>
+					}
+				</ul>
+			</div>
+			<div class="job-details-content">
+				<h3>Job Responsibilities</h3>
+				<ul>
+					@foreach (var value in responsibilityValues)
+					{
+						<li>@value.Trim()</li>
+					}
+				</ul>
+			</div>
+		</div>
+	</div>
+	<a class="edit-button" asp-route-id="@Model.Id" asp-controller="HR" asp-action="EditJobPost">EDIT</a>
+</div>

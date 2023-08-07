@@ -1,0 +1,83 @@
+﻿@using Basecode.Data.Dtos;
+@model ReferenceFormsCreationDto
+@{
+    Layout = null;
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/References.css" />
+    <script src="https://kit.fontawesome.com/b68ff1da95.js" crossorigin="anonymous"></script>
+}
+
+<body>
+    <div>
+        <img src="~/images/references-bg.jpg" class="header-image" alt="alliance header">
+    </div>
+    <div class="heading">
+        <div>
+            <p class="m-0 fw-bold heading-text">Character Reference Form</p>
+        </div>
+    </div>
+    <form method="post" asp-action="ToPage2">
+        <div>
+            <div class="section">
+                <p class="m-0 section-text">Applicant’s Information</p>
+                <div class="line"></div>
+            </div>
+            <div class="d-flex flex-row align-items-center gap-2 inside-section">
+                <label for="applicantName" class="col-auto">Applicant’s Full Name:</label>
+                <input type="text" readonly class="form-control-plaintext col-auto w-50 input-applicant" id="staticEmail" value="John Doe">
+            </div>
+        </div>
+        <div>
+            <div class="section">
+                <p class="m-0 section-text">Character Reference Questions</p>
+                <div class="line"></div>
+            </div>
+            <div class="inside-section">
+                <div class="form-group mb-3">
+                    <label for="answerOne">1. How long have you known the applicant and in what capacity?</label>
+                    <textarea asp-for="Answer1" class="form-control" id="answer1" rows="3" required></textarea>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="answerTwo">2. Please describe the applicant's personality traits, strengths, and areas for improvement.</label>
+                    <textarea asp-for="Answer2" class="form-control" id="answer2" rows="3" required></textarea>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="answerThree">3. In what specific situations or circumstances have you observed the applicant's character?</label>
+                    <textarea asp-for="Answer3" class="form-control" id="answer3" rows="3" required></textarea>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="answerFour">4. How would you rate the applicant's integrity, honesty, and trustworthiness on a scale of 1 to 5, with 1 being the lowest and 5 being the highest?</label>
+                    <textarea asp-for="Answer4" class="form-control" id="answer4" rows="3" required></textarea>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="answerFive">5. Can you provide an example or anecdote that demonstrates the applicant's reliability and dependability?</label>
+                    <textarea asp-for="Answer5" class="form-control" id="answer5" rows="3" required></textarea>
+                </div>
+                <div class="d-grid d-md-flex justify-content-md-end my-4">
+                    <button type="submit" class="btn b-red px-5">NEXT</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div>
+        <p class="m-0 text-center inside-section">© 2019 Alliance Software Incorporated. All Rights Reserved</p>
+        <div class="line mt-1 mb-2"></div>
+        <div class="inside-section d-flex mb-3">
+            <img src="~/images/asi-logo-invert.png" alt="Alliance Logo">
+            <div class="d-flex gap-2 ms-auto align-items-center">
+                <a href="https://www.facebook.com/AllianceSoftwareInc/" target="_blank">
+                    <i class="fa-brands fa-facebook fa-2xl"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/alliance-software-7a180a49/" target="_blank">
+                    <i class="fa-brands fa-linkedin fa-2xl"></i>
+                </a>
+                <a href="https://twitter.com/AllianceSW" target="_blank">
+                    <i class="fa-brands fa-twitter fa-2xl"></i>
+                </a>
+                <a href="https://www.youtube.com/channel/UC5Rx6nPzFFdIsso8RjNLLqA" target="_blank">
+                    <i class="fa-brands fa-youtube fa-2xl"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>

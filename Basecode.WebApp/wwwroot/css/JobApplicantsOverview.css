@@ -1,0 +1,288 @@
+﻿body {
+    font-family: "Montserrat", sans-serif;
+    background-color: #e4e9f7;
+    padding: 0;
+    margin: 0;
+}
+
+.container-header {
+    background-color: white;
+    max-width: 100vw;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 25px 22px 10px 50px;
+    overflow-x: hidden;
+    position: fixed;
+    top: 0;
+}
+
+    .container h1 {
+        font-size: x-large;
+        font-weight: bold;
+    }
+
+.table-container {
+    width: 90%;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.select-container {
+    margin-top: 90px;
+    margin-left: auto;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+    .select-container label {
+        margin: 5px;
+    }
+
+    .select-container select {
+        padding: 5px;
+        font-size: 14px;
+    }
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    padding: 20px;
+    padding-bottom: 0 !important;
+}
+
+    .table th {
+        padding: 8px;
+        border-bottom: none;
+        background-color: #55729B;
+        font-size: calc(0.5rem + 0.6vw);
+        color: white;
+        padding: 10px 0px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .table td {
+        text-align: center;
+        background-color: white;
+        color: black;
+        font-size: calc(0.5rem + 0.6vw);
+        vertical-align: middle;
+    }
+    .table tbody tr {
+        border-left: 10px solid white;
+        border-right: 10px solid white;
+        transition: 0.2s;
+        height: 4.5rem;
+    }
+
+        .table tbody tr:hover {
+            border-left: 10px solid red;
+            border-right: 10px solid red;
+            box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+.text-bold {
+    font-weight: bold;
+}
+
+.CurrentHires-Empty,
+.CurrentApplicants-Empty {
+    border-left: 10px solid #E4E9F7 !important;
+    border-right: 10px solid #E4E9F7 !important;
+    box-shadow: 0px !important;
+}
+
+    .CurrentHires-Empty:hover,
+    .CurrentApplicants-Empty:hover {
+        box-shadow: none !important;
+    }
+
+    .CurrentHires-Empty td,
+    .CurrentApplicants-Empty td {
+        color: #55729B !important;
+        font-style: italic;
+        background-color: #E4E9F7 !important;
+        border: none !important;
+    }
+
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #55729B;
+}
+
+    a:hover {
+        cursor: pointer;
+        color: red;
+    }
+
+.applicant-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.btn {
+    width: 100%;
+    height: 3.5rem;
+}
+
+.status-btn {
+    font-size: calc(0.4rem + 0.4vw);
+    text-decoration: none;
+    color: white;
+    padding: 0px 0.5rem;
+    background-color: #55729B;
+    border-radius: 5px;
+    text-align: center;
+}
+
+    .status-btn:hover,
+    .status-btn:focus,
+    .status-btn:active:focus {
+        background-color: #55729B;
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+    }
+
+.reject-btn {
+    font-size: calc(0.4rem + 0.4vw);
+    text-decoration: none;
+    color: white;
+    background-color: red;
+    border-radius: 5px;
+    text-align: center;
+}
+
+    .reject-btn:hover,
+    .reject-btn:focus,
+    .reject-btn:active:focus {
+        background-color: red;
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+    }
+
+.decline-btn {
+    font-size: calc(0.4rem + 0.4vw);
+    text-decoration: none;
+    color: white;
+    background-color: red;
+    border-radius: 5px;
+    text-align: center;
+}
+
+    .decline-btn:hover,
+    .decline-btn:focus,
+    .decline-btn:active:focus {
+        background-color: red;
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+    }
+
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    justify-content: flex-end;
+}
+
+    .pagination li {
+        margin: 0;
+    }
+
+    .pagination a {
+        display: block;
+        text-decoration: none;
+        color: black;
+        padding: 5px 10px;
+    }
+
+        .pagination a:hover {
+            color: red;
+            text-decoration: none;
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+        }
+
+    .pagination li a.active {
+        background-color: red;
+        color: white;
+    }
+
+    .pagination li a.disabled {
+        pointer-events: none;
+        opacity: 0.6;
+        color: slategray;
+    }
+
+.page-link {
+    background-color: transparent !important;
+    text-decoration: none;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.modal-content {
+    border-radius: 1rem;
+    border: none;
+}
+
+.modal-header {
+    background-color: #55729B;
+    border-radius: 1rem 1rem 0px 0px;
+    border: 1px solid rgba(0,0,0,.2);
+    color: white;
+}
+
+    .modal-header .close {
+        border: none;
+        background-color: #55729B;
+        color: white;
+        font-size: 1rem;
+    }
+
+    .modal-footer .btn {
+        width: auto;
+        height: auto;
+        margin: 0px 0.2rem;
+    }
+
+    .modal-footer .btn-secondary {
+        background-color: #55729B;
+    }
+
+        .modal-footer .btn-secondary:hover,
+        .modal-footer .btn-secondary:focus,
+        .modal-footer .btn-secondary:active:focus {
+            background-color: #55729B;
+            box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }

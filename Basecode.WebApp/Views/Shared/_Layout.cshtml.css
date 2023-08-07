@@ -7,20 +7,9 @@ a.navbar-brand {
   word-break: break-all;
 }
 
-a {
-  color: #0077cc;
-}
-
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+    background-color: #FC1F22;
+    border-color: #AC1818;
 }
 
 .border-top {
@@ -47,15 +36,32 @@ button.accept-policy {
   line-height: 60px;
 }
 
-.nav-selected {
-    background: linear-gradient(rgba(50, 50, 50, 0), rgba(50, 50, 50, 1));
-    border-bottom: 5px solid red !important;
-    padding-top: 1em;
-    padding-bottom: 1em;
+/* properties of the overlay */
+.Alliance-logo:hover .overlay {
+    width: 15rem;
 }
 
-.nav-item {
-    border-bottom: 5px solid black;
-    padding-top: 1em;
-    padding-bottom: 1em;
+.overlay {
+    position: absolute;
+    top: 0.5rem;
+    left: calc(.75rem + 0.5rem);
+    right: 0;
+    background-color: #EC2224;
+    overflow: hidden;
+    width: 0;
+    height: 3.7rem;
+    transition: .5s ease;
 }
+
+    .overlay .text {
+        color: white;
+        font-size: 20px;
+        position: absolute;
+        top: 50%;
+        left: 45%;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        white-space: nowrap;
+    }
+/**/

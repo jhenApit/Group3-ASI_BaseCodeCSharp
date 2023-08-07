@@ -1,0 +1,424 @@
+﻿@using Basecode.Data.Enums;
+@using Basecode.Data.Models;
+@using Basecode.Data.ViewModels;
+@using Basecode.Services.Interfaces;
+@using System.Drawing;
+@using static Basecode.Data.Enums.Enums;
+@model ApplicantDetailViewModel
+@{
+    ViewData["Title"] = "Application Detail";
+    Layout = "_SideBarAdmin";
+    <link rel="stylesheet" href="~/css/ApplicantDetail.css" />
+}
+
+<!-- Modals are at the bottom -->
+
+<div class="container-header shadow-sm">
+    <div class="row">
+        <div class="col-auto d-flex align-items-lg-center ps-5">
+            <h2 class="m-0 ps-2">@ViewData["Title"]</h2>
+        </div>
+    </div>
+</div>
+<div class="body-container">
+    <div class="pt-5"></div><div class="pt-2"></div> <!-- a buffer to push content down so that header won't cover it' -->
+    <div class="row">
+        <div class="col d-flex align-items-center">
+            <div>
+                <a title="Back to previous page" asp-controller="HR" asp-action="JobApplicantsOverview">
+                    <img src="/images/icons/back-icon.png" class="back-icon" alt="Back Icon" />
+                </a>
+            </div>
+            @{
+                Color statusColor = EnumHelper.GetColorForApplicationStatus(Model.Applicant.ApplicationStatus);
+                string colorStyle = $"background-color: {ColorTranslator.ToHtml(statusColor)};";
+                <div class="status px-3 py-1" style="@colorStyle">
+                    @EnumHelper.GetEnumDescription(Model.Applicant.ApplicationStatus)
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="container row mt-3 mx-auto py-2 px-1 partial-view-selector">
+        <div class="d-flex col-auto align-items-center pe-0">
+            Select information to view:
+        </div>
+        <div class="col">
+            <select class="form-select py-1" id="partialViewSelector" name="partialViewSelector" required>
+                <option selected value="1">APPLICANT PERSONAL INFORMATION</option>
+                <option value="2">INTERVIEW / EXAMINATION STATUS</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- APPLICANT PERSONAL INFORMATION VIEW -->
+    <div id="PersonalInformation_View" class="container mt-3">
+        <!-- PERSONAL INFORMATION -->
+        <div class="row text-header text-bold ps-2 mt-3">RESUME</div>
+        <div class="row mt-3">
+            <div class="col-12">
+                <!-- Pop-up PDF reader modal -->
+                <button type="button" id="resume" class="text-center resume px-auto w-100" data-bs-toggle="modal" data-bs-target="#ResumeReaderModal">
+                    <img src="~/images/icons/pdf-icon.png" />
+                    <br />
+                    <span>Resume.pdf</span>
+                </button>
+            </div>
+        </div>
+        <div class="row text-header text-bold ps-2 mt-3">PERSONAL INFORMATION</div>
+        <div class="row mt-3">
+            <div class="d-flex col-auto align-items-center mt-2">
+                <div class="photo-container">
+                    <!--Insert src of applicant photo here-->
+                    <img class="h-100 w-100 rounded-3" src="@ViewBag.ImageData" />
+                    <!--
+                        If photo does not exist this, this line of code will run instead
+                        <img src="~/images/Photo-Placeholder.png"/>
+                    -->
+                </div>
+            </div>
+            <div class="col">
+                <div class="row">
+                    <div class="col col-md-4 form-group mt-2">
+                        <label>First Name </label>
+                        <input class="form-control" type="text" name="firstname" value="@Model.Applicant.FirstName" disabled />
+                    </div>
+                    <div class="col col-md-4 form-group mt-2">
+                        <label>Middle Name </label>
+                        <input class="form-control" type="text" name="middlename" value="@Model.Applicant.MiddleName" disabled />
+                    </div>
+                    <div class="col col-md-4 form-group mt-2">
+                        <label>Last Name </label>
+                        <input class="form-control" type="text" name="lastname" value="@Model.Applicant.LastName" disabled />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 form-group mt-1">
+                        <label for="birthday">Birthday</label>
+                        <input class="form-control" type="date" name="birthday" value="@Model.Applicant.BirthDate.ToString("yyyy-MM-dd")" disabled />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- CONTACT INFORMATION -->
+        <div class="row text-header text-bold ps-2 mt-3">CONTACT INFORMATION</div>
+        <div class="row form-row mt-3">
+            <div class="col-12 form-group mt-2">
+                <label>Street </label>
+                <input class="form-control" id="street" type="text" name="street" value="@Model.Address.Street" disabled />
+            </div>
+            <div class="col-4 form-group mt-2">
+                <label>City </label>
+                <input class="form-control" id="city" type="text" name="city" value="@Model.Address.City" disabled />
+            </div>
+            <div class="col-4 form-group mt-2">
+                <label>Province </label>
+                <input class="form-control" id="province" type="text" name="province" value="@Model.Address.Province" disabled />
+            </div>
+            <div class="col-4 form-group mt-2">
+                <label>Zipcode </label>
+                <input class="form-control" id="zipcode" type="number" name="zipcode" value="@Model.Address.ZipCode" disabled />
+            </div>
+        </div>
+        <div class="row form-row mt-3">
+            <div class="col-6 form-group mt-1">
+                <label for="number">Phone Number</label>
+                <input class="form-control" id="number" type="number" name="number" value="@Model.Applicant.PhoneNumber" disabled />
+            </div>
+            <div class="col-6 form-group mt-1">
+                <label for="email">Email Address</label>
+                <input class="form-control" id="email" type="text" name="email" value="@Model.Applicant.Email" disabled />
+            </div>
+        </div>
+        <!-- CHARACTER REFERENCE -->
+        <div class="row text-header text-bold ps-2 mt-3">CHARACTER REFERENCE</div>
+        @{
+            var num = 0;
+            foreach (var characterReferences in Model.CharacterReferences)
+            {
+                num++;
+                <div class="row form-row mt-3">
+                    <label class="text-bold">Reference @num</label>
+                    <div class="row form-row">
+                        <div class="col-4 form-group mt-2">
+                            <label for="name">Full Name </label>
+                            <input class="form-control" id="name" type="text" name="name" value="@characterReferences.Name" disabled />
+                        </div>
+                        <div class="col-4 form-group mt-2">
+                            <label for="relationship">Relationship</label>
+                            <input class="form-control" id="relationship" type="text" name="relationship" value="@characterReferences.Relationship" disabled />
+                        </div>
+                        <div class="col-4 form-group mt-2">
+                            <label for="email">Email Adress</label>
+                            <input class="form-control" id="email" type="text" name="email" value="@characterReferences.Email" disabled />
+                        </div>
+                        <div class="col-4 form-group mt-2">
+                            <label for="number">Phone Number</label>
+                            <input class="form-control" id="number" type="number" name="number" value="@characterReferences.MobileNumber" disabled />
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+
+
+
+        <!-- ADDITIONAL INFORMATION -->
+        <div class="row text-header text-bold ps-2 mt-3">ADDITIONAL INFORMATION</div>
+        <div class="row mt-3">
+            <div class="row form-row mt-3">
+                <div class="col-12 form-group">
+                    <label for="additional">How did you hear about us?</label>
+                    <input class="form-select mt-2 reference" id="additional" name="additional" value="@EnumHelper.GetEnumDescription(Model.Applicant.AdditionalInfo)" disabled />
+                </div>
+            </div>
+        </div>
+        <!-- Buttons -->
+        <div class="row mt-5 justify-content-center">
+            <div class="col-auto">
+                @switch (Model.Applicant.ApplicationStatus)
+                {
+                    case ApplicationStatus.Received:
+                        <form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.Applicant.Id" />
+                            <input type="hidden" name="status" value="Shortlisted" />
+                            <button type="submit" class="btn status-btn status-change-btn">SHORTLIST</button>
+                        </form>
+                        break;
+                    case ApplicationStatus.Shortlisted:
+                        <form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.Applicant.Id" />
+                            <input type="hidden" name="status" value="ForScreening" />
+                            <button type="submit" class="btn status-btn status-change-btn">FOR SCREENING</button>
+                        </form>
+                        break;
+                    case ApplicationStatus.ForScreening:
+                        <form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.Applicant.Id" />
+                            <input type="hidden" name="status" value="ForHRInterview" />
+                            <button type="submit" class="btn status-btn status-change-btn">INVITE TO HR INTERVIEW</button>
+                        </form>
+                        break;
+                    case ApplicationStatus.ForHRInterview:
+                        <form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.Applicant.Id" />
+                            <input type="hidden" name="status" value="ForTechnicalInterview" />
+                            <button type="submit" class="btn status-btn status-change-btn">INVITE TO TECHNICAL INTERVIEW</button>
+                        </form>
+                        break;
+                    case ApplicationStatus.ForTechnicalInterview:
+                        <form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.Applicant.Id" />
+                            <input type="hidden" name="status" value="ForTechnicalExam" />
+                            <button type="submit" class="btn status-btn status-change-btn">INVITE TO TECHNICAL EXAM</button>
+                        </form>
+                        break;
+                    case ApplicationStatus.ForTechnicalExam:
+                        <form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.Applicant.Id" />
+                            <input type="hidden" name="status" value="UndergoingBackgroundCheck" />
+                            <button type="submit" class="btn status-btn status-change-btn">CHECK BACKGROUND</button>
+                        </form>
+                        break;
+                    case ApplicationStatus.UndergoingBackgroundCheck:
+                        <form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.Applicant.Id" />
+                            <input type="hidden" name="status" value="ForFinalInterview" />
+                            <button type="submit" class="btn status-btn status-change-btn">INVITE TO FINAL INTERVIEW</button>
+                        </form>
+                        break;
+                    case ApplicationStatus.ForFinalInterview:
+                        <form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.Applicant.Id" />
+                            <input type="hidden" name="status" value="UndergoingJobOffer" />
+                            <button type="submit" class="btn status-btn status-change-btn">SEND JOB OFFER</button>
+                        </form>
+                        break;
+                    case ApplicationStatus.UndergoingJobOffer:
+                        <form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.Applicant.Id" />
+                            <input type="hidden" name="status" value="Confirmed" />
+                            <button type="submit" class="btn status-btn status-change-btn">CONFIRM</button>
+                        </form>
+                        break;
+                    case ApplicationStatus.Confirmed:
+                        <form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.Applicant.Id" />
+                            <input type="hidden" name="status" value="Onboarding" />
+                            <button type="submit" class="btn status-btn status-change-btn">ONBOARD</button>
+                        </form>
+                        break;
+                    case ApplicationStatus.Onboarding:
+                        <form asp-controller="HR" asp-action="UpdateApplicantStatus" method="post">
+                            <input type="hidden" name="id" value="@Model.Applicant.Id" />
+                            <input type="hidden" name="status" value="Deployed" />
+                            <button type="submit" class="btn status-btn status-change-btn" style="justify-content: flex-start !important;">DEPLOY</button>
+                        </form>
+                        break;
+                    default:
+                        if (Model.Applicant.ApplicationStatus != ApplicationStatus.Rejected)
+                        {
+                            <a asp-route-id="@Model.Applicant.Id" class="btn status-btn status-change-btn" asp-controller="HR" asp-action="UpdateApplicantStatus" style="justify-content: flex-start !important;">DEPLOY </a>
+                        }
+                        break;
+                }
+            </div>
+            <div class="col-auto">
+                <!-- A confirmation modal will pop-up -->
+                @{
+                    if (Model.Applicant.ApplicationStatus != ApplicationStatus.Rejected)
+                    {
+                        <button id="RejectApplicant " class="btn reject px-5 py-2" data-bs-toggle="modal" asp-controller="HR" asp-action="UpdateApplicantStatus" data-bs-target="#RejectApplicantModal">
+                            REJECT
+                        </button>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- INTERVIEW / EXAMINATION STATUS VIEW -->
+    <div id="InterviewExamStatus_View" class="container mt-3">
+        <!-- APPLICANT INFORMATION SUMMARY -->
+        <div class="row text-header text-bold ps-2 mt-3">APPLICANT INFORMATION SUMMARY</div>
+        <div class="row mt-3">
+            <div class="col d-grid align-items-center">
+                <div class="row form-group">
+                    <div class="col-2 d-flex align-items-center justify-content-end pe-0">
+                        <label class="d-inline">Full Name: </label>
+                    </div>
+                    <div class="col">
+                        <input class="form-control text-capitalize" id="fullname" type="text" name="fullname" value="@Model.Applicant.Name" disabled />
+                    </div>
+                </div>
+                <div class="row form-group mt-3">
+                    <div class="col-2 d-flex align-items-center justify-content-end pe-0">
+                        <label class="d-inline">Job Applied: </label>
+                    </div>
+                    <div class="col">
+                        <input class="form-control text-capitalize" id="jobapplied" type="text" name="jobapplied" value="@Model.JobPosting?.Name" disabled />
+                    </div>
+                </div>
+                <div class="row form-group mt-3">
+                    <div class="col-2 d-flex align-items-center justify-content-end pe-0">
+                        <label class="d-inline">Date Applied: </label>
+                    </div>
+                    <div class="col">
+                        <input class="form-control" id="dateapplied" type="text" name="dateapplied" value="@Model.Applicant.ApplicationDate.ToString("MMMM dd, yyyy, hh:mm tt")" disabled />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- INTERVIEW/EXAMINATION STATUS -->
+        <div class="row text-header text-bold ps-2 mt-3">INTERVIEW/EXAMINATION STATUS</div>
+        <table class="table mt-3">
+            <thead>
+                <tr class="table-header">
+                    <th scope="col" class="col-4">Interview / Exam</th>
+                    <th scope="col" class="col-4">Interviewer / Examiner</th>
+                    <th scope="col" class="col-2">Date</th>
+                    <th scope="col" class="col-2">Status</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                @if (Model.Interviews == null || Model.Interviews.Count == 0)
+                {
+                    <tr class="bg-white">
+                        <td colspan="4">
+                            <p> No upcoming Interviews </p>
+                        </td>
+                    </tr>
+                }
+                @foreach (var interviews in Model.Interviews)
+                {
+                    Color interviewStatusColor;
+                    string interviewStatusText;
+
+                    // Determine interview status color and text based on conditions
+                    if (interviews.Results == true)
+                    {
+                        interviewStatusColor = Color.Green; // Use the appropriate color for green (you may need to define it)
+                        interviewStatusText = "PASSED";
+                    }
+                    else
+                    {
+                        interviewStatusColor = Color.Red; // Use the appropriate color for red (you may need to define it)
+                        interviewStatusText = "FAILED";
+                    }
+
+                    string interviewColorStyle = $"background-color: {ColorTranslator.ToHtml(interviewStatusColor)};";
+                    <tr class="bg-white">
+                        <td>@EnumHelper.GetEnumDescription(interviews.InterviewType)</td>
+                        <td class="text-capitalize">@interviews.Interviewer.Name</td>
+                        <td>@interviews.InterviewDate.ToString("MMMM dd, yyyy"), @interviews.TimeStart - @interviews.TimeEnd</td>
+                        <td>
+                            <span class="passed px-4 py-1" style="@interviewColorStyle">
+                                @interviewStatusText
+                            </span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    var PersonalInfoView = $('#PersonalInformation_View');
+    var InterviewStatus = $('#InterviewExamStatus_View');
+    $(document).ready(function () {
+        InterviewStatus.addClass("d-none");
+    });
+    $("#partialViewSelector").on("change", function () {
+        var Id = $(this).val()
+        if (Id == 1) {
+            InterviewStatus.addClass("d-none");
+            PersonalInfoView.removeClass("d-none");
+        } else {
+            InterviewStatus.removeClass("d-none");
+            PersonalInfoView.addClass("d-none");
+        }
+    });
+</script>
+
+<!-- Reject Modal -->
+<div class="modal fade" id="RejectApplicantModal" tabindex="-1" role="dialog" aria-labelledby="RejectApplicantModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="RejectApplicantModalLabel">Confirm Reject</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="d-none">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to reject this applicant?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger">Reject</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Resume reader Modal -->
+<div class="modal fade" id="ResumeReaderModal" tabindex="-1" role="dialog" aria-labelledby="ResumeReaderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="mb-0">RESUME.PDF</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="h2 mb-0" aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-2">
+                <div class="resumeFile">
+                    <!--Insert src of applicant resume here-->
+                    <iframe class="w-100" style="height: 80vh;" src="~/applicants/resume/resume.pdf"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

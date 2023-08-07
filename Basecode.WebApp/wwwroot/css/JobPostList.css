@@ -1,0 +1,147 @@
+﻿body {
+    margin: 0;
+    font-family: "Montserrat", sans-serif;
+    background-color: #e4e9f7;
+}
+
+.job-post-container {
+    background-color: white;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    overflow-x: hidden;
+    margin: 0;
+}
+
+    .job-post-header h1{
+        margin-left: 40px;
+        font-size: x-large;
+        padding-top: 6px;
+        font-weight: bold;
+    }
+
+.search-bar {
+    display: flex;
+    align-items: center;
+}
+
+    .search-bar input {
+        margin-right: 15px;
+        padding: 10px;
+        width: calc(100vw - 60vw);
+        border-radius: 5px;
+    }
+
+    .search-bar button {
+        padding: 12px;
+        padding: 12px;
+        color: white;
+        background-color: red;
+        border-radius: 5px;
+        border: none;
+    }
+
+        .search-bar button a {
+            border: solid 1px red;
+            border: solid 1px red;
+            color: white;
+            text-decoration: none;
+        }
+
+        .search-bar button:hover {
+            box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+        }
+
+.table-container {
+    padding: 50px;
+}
+
+.Users-Empty {
+    height: 10rem;
+}
+
+    .Users-Empty td {
+        vertical-align: middle;
+        color: #55729B !important;
+        font-style: italic;
+        font-size: 1.5rem;
+        text-align: center !important;
+        background-color: #E4E9F7 !important;
+        border: none !important;
+    }
+
+.table {
+    width: 90%;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    padding: 20px;
+}
+
+    .table th {
+        padding: 8px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+        background-color: #55729B;
+        color: white;
+        padding: 20px;
+        font-weight: bold;
+    }
+
+    .table td {
+        border-bottom: 1px solid #ddd;
+        padding: 5px;
+        text-align: center;
+        background-color: white;
+        color: black;
+        padding: 20px;
+        font-weight: normal;
+        align-items: center;
+    }
+
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.job-post-action-icon {
+    width: 20px;
+    height: 20px;
+    margin: 5px 10px 5px 5px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+    .job-post-action-icon:hover {
+        width: 25px;
+        height: 25px;
+        margin: 0px 5px 0px 0px;
+        transition: 0.25s;
+    }
+
+a {
+    text-decoration: none;
+}
+
+.sort-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .sort-btn .sort-icon {
+        cursor: pointer;
+        font-size: 16px;
+        margin-left: 5px;
+        font-size: 8px;
+    }
+
+.sort-icons-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 6px;
+}

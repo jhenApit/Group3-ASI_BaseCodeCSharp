@@ -1,0 +1,233 @@
+﻿body {
+    margin: 0;
+    font-family: "Montserrat", sans-serif;
+    background-color: #e4e9f7;
+}
+
+.container-header {
+    background-color: white;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24.5px 15px;
+    overflow-x: hidden;
+    margin: 0;
+    position: fixed;
+}
+
+    .container-header h2 {
+        font-size: x-large;
+        font-weight: bold;
+    }
+
+.return-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.content {
+    width: 80%;
+    padding: 10px 50px;
+    margin: 0 auto;
+}
+
+p {
+    font-weight: 500;
+    padding: 10px 0;
+    font-size: 18px;
+}
+
+.input-container {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+    .input-container label {
+        width: 10rem;
+        margin-right: 1rem;
+        align-self: flex-start;
+        padding-top: 10px;
+    }
+
+    .input-container input {
+        margin-top: auto;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        padding: 10px;
+        width: 100%;
+    }
+
+.description-input-rows,
+.qualification-input-rows,
+.responsibility-input-rows {
+    flex-grow: 1;
+    width: 100%;
+}
+
+.description-input-row,
+.qualification-input-row,
+.responsibility-input-row {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+    .description-input-row input,
+    .qualification-input-row input,
+    .responsibility-input-row input {
+        margin-top: auto;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .description-input-row label,
+    .qualification-input-row label,
+    .responsibility-input-row label {
+        display: none;
+    }
+
+    .description-input-row:not(:first-child) .remove-button,
+    .qualification-input-row:not(:first-child) .remove-button,
+    .responsibility-input-row:not(:first-child) .remove-button {
+        display: block;
+    }
+
+.remove-button {
+    margin-left: 10px;
+    display: none;
+    background-color: #ec2224;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width: 120px;
+    border-radius: 10px;
+    font-size: 16px;
+    padding: 1px 5px;
+    border: none;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+    .remove-button:hover {
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+    }
+
+.button-container {
+    display: flex;
+    align-items: center;
+}
+
+.hidden-label {
+    width: 9.3rem;
+    align-self: flex-start;
+    padding-top: 10px;
+    font-size: 0;
+    color: transparent;
+}
+
+.add-more-btn {
+    display: flex;
+    align-items: center;
+    background-color: #55729b;
+    color: white;
+    justify-content: center;
+    height: 30px;
+    width: 120px;
+    border-radius: 10px;
+    border: none;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+    .add-more-btn:hover {
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+    }
+
+.select-container {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+}
+
+    .select-container label {
+        width: 8.3rem;
+        margin-right: 1rem;
+        align-self: flex-start;
+        padding-top: 10px;
+    }
+
+    .select-container select {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        padding: 10px;
+        width: 100px;
+    }
+
+
+.bottom-btn {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.save-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 20px 10px 20px;
+    border-radius: 5px;
+    width: 100%;
+    border: solid 1px red;
+    text-decoration: none;
+    text-align: center;
+    width: 200px;
+}
+
+    .save-button:hover {
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+        text-decoration: none;
+        color: white;
+    }
+
+.cancel-btn {
+    background-color: white;
+    color: red;
+    border: solid 1px red;
+    padding: 10px 20px 10px 20px;
+    border-radius: 5px;
+    margin-right: 10px;
+    width: 100%;
+    text-decoration: none;
+    text-align: center;
+    width: 200px;
+}
+
+    .cancel-btn:hover {
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+        text-decoration: none;
+        color: red;
+    }
